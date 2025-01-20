@@ -1,279 +1,170 @@
 const std = @import("std");
-const Scanner = std.json.Scanner;
-const Allocator = std.mem.Allocator;
-const ArrayList = std.ArrayList;
-const maxChunksToDepth = @import("hash").maxChunksToDepth;
-const merkleize = @import("hash").merkleizeBlocksBytes;
-const sha256Hash = @import("hash").sha256Hash;
-const initZeroHash = @import("hash").initZeroHash;
-const deinitZeroHash = @import("hash").deinitZeroHash;
-const toRootHex = @import("util").toRootHex;
-const fromHex = @import("util").fromHex;
-const JsonError = @import("./common.zig").JsonError;
-const SszError = @import("./common.zig").SszError;
-const HashError = @import("./common.zig").HashError;
-const builtin = @import("builtin");
-const native_endian = builtin.target.cpu.arch.endian();
-const BitArray = @import("./bit_array_value.zig").BitArray;
-const getByteBoolArray = @import("./bit_array_value.zig").getByteBoolArray;
-const Parsed = @import("./type.zig").Parsed;
-const ParsedResult = Parsed(BitArray);
-const SingleType = @import("./single.zig").withType(BitArray);
+const TypeKind = @import("type_kind.zig").TypeKind;
+const BoolType = @import("bool.zig").BoolType;
 
-pub fn createBitListType(comptime limit_bits: usize) type {
-    const BlockBytes = ArrayList(u8);
+pub fn BitList(comptime limit: comptime_int) type {
+    return struct {
+        data: std.ArrayListUnmanaged(u8),
+        bit_len: usize,
 
-    const BitListType = struct {
-        allocator: std.mem.Allocator,
-        depth: usize,
-        chunk_depth: usize,
-        fixed_size: ?usize,
-        min_size: usize, // +1 for the extra padding bit
-        max_size: usize,
-        max_chunk_count: usize,
-        // this should always be a multiple of 64 bytes
-        block_bytes: BlockBytes,
-        mix_in_length_block_bytes: []u8,
+        pub fn fromBitLen(allocator: std.mem.Allocator, bit_len: usize) !@This() {
+            if (bit_len > limit) {
+                return error.tooLarge;
+            }
 
-        /// Zig Type definition
-        pub fn getZigType() type {
-            return BitArray;
-        }
+            const byte_len = std.math.divCeil(usize, bit_len, 8) catch unreachable;
 
-        pub fn getZigTypeAlignment() usize {
-            return @alignOf(BitArray);
-        }
-
-        pub fn init(allocator: std.mem.Allocator, init_capacity: usize) !@This() {
-            const limit_bytes = (limit_bits + 7) / 8;
-            const max_chunk_count: usize = (limit_bytes + 31) / 32;
-            const chunk_depth = maxChunksToDepth(max_chunk_count);
-            // Depth includes the extra level for the length node
-            const depth = chunk_depth + 1;
-            const fixed_size = null;
-            const min_size = 1; // +1 for the extra padding bit
-            const max_size = limit_bits + 1; // +1 for the extra padding bit
-
+            var data = try std.ArrayListUnmanaged(u8).initCapacity(allocator, byte_len);
+            data.expandToCapacity();
+            @memset(data.items, 0);
             return @This(){
-                .allocator = allocator,
-                .depth = depth,
-                .chunk_depth = chunk_depth,
-                .fixed_size = fixed_size,
-                .min_size = min_size,
-                .max_size = max_size,
-                .max_chunk_count = max_chunk_count,
-                .block_bytes = try BlockBytes.initCapacity(allocator, init_capacity),
-                .mix_in_length_block_bytes = try allocator.alloc(u8, 64),
+                .data = data,
+                .bit_len = bit_len,
             };
         }
 
-        pub fn deinit(self: *const @This()) void {
-            self.block_bytes.deinit();
-            self.allocator.free(self.mix_in_length_block_bytes);
+        pub fn fromBoolSlice(allocator: std.mem.Allocator, bools: []const bool) !@This() {
+            var bl = try @This().fromBitLen(allocator, bools.len);
+            for (bools, 0..) |bit, i| {
+                try bl.set(i, bit);
+            }
+            return bl;
         }
 
-        /// public apis
-        pub fn hashTreeRoot(self: *@This(), value: *const BitArray, out: []u8) HashError!void {
-            if (out.len != 32) {
-                return error.InCorrectLen;
+        pub fn deinit(self: *@This(), allocator: std.mem.Allocator) void {
+            self.data.deinit(allocator);
+        }
+
+        pub fn get(self: *const @This(), bit_index: usize) !bool {
+            if (bit_index >= self.bit_len) {
+                return error.OutOfRange;
             }
 
-            if (value.bit_len > limit_bits) {
-                return error.InCorrectLen;
+            const byte_idx = bit_index / 8;
+            const offset_in_byte = bit_index % 8;
+            const mask = 1 << offset_in_byte;
+            return (self.data.items[byte_idx] & mask) == mask;
+        }
+
+        pub fn set(self: *@This(), allocator: std.mem.Allocator, bit_index: usize, bit: bool) !void {
+            if (bit_index + 1 > self.bit_len) {
+                try self.setBitLen(allocator, bit_index + 1);
+            }
+            try self.setAssumeCapacity(bit_index, bit);
+        }
+
+        pub fn setBitLen(self: *@This(), allocator: std.mem.Allocator, bit_len: usize) !void {
+            if (bit_len > limit) {
+                return error.tooLarge;
             }
 
-            const value_data = value.data;
-            const value_byte_len = value_data.len;
-            const block_len: usize = ((value_byte_len + 63) / 64) * 64;
-            try self.block_bytes.resize(block_len);
+            const byte_len = std.math.divCeil(usize, bit_len, 8) catch unreachable;
+            try self.data.ensureTotalCapacity(allocator, byte_len);
+            self.bit_len = bit_len;
+        }
 
-            @memcpy(self.block_bytes.items[0..value_byte_len], value_data);
-            if (value_byte_len < block_len) {
-                @memset(self.block_bytes.items[value_byte_len..block_len], 0);
+        /// Set bit value at index `bit_index`
+        pub fn setAssumeCapacity(self: *@This(), bit_index: usize, bit: bool) !void {
+            if (bit_index >= self.bit_len) {
+                return error.OutOfRange;
             }
 
-            // TODO: avoid sha256 hard code
-            // compute root of chunks
-            try merkleize(sha256Hash, self.block_bytes.items[0..block_len], self.max_chunk_count, self.mix_in_length_block_bytes[0..32]);
-
-            // mixInLength
-            @memset(self.mix_in_length_block_bytes[32..], 0);
-            const slice = std.mem.bytesAsSlice(u64, self.mix_in_length_block_bytes[32..]);
-            const len_le = if (native_endian == .big) @byteSwap(value.bit_len) else value.bit_len;
-            slice[0] = len_le;
-
-            // final root
-            // one for hashTreeRoot(value), one for length
-            const chunk_count = 2;
-            try merkleize(sha256Hash, self.mix_in_length_block_bytes, chunk_count, out);
-        }
-
-        pub fn fromSsz(self: *const @This(), ssz: []const u8) SszError!ParsedResult {
-            return SingleType.fromSsz(self, ssz);
-        }
-
-        pub fn fromJson(self: *const @This(), json: []const u8) JsonError!ParsedResult {
-            return SingleType.fromJson(self, json);
-        }
-
-        pub fn clone(self: *const @This(), value: *const BitArray) SszError!ParsedResult {
-            return SingleType.clone(self, value);
-        }
-
-        pub fn equals(_: *const @This(), a: *const BitArray, b: *const BitArray) bool {
-            return a.bit_len == b.bit_len and std.mem.eql(u8, a.data, b.data);
-        }
-
-        // Serialization + deserialization
-        pub fn serializedSize(_: *const @This(), value: *const BitArray) usize {
-            return bitLenToSerializedLength(value.bit_len);
-        }
-
-        /// Serialize the object to bytes, return the number of bytes written
-        pub fn serializeToBytes(_: *const @This(), value: *const BitArray, out: []u8) !usize {
-            if (value.bit_len > limit_bits) {
-                return error.InvalidLength;
-            }
-
-            const value_byte_len = (value.bit_len + 7) / 8;
-            if (out.len < value_byte_len) {
-                return error.InCorrectLen;
-            }
-
-            @memcpy(out[0..value_byte_len], value.data);
-
-            // Apply padding bit to a serialized BitList
-            if (value.bit_len % 8 == 0) {
-                out[value_byte_len] = 1;
-                return value_byte_len + 1;
+            const byte_index = bit_index / 8;
+            const offset_in_byte: u3 = @intCast(bit_index % 8);
+            const mask = @as(u8, 1) << offset_in_byte;
+            var byte = self.data.items[byte_index];
+            if (bit) {
+                // For bit in byte, 1,0 OR 1 = 1
+                // byte 100110
+                // mask 010000
+                // res  110110
+                byte |= mask;
+                self.data.items[byte_index] = byte;
             } else {
-                const shift: u3 = @intCast(value.bit_len % 8);
-                out[value_byte_len - 1] |= @as(u8, 1) << shift;
-                return value_byte_len;
-            }
-        }
-
-        // TODO: is it necessary to implement deserializeFromBytes
-
-        /// Same to deserializeFromBytes but this returns *T instead of out param
-        /// Consumer need to free the memory
-        /// out parameter is unused because parent does not allocate, just to conform to the api
-        pub fn deserializeFromSlice(_: *const @This(), arena_allocator: Allocator, slice: []const u8, _: ?*BitArray) SszError!*BitArray {
-            // TODO: make this reusable when we have tree backed implementation
-            const last_byte = slice[slice.len - 1];
-            if (last_byte == 0) {
-                // Invalid deserialized bitlist, padding bit required
-                return error.InvalidSsz;
-            }
-
-            if (last_byte == 1) {
-                // Remove padding bit
-                const ssz_data = slice[0 .. slice.len - 1];
-                const result = try BitArray.fromBitLen(arena_allocator, ssz_data.len * 8);
-                @memcpy(result.data, ssz_data);
-                return result;
-            }
-
-            // the last byte is > 1, so a padding bit will exist in the last byte and need to be removed
-            const last_byte_bool_array = getByteBoolArray(last_byte);
-
-            // last_byte_bit_len should be > 0 becaues last_byte is > 1 at this point
-            var last_byte_bit_len: u3 = 0;
-            for (last_byte_bool_array, 0..) |bit, i| {
-                if (bit) {
-                    last_byte_bit_len = @intCast(i);
+                // For bit in byte, 1,0 OR 1 = 0
+                if ((byte & mask) == mask) {
+                    // byte 110110
+                    // mask 010000
+                    // res  100110
+                    byte ^= mask;
+                    self.data.items[byte_index] = byte;
+                } else {
+                    // Ok, bit is already 0
                 }
             }
+        }
+    };
+}
 
-            const bit_len = (slice.len - 1) * 8 + last_byte_bit_len;
-            const result = try BitArray.fromBitLen(arena_allocator, bit_len);
-            @memcpy(result.data, slice);
-            const shift_right_bits: u3 = @intCast((8 - @as(u8, last_byte_bit_len)) % 8);
-            const max_u8: u8 = 0xFF;
-            result.data[slice.len - 1] &= max_u8 >> shift_right_bits;
+pub fn BitListType(comptime _limit: comptime_int) type {
+    return struct {
+        pub const kind = TypeKind.vector;
+        pub const Element: type = BoolType();
+        pub const limit: usize = _limit;
+        pub const Type: type = BitList(limit);
+        pub const min_size: usize = 1;
+        pub const max_size: usize = std.math.divCeil(usize, limit + 1, 8) catch unreachable;
+        pub const chunk_count: usize = std.math.divCeil(usize, limit, 256) catch unreachable;
 
-            return result;
+        pub fn serializedSize(value: *const Type) usize {
+            return std.math.divCeil(usize, value.bit_len + 1, 8) catch unreachable;
         }
 
-        /// Implementation for parent
-        /// Consumer need to free the memory
-        /// out parameter is unused because parent does not allocate, just to conform to the api
-        pub fn deserializeFromJson(self: *const @This(), arena_allocator: Allocator, source: *Scanner, _: ?[]u8) JsonError!*BitArray {
-            const value = try source.next();
-
-            const hex = try switch (value) {
-                .string => |v| blk: {
-                    break :blk v;
-                },
-                else => error.InvalidJson,
-            };
-
-            const data_byte_len = if (hex[0] == '0' and (hex[1] == 'x' or hex[1] == 'X')) (hex.len - 2) / 2 else hex.len / 2;
-            const slice = try arena_allocator.alloc(u8, data_byte_len);
-            // should be freed by the consumer using arena_allocator
-            try fromHex(hex, slice);
-
-            const res = self.deserializeFromSlice(arena_allocator, slice, null) catch |err| switch (err) {
-                else => return error.InvalidJson,
-            };
-            return res;
+        pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
+            const bit_len = value.bit_len + 1;
+            const byte_len = std.math.divCeil(usize, bit_len, 8) catch unreachable;
+            @memcpy(out, value.data.items);
+            out[byte_len - 1] |= @as(u8, 1) << @intCast(bit_len % 8);
+            return byte_len;
         }
 
-        pub fn doClone(_: *const @This(), arena_allocator: Allocator, value: *const BitArray, _: ?*BitArray) !*BitArray {
-            if (value.bit_len > limit_bits) {
-                return error.InvalidLength;
+        pub fn deserializeFromBytes(data: []const u8, allocator: std.mem.Allocator, out: *Type) !void {
+            // ensure 1 bit and trailing zeros in last byte
+            const last_byte = data[data.len - 1];
+
+            const last_byte_clz = @clz(last_byte);
+            if (last_byte_clz == 8) {
+                return error.noPaddingBit;
+            }
+            const last_1_index: u3 = @intCast(7 - last_byte_clz);
+            const bit_len = (data.len - 1) * 8 + last_1_index;
+            if (bit_len > limit) {
+                return error.tooLarge;
             }
 
-            const result = try BitArray.fromBitLen(arena_allocator, value.bit_len);
-            @memcpy(result.data, value.data);
-            return result;
+            try out.setBitLen(allocator, bit_len);
+            @memcpy(out.data.items, data);
+            out.data.items[out.data.items.len - 1] ^= @as(u8, 1) << last_1_index;
+        }
+
+        pub fn validate(data: []const u8) !void {
+            // ensure 1 bit and trailing zeros in last byte
+            const last_byte = data[data.len - 1];
+
+            const last_byte_clz = @clz(last_byte);
+            if (last_byte_clz == 8) {
+                return error.noPaddingBit;
+            }
+            const last_1_index: u3 = @intCast(7 - last_byte_clz);
+            const bit_len = (data.len - 1) * 8 + last_1_index;
+            if (bit_len > limit) {
+                return error.tooLarge;
+            }
         }
     };
-
-    return BitListType;
 }
 
-fn bitLenToSerializedLength(bit_len: usize) usize {
-    const bytes = (bit_len + 7) / 8;
-    // +1 for the extra padding bit
-    return if (bit_len % 8 == 0) bytes + 1 else bytes;
-}
-
-// Extra test cases to ensure padding bit is applied correctly
-test "BitList padding bit" {
-    const TestCase = struct {
-        bools: []const bool,
-        hex: []const u8,
-    };
-
-    const test_cases = [_]TestCase{ .{ .bools = ([_]bool{})[0..], .hex = ([_]u8{0b00000001})[0..] }, .{ .bools = ([_]bool{true})[0..], .hex = ([_]u8{0b11})[0..] }, .{ .bools = ([_]bool{false})[0..], .hex = ([_]u8{0b10})[0..] }, .{ .bools = ([_]bool{true} ** 3)[0..], .hex = ([_]u8{0b1111})[0..] }, .{ .bools = ([_]bool{false} ** 3)[0..], .hex = ([_]u8{0b1000})[0..] }, .{ .bools = ([_]bool{true} ** 8)[0..], .hex = ([_]u8{ 0b11111111, 0b00000001 })[0..] }, .{ .bools = ([_]bool{false} ** 8)[0..], .hex = ([_]u8{ 0b00000000, 0b00000001 })[0..] } };
-
-    const BitList = createBitListType(128);
+test "BitListType - sanity" {
     const allocator = std.testing.allocator;
-    const bit_list_type = try BitList.init(allocator, 1024);
-    defer bit_list_type.deinit();
+    const Bits = BitListType(40);
+    var b: Bits.Type = try Bits.Type.fromBitLen(allocator, 30);
+    defer b.deinit(allocator);
 
-    for (test_cases) |tc| {
-        const expected_serialized = tc.hex;
-        const bools = tc.bools;
+    try b.setAssumeCapacity(2, true);
 
-        const bit_array = try BitArray.fromBoolArray(allocator, bools);
-        defer bit_array.deinit();
+    const b_buf = try allocator.alloc(u8, Bits.serializedSize(&b));
+    defer allocator.free(b_buf);
 
-        const size = bit_list_type.serializedSize(bit_array);
-        const serialized = try std.testing.allocator.alloc(u8, size);
-        defer allocator.free(serialized);
-        _ = try bit_list_type.serializeToBytes(bit_array, serialized);
-
-        try std.testing.expect(std.mem.eql(u8, expected_serialized, serialized));
-
-        const bit_array_des = try bit_list_type.deserializeFromSlice(allocator, expected_serialized, null);
-        defer bit_array_des.deinit();
-
-        const bit_array_bools = try allocator.alloc(bool, bit_array_des.bit_len);
-        defer allocator.free(bit_array_bools);
-
-        try bit_array_des.toBoolArray(bit_array_bools);
-        try std.testing.expect(std.mem.eql(bool, bools, bit_array_bools));
-    }
+    _ = Bits.serializeIntoBytes(&b, b_buf);
+    try Bits.deserializeFromBytes(b_buf, allocator, &b);
 }

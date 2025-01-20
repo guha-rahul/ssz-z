@@ -1,515 +1,372 @@
 const std = @import("std");
-const Token = std.json.Token;
-const Scanner = std.json.Scanner;
-const Allocator = std.mem.Allocator;
-const ArenaAllocator = std.heap.ArenaAllocator;
-const expect = std.testing.expect;
-const merkleize = @import("hash").merkleizeBlocksBytes;
-const HashFn = @import("hash").HashFn;
-const sha256Hash = @import("hash").sha256Hash;
-const toRootHex = @import("util").toRootHex;
-const JsonError = @import("./common.zig").JsonError;
-const SszError = @import("./common.zig").SszError;
-const HashError = @import("./common.zig").HashError;
-const Parsed = @import("./type.zig").Parsed;
+const TypeKind = @import("type_kind.zig").TypeKind;
+const isFixedType = @import("type_kind.zig").isFixedType;
 
-const BytesRange = struct {
-    start: usize,
-    end: usize,
-};
-
-/// TODO: defaultValue() for all types
-// create a ssz type from type of an ssz object
-// type of zig type will be used once and checked inside hashTreeRoot() function
-pub fn createContainerType(comptime ST: type, hashFn: HashFn) type {
-    const ssz_struct_info = switch (@typeInfo(ST)) {
-        .Struct => |struct_info| struct_info,
+pub fn FixedContainerType(comptime ST: type) type {
+    const ssz_fields = switch (@typeInfo(ST)) {
+        .Struct => |s| s.fields,
         else => @compileError("Expected a struct type."),
     };
 
-    comptime var new_fields: [ssz_struct_info.fields.len]std.builtin.Type.StructField = undefined;
-    comptime var alignment: usize = 0;
-    inline for (ssz_struct_info.fields, 0..) |field, i| {
-        if (field.type.getZigTypeAlignment() > alignment) {
-            alignment = field.type.getZigTypeAlignment();
+    comptime var native_fields: [ssz_fields.len]std.builtin.Type.StructField = undefined;
+    comptime var _offsets: [ssz_fields.len]usize = undefined;
+    comptime var _fixed_size: usize = 0;
+    inline for (ssz_fields, 0..) |field, i| {
+        if (!isFixedType(field.type)) {
+            @compileError("FixedContainerType must only contain fixed fields");
         }
-        new_fields[i] = .{
+
+        native_fields[i] = .{
             .name = field.name,
-            .type = field.type.getZigType(),
-            // TODO: implement this
+            .type = field.type.Type,
             .default_value = null,
             .is_comptime = false,
-            .alignment = field.type.getZigTypeAlignment(),
+            .alignment = @alignOf(field.type.Type),
         };
+        _offsets[i] = _fixed_size;
+        _fixed_size += field.type.fixed_size;
     }
 
     // this works for Zig 0.13
     // syntax in 0.14 or later could change, see https://github.com/ziglang/zig/issues/10710
-    const ZT = comptime @Type(.{
+    const T = @Type(.{
         .Struct = .{
             .layout = .auto,
             .backing_integer = null,
-            .fields = new_fields[0..],
+            .fields = native_fields[0..],
             // TODO: do we need to assign this value?
             .decls = &[_]std.builtin.Type.Declaration{},
             .is_tuple = false,
         },
     });
 
-    const zig_fields_info = @typeInfo(ZT).Struct.fields;
-    const max_chunk_count = zig_fields_info.len;
-    const native_endian = @import("builtin").target.cpu.arch.endian();
-    const SingleType = @import("./single.zig").withType(ZT);
-    const ParsedResult = Parsed(ZT);
+    return struct {
+        pub const kind = TypeKind.container;
+        pub const Fields: type = ST;
+        pub const fields: []const std.builtin.Type.StructField = ssz_fields;
+        pub const Type: type = T;
+        pub const fixed_size: usize = _fixed_size;
+        pub const field_offsets: [fields.len]usize = _offsets;
+        pub const chunk_count: usize = fields.len;
 
-    const ContainerType = struct {
-        allocator: Allocator,
-        // TODO: *ST to avoid copy
-        ssz_fields: ST,
-        // a sha256 block is 64 byte
-        blocks_bytes: []u8,
-        min_size: usize,
-        max_size: usize,
-        fixed_size: ?usize,
-        fixed_end: usize,
-        variable_field_count: usize,
-
-        /// Zig Type definition
-        pub fn getZigType() type {
-            return ZT;
+        pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
+            var i: usize = 0;
+            inline for (fields) |field| {
+                const field_value = @field(value, field.name);
+                i += field.type.serializeIntoBytes(&field_value, out[i..]);
+            }
+            return i;
         }
 
-        /// to be used by parent
-        /// an alignment of struct is max of all fields' alignment
-        pub fn getZigTypeAlignment() usize {
-            return alignment;
+        pub fn deserializeFromBytes(data: []const u8, out: *Type) !void {
+            var i: usize = 0;
+            inline for (fields) |field| {
+                try field.type.deserializeFromBytes(data[i .. i + field.type.fixed_size], &@field(out, field.name));
+                i += field.type.fixed_size;
+            }
         }
 
-        /// public function for consumers
-        /// TODO: consider returning *@This(), see BitArray
-        pub fn init(allocator: Allocator, ssz_fields: ST) !@This() {
-            var min_size: usize = 0;
-            var max_size: usize = 0;
-            var fixed_size: ?usize = 0;
-            var fixed_end: usize = 0;
-            var variable_field_count: usize = 0;
-            inline for (zig_fields_info) |field_info| {
-                const field_name = field_info.name;
-                const ssz_type = @field(ssz_fields, field_name);
-                min_size = min_size + ssz_type.min_size;
-                max_size = max_size + ssz_type.max_size;
-                const field_fixed_size = ssz_type.fixed_size;
-                if (field_fixed_size == null) {
-                    fixed_size = null;
-                    fixed_end += 4;
-                    variable_field_count += 1;
+        pub fn validate(data: []const u8) !void {
+            var i: usize = 0;
+            inline for (fields) |field| {
+                try field.type.validate(data[i .. i + field.type.fixed_size]);
+                i += field.type.fixed_size;
+            }
+        }
+
+        pub fn getFieldIndex(name: []const u8) usize {
+            inline for (fields, 0..) |field, i| {
+                if (std.mem.eql(u8, name, field.name)) {
+                    return i;
+                }
+            } else {
+                @compileError("field does not exist");
+            }
+        }
+    };
+}
+
+pub fn VariableContainerType(comptime ST: type) type {
+    const ssz_fields = switch (@typeInfo(ST)) {
+        .Struct => |s| s.fields,
+        else => @compileError("Expected a struct type."),
+    };
+
+    comptime var native_fields: [ssz_fields.len]std.builtin.Type.StructField = undefined;
+    comptime var _offsets: [ssz_fields.len]usize = undefined;
+    comptime var _min_size: usize = 0;
+    comptime var _max_size: usize = 0;
+    comptime var _fixed_end: usize = 0;
+    comptime var _fixed_count: usize = 0;
+    inline for (ssz_fields, 0..) |field, i| {
+        _offsets[i] = _fixed_end;
+        if (isFixedType(field.type)) {
+            _min_size += field.type.fixed_size;
+            _max_size += field.type.fixed_size;
+            _fixed_end += field.type.fixed_size;
+            _fixed_count += 1;
+        } else {
+            _min_size += field.type.min_size;
+            _max_size += field.type.max_size;
+            _fixed_end += 4;
+        }
+
+        native_fields[i] = .{
+            .name = field.name,
+            .type = field.type.Type,
+            .default_value = null,
+            .is_comptime = false,
+            .alignment = @alignOf(field.type.Type),
+        };
+    }
+
+    comptime {
+        if (_fixed_count == ssz_fields.len) {
+            @compileError("expected at least one fixed field type");
+        }
+    }
+
+    const var_count = ssz_fields.len - _fixed_count;
+
+    // this works for Zig 0.13
+    // syntax in 0.14 or later could change, see https://github.com/ziglang/zig/issues/10710
+    const T = @Type(.{
+        .Struct = .{
+            .layout = .auto,
+            .backing_integer = null,
+            .fields = native_fields[0..],
+            // TODO: do we need to assign this value?
+            .decls = &[_]std.builtin.Type.Declaration{},
+            .is_tuple = false,
+        },
+    });
+
+    return struct {
+        pub const kind = TypeKind.container;
+        pub const fields: []const std.builtin.Type.StructField = ssz_fields;
+        pub const Fields: type = ST;
+        pub const Type: type = T;
+        pub const min_size: usize = _min_size;
+        pub const max_size: usize = _max_size;
+        pub const field_offsets: [fields.len]usize = _offsets;
+        pub const fixed_end: usize = _fixed_end;
+        pub const fixed_count: usize = _fixed_count;
+        pub const chunk_count: usize = fields.len;
+
+        pub fn serializedSize(value: *const Type) usize {
+            var i: usize = 0;
+            inline for (fields) |field| {
+                if (comptime isFixedType(field.type)) {
+                    i += field.type.fixed_size;
                 } else {
-                    const field_fixed_size_value = field_fixed_size.?;
-                    if (fixed_size) |fixed_size_value| {
-                        fixed_size = fixed_size_value + field_fixed_size_value;
-                    }
-                    fixed_end += field_fixed_size_value;
+                    i += 4 + field.type.serializedSize(&@field(value, field.name));
                 }
             }
-            // same to round up, looks like a "/" round down
-            const blocks_bytes_len: usize = ((max_chunk_count + 1) / 2) * 64;
-            return @This(){
-                .allocator = allocator,
-                .ssz_fields = ssz_fields,
-                .blocks_bytes = try allocator.alloc(u8, blocks_bytes_len),
-                .min_size = min_size,
-                .max_size = max_size,
-                .fixed_size = fixed_size,
-                .fixed_end = fixed_end,
-                .variable_field_count = variable_field_count,
-            };
+            return i;
         }
 
-        pub fn deinit(self: *const @This()) void {
-            self.allocator.free(self.blocks_bytes);
-        }
-
-        pub fn hashTreeRoot(self: *@This(), value: *const ZT, out: []u8) HashError!void {
-            if (out.len != 32) {
-                return error.InCorrectLen;
-            }
-
-            // this will also enforce all fields in value match ssz_fields
-            inline for (zig_fields_info, 0..) |field_info, i| {
-                const field_name = field_info.name;
-                const field_type = @typeInfo(field_info.type);
-                // by default use pointer to avoid a copy
-                const field_value_ptr = if (field_type == .Pointer or field_type == .Bool or field_type == .Int) @field(value, field_name) else &@field(value, field_name);
-                const ssz_type = &@field(self.ssz_fields, field_name);
-                try ssz_type.hashTreeRoot(field_value_ptr, self.blocks_bytes[(i * 32) .. (i + 1) * 32]);
-            }
-
-            return merkleize(hashFn, self.blocks_bytes, max_chunk_count, out);
-        }
-
-        pub fn fromSsz(self: *const @This(), ssz: []const u8) SszError!ParsedResult {
-            return SingleType.fromSsz(self, ssz);
-        }
-
-        /// public function for consumers
-        pub fn fromJson(self: *const @This(), json: []const u8) JsonError!ParsedResult {
-            return SingleType.fromJson(self, json);
-        }
-
-        // public function for consumers
-        pub fn clone(self: *const @This(), value: *const ZT) SszError!ParsedResult {
-            return SingleType.clone(self, value);
-        }
-
-        pub fn equals(self: *const @This(), a: *const ZT, b: *const ZT) bool {
-            inline for (zig_fields_info) |field_info| {
-                const field_name = field_info.name;
-                const ssz_type = &@field(self.ssz_fields, field_name);
-                const field_type = @typeInfo(field_info.type);
-                const a_field_ptr = if (field_type == .Pointer or field_type == .Bool or field_type == .Int) @field(a, field_name) else &@field(a, field_name);
-                const b_field_ptr = if (field_type == .Pointer or field_type == .Bool or field_type == .Int) @field(b, field_name) else &@field(b, field_name);
-                if (!ssz_type.equals(a_field_ptr, b_field_ptr)) {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        // Serialization + deserialization
-        // -------------------------------
-        // Containers can mix fixed length and variable length data.
-        //
-        // Fixed part                         Variable part
-        // [field1 offset][field2 data       ][field1 data               ]
-        // [0x000000c]    [0xaabbaabbaabbaabb][0xffffffffffffffffffffffff]
-        pub fn serializedSize(self: *const @This(), value: *const ZT) usize {
-            var size: usize = 0;
-            inline for (zig_fields_info) |field_info| {
-                const field_name = field_info.name;
-                const field_type = @typeInfo(field_info.type);
-                const field_value = @field(value, field_name);
-                const field_value_or_ptr = if (field_type == .Pointer or field_type == .Bool or field_type == .Int) field_value else &field_value;
-                const ssz_type = &@field(self.ssz_fields, field_name);
-                if (ssz_type.fixed_size == null) {
-                    size += 4;
-                    size += ssz_type.serializedSize(field_value_or_ptr);
-                } else {
-                    size += ssz_type.fixed_size.?;
-                }
-            }
-            return size;
-        }
-
-        /// Serialize the object to bytes, return the number of bytes written
-        pub fn serializeToBytes(self: *const @This(), value: *const ZT, out: []u8) !usize {
+        pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
             var fixed_index: usize = 0;
-            var variable_index = self.fixed_end;
-
-            inline for (zig_fields_info) |field_info| {
-                const field_name = field_info.name;
-                const field_type = @typeInfo(field_info.type);
-                const field_value = @field(value, field_name);
-                const field_value_or_ptr = if (field_type == .Pointer or field_type == .Bool or field_type == .Int) field_value else &field_value;
-                const ssz_type = &@field(self.ssz_fields, field_name);
-                if (ssz_type.fixed_size == null) {
-                    // write offset
-                    const slice = std.mem.bytesAsSlice(u32, out[fixed_index..]);
-                    const variable_index_endian = if (native_endian == .big) @byteSwap(variable_index) else variable_index;
-                    slice[0] = @intCast(variable_index_endian);
-                    fixed_index += 4;
-                    // write serialized element to variable section
-                    // ssz_type.serializeToBytes returns number of bytes written
-                    variable_index += try ssz_type.serializeToBytes(field_value_or_ptr, out[variable_index..]);
+            var variable_index: usize = fixed_end;
+            inline for (fields) |field| {
+                if (comptime isFixedType(field.type)) {
+                    // write field value
+                    fixed_index += field.type.serializeIntoBytes(&@field(value, field.name), out[fixed_index..]);
                 } else {
-                    fixed_index += try ssz_type.serializeToBytes(field_value_or_ptr, out[fixed_index..]);
+                    // write offset
+                    std.mem.writeInt(u32, out[fixed_index..][0..4], @intCast(variable_index), .little);
+                    fixed_index += 4;
+                    // write field value
+                    variable_index += field.type.serializeIntoBytes(&@field(value, field.name), out[variable_index..]);
                 }
             }
-
             return variable_index;
         }
 
-        // TODO: not sure if we need this or not as there is no way to know the size of internal slice size
-        pub fn deserializeFromBytes(self: *const @This(), data: []const u8, out: *ZT) !void {
-            // TODO: validate data length
-            // max_chunk_count is known at compile time so we can allocate on stack
-            var field_ranges = [_]BytesRange{.{ .start = 0, .end = 0 }} ** max_chunk_count;
-            try self.getFieldRanges(data, field_ranges[0..]);
-            inline for (zig_fields_info, 0..) |field_info, i| {
-                const field_name = field_info.name;
-                const ssz_type = &@field(self.ssz_fields, field_name);
-                const field_range = field_ranges[i];
-                const field_data = data[field_range.start..field_range.end];
-                // no copy of data, and it works
-                try ssz_type.deserializeFromBytes(field_data, &@field(out, field_name));
+        pub fn deserializeFromBytes(data: []const u8, allocator: std.mem.Allocator, out: *Type) !void {
+            if (data.len > max_size) {
+                return error.InvalidSize;
             }
-        }
 
-        /// for embedded struct, it's allocated by the parent struct
-        /// for pointer or slice, it's allocated on its own
-        pub fn deserializeFromSlice(self: *const @This(), arenaAllocator: Allocator, slice: []const u8, out: ?*ZT) SszError!*ZT {
-            var out2 = out orelse try arenaAllocator.create(ZT);
+            const ranges = try readFieldRanges(data);
 
-            // TODO: validate data length
-            // max_chunk_count is known at compile time so we can allocate on stack
-            var field_ranges = [_]BytesRange{.{ .start = 0, .end = 0 }} ** max_chunk_count;
-            try self.getFieldRanges(slice, field_ranges[0..]);
-            inline for (zig_fields_info, 0..) |field_info, i| {
-                const field_name = field_info.name;
-                const ssz_type = &@field(self.ssz_fields, field_name);
-                const field_range = field_ranges[i];
-                const field_data = slice[field_range.start..field_range.end];
-                const field_type = @typeInfo(field_info.type);
-
-                if (field_type == .Pointer or field_type == .Bool or field_type == .Int) {
-                    @field(out2, field_name) = try ssz_type.deserializeFromSlice(arenaAllocator, field_data, null);
+            inline for (fields, 0..) |field, i| {
+                if (comptime isFixedType(field.type)) {
+                    try field.type.deserializeFromBytes(
+                        data[ranges[i][0]..ranges[i][1]],
+                        &@field(out, field.name),
+                    );
                 } else {
-                    _ = try ssz_type.deserializeFromSlice(arenaAllocator, field_data, &@field(out2, field_name));
+                    try field.type.deserializeFromBytes(
+                        data[ranges[i][0]..ranges[i][1]],
+                        allocator,
+                        &@field(out, field.name),
+                    );
                 }
             }
-
-            return out2;
         }
 
-        /// a recursive implementation for parent types or fromJson
-        pub fn deserializeFromJson(self: *const @This(), arena_allocator: Allocator, source: *Scanner, out: ?*ZT) JsonError!*ZT {
-            var out2 = out orelse try arena_allocator.create(ZT);
-            // validate begin token "{"
-            const begin_object_token = try source.next();
-            if (begin_object_token != Token.object_begin) {
-                return error.InvalidJson;
-            }
-
-            inline for (zig_fields_info) |field_info| {
-                const field_name = field_info.name;
-                const json_field_name = try source.next();
-                switch (json_field_name) {
-                    .string => |v| {
-                        // TODO: map case, make a separate function, create a separate type for mapping?
-                        if (!std.mem.eql(u8, v, field_name)) {
-                            return error.InvalidJson;
-                        }
-                    },
-                    else => return error.InvalidJson,
+        pub fn getFieldIndex(name: []const u8) usize {
+            for (fields, 0..) |field, i| {
+                if (std.mem.eql(u8, name, field.name)) {
+                    return i;
                 }
-
-                const ssz_type = &@field(self.ssz_fields, field_name);
-                const field_type = @typeInfo(field_info.type);
-                if (field_type == .Pointer or field_type == .Bool or field_type == .Int) {
-                    @field(out2, field_name) = try ssz_type.deserializeFromJson(arena_allocator, source, null);
-                } else {
-                    _ = try ssz_type.deserializeFromJson(arena_allocator, source, &@field(out2, field_name));
-                }
+            } else {
+                @compileError("field does not exist");
             }
-
-            // validate end token "}"
-            const end_object_token = try source.next();
-            if (end_object_token != Token.object_end) {
-                return error.InvalidJson;
-            }
-
-            return out2;
         }
 
-        pub fn doClone(self: *const @This(), arena_allocator: Allocator, value: *const ZT, out: ?*ZT) !*ZT {
-            var out2 = out orelse try arena_allocator.create(ZT);
-            inline for (zig_fields_info) |field_info| {
-                const field_name = field_info.name;
-                const ssz_type = &@field(self.ssz_fields, field_name);
-                const field_type = @typeInfo(field_info.type);
-                if (field_type == .Pointer or field_type == .Bool or field_type == .Int) {
-                    @field(out2, field_name) = try ssz_type.doClone(arena_allocator, @field(value, field_name), null);
-                } else {
-                    _ = try ssz_type.doClone(arena_allocator, &@field(value, field_name), &@field(out2, field_name));
-                }
+        pub const Serialized = struct {
+            data: []const u8,
+
+            const Self = @This();
+
+            pub fn init(data: []const u8) !Serialized {
+                // try validate(data);
+                return .{ .data = data };
             }
 
-            return out2;
-        }
+            // pub fn deserialize(allocator: std.mem.Allocator, out: *Type) !void {}
 
-        // private functions
+            pub fn readField(self: Self, comptime name: []const u8) !fields[getFieldIndex(name)].type.Serialized {
+                const ranges = try readFieldRanges(self.data);
+                const field_index = getFieldIndex(name);
+                return fields[field_index].type.Serialized{
+                    .data = self.data[ranges[field_index][0]..ranges[field_index][1]],
+                };
+            }
 
-        // Deserializer helper: Returns the bytes ranges of all fields, both variable and fixed size.
+            // pub fn readDescendent(self: Self, comptime path_str: []const u8) PathType(VariableContainerType(ST), path).Serialized {
+            //     const ranges = try readFieldRanges(self.data);
+            //     switch (comptime nextPathItem(VariableContainerType(ST), path_str)) {
+            //         .last => |last| {
+            //             const field_index = last.item_type.child.index;
+            //             const range = ranges[field_index];
+            //             return fields[field_index].type.Serialized{
+            //                 .data = self.data[range[0]..range[1]],
+            //             };
+            //         },
+            //         .not_last => |not_last| {
+            //             const field_index = not_last.next.item_type.child.index;
+            //             const range = ranges[field_index];
+            //             const serialized_field = fields[field_index].type.Serialized{
+            //                 .data = self.data[range[0]..range[1]],
+            //             };
+            //             serialized_field.readDescendent(not_last.rest_path_str);
+            //         },
+            //     }
+            // }
+        };
+
+        // Returns the bytes ranges of all fields, both variable and fixed size.
         // Fields may not be contiguous in the serialized bytes, so the returned ranges are [start, end].
-        // - For fixed size fields re-uses the pre-computed values this.fieldRangesFixedLen
-        // - For variable size fields does a first pass over the fixed section to read offsets
-        fn getFieldRanges(self: *const @This(), data: []const u8, out: []BytesRange) !void {
-            if (out.len != max_chunk_count) {
-                return error.InCorrectLen;
-            }
+        pub fn readFieldRanges(data: []const u8) ![fields.len][2]usize {
+            var ranges: [fields.len][2]usize = undefined;
+            var offsets: [var_count + 1]u32 = undefined;
+            try readVariableOffsets(data, &offsets);
 
-            // avoid alloc as much as possible, add 1 at the end for data length
-            var offsets = [_]u32{0} ** (max_chunk_count + 1);
-            self.readVariableOffsets(data, offsets[0..]);
-
-            var variable_index: usize = 0;
             var fixed_index: usize = 0;
-            inline for (zig_fields_info, 0..) |field_info, i| {
-                const field_name = field_info.name;
-                const ssz_type = &@field(self.ssz_fields, field_name);
-                if (ssz_type.fixed_size == null) {
-                    out[i].start = offsets[variable_index];
-                    out[i].end = offsets[variable_index + 1];
+            var variable_index: usize = 0;
+            inline for (fields, 0..) |field, i| {
+                if (comptime isFixedType(field.type)) {
+                    ranges[i] = [2]usize{ fixed_index, fixed_index + field.type.fixed_size };
+                    fixed_index += field.type.fixed_size;
+                } else {
+                    ranges[i] = [2]usize{ offsets[variable_index], offsets[variable_index + 1] };
                     variable_index += 1;
                     fixed_index += 4;
-                } else {
-                    out[i].start = fixed_index;
-                    out[i].end = fixed_index + ssz_type.fixed_size.?;
-                    fixed_index += ssz_type.fixed_size.?;
                 }
             }
+
+            return ranges;
         }
 
-        // Returns the byte ranges of all variable size fields.
-        fn readVariableOffsets(self: *const @This(), data: []const u8, offsets: []u32) void {
+        fn readVariableOffsets(data: []const u8, offsets: []u32) !void {
             var variable_index: usize = 0;
             var fixed_index: usize = 0;
-            inline for (zig_fields_info) |field_info| {
-                const field_name = field_info.name;
-                const ssz_type = &@field(self.ssz_fields, field_name);
-                if (ssz_type.fixed_size == null) {
-                    const slice = std.mem.bytesAsSlice(u32, data[fixed_index..(fixed_index + 4)]);
-                    const variable_index_endian = if (native_endian == .big) @byteSwap(slice[0]) else slice[0];
-                    offsets[variable_index] = variable_index_endian;
+            inline for (fields) |field| {
+                if (comptime isFixedType(field.type)) {
+                    fixed_index += field.type.fixed_size;
+                } else {
+                    const offset = std.mem.readInt(u32, data[fixed_index..][0..4], .little);
+                    if (offset > data.len) {
+                        return error.offsetOutOfRange;
+                    }
+                    if (variable_index == 0) {
+                        if (offset != fixed_end) {
+                            return error.offsetOutOfRange;
+                        }
+                    } else {
+                        if (offset < offsets[variable_index - 1]) {
+                            return error.offsetNotIncreasing;
+                        }
+                    }
+
+                    offsets[variable_index] = offset;
                     variable_index += 1;
                     fixed_index += 4;
-                } else {
-                    fixed_index += ssz_type.fixed_size.?;
                 }
             }
             // set 1 more at the end of the last variable field so that each variable field can consume 2 offsets
             offsets[variable_index] = @intCast(data.len);
         }
-    };
 
-    return ContainerType;
+        pub fn validate(data: []const u8) !void {
+            const ranges = try readFieldRanges(data);
+            inline for (fields, 0..) |field, i| {
+                const start = ranges[i][0];
+                const end = ranges[i][1];
+                if (comptime isFixedType(field.type)) {
+                    const field_size = end - start;
+                    if (field_size != field.type.fixed_size) {
+                        return false;
+                    }
+                } else {
+                    try field.type.validate(data[start..end]);
+                }
+            }
+        }
+    };
 }
 
-test "basic ContainerType {x: uint, y:bool}" {
-    std.debug.print("basic ContainerType x: uint, y:bool\n", .{});
-    var allocator = std.testing.allocator;
-    const UintType = @import("./uint.zig").createUintType(8);
-    const uintType = try UintType.init();
-    defer uintType.deinit();
-    const BooleanType = @import("./boolean.zig").BooleanType;
-    const booleanType = BooleanType.init();
-    defer booleanType.deinit();
-    const SszType = struct {
-        x: UintType,
-        y: BooleanType,
-    };
-    const ContainerType = createContainerType(SszType, sha256Hash);
-    const ZigType = ContainerType.getZigType();
-    var containerType = try ContainerType.init(allocator, SszType{
-        .x = uintType,
-        .y = booleanType,
+const UintType = @import("uint.zig").UintType;
+const BoolType = @import("bool.zig").BoolType;
+const ByteVectorType = @import("byte_vector.zig").ByteVectorType;
+const FixedListType = @import("list.zig").FixedListType;
+
+test "ContainerType - sanity" {
+    // create a fixed container type and instance and round-trip serialize
+    const Checkpoint = FixedContainerType(struct {
+        slot: UintType(8),
+        root: ByteVectorType(32),
     });
 
-    defer containerType.deinit();
+    var c: Checkpoint.Type = undefined;
+    var c_buf: [Checkpoint.fixed_size]u8 = undefined;
 
-    const obj = ZigType{ .x = 0xffffffffffffffff, .y = false };
-    var root = [_]u8{0} ** 32;
-    try containerType.hashTreeRoot(&obj, root[0..]);
-    const rootHex = try toRootHex(root[0..]);
-    try std.testing.expectEqualSlices(u8, "0x6f8396f940737bdb29cc6ba2aba7ec405050f70871c05ed2a2c30b800cb79df6", rootHex);
+    _ = Checkpoint.serializeIntoBytes(&c, &c_buf);
+    try Checkpoint.deserializeFromBytes(&c_buf, &c);
 
-    const size = containerType.serializedSize(&obj);
-    // 1 uint64 + 1 bool = 8 + 1 = 9 bytes
-    try expect(size == 9);
-    const bytes = try allocator.alloc(u8, size);
-    defer allocator.free(bytes);
-    _ = try containerType.serializeToBytes(&obj, bytes);
-    const obj2 = try containerType.fromSsz(bytes);
-    defer obj2.deinit();
-    try expect(containerType.equals(&obj, obj2.value));
-
-    // clone
-    const cloned_result = try containerType.clone(&obj);
-    defer cloned_result.deinit();
-    const obj3 = cloned_result.value;
-    try expect(containerType.equals(&obj, obj3));
-    try expect(obj3.x == obj.x);
-    try expect(obj3.y == obj.y);
-
-    // fromJson
-    const json = "{ \"x\": \"18446744073709551615\", \"y\": false }";
-    const parsed = try containerType.fromJson(json);
-    defer parsed.deinit();
-    try expect(parsed.value.x == obj.x);
-    try expect(parsed.value.y == obj.y);
-}
-
-test "ContainerType with embedded struct" {
-    var allocator = std.testing.allocator;
-    const UintType = @import("./uint.zig").createUintType(8);
-    const uintType = try UintType.init();
-    defer uintType.deinit();
-    const SszType0 = struct {
-        x: UintType,
-        y: UintType,
-    };
-    const ContainerType0 = createContainerType(SszType0, sha256Hash);
-    const ZigType0 = ContainerType0.getZigType();
-    const containerType0 = try ContainerType0.init(allocator, SszType0{
-        .x = uintType,
-        .y = uintType,
+    // create a variable container type and instance and round-trip serialize
+    const allocator = std.testing.allocator;
+    const Foo = VariableContainerType(struct {
+        a: FixedListType(UintType(8), 32),
+        b: FixedListType(UintType(8), 32),
+        c: FixedListType(UintType(8), 32),
     });
-    defer containerType0.deinit();
+    var f: Foo.Type = undefined;
+    f.a = try std.ArrayListUnmanaged(u8).initCapacity(allocator, 10);
+    f.b = try std.ArrayListUnmanaged(u8).initCapacity(allocator, 10);
+    f.c = try std.ArrayListUnmanaged(u8).initCapacity(allocator, 10);
+    defer f.a.deinit(allocator);
+    defer f.b.deinit(allocator);
+    defer f.c.deinit(allocator);
+    f.a.expandToCapacity();
+    f.b.expandToCapacity();
+    f.c.expandToCapacity();
 
-    const SszType1 = struct {
-        a: ContainerType0,
-        b: ContainerType0,
-    };
-    const ContainerType1 = createContainerType(SszType1, sha256Hash);
-    const ZigType1 = ContainerType1.getZigType();
-    var containerType1 = try ContainerType1.init(allocator, SszType1{
-        .a = containerType0,
-        .b = containerType0,
-    });
-    defer containerType1.deinit();
-
-    const a = ZigType0{ .x = 0xffffffffffffffff, .y = 0 };
-    const b = ZigType0{ .x = 0, .y = 0xffffffffffffffff };
-    const obj = ZigType1{ .a = a, .b = b };
-    const size = containerType1.serializedSize(&obj);
-    // a = 2 * 8 bytes, b = 2 * 8 bytes
-    try expect(size == 32);
-    const bytes = try allocator.alloc(u8, size);
-    defer allocator.free(bytes);
-
-    // serialize + deserialize
-    _ = try containerType1.serializeToBytes(&obj, bytes);
-    var obj2: ZigType1 = undefined;
-    _ = try containerType1.deserializeFromBytes(bytes, &obj2);
-    try expect(obj2.a.x == obj.a.x);
-    try expect(obj2.a.y == obj.a.y);
-    try expect(obj2.b.x == obj.b.x);
-    try expect(obj2.b.y == obj.b.y);
-    try expect(containerType1.equals(&obj, &obj2));
-    // confirm hash_tree_root
-    var root = [_]u8{0} ** 32;
-    try containerType1.hashTreeRoot(&obj, root[0..]);
-    var root2 = [_]u8{0} ** 32;
-    try containerType1.hashTreeRoot(&obj2, root2[0..]);
-    try std.testing.expectEqualSlices(u8, root[0..], root2[0..]);
-
-    // clone, equal
-    const cloned_result = try containerType1.clone(&obj);
-    defer cloned_result.deinit();
-    const obj3 = cloned_result.value;
-    try expect(containerType1.equals(&obj, obj3));
-    var root3 = [_]u8{0} ** 32;
-    try containerType1.hashTreeRoot(obj3, root3[0..]);
-    try std.testing.expectEqualSlices(u8, root[0..], root3[0..]);
-    obj3.a.x = 2024;
-    try expect(obj.a.x != obj3.a.x);
-
-    // fromJson
-    const json = "{ \"a\": { \"x\": \"18446744073709551615\", \"y\": \"0\" }, \"b\": { \"x\": \"0\", \"y\": \"18446744073709551615\" } }";
-    const parsed = try containerType1.fromJson(json);
-    defer parsed.deinit();
-    try expect(parsed.value.a.x == obj.a.x);
-    try expect(parsed.value.a.y == obj.a.y);
-    try expect(parsed.value.b.x == obj.b.x);
-    try expect(parsed.value.b.y == obj.b.y);
-    try expect(containerType1.equals(&obj, parsed.value));
+    const f_buf = try allocator.alloc(u8, Foo.serializedSize(&f));
+    defer allocator.free(f_buf);
+    _ = Foo.serializeIntoBytes(&f, f_buf);
+    try Foo.deserializeFromBytes(f_buf, allocator, &f);
 }
