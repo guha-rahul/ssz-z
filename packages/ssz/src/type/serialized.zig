@@ -79,7 +79,7 @@ fn VariableSerialized(comptime ST: type) type {
 
         pub fn deserialize(self: Self, allocator: std.mem.Allocator) !ST.Type {
             var out: ST.Type = undefined;
-            try ST.deserializeFromBytes(self.data, allocator, &out);
+            try ST.deserializeFromBytes(allocator, self.data, &out);
             return out;
         }
 

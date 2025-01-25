@@ -183,7 +183,7 @@ pub fn VariableContainerType(comptime ST: type) type {
             return variable_index;
         }
 
-        pub fn deserializeFromBytes(data: []const u8, allocator: std.mem.Allocator, out: *Type) !void {
+        pub fn deserializeFromBytes(allocator: std.mem.Allocator, data: []const u8, out: *Type) !void {
             if (data.len > max_size) {
                 return error.InvalidSize;
             }
@@ -198,8 +198,8 @@ pub fn VariableContainerType(comptime ST: type) type {
                     );
                 } else {
                     try field.type.deserializeFromBytes(
-                        data[ranges[i][0]..ranges[i][1]],
                         allocator,
+                        data[ranges[i][0]..ranges[i][1]],
                         &@field(out, field.name),
                     );
                 }
@@ -368,5 +368,5 @@ test "ContainerType - sanity" {
     const f_buf = try allocator.alloc(u8, Foo.serializedSize(&f));
     defer allocator.free(f_buf);
     _ = Foo.serializeIntoBytes(&f, f_buf);
-    try Foo.deserializeFromBytes(f_buf, allocator, &f);
+    try Foo.deserializeFromBytes(allocator, f_buf, &f);
 }

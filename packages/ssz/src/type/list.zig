@@ -39,7 +39,7 @@ pub fn FixedListType(comptime ST: type, comptime _limit: comptime_int) type {
             return len;
         }
 
-        pub fn deserializeFromBytes(data: []const u8, allocator: std.mem.Allocator, out: *Type) !void {
+        pub fn deserializeFromBytes(allocator: std.mem.Allocator, data: []const u8, out: *Type) !void {
             const len = try std.math.divExact(usize, data.len, Element.fixed_size);
             if (len > limit) {
                 return error.gtLimit;
@@ -97,19 +97,19 @@ pub fn VariableListType(comptime ST: type, comptime _limit: comptime_int) type {
             return try iterator.firstOffset() / 4;
         }
 
-        pub fn deserializeFromBytes(data: []const u8, allocator: std.mem.Allocator, out: *Type) !void {
-            const offsets = try readVariableOffsets(data, allocator);
+        pub fn deserializeFromBytes(allocator: std.mem.Allocator, data: []const u8, out: *Type) !void {
+            const offsets = try readVariableOffsets(allocator, data);
             defer allocator.free(offsets);
 
             const len = offsets.len - 1;
 
             try out.ensureTotalCapacity(allocator, len);
             for (0..len) |i| {
-                try Element.deserializeFromBytes(data[offsets[i]..offsets[i + 1]], allocator, &out.items[i]);
+                try Element.deserializeFromBytes(allocator, data[offsets[i]..offsets[i + 1]], &out.items[i]);
             }
         }
 
-        pub fn readVariableOffsets(data: []const u8, allocator: std.mem.Allocator) ![]u32 {
+        pub fn readVariableOffsets(allocator: std.mem.Allocator, data: []const u8) ![]u32 {
             var iterator = OffsetIterator(@This()).init(data);
             const first_offset = try iterator.next();
             const len = first_offset / 4;
@@ -160,7 +160,7 @@ test "ListType - sanity" {
     defer allocator.free(b_buf);
 
     _ = Bytes.serializeIntoBytes(&b, b_buf);
-    try Bytes.deserializeFromBytes(b_buf, allocator, &b);
+    try Bytes.deserializeFromBytes(allocator, b_buf, &b);
 
     // create a variable list type and instance and round-trip serialize
     const BytesBytes = VariableListType(Bytes, 32);
@@ -172,5 +172,5 @@ test "ListType - sanity" {
     defer allocator.free(b2_buf);
 
     _ = BytesBytes.serializeIntoBytes(&b2, b2_buf);
-    try BytesBytes.deserializeFromBytes(b2_buf, allocator, &b2);
+    try BytesBytes.deserializeFromBytes(allocator, b2_buf, &b2);
 }

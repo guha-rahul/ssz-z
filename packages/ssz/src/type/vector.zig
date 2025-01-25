@@ -75,10 +75,10 @@ pub fn VariableVectorType(comptime ST: type, comptime _length: comptime_int) typ
             return variable_index;
         }
 
-        pub fn deserializeFromBytes(data: []const u8, allocator: std.mem.Allocator, out: *Type) !void {
+        pub fn deserializeFromBytes(allocator: std.mem.Allocator, data: []const u8, out: *Type) !void {
             const offsets = try readVariableOffsets(data);
             for (0..length) |i| {
-                try Element.deserializeFromBytes(data[offsets[i]..offsets[i + 1]], allocator, out[i]);
+                try Element.deserializeFromBytes(allocator, data[offsets[i]..offsets[i + 1]], out[i]);
             }
         }
 

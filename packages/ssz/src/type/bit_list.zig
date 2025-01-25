@@ -118,7 +118,7 @@ pub fn BitListType(comptime _limit: comptime_int) type {
             return byte_len;
         }
 
-        pub fn deserializeFromBytes(data: []const u8, allocator: std.mem.Allocator, out: *Type) !void {
+        pub fn deserializeFromBytes(allocator: std.mem.Allocator, data: []const u8, out: *Type) !void {
             // ensure 1 bit and trailing zeros in last byte
             const last_byte = data[data.len - 1];
 
@@ -166,5 +166,5 @@ test "BitListType - sanity" {
     defer allocator.free(b_buf);
 
     _ = Bits.serializeIntoBytes(&b, b_buf);
-    try Bits.deserializeFromBytes(b_buf, allocator, &b);
+    try Bits.deserializeFromBytes(allocator, b_buf, &b);
 }
