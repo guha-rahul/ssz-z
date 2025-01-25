@@ -216,48 +216,6 @@ pub fn VariableContainerType(comptime ST: type) type {
             }
         }
 
-        pub const Serialized = struct {
-            data: []const u8,
-
-            const Self = @This();
-
-            pub fn init(data: []const u8) !Serialized {
-                // try validate(data);
-                return .{ .data = data };
-            }
-
-            // pub fn deserialize(allocator: std.mem.Allocator, out: *Type) !void {}
-
-            pub fn readField(self: Self, comptime name: []const u8) !fields[getFieldIndex(name)].type.Serialized {
-                const ranges = try readFieldRanges(self.data);
-                const field_index = getFieldIndex(name);
-                return fields[field_index].type.Serialized{
-                    .data = self.data[ranges[field_index][0]..ranges[field_index][1]],
-                };
-            }
-
-            // pub fn readDescendent(self: Self, comptime path_str: []const u8) PathType(VariableContainerType(ST), path).Serialized {
-            //     const ranges = try readFieldRanges(self.data);
-            //     switch (comptime nextPathItem(VariableContainerType(ST), path_str)) {
-            //         .last => |last| {
-            //             const field_index = last.item_type.child.index;
-            //             const range = ranges[field_index];
-            //             return fields[field_index].type.Serialized{
-            //                 .data = self.data[range[0]..range[1]],
-            //             };
-            //         },
-            //         .not_last => |not_last| {
-            //             const field_index = not_last.next.item_type.child.index;
-            //             const range = ranges[field_index];
-            //             const serialized_field = fields[field_index].type.Serialized{
-            //                 .data = self.data[range[0]..range[1]],
-            //             };
-            //             serialized_field.readDescendent(not_last.rest_path_str);
-            //         },
-            //     }
-            // }
-        };
-
         // Returns the bytes ranges of all fields, both variable and fixed size.
         // Fields may not be contiguous in the serialized bytes, so the returned ranges are [start, end].
         pub fn readFieldRanges(data: []const u8) ![fields.len][2]usize {
