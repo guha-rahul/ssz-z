@@ -1,6 +1,7 @@
 const std = @import("std");
 const TypeKind = @import("type_kind.zig").TypeKind;
 const BoolType = @import("bool.zig").BoolType;
+const fromHex = @import("util").fromHex;
 
 pub fn BitVector(comptime _length: comptime_int) type {
     const byte_len = std.math.divCeil(usize, _length, 8) catch unreachable;
@@ -86,6 +87,21 @@ pub fn BitVectorType(comptime _length: comptime_int) type {
 
             // ensure trailing zeros
             if (@clz(data[fixed_size - 1]) >= @clz(@as(u8, length / 8))) {
+                return error.trailingData;
+            }
+        }
+
+        pub fn deserializeFromJson(source: *std.json.Scanner, out: *Type) !void {
+            const hex_bytes = switch (try source.next()) {
+                .string => |v| v,
+                else => return error.InvalidJson,
+            };
+            const written = try fromHex(hex_bytes, &out.data);
+            if (written != fixed_size) {
+                return error.invalidLength;
+            }
+            // ensure trailing zeros
+            if (@clz(out.data[fixed_size - 1]) >= @clz(@as(u8, length / 8))) {
                 return error.trailingData;
             }
         }

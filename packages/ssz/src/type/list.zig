@@ -53,6 +53,29 @@ pub fn FixedListType(comptime ST: type, comptime _limit: comptime_int) type {
                 );
             }
         }
+
+        pub fn deserializeFromJson(allocator: std.mem.Allocator, source: std.json.Scanner, out: *Type) !void {
+            // start array token "["
+            switch (try source.next()) {
+                .array_begin => {},
+                else => return error.InvalidJson,
+            }
+
+            for (0..limit + 1) |i| {
+                switch (try source.peekNextTokenType()) {
+                    .array_end => {
+                        _ = try source.next();
+                        return;
+                    },
+                    else => {},
+                }
+
+                try out.ensureUnusedCapacity(allocator, 1);
+                try Element.deserializeFromJson(allocator, source, &out.items[i]);
+            } else {
+                return error.invalidLength;
+            }
+        }
     };
 }
 
@@ -139,6 +162,29 @@ pub fn VariableListType(comptime ST: type, comptime _limit: comptime_int) type {
                 try Element.validate(data[prev_offset..curr_offset]);
             }
             try Element.validate(data[curr_offset..data.len]);
+        }
+
+        pub fn deserializeFromJson(allocator: std.mem.Allocator, source: std.json.Scanner, out: *Type) !void {
+            // validate start array token "["
+            const start_array_token = try source.next();
+            if (start_array_token != std.json.Token.array_begin) {
+                return error.InvalidJson;
+            }
+
+            for (0..limit) |i| {
+                switch (try source.peekNextTokenType()) {
+                    .array_end => {
+                        _ = try source.next();
+                        return;
+                    },
+                    else => {},
+                }
+
+                try out.ensureUnusedCapacity(allocator, 1);
+                try Element.deserializeFromJson(allocator, source, &out.items[i]);
+            } else {
+                return error.invalidLength;
+            }
         }
     };
 }

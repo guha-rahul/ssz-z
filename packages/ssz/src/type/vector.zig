@@ -38,6 +38,24 @@ pub fn FixedVectorType(comptime ST: type, comptime _length: comptime_int) type {
                 );
             }
         }
+
+        pub fn deserializeFromJson(source: std.json.Scanner, out: *Type) !void {
+            // start array token "["
+            switch (try source.next()) {
+                .array_begin => {},
+                else => return error.InvalidJson,
+            }
+
+            for (0..length) |i| {
+                try Element.deserializeFromJson(source, &out[i]);
+            }
+
+            // end array token "]"
+            switch (try source.next()) {
+                .array_end => {},
+                else => return error.InvalidJson,
+            }
+        }
     };
 }
 
@@ -97,6 +115,24 @@ pub fn VariableVectorType(comptime ST: type, comptime _length: comptime_int) typ
             const offsets = readVariableOffsets(data);
             for (0..length) |i| {
                 try Element.validate(data[offsets[i]..offsets[i + 1]]);
+            }
+        }
+
+        pub fn deserializeFromJson(allocator: std.mem.Allocator, source: std.json.Scanner, out: *Type) !void {
+            // start array token "["
+            switch (try source.next()) {
+                .array_begin => {},
+                else => return error.InvalidJson,
+            }
+
+            for (0..length) |i| {
+                try Element.deserializeFromJson(allocator, source, &out[i]);
+            }
+
+            // end array token "]"
+            switch (try source.next()) {
+                .array_end => {},
+                else => return error.InvalidJson,
             }
         }
     };

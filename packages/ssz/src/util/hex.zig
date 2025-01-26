@@ -21,9 +21,9 @@ pub fn toRootHex(root: *const [32]u8) ![66]u8 {
     return buffer;
 }
 
-pub fn fromHex(hex: []const u8, out: []u8) !void {
+pub fn fromHex(hex: []const u8, out: []u8) !usize {
     if (hex.len == 0) {
-        return;
+        return 0;
     }
 
     const hex_value = if (hex[0] == '0' and (hex[1] == 'x' or hex[1] == 'X')) hex[2..] else hex;
@@ -43,6 +43,16 @@ pub fn fromHex(hex: []const u8, out: []u8) !void {
         out[i / 2] = high << 4 | low;
         i += 2;
     }
+
+    return i;
+}
+
+pub fn hasOxPrefix(hex: []const u8) bool {
+    return hex[0] == '0' and hex[1] == 'x';
+}
+
+pub fn hexByteLen(hex: []const u8) usize {
+    return if (hasOxPrefix(hex)) (hex - 2) / 2 else hex / 2;
 }
 
 fn parseHexDigit(digit: u8) !u8 {
@@ -90,7 +100,7 @@ test "fromHex" {
 
     inline for (test_cases) |tc| {
         var out = [_]u8{0} ** tc.expected.len;
-        try fromHex(tc.hex, out[0..]);
+        _ = try fromHex(tc.hex, out[0..]);
         try std.testing.expectEqualSlices(u8, tc.expected, out[0..]);
     }
 }

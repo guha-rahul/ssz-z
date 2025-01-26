@@ -1,6 +1,8 @@
 const std = @import("std");
 const TypeKind = @import("type_kind.zig").TypeKind;
 const BoolType = @import("bool.zig").BoolType;
+const fromHex = @import("util").fromHex;
+const hexByteLen = @import("util").hexByteLen;
 
 pub fn BitList(comptime limit: comptime_int) type {
     return struct {
@@ -134,6 +136,8 @@ pub fn BitListType(comptime _limit: comptime_int) type {
 
             try out.setBitLen(allocator, bit_len);
             @memcpy(out.data.items, data);
+
+            // remove padding bit
             out.data.items[out.data.items.len - 1] ^= @as(u8, 1) << last_1_index;
         }
 
@@ -150,6 +154,21 @@ pub fn BitListType(comptime _limit: comptime_int) type {
             if (bit_len > limit) {
                 return error.tooLarge;
             }
+        }
+
+        pub fn deserializeFromJson(allocator: std.mem.Allocator, source: *std.json.Scanner, out: *Type) !void {
+            const hex_bytes = switch (try source.next()) {
+                .string => |v| v,
+                else => return error.InvalidJson,
+            };
+            var bytes = try allocator.alloc(u8, hexByteLen(hex_bytes));
+            errdefer allocator.free(bytes);
+            defer allocator.free(bytes);
+            const written = try fromHex(hex_bytes, &bytes);
+            if (written > max_size) {
+                return error.invalidLength;
+            }
+            try deserializeFromBytes(allocator, bytes, out);
         }
     };
 }

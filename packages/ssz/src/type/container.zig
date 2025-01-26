@@ -284,6 +284,24 @@ pub fn VariableContainerType(comptime ST: type) type {
                 }
             }
         }
+
+        pub fn deserializeFromJson(source: std.json.Scanner, out: *Type) !void {
+            // start object token "{"
+            switch (try source.next()) {
+                .object_begin => {},
+                else => return error.InvalidJson,
+            }
+
+            inline for (fields) |field| {
+                try field.type.deserializeFromJson(source, &@field(out, field.name));
+            }
+
+            // end object token "}"
+            switch (try source.next()) {
+                .object_end => {},
+                else => return error.InvalidJson,
+            }
+        }
     };
 }
 
