@@ -1,10 +1,9 @@
 const std = @import("std");
 const toRootHex = @import("util").toRootHex;
-const fromHex = @import("util").fromHex;
 const TestCase = @import("common.zig").TypeTestCase;
 const BitVectorType = @import("ssz").BitVectorType;
 
-test "BitVectorType of 128 bytes" {
+test "BitVectorType of 128 bits" {
     const testCases = [_]TestCase{
         TestCase{
             .id = "empty",
@@ -14,9 +13,14 @@ test "BitVectorType of 128 bytes" {
             ,
             .rootHex = "0x0000000000000000000000000000000100000000000000000000000000000000",
         },
-        TestCase{ .id = "some value", .serializedHex = "0xb55b8592bcac475906631481bbc746bc", .json = 
-        \\ "0xb55b8592bcac475906631481bbc746bc"
-        , .rootHex = "0xb55b8592bcac475906631481bbc746bc00000000000000000000000000000000" },
+        TestCase{
+            .id = "some value",
+            .serializedHex = "0xb55b8592bcac475906631481bbc746bc",
+            .json =
+            \\"0xb55b8592bcac475906631481bbc746bc"
+            ,
+            .rootHex = "0xb55b8592bcac475906631481bbc746bc00000000000000000000000000000000",
+        },
     };
 
     const allocator = std.testing.allocator;
@@ -25,12 +29,11 @@ test "BitVectorType of 128 bytes" {
     const TypeTest = @import("common.zig").typeTest(BitVector);
 
     for (testCases[0..]) |*tc| {
-        std.debug.print("BitVectorType 128 bits - {s}\n", .{tc.id});
         try TypeTest.run(allocator, tc);
     }
 }
 
-test "BitVectorType of 512 bytes" {
+test "BitVectorType of 512 bits" {
     const testCases = [_]TestCase{
         TestCase{
             .id = "empty",
@@ -56,7 +59,6 @@ test "BitVectorType of 512 bytes" {
     const TypeTest = @import("common.zig").typeTest(BitVector);
 
     for (testCases[0..]) |*tc| {
-        std.debug.print("BitVectorType 512 bits - {s}\n", .{tc.id});
         try TypeTest.run(allocator, tc);
     }
 }

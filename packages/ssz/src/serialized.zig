@@ -255,12 +255,13 @@ test {
     _ = getPath(Checkpoint, "root.31");
     _ = getPath(Root, "0");
     const o1 = getOffset(Checkpoint, "root.20");
+    _ = o1;
 
     var c_buf: [Checkpoint.fixed_size]u8 = undefined;
     const x = Serialized(Checkpoint){ .data = &c_buf };
     x.get(u64, "slot");
     x.get("root");
 
-    std.debug.print("{d}\n", .{o1});
-    std.debug.print("{d}\n", .{Checkpoint.field_offsets});
+    // std.debug.print("{d}\n", .{o1});
+    // std.debug.print("{d}\n", .{Checkpoint.field_offsets});
 }

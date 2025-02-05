@@ -85,8 +85,8 @@ pub fn BitVectorType(comptime _length: comptime_int) type {
                 return error.invalidLength;
             }
 
-            // ensure trailing zeros
-            if (@clz(data[fixed_size - 1]) >= @clz(@as(u8, length / 8))) {
+            // ensure trailing zeros for non-byte-aligned lengths
+            if (length % 8 != 0 and @clz(data[fixed_size - 1]) >= @clz(@as(u8, length / 8))) {
                 return error.trailingData;
             }
         }
@@ -100,8 +100,8 @@ pub fn BitVectorType(comptime _length: comptime_int) type {
             if (written != fixed_size) {
                 return error.invalidLength;
             }
-            // ensure trailing zeros
-            if (@clz(out.data[fixed_size - 1]) >= @clz(@as(u8, length / 8))) {
+            // ensure trailing zeros for non-byte-aligned lengths
+            if (length % 8 != 0 and @clz(out.data[fixed_size - 1]) >= @clz(@as(u8, length / 8))) {
                 return error.trailingData;
             }
         }

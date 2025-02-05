@@ -21,6 +21,9 @@ pub fn toRootHex(root: *const [32]u8) ![66]u8 {
     return buffer;
 }
 
+/// Convert from hex string to bytes
+///
+/// Returns the number of bytes written to out
 pub fn fromHex(hex: []const u8, out: []u8) !usize {
     if (hex.len == 0) {
         return 0;
@@ -44,7 +47,7 @@ pub fn fromHex(hex: []const u8, out: []u8) !usize {
         i += 2;
     }
 
-    return i;
+    return i / 2;
 }
 
 pub fn hasOxPrefix(hex: []const u8) bool {

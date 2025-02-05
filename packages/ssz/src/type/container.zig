@@ -82,6 +82,13 @@ pub fn FixedContainerType(comptime ST: type) type {
             }
 
             inline for (fields) |field| {
+                const field_name = switch (try source.next()) {
+                    .string => |str| str,
+                    else => return error.InvalidJson,
+                };
+                if (!std.mem.eql(u8, field_name, field.name)) {
+                    return error.InvalidJson;
+                }
                 try field.type.deserializeFromJson(
                     source,
                     &@field(out, field.name),
@@ -332,6 +339,14 @@ pub fn VariableContainerType(comptime ST: type) type {
             }
 
             inline for (fields) |field| {
+                const field_name = switch (try source.next()) {
+                    .string => |str| str,
+                    else => return error.InvalidJson,
+                };
+                if (!std.mem.eql(u8, field_name, field.name)) {
+                    return error.InvalidJson;
+                }
+
                 if (comptime isFixedType(field.type)) {
                     try field.type.deserializeFromJson(
                         source,

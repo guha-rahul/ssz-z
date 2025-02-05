@@ -109,7 +109,7 @@ pub fn BitList(comptime limit: comptime_int) type {
 
 pub fn BitListType(comptime _limit: comptime_int) type {
     return struct {
-        pub const kind = TypeKind.vector;
+        pub const kind = TypeKind.list;
         pub const Element: type = BoolType();
         pub const limit: usize = _limit;
         pub const Type: type = BitList(limit);
@@ -132,8 +132,12 @@ pub fn BitListType(comptime _limit: comptime_int) type {
         pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
             const bit_len = value.bit_len + 1;
             const byte_len = std.math.divCeil(usize, bit_len, 8) catch unreachable;
-            @memcpy(out, value.data.items);
-            out[byte_len - 1] |= @as(u8, 1) << @intCast(bit_len % 8);
+            if (bit_len != 1) {
+                @memcpy(out[0..byte_len], value.data.items);
+                out[byte_len - 1] |= @as(u8, 1) << @intCast((bit_len - 1) % 8);
+            } else {
+                out[byte_len - 1] = @as(u8, 1) << @intCast((bit_len - 1) % 8);
+            }
             return byte_len;
         }
 
@@ -152,6 +156,10 @@ pub fn BitListType(comptime _limit: comptime_int) type {
             }
 
             try out.setBitLen(allocator, bit_len);
+            if (bit_len == 0) {
+                return;
+            }
+
             @memcpy(out.data.items, data);
 
             // remove padding bit
@@ -178,10 +186,10 @@ pub fn BitListType(comptime _limit: comptime_int) type {
                 .string => |v| v,
                 else => return error.InvalidJson,
             };
-            var bytes = try allocator.alloc(u8, hexByteLen(hex_bytes));
+            const bytes = try allocator.alloc(u8, hexByteLen(hex_bytes));
             errdefer allocator.free(bytes);
             defer allocator.free(bytes);
-            const written = try fromHex(hex_bytes, &bytes);
+            const written = try fromHex(hex_bytes, bytes);
             if (written > max_size) {
                 return error.invalidLength;
             }

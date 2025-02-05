@@ -11,6 +11,7 @@ pub const BitList = @import("bit_list.zig").BitList;
 pub const BitVectorType = @import("bit_vector.zig").BitVectorType;
 pub const BitVector = @import("bit_vector.zig").BitVector;
 
+pub const ByteListType = @import("byte_list.zig").ByteListType;
 pub const ByteVectorType = @import("byte_vector.zig").ByteVectorType;
 
 pub const FixedListType = @import("list.zig").FixedListType;

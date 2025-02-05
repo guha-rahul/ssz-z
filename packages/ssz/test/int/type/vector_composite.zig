@@ -1,6 +1,4 @@
 const std = @import("std");
-const toRootHex = @import("util").toRootHex;
-const fromHex = @import("util").fromHex;
 const TestCase = @import("common.zig").TypeTestCase;
 const ByteVectorType = @import("ssz").ByteVectorType;
 const FixedVectorType = @import("ssz").FixedVectorType;
@@ -34,7 +32,7 @@ test "VectorCompositeType of Container" {
     const test_cases = [_]TestCase{
         TestCase{
             .id = "4 containers",
-            .serializedHex = "0x0100000000000000000200000000000000030000000000000004000000000000000500000000000000060000000000000007000000000000000800000000000000",
+            .serializedHex = "0x01000000000000000200000000000000030000000000000004000000000000000500000000000000060000000000000007000000000000000800000000000000",
             .json =
             \\[{"a": "1", "b": "2"}, {"a": "3", "b": "4"}, {"a": "5", "b": "6"}, {"a": "7", "b": "8"}]
             ,

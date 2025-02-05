@@ -1,6 +1,4 @@
 const std = @import("std");
-const toRootHex = @import("util").toRootHex;
-const fromHex = @import("util").fromHex;
 const TestCase = @import("common.zig").TypeTestCase;
 const UintType = @import("ssz").UintType;
 const FixedVectorType = @import("ssz").FixedVectorType;

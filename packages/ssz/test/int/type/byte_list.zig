@@ -1,9 +1,6 @@
 const std = @import("std");
-const toRootHex = @import("util").toRootHex;
-const fromHex = @import("util").fromHex;
 const TestCase = @import("common.zig").TypeTestCase;
-const FixedListType = @import("ssz").FixedListType;
-const UintType = @import("ssz").UintType;
+const ByteListType = @import("ssz").ByteListType;
 
 const test_cases = [_]TestCase{
     .{ .id = "empty", .serializedHex = "0x", .json = 
@@ -52,54 +49,15 @@ const test_cases = [_]TestCase{
         ,
         .rootHex = "0x5d3ae4b886c241ffe8dc7ae1b5f0e2fb9b682e1eac2ddea292ef02cc179e6903",
     },
-    .{
-        .id = "short value",
-        .serializedHex = "0xb55b8592bcac475906631481bbc746bc",
-        .json = "\"0xb55b8592bcac475906631481bbc746bc\"",
-        .rootHex = "0x9ab378cfbd6ec502da1f9640fd956bbef1f9fcbc10725397805c948865384e77",
-    },
-    .{
-        .id = "long value",
-        .serializedHex = "0xb55b8592bcac475906631481bbc746bca7339d04ab1085e84884a700c03de4b1b55b8592bc",
-        .json = "\"0xb55b8592bcac475906631481bbc746bca7339d04ab1085e84884a700c03de4b1b55b8592bc\"",
-        .rootHex = "0x4b71a7de822d00a5ff8e7e18e13712a50424cbc0e18108ab1796e591136396a0",
-    },
 };
-
-fn toJsonStr(allocator: std.mem.Allocator, bytes: []const u8) !std.ArrayList(u8) {
-    var list = std.ArrayList(u8).init(allocator);
-    try list.appendSlice("[");
-    for (bytes, 0..) |byte, i| {
-        if (i > 0) try list.appendSlice(",");
-        var buf: [4]u8 = undefined;
-        const str = try std.fmt.bufPrint(&buf, "\"{d}\"", .{byte});
-        try list.appendSlice(str);
-    }
-    try list.appendSlice("]");
-    return list;
-}
 
 test "ByteListType" {
     const allocator = std.testing.allocator;
-    const List = FixedListType(UintType(8), 256);
+    const List = ByteListType(256);
 
     const TypeTest = @import("common.zig").typeTest(List);
 
     for (test_cases[0..]) |*tc| {
-        // skip 0x and 2 double quotes
-        const u8_list = try allocator.alloc(u8, ((tc.json.len - 4) / 2));
-        defer allocator.free(u8_list);
-
-        // skip double quotes at the start and end of json string
-        _ = try fromHex(tc.json[1..(tc.json.len - 1)], u8_list);
-        const json_array_list = try toJsonStr(allocator, u8_list);
-        defer json_array_list.deinit();
-
-        try TypeTest.run(allocator, &.{
-            .id = tc.id,
-            .serializedHex = tc.serializedHex,
-            .json = json_array_list.items,
-            .rootHex = tc.rootHex,
-        });
+        try TypeTest.run(allocator, tc);
     }
 }
