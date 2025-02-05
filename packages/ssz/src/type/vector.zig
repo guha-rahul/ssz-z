@@ -39,7 +39,7 @@ pub fn FixedVectorType(comptime ST: type, comptime _length: comptime_int) type {
             }
         }
 
-        pub fn deserializeFromJson(source: std.json.Scanner, out: *Type) !void {
+        pub fn deserializeFromJson(source: *std.json.Scanner, out: *Type) !void {
             // start array token "["
             switch (try source.next()) {
                 .array_begin => {},
@@ -73,6 +73,16 @@ pub fn VariableVectorType(comptime ST: type, comptime _length: comptime_int) typ
         pub const min_size: usize = Element.min_size * length;
         pub const max_size: usize = Element.max_size * length;
         pub const chunk_count: usize = length;
+
+        pub fn defaultValue(allocator: std.mem.Allocator) !Type {
+            return [_]Element.Type{try Element.defaultValue(allocator)} ** length;
+        }
+
+        pub fn deinit(allocator: std.mem.Allocator, value: *Type) void {
+            for (value) |element| {
+                Element.deinit(allocator, element);
+            }
+        }
 
         pub fn serializedSize(value: *const Type) usize {
             var size: usize = 0;
@@ -118,7 +128,7 @@ pub fn VariableVectorType(comptime ST: type, comptime _length: comptime_int) typ
             }
         }
 
-        pub fn deserializeFromJson(allocator: std.mem.Allocator, source: std.json.Scanner, out: *Type) !void {
+        pub fn deserializeFromJson(allocator: std.mem.Allocator, source: *std.json.Scanner, out: *Type) !void {
             // start array token "["
             switch (try source.next()) {
                 .array_begin => {},

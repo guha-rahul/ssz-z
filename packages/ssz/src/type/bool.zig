@@ -8,7 +8,7 @@ pub fn BoolType() type {
         pub const fixed_size: usize = 1;
 
         pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
-            const byte = if (value) 1 else 0;
+            const byte: u8 = if (value.*) 1 else 0;
             out[0] = byte;
             return 1;
         }
@@ -16,7 +16,8 @@ pub fn BoolType() type {
         pub fn deserializeFromBytes(data: []const u8, out: *Type) !void {
             const byte = data[0];
             switch (byte) {
-                0, 1 => out.* = byte,
+                0 => out.* = false,
+                1 => out.* = true,
                 else => return error.invalidBoolean,
             }
         }

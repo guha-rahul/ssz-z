@@ -1,10 +1,8 @@
 const std = @import("std");
 const toRootHex = @import("util").toRootHex;
 const fromHex = @import("util").fromHex;
-const initZeroHash = @import("hash").initZeroHash;
-const deinitZeroHash = @import("hash").deinitZeroHash;
 const TestCase = @import("common.zig").TypeTestCase;
-const createBitVectorType = @import("ssz").createBitVectorType;
+const BitVectorType = @import("ssz").BitVectorType;
 
 test "BitVectorType of 128 bytes" {
     const testCases = [_]TestCase{
@@ -21,20 +19,14 @@ test "BitVectorType of 128 bytes" {
         , .rootHex = "0xb55b8592bcac475906631481bbc746bc00000000000000000000000000000000" },
     };
 
-    var allocator = std.testing.allocator;
-    try initZeroHash(&allocator, 32);
-    defer deinitZeroHash();
+    const allocator = std.testing.allocator;
+    const BitVector = BitVectorType(128);
 
-    const BitVectorType = createBitVectorType(128);
-    var bitVectorType = try BitVectorType.init(allocator);
-    defer bitVectorType.deinit();
+    const TypeTest = @import("common.zig").typeTest(BitVector);
 
-    const TypeTest = @import("common.zig").typeTest(BitVectorType);
     for (testCases[0..]) |*tc| {
-        // TODO: find other way not to write to stderror
-        // may have to use `zig build test 2>&1` on CI?
         std.debug.print("BitVectorType 128 bits - {s}\n", .{tc.id});
-        try TypeTest.validSszTest(&bitVectorType, tc);
+        try TypeTest.run(allocator, tc);
     }
 }
 
@@ -58,19 +50,13 @@ test "BitVectorType of 512 bytes" {
         },
     };
 
-    var allocator = std.testing.allocator;
-    try initZeroHash(&allocator, 32);
-    defer deinitZeroHash();
+    const allocator = std.testing.allocator;
+    const BitVector = BitVectorType(512);
 
-    const BitVectorType = createBitVectorType(512);
-    var bitVectorType = try BitVectorType.init(allocator);
-    defer bitVectorType.deinit();
+    const TypeTest = @import("common.zig").typeTest(BitVector);
 
-    const TypeTest = @import("common.zig").typeTest(BitVectorType);
     for (testCases[0..]) |*tc| {
-        // TODO: find other way not to write to stderror
-        // may have to use `zig build test 2>&1` on CI?
         std.debug.print("BitVectorType 512 bits - {s}\n", .{tc.id});
-        try TypeTest.validSszTest(&bitVectorType, tc);
+        try TypeTest.run(allocator, tc);
     }
 }

@@ -52,7 +52,7 @@ pub fn hasOxPrefix(hex: []const u8) bool {
 }
 
 pub fn hexByteLen(hex: []const u8) usize {
-    return if (hasOxPrefix(hex)) (hex - 2) / 2 else hex / 2;
+    return if (hasOxPrefix(hex)) (hex.len - 2) / 2 else hex.len / 2;
 }
 
 fn parseHexDigit(digit: u8) !u8 {

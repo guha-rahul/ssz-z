@@ -40,6 +40,7 @@ pub fn UintType(comptime bits: comptime_int) type {
         pub fn deserializeFromJson(scanner: *std.json.Scanner, out: *Type) !void {
             try switch (try scanner.next()) {
                 .string => |v| {
+                    std.debug.print("{s} {any}\n", .{ v, v });
                     out.* = try std.fmt.parseInt(Type, v, 10);
                 },
                 else => error.invalidJson,

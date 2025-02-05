@@ -1,13 +1,11 @@
 const std = @import("std");
 const toRootHex = @import("util").toRootHex;
 const fromHex = @import("util").fromHex;
-const initZeroHash = @import("hash").initZeroHash;
-const deinitZeroHash = @import("hash").deinitZeroHash;
 const TestCase = @import("common.zig").TypeTestCase;
-const createUintType = @import("ssz").createUintType;
-const createVectorCompositeType = @import("ssz").createVectorCompositeType;
-const createContainerType = @import("ssz").createContainerType;
-const sha256Hash = @import("hash").sha256Hash;
+const ByteVectorType = @import("ssz").ByteVectorType;
+const FixedVectorType = @import("ssz").FixedVectorType;
+const UintType = @import("ssz").UintType;
+const FixedContainerType = @import("ssz").FixedContainerType;
 
 test "VectorCompositeType of Root" {
     const test_cases = [_]TestCase{
@@ -22,60 +20,39 @@ test "VectorCompositeType of Root" {
     };
 
     const allocator = std.testing.allocator;
-    const createByteVectorType = @import("ssz").createByteVectorType;
-    const ByteVectorType = createByteVectorType(32);
-    var byte_vector_type = try ByteVectorType.init(allocator);
-    defer byte_vector_type.deinit();
+    const ByteVector = ByteVectorType(32);
+    const Vector = FixedVectorType(ByteVector, 4);
 
-    const VectorCompositeType = createVectorCompositeType(ByteVectorType);
-    var vector_composite_type = try VectorCompositeType.init(allocator, &byte_vector_type, 4);
-    defer vector_composite_type.deinit();
-
-    const TypeTest = @import("common.zig").typeTest(VectorCompositeType);
+    const TypeTest = @import("common.zig").typeTest(Vector);
 
     for (test_cases[0..]) |*tc| {
-        std.debug.print("VectorCompositeType of Root - {s}\n", .{tc.id});
-        try TypeTest.validSszTest(&vector_composite_type, tc);
+        try TypeTest.run(allocator, tc);
     }
 }
 
 test "VectorCompositeType of Container" {
     const test_cases = [_]TestCase{
-        TestCase{ .id = "4 arrays", .serializedHex = "0x0000000000000000000000000000000040e2010000000000f1fb0900000000004794030000000000f8ad0b00000000004e46050000000000ff5f0d0000000000", .json = 
-        \\[
-        \\{"a": "0", "b": "0"},
-        \\{"a": "123456", "b": "654321"},
-        \\{"a": "234567", "b": "765432"},
-        \\{"a": "345678", "b": "876543"}
-        \\]
-        , .rootHex = "0xb1a797eb50654748ba239010edccea7b46b55bf740730b700684f48b0c478372" },
+        TestCase{
+            .id = "4 containers",
+            .serializedHex = "0x0100000000000000000200000000000000030000000000000004000000000000000500000000000000060000000000000007000000000000000800000000000000",
+            .json =
+            \\[{"a": "1", "b": "2"}, {"a": "3", "b": "4"}, {"a": "5", "b": "6"}, {"a": "7", "b": "8"}]
+            ,
+            .rootHex = "0x0000000000000000000000000000000000000000000000000000000000000000",
+        },
     };
 
     const allocator = std.testing.allocator;
-    const UintType = createUintType(8);
-    const uintType = try UintType.init();
-    defer uintType.deinit();
-
-    const SszType = struct {
-        a: UintType,
-        b: UintType,
-    };
-
-    const ContainerType = createContainerType(SszType, sha256Hash);
-    var containerType = try ContainerType.init(allocator, SszType{
-        .a = uintType,
-        .b = uintType,
+    const Uint = UintType(64);
+    const Container = FixedContainerType(struct {
+        a: Uint,
+        b: Uint,
     });
-    defer containerType.deinit();
+    const Vector = FixedVectorType(Container, 4);
 
-    const VectorCompositeType = createVectorCompositeType(ContainerType);
-    var vector_composite_type = try VectorCompositeType.init(allocator, &containerType, 4);
-    defer vector_composite_type.deinit();
-
-    const TypeTest = @import("common.zig").typeTest(VectorCompositeType);
+    const TypeTest = @import("common.zig").typeTest(Vector);
 
     for (test_cases[0..]) |*tc| {
-        std.debug.print("VectorCompositeType of Container - {s}\n", .{tc.id});
-        try TypeTest.validSszTest(&vector_composite_type, tc);
+        try TypeTest.run(allocator, tc);
     }
 }

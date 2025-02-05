@@ -1,104 +1,68 @@
 const std = @import("std");
-const createContainerType = @import("ssz").createContainerType;
-const createListBasicType = @import("ssz").createListBasicType;
-const createUintType = @import("ssz").createUintType;
-const sha256Hash = @import("hash").sha256Hash;
+const toRootHex = @import("util").toRootHex;
+const fromHex = @import("util").fromHex;
 const TestCase = @import("common.zig").TypeTestCase;
+const UintType = @import("ssz").UintType;
+const FixedContainerType = @import("ssz").FixedContainerType;
+const VariableContainerType = @import("ssz").VariableContainerType;
+const FixedListType = @import("ssz").FixedListType;
 
-test "ContainerType with 2 uints" {
-    const allocator = std.testing.allocator;
-    const UintType = createUintType(8);
-    const uintType = try UintType.init();
-    defer uintType.deinit();
-
-    const SszType = struct {
-        a: UintType,
-        b: UintType,
-    };
-
-    const ContainerType = createContainerType(SszType, sha256Hash);
-    var containerType = try ContainerType.init(allocator, SszType{
-        .a = uintType,
-        .b = uintType,
-    });
-    defer containerType.deinit();
-
-    const testCases = [_]TestCase{
+test "ContainerType" {
+    const test_cases = [_]TestCase{
         TestCase{
-            .id = "zero",
+            .id = "empty",
             .serializedHex = "0x00000000000000000000000000000000",
-            .json =
-            \\ {"a": "0", "b": "0"}
-            ,
-            .rootHex = "0xf5a5fd42d16a20302798ef6ed309979b43003d2320d9f0e8ea9831a92759fb4b",
+            .json = "{\"a\":\"0\",\"b\":\"0\"}",
+            .rootHex = "0x0000000000000000000000000000000000000000000000000000000000000000",
         },
         TestCase{
-            .id = "some value",
-            .serializedHex = "0x40e2010000000000f1fb090000000000",
-            .json =
-            \\ {"a": "123456", "b": "654321"}
-            ,
-            .rootHex = "0x53b38aff7bf2dd1a49903d07a33509b980c6acc9f2235a45aac342b0a9528c22",
+            .id = "simple",
+            .serializedHex = "0x01000000000000000000000000000000",
+            .json = "{\"a\":\"1\",\"b\":\"0\"}",
+            .rootHex = "0x5c597e77f879e249af95fe543cf5f4dd16b686948dc719707445a32a77ff6266",
         },
     };
 
-    const TypeTest = @import("common.zig").typeTest(ContainerType);
-    for (testCases[0..]) |*tc| {
-        // TODO: find other way not to write to stderror
-        // may have to use `zig build test 2>&1` on CI?
-        std.debug.print("ContainerType with 2 uints - {s}\n", .{tc.id});
-        try TypeTest.validSszTest(&containerType, tc);
+    const allocator = std.testing.allocator;
+
+    const Container = FixedContainerType(struct {
+        a: UintType(64),
+        b: UintType(64),
+    });
+
+    const TypeTest = @import("common.zig").typeTest(Container);
+
+    for (test_cases[0..]) |*tc| {
+        try TypeTest.run(allocator, tc);
     }
 }
 
-// TODO: ContainerType with ByteVectorType
-
-test "ContainerType with ListBasicType(uint64, 128) and uint64" {
+test "ContainerType with FixedListType(uint64, 128) and uint64" {
     const allocator = std.testing.allocator;
-    const UintType = createUintType(8);
-    var uintType = try UintType.init();
-    defer uintType.deinit();
 
-    const ListBasicType = createListBasicType(UintType);
-    var listBasicType = try ListBasicType.init(allocator, &uintType, 128, 128);
-    defer listBasicType.deinit();
-
-    const SszType = struct {
-        a: ListBasicType,
-        b: UintType,
-    };
-
-    const ContainerType = createContainerType(SszType, sha256Hash);
-    var containerType = try ContainerType.init(allocator, SszType{
-        .a = listBasicType,
-        .b = uintType,
+    const Container = VariableContainerType(struct {
+        a: FixedListType(UintType(64), 128),
+        b: UintType(64),
     });
-    defer containerType.deinit();
 
-    const testCases = [_]TestCase{
+    const TypeTest = @import("common.zig").typeTest(Container);
+
+    const test_cases = [_]TestCase{
         TestCase{
-            .id = "zero",
-            .serializedHex = "0x0c0000000000000000000000",
-            .json =
-            \\ {"a": [], "b": "0"}
-            ,
-            .rootHex = "0xdc3619cbbc5ef0e0a3b38e3ca5d31c2b16868eacb6e4bcf8b4510963354315f5",
+            .id = "empty",
+            .serializedHex = "0x00000000000000000000000b",
+            .json = "{\"a\":[],\"b\":0}",
+            .rootHex = "0x0000000000000000000000000000000000000000000000000000000000000000",
         },
         TestCase{
-            .id = "some value",
-            .serializedHex = "0x0c000000f1fb09000000000040e2010000000000f1fb09000000000040e2010000000000f1fb09000000000040e2010000000000",
-            .json =
-            \\ {"a": ["123456", "654321", "123456", "654321", "123456"], "b": "654321"}
-            ,
-            .rootHex = "0x5ff1b92b2fa55eea1a14b26547035b2f5437814b3436172205fa7d6af4091748",
+            .id = "simple",
+            .serializedHex = "0x0100000000000000",
+            .json = "{\"a\":[1],\"b\":0}",
+            .rootHex = "0x5c597e77f879e249af95fe543cf5f4dd16b686948dc719707445a32a77ff6266",
         },
     };
 
-    const TypeTest = @import("common.zig").typeTest(ContainerType);
-    for (testCases[0..]) |*tc| {
-        // TODO: find other way not to write to stderror
-        // may have to use `zig build test 2>&1` on CI?
-        std.debug.print("ContainerType with ListBasicType(uint64, 128) and uint64 - {s}\n", .{tc.id});
-        try TypeTest.validSszTest(&containerType, tc);
+    for (test_cases[0..]) |*tc| {
+        try TypeTest.run(allocator, tc);
     }
 }

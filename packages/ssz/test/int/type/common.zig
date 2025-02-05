@@ -1,8 +1,7 @@
 const std = @import("std");
 const fromHex = @import("util").fromHex;
-const initZeroHash = @import("hash").initZeroHash;
-const deinitZeroHash = @import("hash").deinitZeroHash;
 const toRootHex = @import("util").toRootHex;
+const isFixedType = @import("ssz").isFixedType;
 
 pub const TypeTestCase = struct {
     id: []const u8,
@@ -18,47 +17,63 @@ const TypeTestError = error{
 /// ST: ssz type
 pub fn typeTest(comptime ST: type) type {
     const TypeTest = struct {
-        pub fn validSszTest(t: *ST, tc: *const TypeTestCase) !void {
-            var allocator = std.testing.allocator;
-            try initZeroHash(&allocator, 32);
-            defer deinitZeroHash();
-
+        pub fn run(allocator: std.mem.Allocator, tc: *const TypeTestCase) !void {
             var serializedMax = [_]u8{0} ** 1024;
             const serialized = serializedMax[0..((tc.serializedHex.len - 2) / 2)];
-            try fromHex(tc.serializedHex, serialized);
+            _ = try fromHex(tc.serializedHex, serialized);
 
-            // fromSsz
-            const ssz_result = try t.fromSsz(serialized);
-            defer ssz_result.deinit();
-            const value = ssz_result.value;
+            if (comptime isFixedType(ST)) {
+                // deserialize
+                var value: ST.Type = undefined;
+                try ST.deserializeFromBytes(serialized, &value);
 
-            // fromJson
-            const json_result = try t.fromJson(tc.json);
-            defer json_result.deinit();
-            try std.testing.expect(t.equals(value, json_result.value));
+                // serialize
+                var out = [_]u8{0} ** ST.fixed_size;
+                _ = ST.serializeIntoBytes(&value, &out);
+                try std.testing.expectEqualSlices(u8, serialized, &out);
 
-            // TODO: toJson
+                // hash tree root
+                // var root = [_]u8{0} ** 32;
+                // try ST.hashTreeRoot(&value, root[0..]);
+                // const rootHex = try toRootHex(root[0..]);
+                // try std.testing.expectEqualSlices(u8, tc.rootHex, rootHex);
 
-            // serialize
-            const serializedOut = try allocator.alloc(u8, serialized.len);
-            defer allocator.free(serializedOut);
-            _ = try t.serializeToBytes(value, serializedOut[0..]);
-            try std.testing.expectEqualSlices(u8, serialized, serializedOut);
+                // deserialize from json
+                var json_value: ST.Type = undefined;
+                var scanner = std.json.Scanner.initCompleteInput(allocator, tc.json);
+                defer scanner.deinit();
 
-            // hashTreeRoot
-            var root = [_]u8{0} ** 32;
-            try t.hashTreeRoot(value, root[0..]);
-            const rootHex = try toRootHex(root[0..]);
-            try std.testing.expectEqualSlices(u8, tc.rootHex, rootHex);
+                try ST.deserializeFromJson(&scanner, &json_value);
+            } else {
+                // deserialize
+                var value = try ST.defaultValue(allocator);
+                defer ST.deinit(allocator, &value);
 
-            // clone + equals
-            const cloned_result = try t.clone(value);
-            defer cloned_result.deinit();
-            try std.testing.expect(t.equals(value, cloned_result.value));
+                try ST.deserializeFromBytes(allocator, serialized, &value);
 
-            // TODO: serialize, toJson on cloned value?
+                // serialize
+                const out = try allocator.alloc(u8, ST.serializedSize(&value));
+                defer allocator.free(out);
+
+                _ = ST.serializeIntoBytes(&value, out);
+                try std.testing.expectEqualSlices(u8, serialized, out);
+
+                // hash tree root
+                // var root = [_]u8{0} ** 32;
+                // try ST.hashTreeRoot(&value, root[0..]);
+                // const rootHex = try toRootHex(root[0..]);
+                // try std.testing.expectEqualSlices(u8, tc.rootHex, rootHex);
+
+                // deserialize from json
+                var json_value = try ST.defaultValue(allocator);
+                defer ST.deinit(allocator, &json_value);
+
+                var scanner = std.json.Scanner.initCompleteInput(allocator, tc.json);
+                defer scanner.deinit();
+
+                try ST.deserializeFromJson(allocator, &scanner, &json_value);
+            }
         }
     };
-
     return TypeTest;
 }

@@ -1,11 +1,9 @@
 const std = @import("std");
 const toRootHex = @import("util").toRootHex;
 const fromHex = @import("util").fromHex;
-const initZeroHash = @import("hash").initZeroHash;
-const deinitZeroHash = @import("hash").deinitZeroHash;
 const TestCase = @import("common.zig").TypeTestCase;
-const createUintType = @import("ssz").createUintType;
-const createVectorBasicType = @import("ssz").createVectorBasicType;
+const UintType = @import("ssz").UintType;
+const FixedVectorType = @import("ssz").FixedVectorType;
 
 const testCases = [_]TestCase{
     TestCase{
@@ -19,24 +17,15 @@ const testCases = [_]TestCase{
 };
 
 test "valid test for VectorBasicType" {
-    var allocator = std.testing.allocator;
-    try initZeroHash(&allocator, 32);
-    defer deinitZeroHash();
+    const allocator = std.testing.allocator;
 
     // uint of 8 bytes = u64
-    const UintType = createUintType(8);
-    const VectorBasicType = createVectorBasicType(UintType);
-    var uintType = try UintType.init();
-    var vectorType = try VectorBasicType.init(allocator, &uintType, 8);
-    defer uintType.deinit();
-    defer vectorType.deinit();
+    const Uint = UintType(64);
+    const Vector = FixedVectorType(Uint, 8);
 
-    const TypeTest = @import("common.zig").typeTest(VectorBasicType);
+    const TypeTest = @import("common.zig").typeTest(Vector);
 
     for (testCases[0..]) |*tc| {
-        // TODO: find other way not to write to stderror
-        // may have to use `zig build test 2>&1` on CI?
-        std.debug.print("VectorBasicType test case {s}\n", .{tc.id});
-        try TypeTest.validSszTest(&vectorType, tc);
+        try TypeTest.run(allocator, tc);
     }
 }

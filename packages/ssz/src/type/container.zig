@@ -74,6 +74,27 @@ pub fn FixedContainerType(comptime ST: type) type {
             }
         }
 
+        pub fn deserializeFromJson(source: *std.json.Scanner, out: *Type) !void {
+            // start object token "{"
+            switch (try source.next()) {
+                .object_begin => {},
+                else => return error.InvalidJson,
+            }
+
+            inline for (fields) |field| {
+                try field.type.deserializeFromJson(
+                    source,
+                    &@field(out, field.name),
+                );
+            }
+
+            // end object token "}"
+            switch (try source.next()) {
+                .object_end => {},
+                else => return error.InvalidJson,
+            }
+        }
+
         pub fn getFieldIndex(name: []const u8) usize {
             inline for (fields, 0..) |field, i| {
                 if (std.mem.eql(u8, name, field.name)) {
@@ -152,6 +173,24 @@ pub fn VariableContainerType(comptime ST: type) type {
         pub const fixed_end: usize = _fixed_end;
         pub const fixed_count: usize = _fixed_count;
         pub const chunk_count: usize = fields.len;
+
+        pub fn defaultValue(allocator: std.mem.Allocator) !Type {
+            var out: Type = undefined;
+            inline for (fields) |field| {
+                if (!comptime isFixedType(field.type)) {
+                    @field(out, field.name) = try field.type.defaultValue(allocator);
+                }
+            }
+            return out;
+        }
+
+        pub fn deinit(allocator: std.mem.Allocator, value: *Type) void {
+            inline for (fields) |field| {
+                if (!comptime isFixedType(field.type)) {
+                    field.type.deinit(allocator, &@field(value, field.name));
+                }
+            }
+        }
 
         pub fn serializedSize(value: *const Type) usize {
             var i: usize = 0;
@@ -285,7 +324,7 @@ pub fn VariableContainerType(comptime ST: type) type {
             }
         }
 
-        pub fn deserializeFromJson(source: std.json.Scanner, out: *Type) !void {
+        pub fn deserializeFromJson(allocator: std.mem.Allocator, source: *std.json.Scanner, out: *Type) !void {
             // start object token "{"
             switch (try source.next()) {
                 .object_begin => {},
@@ -293,7 +332,18 @@ pub fn VariableContainerType(comptime ST: type) type {
             }
 
             inline for (fields) |field| {
-                try field.type.deserializeFromJson(source, &@field(out, field.name));
+                if (comptime isFixedType(field.type)) {
+                    try field.type.deserializeFromJson(
+                        source,
+                        &@field(out, field.name),
+                    );
+                } else {
+                    try field.type.deserializeFromJson(
+                        allocator,
+                        source,
+                        &@field(out, field.name),
+                    );
+                }
             }
 
             // end object token "}"

@@ -1,128 +1,58 @@
 const std = @import("std");
 const toRootHex = @import("util").toRootHex;
 const fromHex = @import("util").fromHex;
-const initZeroHash = @import("hash").initZeroHash;
-const deinitZeroHash = @import("hash").deinitZeroHash;
 const TestCase = @import("common.zig").TypeTestCase;
-const createUintType = @import("ssz").createUintType;
-const createListCompositeType = @import("ssz").createListCompositeType;
-const createByteVectorType = @import("ssz").createByteVectorType;
-const createContainerType = @import("ssz").createContainerType;
-const sha256Hash = @import("hash").sha256Hash;
-const createListBasicType = @import("ssz").createListBasicType;
+const UintType = @import("ssz").UintType;
+const ByteVectorType = @import("ssz").ByteVectorType;
+const FixedListType = @import("ssz").FixedListType;
+const FixedContainerType = @import("ssz").FixedContainerType;
 
-test "ListCompositeType - element type ByteVectorType" {
+test "ListCompositeType of Root" {
     const test_cases = [_]TestCase{
         TestCase{
-            .id = "empty",
-            .serializedHex = "0x",
-            .json = "[]",
-            .rootHex = "0x96559674a79656e540871e1f39c9b91e152aa8cddb71493e754827c4cc809d57",
+            .id = "4 roots",
+            .serializedHex = "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            .json =
+            \\["0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "0xcccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc", "0xdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"]
+            ,
+            .rootHex = "0x56019bafbc63461b73e21c6eae0c62e8d5b8e05cb0ac065777dc238fcf9604e6",
         },
-        TestCase{ .id = "2 roots", .serializedHex = "0xddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", .json = 
-        \\[
-        \\ "0xdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
-        \\ "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
-        \\]
-        , .rootHex = "0x0cb947377e177f774719ead8d210af9c6461f41baf5b4082f86a3911454831b8" },
     };
 
     const allocator = std.testing.allocator;
-    const ByteVectorType = createByteVectorType(32);
-    var byte_vector_type = try ByteVectorType.init(allocator);
-    defer byte_vector_type.deinit();
+    const ByteVector = ByteVectorType(32);
+    const List = FixedListType(ByteVector, 4);
 
-    const ListCompositeType = createListCompositeType(ByteVectorType);
-    var list = try ListCompositeType.init(allocator, &byte_vector_type, 128, 4);
-    defer list.deinit();
-
-    const TypeTest = @import("common.zig").typeTest(ListCompositeType);
+    const TypeTest = @import("common.zig").typeTest(List);
 
     for (test_cases[0..]) |*tc| {
-        std.debug.print("ListCompositeType of Root - {s}\n", .{tc.id});
-        try TypeTest.validSszTest(&list, tc);
+        try TypeTest.run(allocator, tc);
     }
 }
 
-test "ListCompositeType - element type Container" {
+test "ListCompositeType of Container" {
     const test_cases = [_]TestCase{
         TestCase{
-            .id = "empty",
-            .serializedHex = "0x",
-            .json = "[]",
-            .rootHex = "0x96559674a79656e540871e1f39c9b91e152aa8cddb71493e754827c4cc809d57",
+            .id = "4 containers",
+            .serializedHex = "0x0100000000000000000200000000000000030000000000000004000000000000000500000000000000060000000000000007000000000000000800000000000000",
+            .json =
+            \\[{"a": "1", "b": "2"}, {"a": "3", "b": "4"}, {"a": "5", "b": "6"}, {"a": "7", "b": "8"}]
+            ,
+            .rootHex = "0x0000000000000000000000000000000000000000000000000000000000000000",
         },
-        TestCase{ .id = "2 values", .serializedHex = "0x0000000000000000000000000000000040e2010000000000f1fb090000000000", .json = 
-        \\[
-        \\ {"a": "0", "b": "0"},
-        \\ {"a": "123456", "b": "654321"}
-        \\]
-        , .rootHex = "0x8ff94c10d39ffa84aa937e2a077239c2742cb425a2a161744a3e9876eb3c7210" },
     };
 
     const allocator = std.testing.allocator;
-    const UintType = createUintType(8);
-    const uintType = try UintType.init();
-    defer uintType.deinit();
-
-    const SszType = struct {
-        a: UintType,
-        b: UintType,
-    };
-
-    const ContainerType = createContainerType(SszType, sha256Hash);
-    var containerType = try ContainerType.init(allocator, SszType{
-        .a = uintType,
-        .b = uintType,
+    const Uint = UintType(64);
+    const Container = FixedContainerType(struct {
+        a: Uint,
+        b: Uint,
     });
-    defer containerType.deinit();
+    const List = FixedListType(Container, 4);
 
-    const ListCompositeType = createListCompositeType(ContainerType);
-    var list = try ListCompositeType.init(allocator, &containerType, 128, 4);
-    defer list.deinit();
-
-    const TypeTest = @import("common.zig").typeTest(ListCompositeType);
+    const TypeTest = @import("common.zig").typeTest(List);
 
     for (test_cases[0..]) |*tc| {
-        std.debug.print("ListCompositeType of Container - {s}\n", .{tc.id});
-        try TypeTest.validSszTest(&list, tc);
-    }
-}
-
-test "ListCompositeType - element type ListBasicType" {
-    const test_cases = [_]TestCase{
-        TestCase{ .id = "empty", .serializedHex = "0x", .json = "[]", .rootHex = "0x7a0501f5957bdf9cb3a8ff4966f02265f968658b7a9c62642cba1165e86642f5" },
-        TestCase{ .id = "2 full values", .serializedHex = "0x080000000c0000000100020003000400", .json = 
-        \\[
-        \\["1", "2"],
-        \\["3", "4"]
-        \\]
-        , .rootHex = "0x58140d48f9c24545c1e3a50f1ebcca85fd40433c9859c0ac34342fc8e0a800b8" },
-        TestCase{ .id = "2 empty values", .serializedHex = "0x0800000008000000", .json = 
-        \\[
-        \\[],
-        \\[]
-        \\]
-        , .rootHex = "0xe839a22714bda05923b611d07be93b4d707027d29fd9eef7aa864ed587e462ec" },
-    };
-
-    const allocator = std.testing.allocator;
-    const UintType = createUintType(2);
-    var u16Type = try UintType.init();
-    defer u16Type.deinit();
-
-    const ListBasicType = createListBasicType(UintType);
-    var listBasicType = try ListBasicType.init(allocator, &u16Type, 2, 2);
-    defer listBasicType.deinit();
-
-    const ListCompositeType = createListCompositeType(ListBasicType);
-    var listCompositeType = try ListCompositeType.init(allocator, &listBasicType, 2, 2);
-    defer listCompositeType.deinit();
-
-    const TypeTest = @import("common.zig").typeTest(ListCompositeType);
-
-    for (test_cases[0..]) |*tc| {
-        std.debug.print("ListCompositeType of ListBasicType - {s}\n", .{tc.id});
-        try TypeTest.validSszTest(&listCompositeType, tc);
+        try TypeTest.run(allocator, tc);
     }
 }

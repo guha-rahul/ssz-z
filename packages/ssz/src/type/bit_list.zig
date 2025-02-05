@@ -9,6 +9,14 @@ pub fn BitList(comptime limit: comptime_int) type {
         data: std.ArrayListUnmanaged(u8),
         bit_len: usize,
 
+        pub fn zero(allocator: std.mem.Allocator) !@This() {
+            const data = try std.ArrayListUnmanaged(u8).initCapacity(allocator, 0);
+            return @This(){
+                .data = data,
+                .bit_len = 0,
+            };
+        }
+
         pub fn fromBitLen(allocator: std.mem.Allocator, bit_len: usize) !@This() {
             if (bit_len > limit) {
                 return error.tooLarge;
@@ -61,7 +69,8 @@ pub fn BitList(comptime limit: comptime_int) type {
             }
 
             const byte_len = std.math.divCeil(usize, bit_len, 8) catch unreachable;
-            try self.data.ensureTotalCapacity(allocator, byte_len);
+            try self.data.ensureTotalCapacityPrecise(allocator, byte_len);
+            self.data.items.len = byte_len;
             self.bit_len = bit_len;
         }
 
@@ -107,6 +116,14 @@ pub fn BitListType(comptime _limit: comptime_int) type {
         pub const min_size: usize = 1;
         pub const max_size: usize = std.math.divCeil(usize, limit + 1, 8) catch unreachable;
         pub const chunk_count: usize = std.math.divCeil(usize, limit, 256) catch unreachable;
+
+        pub fn defaultValue(allocator: std.mem.Allocator) !Type {
+            return try Type.zero(allocator);
+        }
+
+        pub fn deinit(allocator: std.mem.Allocator, value: *Type) void {
+            value.data.deinit(allocator);
+        }
 
         pub fn serializedSize(value: *const Type) usize {
             return std.math.divCeil(usize, value.bit_len + 1, 8) catch unreachable;

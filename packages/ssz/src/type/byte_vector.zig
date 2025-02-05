@@ -1,6 +1,8 @@
 const std = @import("std");
 const TypeKind = @import("type_kind.zig").TypeKind;
 const UintType = @import("uint.zig").UintType;
+const fromHex = @import("util").fromHex;
+const hexByteLen = @import("util").hexByteLen;
 
 pub fn ByteVectorType(comptime _length: comptime_int) type {
     return struct {
@@ -12,12 +14,28 @@ pub fn ByteVectorType(comptime _length: comptime_int) type {
         pub const chunk_count: usize = std.math.divCeil(usize, fixed_size, 32) catch unreachable;
 
         pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
-            @memcpy(out, value);
+            @memcpy(out[0..fixed_size], value);
             return length;
         }
 
         pub fn deserializeFromBytes(data: []const u8, out: *Type) !void {
+            if (data.len != fixed_size) {
+                return error.invalidLength;
+            }
+
             @memcpy(out, data[0..fixed_size]);
+        }
+
+        pub fn deserializeFromJson(source: *std.json.Scanner, out: *Type) !void {
+            const hex_bytes = switch (try source.next()) {
+                .string => |v| v,
+                else => return error.InvalidJson,
+            };
+
+            if (hexByteLen(hex_bytes) != length) {
+                return error.InvalidJson;
+            }
+            _ = try fromHex(hex_bytes, out);
         }
     };
 }

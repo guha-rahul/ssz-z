@@ -19,6 +19,14 @@ pub fn FixedListType(comptime ST: type, comptime _limit: comptime_int) type {
         pub const max_size: usize = Element.fixed_size * limit;
         pub const chunk_count: usize = if (isBasicType(Element)) std.math.divCeil(usize, max_size, 32) catch unreachable else limit;
 
+        pub fn defaultValue(allocator: std.mem.Allocator) !Type {
+            return try Type.initCapacity(allocator, 0);
+        }
+
+        pub fn deinit(allocator: std.mem.Allocator, value: *Type) void {
+            value.deinit(allocator);
+        }
+
         pub fn serializedSize(value: *const Type) usize {
             return value.items.len * Element.fixed_size;
         }
@@ -45,7 +53,8 @@ pub fn FixedListType(comptime ST: type, comptime _limit: comptime_int) type {
                 return error.gtLimit;
             }
 
-            try out.ensureTotalCapacity(allocator, len);
+            try out.ensureTotalCapacityPrecise(allocator, len);
+            out.items.len = len;
             for (0..len) |i| {
                 try Element.deserializeFromBytes(
                     data[i * Element.fixed_size .. (i + 1) * Element.fixed_size],
@@ -54,7 +63,7 @@ pub fn FixedListType(comptime ST: type, comptime _limit: comptime_int) type {
             }
         }
 
-        pub fn deserializeFromJson(allocator: std.mem.Allocator, source: std.json.Scanner, out: *Type) !void {
+        pub fn deserializeFromJson(allocator: std.mem.Allocator, source: *std.json.Scanner, out: *Type) !void {
             // start array token "["
             switch (try source.next()) {
                 .array_begin => {},
@@ -71,9 +80,19 @@ pub fn FixedListType(comptime ST: type, comptime _limit: comptime_int) type {
                 }
 
                 try out.ensureUnusedCapacity(allocator, 1);
-                try Element.deserializeFromJson(allocator, source, &out.items[i]);
-            } else {
-                return error.invalidLength;
+                out.expandToCapacity();
+                try Element.deserializeFromJson(source, &out.items[i]);
+            }
+            return error.invalidLength;
+        }
+
+        pub fn validate(data: []const u8) !void {
+            const len = try std.math.divExact(usize, data.len, Element.fixed_size);
+            if (len > limit) {
+                return error.gtLimit;
+            }
+            for (0..len) |i| {
+                try Element.validate(data[i * Element.fixed_size .. (i + 1) * Element.fixed_size]);
             }
         }
     };
@@ -93,6 +112,14 @@ pub fn VariableListType(comptime ST: type, comptime _limit: comptime_int) type {
         pub const min_size: usize = 0;
         pub const max_size: usize = Element.max_size * _limit;
         pub const chunk_count: usize = limit;
+
+        pub fn defaultValue(allocator: std.mem.Allocator) !Type {
+            return try Type.initCapacity(allocator, 0);
+        }
+
+        pub fn deinit(allocator: std.mem.Allocator, value: *Type) void {
+            value.deinit(allocator);
+        }
 
         pub fn serializedSize(value: *const Type) usize {
             // offsets size
@@ -126,7 +153,8 @@ pub fn VariableListType(comptime ST: type, comptime _limit: comptime_int) type {
 
             const len = offsets.len - 1;
 
-            try out.ensureTotalCapacity(allocator, len);
+            try out.ensureTotalCapacityPrecise(allocator, len);
+            out.items.len = len;
             for (0..len) |i| {
                 try Element.deserializeFromBytes(allocator, data[offsets[i]..offsets[i + 1]], &out.items[i]);
             }
@@ -164,14 +192,14 @@ pub fn VariableListType(comptime ST: type, comptime _limit: comptime_int) type {
             try Element.validate(data[curr_offset..data.len]);
         }
 
-        pub fn deserializeFromJson(allocator: std.mem.Allocator, source: std.json.Scanner, out: *Type) !void {
-            // validate start array token "["
-            const start_array_token = try source.next();
-            if (start_array_token != std.json.Token.array_begin) {
-                return error.InvalidJson;
+        pub fn deserializeFromJson(allocator: std.mem.Allocator, source: *std.json.Scanner, out: *Type) !void {
+            // start array token "["
+            switch (try source.next()) {
+                .array_begin => {},
+                else => return error.InvalidJson,
             }
 
-            for (0..limit) |i| {
+            for (0..limit + 1) |i| {
                 switch (try source.peekNextTokenType()) {
                     .array_end => {
                         _ = try source.next();
@@ -181,10 +209,10 @@ pub fn VariableListType(comptime ST: type, comptime _limit: comptime_int) type {
                 }
 
                 try out.ensureUnusedCapacity(allocator, 1);
+                out.expandToCapacity();
                 try Element.deserializeFromJson(allocator, source, &out.items[i]);
-            } else {
-                return error.invalidLength;
             }
+            return error.invalidLength;
         }
     };
 }
@@ -198,7 +226,7 @@ test "ListType - sanity" {
     // create a fixed list type and instance and round-trip serialize
     const Bytes = FixedListType(UintType(8), 32);
 
-    var b: Bytes.Type = try std.ArrayListUnmanaged(Bytes.Element.Type).initCapacity(allocator, 0);
+    var b: Bytes.Type = try Bytes.init(allocator);
     defer b.deinit(allocator);
     try b.append(allocator, 5);
 
@@ -210,7 +238,7 @@ test "ListType - sanity" {
 
     // create a variable list type and instance and round-trip serialize
     const BytesBytes = VariableListType(Bytes, 32);
-    var b2: BytesBytes.Type = try std.ArrayListUnmanaged(BytesBytes.Element.Type).initCapacity(allocator, 0);
+    var b2: BytesBytes.Type = try BytesBytes.init(allocator);
     defer b2.deinit(allocator);
     try b2.append(allocator, b);
 
