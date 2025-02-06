@@ -7,8 +7,8 @@ const JsonError = @import("./common.zig").JsonError;
 const SszError = @import("./common.zig").SszError;
 const HashError = @import("./common.zig").HashError;
 const SingleType = @import("./single.zig").withType(bool);
-const Node = @import("hash").Node;
-const getRoot = @import("hash").getRoot;
+const Node = @import("persistent_merkle_tree").Node;
+const getRoot = @import("persistent_merkle_tree").getRoot;
 
 pub const BooleanType = struct {
     byte_len: usize,

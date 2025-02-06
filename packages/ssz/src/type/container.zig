@@ -12,10 +12,10 @@ const JsonError = @import("./common.zig").JsonError;
 const SszError = @import("./common.zig").SszError;
 const HashError = @import("./common.zig").HashError;
 const Parsed = @import("./type.zig").Parsed;
-const Node = @import("hash").Node;
-const getNodeAtDepth = @import("hash").getNodeAtDepth;
-const maxChunksToDepth = @import("hash").maxChunksToDepth;
-const NodePool = @import("hash").NodePool;
+const Node = @import("persistent_merkle_tree").Node;
+const getNodeAtDepth = @import("persistent_merkle_tree").getNodeAtDepth;
+const maxChunksToDepth = @import("persistent_merkle_tree").maxChunksToDepth;
+const NodePool = @import("persistent_merkle_tree").NodePool;
 
 const BytesRange = struct {
     start: usize,

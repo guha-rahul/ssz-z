@@ -8,8 +8,8 @@ const JsonError = @import("./common.zig").JsonError;
 const SszError = @import("./common.zig").SszError;
 const HashError = @import("./common.zig").HashError;
 const Parsed = @import("./type.zig").Parsed;
-const Node = @import("hash").Node;
-const getRoot = @import("hash").getRoot;
+const Node = @import("persistent_merkle_tree").Node;
+const getRoot = @import("persistent_merkle_tree").getRoot;
 
 pub fn createUintType(comptime num_bytes: usize) type {
     if (num_bytes != 1 and num_bytes != 2 and num_bytes != 4 and num_bytes != 8 and num_bytes != 16 and num_bytes != 32 and num_bytes != 64) {
