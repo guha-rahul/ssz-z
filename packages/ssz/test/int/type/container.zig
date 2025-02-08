@@ -8,7 +8,7 @@ const TestCase = @import("common.zig").TypeTestCase;
 test "ContainerType with 2 uints" {
     const allocator = std.testing.allocator;
     const UintType = createUintType(8);
-    const uintType = try UintType.init();
+    const uintType = try UintType.init(null);
     defer uintType.deinit();
 
     const SszType = struct {
@@ -20,7 +20,7 @@ test "ContainerType with 2 uints" {
     var containerType = try ContainerType.init(allocator, SszType{
         .a = uintType,
         .b = uintType,
-    });
+    }, null);
     defer containerType.deinit();
 
     const testCases = [_]TestCase{
@@ -56,7 +56,7 @@ test "ContainerType with 2 uints" {
 test "ContainerType with ListBasicType(uint64, 128) and uint64" {
     const allocator = std.testing.allocator;
     const UintType = createUintType(8);
-    var uintType = try UintType.init();
+    var uintType = try UintType.init(null);
     defer uintType.deinit();
 
     const ListBasicType = createListBasicType(UintType);
@@ -72,7 +72,7 @@ test "ContainerType with ListBasicType(uint64, 128) and uint64" {
     var containerType = try ContainerType.init(allocator, SszType{
         .a = listBasicType,
         .b = uintType,
-    });
+    }, null);
     defer containerType.deinit();
 
     const testCases = [_]TestCase{

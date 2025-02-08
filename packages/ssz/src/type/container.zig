@@ -11,11 +11,13 @@ const toRootHex = @import("util").toRootHex;
 const JsonError = @import("./common.zig").JsonError;
 const SszError = @import("./common.zig").SszError;
 const HashError = @import("./common.zig").HashError;
+const ViewDUError = @import("./common.zig").ViewDUError;
 const Parsed = @import("./type.zig").Parsed;
 const Node = @import("persistent_merkle_tree").Node;
 const getNodeAtDepth = @import("persistent_merkle_tree").getNodeAtDepth;
 const maxChunksToDepth = @import("persistent_merkle_tree").maxChunksToDepth;
 const NodePool = @import("persistent_merkle_tree").NodePool;
+const subtreeFillToContents = @import("persistent_merkle_tree").subtreeFillToContents;
 
 const BytesRange = struct {
     start: usize,
@@ -117,16 +119,6 @@ pub fn createContainerType(comptime ST: type, hashFn: HashFn) type {
         },
     });
 
-    const ContainerTreeViewDU = struct {
-        // BasicContainerTreeViewDU
-        root_node: *Node,
-        nodes: []?*Node,
-        allocator: Allocator,
-        fields: FieldsTreeViewDU,
-
-        // TODO: commit(), hashTreeRoot()
-    };
-
     // this works for Zig 0.13
     // syntax in 0.14 or later could change, see https://github.com/ziglang/zig/issues/10710
     const ZT = comptime @Type(.{
@@ -144,9 +136,27 @@ pub fn createContainerType(comptime ST: type, hashFn: HashFn) type {
     const native_endian = @import("builtin").target.cpu.arch.endian();
     const SingleType = @import("./single.zig").withType(ZT);
     const ParsedResult = Parsed(ZT);
-    const ViewDUResult = Parsed(ContainerTreeViewDU);
 
     const ContainerType = struct {
+        const This = @This();
+        pub const ContainerTreeViewDU = struct {
+            pub const IViewDUResult = Parsed(@This());
+            // BasicContainerTreeViewDU
+            root_node: *Node,
+            nodes: []?*Node,
+            allocator: Allocator,
+            fields: FieldsTreeViewDU,
+            ssz_type: *This,
+
+            // TODO: commit(), hashTreeRoot(), serialize()
+
+            // TODO: handle cache
+            pub fn clone(self: *const @This()) !IViewDUResult {
+                return self.ssz_type.getViewDU(self.root_node);
+            }
+        };
+        const ViewDUResult = ContainerTreeViewDU.IViewDUResult;
+
         allocator: Allocator,
         // TODO: *ST to avoid copy
         ssz_fields: ST,
@@ -157,6 +167,8 @@ pub fn createContainerType(comptime ST: type, hashFn: HashFn) type {
         fixed_size: ?usize,
         fixed_end: usize,
         variable_field_count: usize,
+        // if consumer doesn't need a TreeBacked type, this could be null
+        pool: ?*NodePool,
 
         /// Zig Type definition
         pub fn getZigType() type {
@@ -168,6 +180,7 @@ pub fn createContainerType(comptime ST: type, hashFn: HashFn) type {
         }
 
         /// public function for consumers
+        /// TODO: ViewDUResult may not need an arena
         pub fn getViewDU(self: *const @This(), node: *Node) !ViewDUResult {
             const arena = try self.allocator.create(ArenaAllocator);
             arena.* = ArenaAllocator.init(self.allocator);
@@ -218,7 +231,7 @@ pub fn createContainerType(comptime ST: type, hashFn: HashFn) type {
 
         /// public function for consumers
         /// TODO: consider returning *@This(), see BitArray
-        pub fn init(allocator: Allocator, ssz_fields: ST) !@This() {
+        pub fn init(allocator: Allocator, ssz_fields: ST, pool: ?*NodePool) !@This() {
             var min_size: usize = 0;
             var max_size: usize = 0;
             var fixed_size: ?usize = 0;
@@ -253,6 +266,7 @@ pub fn createContainerType(comptime ST: type, hashFn: HashFn) type {
                 .fixed_size = fixed_size,
                 .fixed_end = fixed_end,
                 .variable_field_count = variable_field_count,
+                .pool = pool,
             };
         }
 
@@ -285,6 +299,12 @@ pub fn createContainerType(comptime ST: type, hashFn: HashFn) type {
         /// public function for consumers
         pub fn fromJson(self: *const @This(), json: []const u8) JsonError!ParsedResult {
             return SingleType.fromJson(self, json);
+        }
+
+        pub fn deserializeToViewDU(self: *const @This(), ssz: []const u8) ViewDUError!ViewDUResult {
+            // TODO: may get through SingleType.deserializeFromSlice
+            const root_node = try self.tree_deserializeFromSlice(ssz);
+            return self.getViewDU(root_node);
         }
 
         // public function for consumers
@@ -399,6 +419,28 @@ pub fn createContainerType(comptime ST: type, hashFn: HashFn) type {
             }
 
             return out2;
+        }
+
+        pub fn tree_deserializeFromSlice(self: *const @This(), slice: []const u8) ViewDUError!*Node {
+            // TODO: validate data length
+            // max_chunk_count is known at compile time so we can allocate on stack
+            var field_ranges = [_]BytesRange{.{ .start = 0, .end = 0 }} ** max_chunk_count;
+            var nodes: [max_chunk_count]*Node = undefined;
+            try self.getFieldRanges(slice, field_ranges[0..]);
+            inline for (zig_fields_info, 0..) |field_info, i| {
+                const field_name = field_info.name;
+                const ssz_type = &@field(self.ssz_fields, field_name);
+                const field_range = field_ranges[i];
+                const field_data = slice[field_range.start..field_range.end];
+                nodes[i] = try ssz_type.tree_deserializeFromSlice(field_data);
+            }
+
+            if (self.pool) |pool| {
+                const root_node = try subtreeFillToContents(pool, nodes[0..], depth);
+                return root_node;
+            } else {
+                return error.MissingPool;
+            }
         }
 
         /// a recursive implementation for parent types or fromJson
@@ -518,11 +560,13 @@ pub fn createContainerType(comptime ST: type, hashFn: HashFn) type {
 test "basic ContainerType {x: uint, y:bool}" {
     std.debug.print("basic ContainerType x: uint, y:bool\n", .{});
     var allocator = std.testing.allocator;
+    var pool = try NodePool.init(allocator, 10);
+    defer pool.deinit();
     const UintType = @import("./uint.zig").createUintType(8);
-    const uintType = try UintType.init();
+    const uintType = try UintType.init(&pool);
     defer uintType.deinit();
     const BooleanType = @import("./boolean.zig").BooleanType;
-    const booleanType = BooleanType.init();
+    const booleanType = BooleanType.init(&pool);
     defer booleanType.deinit();
     const SszType = struct {
         x: UintType,
@@ -533,7 +577,7 @@ test "basic ContainerType {x: uint, y:bool}" {
     var containerType = try ContainerType.init(allocator, SszType{
         .x = uintType,
         .y = booleanType,
-    });
+    }, &pool);
 
     defer containerType.deinit();
 
@@ -546,10 +590,10 @@ test "basic ContainerType {x: uint, y:bool}" {
     const size = containerType.serializedSize(&obj);
     // 1 uint64 + 1 bool = 8 + 1 = 9 bytes
     try expect(size == 9);
-    const bytes = try allocator.alloc(u8, size);
-    defer allocator.free(bytes);
-    _ = try containerType.serializeToBytes(&obj, bytes);
-    const obj2 = try containerType.fromSsz(bytes);
+    const serialized_bytes = try allocator.alloc(u8, size);
+    defer allocator.free(serialized_bytes);
+    _ = try containerType.serializeToBytes(&obj, serialized_bytes);
+    const obj2 = try containerType.fromSsz(serialized_bytes);
     defer obj2.deinit();
     try expect(containerType.equals(&obj, obj2.value));
 
@@ -568,29 +612,24 @@ test "basic ContainerType {x: uint, y:bool}" {
     try expect(parsed.value.x == obj.x);
     try expect(parsed.value.y == obj.y);
 
-    // viewDU
-    var pool = try NodePool.init(allocator, 10);
-    defer pool.deinit();
-
-    // to be replaced by deserializeToViewDU()
-    var hash1: [32]u8 = [_]u8{0} ** 32;
-    hash1[0] = 1;
-    var hash2: [32]u8 = [_]u8{0} ** 32;
-    hash2[0] = 1;
-    const leaf1 = try pool.newLeaf(&hash1);
-    const leaf2 = try pool.newLeaf(&hash2);
-    const root_node = try pool.newBranch(leaf1, leaf2);
-    const viewdu_result = try containerType.getViewDU(root_node);
+    // viewDU deserialize
+    const viewdu_result = try containerType.deserializeToViewDU(serialized_bytes);
     defer viewdu_result.deinit();
-    try expect(try viewdu_result.value.fields.x.get() == 1);
-    try expect(try viewdu_result.value.fields.y.get() == true);
-    try pool.unref(root_node);
+    try expect(try viewdu_result.value.fields.x.get() == obj.x);
+    try expect(try viewdu_result.value.fields.y.get() == obj.y);
+
+    // TODO: fix ViewDU.clone()
+    // const viewdu_result_2 = try viewdu_result.value.clone();
+    // try expect(try viewdu_result_2.value.fields.x.get() == obj.x);
+    // try expect(try viewdu_result_2.value.fields.y.get() == obj.y);
+
+    try pool.unref(viewdu_result.value.root_node);
 }
 
 test "ContainerType with embedded struct" {
     var allocator = std.testing.allocator;
     const UintType = @import("./uint.zig").createUintType(8);
-    const uintType = try UintType.init();
+    const uintType = try UintType.init(null);
     defer uintType.deinit();
     const SszType0 = struct {
         x: UintType,
@@ -601,7 +640,7 @@ test "ContainerType with embedded struct" {
     const containerType0 = try ContainerType0.init(allocator, SszType0{
         .x = uintType,
         .y = uintType,
-    });
+    }, null);
     defer containerType0.deinit();
 
     const SszType1 = struct {
@@ -613,7 +652,7 @@ test "ContainerType with embedded struct" {
     var containerType1 = try ContainerType1.init(allocator, SszType1{
         .a = containerType0,
         .b = containerType0,
-    });
+    }, null);
     defer containerType1.deinit();
 
     const a = ZigType0{ .x = 0xffffffffffffffff, .y = 0 };

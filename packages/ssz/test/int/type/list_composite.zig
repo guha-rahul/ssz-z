@@ -62,7 +62,7 @@ test "ListCompositeType - element type Container" {
 
     const allocator = std.testing.allocator;
     const UintType = createUintType(8);
-    const uintType = try UintType.init();
+    const uintType = try UintType.init(null);
     defer uintType.deinit();
 
     const SszType = struct {
@@ -74,7 +74,7 @@ test "ListCompositeType - element type Container" {
     var containerType = try ContainerType.init(allocator, SszType{
         .a = uintType,
         .b = uintType,
-    });
+    }, null);
     defer containerType.deinit();
 
     const ListCompositeType = createListCompositeType(ContainerType);
@@ -108,7 +108,7 @@ test "ListCompositeType - element type ListBasicType" {
 
     const allocator = std.testing.allocator;
     const UintType = createUintType(2);
-    var u16Type = try UintType.init();
+    var u16Type = try UintType.init(null);
     defer u16Type.deinit();
 
     const ListBasicType = createListBasicType(UintType);

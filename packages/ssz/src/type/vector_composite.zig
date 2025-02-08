@@ -193,7 +193,7 @@ test "fromJson - VectorCompositeType of 4 roots" {
 test "fromJson - VectorCompositeType of 4 ContainerType({a: uint64Type, b: uint64Type})" {
     const allocator = std.testing.allocator;
     const UintType = @import("./uint.zig").createUintType(8);
-    const uintType = try UintType.init();
+    const uintType = try UintType.init(null);
     defer uintType.deinit();
 
     const SszType = struct {
@@ -202,7 +202,7 @@ test "fromJson - VectorCompositeType of 4 ContainerType({a: uint64Type, b: uint6
     };
 
     const ContainerType = @import("./container.zig").createContainerType(SszType, sha256Hash);
-    var containerType = try ContainerType.init(allocator, SszType{ .a = uintType, .b = uintType });
+    var containerType = try ContainerType.init(allocator, SszType{ .a = uintType, .b = uintType }, null);
     defer containerType.deinit();
 
     const VectorCompositeType = createVectorCompositeType(ContainerType);

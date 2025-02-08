@@ -217,9 +217,9 @@ test "ListCompositeType - element type is ContainerType" {
     const ZigContainerType = SSZContainerType.getZigType();
     const ListCompositeType = createListCompositeType(SSZContainerType);
 
-    const uintType = try UintType.init();
+    const uintType = try UintType.init(null);
     defer uintType.deinit();
-    var elementType = try SSZContainerType.init(allocator, .{ .a = uintType, .b = uintType });
+    var elementType = try SSZContainerType.init(allocator, .{ .a = uintType, .b = uintType }, null);
     defer elementType.deinit();
 
     var listType = try ListCompositeType.init(allocator, &elementType, 128, 64);
@@ -303,7 +303,7 @@ test "ListCompositeType - element type is ListBasicType" {
 
     const ListCompositeType = createListCompositeType(SSZListBasicType);
 
-    var uintType = try UintType.init();
+    var uintType = try UintType.init(null);
     defer uintType.deinit();
     var elementType = try SSZListBasicType.init(allocator, &uintType, 2, 2);
     defer elementType.deinit();

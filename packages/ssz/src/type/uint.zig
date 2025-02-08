@@ -7,9 +7,11 @@ const native_endian = builtin.target.cpu.arch.endian();
 const JsonError = @import("./common.zig").JsonError;
 const SszError = @import("./common.zig").SszError;
 const HashError = @import("./common.zig").HashError;
+const ViewDUError = @import("./common.zig").ViewDUError;
 const Parsed = @import("./type.zig").Parsed;
 const Node = @import("persistent_merkle_tree").Node;
 const getRoot = @import("persistent_merkle_tree").getRoot;
+const NodePool = @import("persistent_merkle_tree").NodePool;
 
 pub fn createUintType(comptime num_bytes: usize) type {
     if (num_bytes != 1 and num_bytes != 2 and num_bytes != 4 and num_bytes != 8 and num_bytes != 16 and num_bytes != 32 and num_bytes != 64) {
@@ -34,6 +36,8 @@ pub fn createUintType(comptime num_bytes: usize) type {
         byte_length: usize,
         min_size: usize,
         max_size: usize,
+        // if consumer doesn't need a TreeBacked type, this could be null
+        pool: ?*NodePool,
 
         /// Zig Type definition
         pub fn getZigType() type {
@@ -61,8 +65,8 @@ pub fn createUintType(comptime num_bytes: usize) type {
             return num_bytes;
         }
 
-        pub fn init() !@This() {
-            return @This(){ .fixed_size = num_bytes, .byte_length = num_bytes, .min_size = 0, .max_size = num_bytes };
+        pub fn init(pool: ?*NodePool) !@This() {
+            return @This(){ .fixed_size = num_bytes, .byte_length = num_bytes, .min_size = 0, .max_size = num_bytes, .pool = pool };
         }
 
         pub fn deinit(_: @This()) void {
@@ -143,6 +147,22 @@ pub fn createUintType(comptime num_bytes: usize) type {
             return if (native_endian == .big) @byteSwap(value) else value;
         }
 
+        pub fn tree_deserializeFromSlice(self: *const @This(), slice: []const u8) ViewDUError!*Node {
+            if (self.pool == null) {
+                return error.MissingPool;
+            }
+            const pool = self.pool.?;
+
+            try @This().assertValidSize(slice.len);
+            // same logic to deserializeFromSlice
+            const sliceT = std.mem.bytesAsSlice(T, slice);
+            const value = sliceT[0];
+            const endian_value = if (native_endian == .big) @byteSwap(value) else value;
+            const node = try pool.newZeroLeaf();
+            try NodePool.setUintLeaf(node, T, 0, endian_value);
+            return node;
+        }
+
         /// an implementation for parent types
         pub fn deserializeFromJson(_: *const @This(), _: Allocator, source: *Scanner, _: ?T) JsonError!T {
             const value = try source.next();
@@ -157,6 +177,12 @@ pub fn createUintType(comptime num_bytes: usize) type {
 
         pub fn doClone(_: *const @This(), _: Allocator, value: T, _: ?*T) !T {
             return value;
+        }
+
+        pub fn assertValidSize(size: usize) !void {
+            if (size != num_bytes) {
+                return error.InCorrectLen;
+            }
         }
     };
 }
@@ -180,7 +206,7 @@ pub fn isNumberFormattedLikeAnInteger(value: []const u8) bool {
 
 test "createUintType" {
     const UintType = createUintType(8);
-    const uintType = try UintType.init();
+    const uintType = try UintType.init(null);
     defer uintType.deinit();
     const value: u64 = 0xffffffffffffffff;
     var root = [_]u8{0} ** 32;

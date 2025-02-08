@@ -53,7 +53,7 @@ test "VectorCompositeType of Container" {
 
     const allocator = std.testing.allocator;
     const UintType = createUintType(8);
-    const uintType = try UintType.init();
+    const uintType = try UintType.init(null);
     defer uintType.deinit();
 
     const SszType = struct {
@@ -65,7 +65,7 @@ test "VectorCompositeType of Container" {
     var containerType = try ContainerType.init(allocator, SszType{
         .a = uintType,
         .b = uintType,
-    });
+    }, null);
     defer containerType.deinit();
 
     const VectorCompositeType = createVectorCompositeType(ContainerType);

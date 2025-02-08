@@ -157,7 +157,7 @@ test "deserializeFromBytes" {
     // uint of 8 bytes = u64
     const UintType = @import("./uint.zig").createUintType(8);
     const ListBasicType = createListBasicType(UintType);
-    var uintType = try UintType.init();
+    var uintType = try UintType.init(null);
     var listType = try ListBasicType.init(allocator, &uintType, 128, 128);
     defer uintType.deinit();
     defer listType.deinit();
@@ -215,7 +215,7 @@ test "deserializeFromJson" {
     // uint of 8 bytes = u64
     const UintType = @import("./uint.zig").createUintType(8);
     const ListBasicType = createListBasicType(UintType);
-    var uintType = try UintType.init();
+    var uintType = try UintType.init(null);
     var listType = try ListBasicType.init(allocator, &uintType, 4, 2);
     defer uintType.deinit();
     defer listType.deinit();

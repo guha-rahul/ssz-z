@@ -6,9 +6,11 @@ const ParsedResult = Parsed(bool);
 const JsonError = @import("./common.zig").JsonError;
 const SszError = @import("./common.zig").SszError;
 const HashError = @import("./common.zig").HashError;
+const ViewDUError = @import("./common.zig").ViewDUError;
 const SingleType = @import("./single.zig").withType(bool);
 const Node = @import("persistent_merkle_tree").Node;
 const getRoot = @import("persistent_merkle_tree").getRoot;
+const NodePool = @import("persistent_merkle_tree").NodePool;
 
 pub const BooleanType = struct {
     byte_len: usize,
@@ -16,6 +18,8 @@ pub const BooleanType = struct {
     fixed_size: ?usize,
     min_size: usize,
     max_size: usize,
+    // if consumer doesn't need a TreeBacked type, this could be null
+    pool: ?*NodePool,
 
     /// Zig type definition
     pub fn getZigType() type {
@@ -42,8 +46,8 @@ pub const BooleanType = struct {
         return 1;
     }
 
-    pub fn init() @This() {
-        return @This(){ .fixed_size = 1, .byte_len = 1, .items_per_chunk = 32, .min_size = 1, .max_size = 1 };
+    pub fn init(pool: ?*NodePool) @This() {
+        return @This(){ .fixed_size = 1, .byte_len = 1, .items_per_chunk = 32, .min_size = 1, .max_size = 1, .pool = pool };
     }
 
     pub fn deinit(_: *const @This()) void {
@@ -96,6 +100,22 @@ pub const BooleanType = struct {
             1 => true,
             else => error.InvalidSsz,
         };
+    }
+
+    pub fn tree_deserializeFromSlice(self: *const @This(), slice: []const u8) ViewDUError!*Node {
+        if (self.pool == null) {
+            return error.MissingPool;
+        }
+        const pool = self.pool.?;
+
+        if (slice.len == 0) {
+            return error.InCorrectLen;
+        }
+
+        const value = slice[0];
+        const node = try pool.newZeroLeaf();
+        try NodePool.setUintLeaf(node, u8, 0, value);
+        return node;
     }
 
     /// an implementation for parent types
