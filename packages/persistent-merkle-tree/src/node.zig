@@ -14,7 +14,7 @@ pub const Node = union(NodeType) {
     Zero: ZeroNode,
 };
 
-pub const NodeError = error{ OutOfMemory, NoLeft, NoRight };
+pub const NodeError = error{ OutOfMemory, NoLeft, NoRight, OutOfBounds, CannotSetBranchNode, CannotGetUintBranchNode };
 
 pub const BranchNode = struct {
     // cannot use const here because it's designed to be reused

@@ -79,7 +79,7 @@ pub const NodePool = struct {
     }
 
     /// create new leaf node, if there is any in the pool, reuse it
-    pub fn newLeaf(self: *NodePool, hash: *const [32]u8) !*Node {
+    pub fn newLeaf(self: *NodePool, hash: *const [32]u8) nm.NodeError!*Node {
         const nodeOrNull = self.leaf_nodes.popOrNull();
         if (nodeOrNull) |node| {
             // reuse LeafNode from pool
@@ -100,17 +100,42 @@ pub const NodePool = struct {
     }
 
     /// New LeafNode with its internal value set to zero. Consider using `zeroNode(0)` if you don't need to mutate.
-    pub fn newZeroLeaf(self: *NodePool) !*Node {
+    pub fn newZeroLeaf(self: *NodePool) nm.NodeError!*Node {
         const zero_hash = [_]u8{0} ** 32;
         return self.newLeaf(&zero_hash);
     }
 
     /// LeafNode with 8 uint32 `(uint32, 0, 0, 0, 0, 0, 0, 0)`.
-    pub fn newUint32Leaf(self: *NodePool, value: u32) !*Node {
+    pub fn newUint32Leaf(self: *NodePool, value: u32) nm.NodeError!*Node {
         const hash = [_]u8{0} ** 32;
         const slice = std.mem.bytesAsSlice(u32, hash[0..]);
         slice[0] = value;
         return self.newLeaf(&hash);
+    }
+
+    /// no need a pool instance for this. However leave it here next to new*() methods for consistency
+    /// @param offset_type is based on @sizeOf(T). May want to change this based on ssz's need
+    pub fn setUintLeaf(node: *Node, comptime T: type, offset_type: usize, value: T) nm.NodeError!void {
+        switch (node.*) {
+            .Leaf => |leaf| {
+                const hash = leaf.hash;
+                const slice = std.mem.bytesAsSlice(T, hash[0..]);
+                slice[offset_type] = value;
+            },
+            else => return error.CannotSetBranchNode,
+        }
+    }
+
+    /// @param offset_type is based on @sizeOf(T). May want to change this based on ssz's need
+    pub fn getUintLeaf(node: *Node, comptime T: type, offset_type: usize) nm.NodeError!T {
+        switch (node.*) {
+            .Leaf => |leaf| {
+                const hash = leaf.hash;
+                const slice = std.mem.bytesAsSlice(T, hash[0..]);
+                return slice[offset_type];
+            },
+            else => return error.CannotGetUintBranchNode,
+        }
     }
 
     /// create new branch node, if there is any in the pool, reuse it
@@ -141,7 +166,7 @@ pub const NodePool = struct {
     }
 
     /// get zero node at depth
-    pub fn getZeroNode(self: *const NodePool, depth: usize) !*Node {
+    pub fn getZeroNode(self: *const NodePool, depth: usize) nm.NodeError!*Node {
         if (depth >= MAX_NODES_DEPTH) {
             return error.OutOfBounds;
         }
@@ -249,4 +274,18 @@ test "recreate the same tree" {
     // cleanup
     try pool.unref(rootNode);
     try pool.unref(rootNode2);
+}
+
+test "setUintLeaf and getUintLeaf" {
+    const allocator = std.testing.allocator;
+    var pool = try NodePool.init(allocator, 10);
+    defer pool.deinit();
+
+    for (0..4) |i| {
+        const leaf = try pool.newZeroLeaf();
+        try NodePool.setUintLeaf(leaf, u32, i, 123);
+        const value = try NodePool.getUintLeaf(leaf, u32, i);
+        try expect(value == 123);
+        try pool.unref(leaf);
+    }
 }

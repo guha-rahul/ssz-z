@@ -1,10 +1,11 @@
 const std = @import("std");
 const nm = @import("./node.zig");
 const Node = nm.Node;
+const TreeError = @import("./common.zig").TreeError;
 const NodePool = @import("./pool.zig").NodePool;
 const getNodesAtDepth = @import("./tree.zig").getNodesAtDepth;
 
-pub fn subtreeFillToDepth(pool: *NodePool, bottom: *Node, depth: usize) !*Node {
+pub fn subtreeFillToDepth(pool: *NodePool, bottom: *Node, depth: usize) nm.NodeError!*Node {
     var d = depth;
     var node = bottom;
     while (d > 0) : (d -= 1) {
@@ -14,7 +15,7 @@ pub fn subtreeFillToDepth(pool: *NodePool, bottom: *Node, depth: usize) !*Node {
     return node;
 }
 
-pub fn subtreeFillToLength(pool: *NodePool, bottom: *Node, depth: usize, length: usize) !*Node {
+pub fn subtreeFillToLength(pool: *NodePool, bottom: *Node, depth: usize, length: usize) nm.NodeError!*Node {
     const max_length = 1 << depth;
     if (length > max_length) {
         return error.InvalidLength;
@@ -52,7 +53,7 @@ pub fn subtreeFillToLength(pool: *NodePool, bottom: *Node, depth: usize, length:
 /// WARNING: Mutates the provided nodes array.
 /// TODO: Don't mutate the nodes array.
 /// TODO: HashComputation
-pub fn subtreeFillToContents(pool: *NodePool, nodes: []*Node, depth: usize) !*Node {
+pub fn subtreeFillToContents(pool: *NodePool, nodes: []*Node, depth: usize) TreeError!*Node {
     const max_length: usize = std.math.pow(usize, 2, depth);
     if (nodes.len > max_length) {
         return error.InvalidLength;

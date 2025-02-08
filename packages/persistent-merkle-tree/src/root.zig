@@ -13,6 +13,7 @@ pub const HashError = @import("./sha256.zig").HashError;
 pub const NodePool = @import("./pool.zig").NodePool;
 pub const Tree = @import("./tree.zig").Tree;
 pub const subtreeFillToContents = @import("./subtree.zig").subtreeFillToContents;
+pub const TreeError = @import("./common.zig").TreeError;
 pub const getNodeAtDepth = @import("./tree.zig").getNodeAtDepth;
 pub const Node = @import("./node.zig").Node;
 pub const getRoot = @import("./node.zig").getRoot;
