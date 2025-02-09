@@ -49,6 +49,24 @@ pub fn createContainerType(comptime ST: type, hashFn: HashFn) type {
         };
     }
 
+    // this works for Zig 0.13
+    // syntax in 0.14 or later could change, see https://github.com/ziglang/zig/issues/10710
+    const ZT = comptime @Type(.{
+        .Struct = .{
+            .layout = .auto,
+            .backing_integer = null,
+            .fields = new_fields[0..],
+            // TODO: do we need to assign this value?
+            .decls = &[_]std.builtin.Type.Declaration{},
+            .is_tuple = false,
+        },
+    });
+
+    const zig_fields_info = @typeInfo(ZT).Struct.fields;
+    const native_endian = @import("builtin").target.cpu.arch.endian();
+    const SingleType = @import("./single.zig").withType(ZT);
+    const ParsedResult = Parsed(ZT);
+
     const max_chunk_count = ssz_struct_info.fields.len;
     const depth = maxChunksToDepth(max_chunk_count);
 
@@ -61,8 +79,6 @@ pub fn createContainerType(comptime ST: type, hashFn: HashFn) type {
     comptime var new_viewdu_fields: [ssz_struct_info.fields.len]std.builtin.Type.StructField = undefined;
 
     inline for (ssz_struct_info.fields, 0..) |field, i| {
-        // basic types don't have specific ViewDU type
-        // composite types have ViewDU type
         const viewdu_type = field.type.getViewDUType();
 
         // with Zig 0.13, it's not possible to define getter and setter methods for fields in the same struct
@@ -70,11 +86,13 @@ pub fn createContainerType(comptime ST: type, hashFn: HashFn) type {
         const wrapped_viewdu_type = struct {
             value: ?viewdu_type,
             parent: *BasicContainerTreeViewDU,
+            ssz_type: *const field.type,
 
-            pub fn init(arena_allocator: Allocator, parent: *BasicContainerTreeViewDU) !*@This() {
+            pub fn init(arena_allocator: Allocator, parent: *BasicContainerTreeViewDU, ssz_type: *const field.type) !*@This() {
                 const instance = try arena_allocator.create(@This());
                 instance.value = null;
                 instance.parent = parent;
+                instance.ssz_type = ssz_type;
                 return instance;
             }
 
@@ -87,7 +105,8 @@ pub fn createContainerType(comptime ST: type, hashFn: HashFn) type {
                     node = @constCast(try getNodeAtDepth(@constCast(self.parent.root_node), depth, i));
                     self.parent.nodes[i] = node;
                 }
-                const value = try field.type.allocateViewDU(self.parent.allocator, node.?);
+
+                const value = try self.ssz_type.allocateViewDU(self.parent.allocator, node.?);
                 self.value = value;
                 return value;
             }
@@ -119,24 +138,6 @@ pub fn createContainerType(comptime ST: type, hashFn: HashFn) type {
         },
     });
 
-    // this works for Zig 0.13
-    // syntax in 0.14 or later could change, see https://github.com/ziglang/zig/issues/10710
-    const ZT = comptime @Type(.{
-        .Struct = .{
-            .layout = .auto,
-            .backing_integer = null,
-            .fields = new_fields[0..],
-            // TODO: do we need to assign this value?
-            .decls = &[_]std.builtin.Type.Declaration{},
-            .is_tuple = false,
-        },
-    });
-
-    const zig_fields_info = @typeInfo(ZT).Struct.fields;
-    const native_endian = @import("builtin").target.cpu.arch.endian();
-    const SingleType = @import("./single.zig").withType(ZT);
-    const ParsedResult = Parsed(ZT);
-
     const ContainerType = struct {
         const This = @This();
         pub const ContainerTreeViewDU = struct {
@@ -146,7 +147,7 @@ pub fn createContainerType(comptime ST: type, hashFn: HashFn) type {
             nodes: []?*Node,
             allocator: Allocator,
             fields: FieldsTreeViewDU,
-            ssz_type: *This,
+            ssz_type: *const This,
 
             // TODO: commit(), hashTreeRoot(), serialize()
 
@@ -189,15 +190,17 @@ pub fn createContainerType(comptime ST: type, hashFn: HashFn) type {
             // must destroy before deinit()
             errdefer self.allocator.destroy(arena);
             errdefer arena.deinit();
-            const viewdu = try @This().allocateViewDU(allocator, node);
+            const viewdu = try self.allocateViewDU(allocator, node);
             return .{
                 .value = viewdu,
                 .arena = arena,
             };
         }
 
-        /// recursive function, it's a struct method which does not require an instance
-        pub fn allocateViewDU(arena_allocator: Allocator, node: *Node) !*ContainerTreeViewDU {
+        /// recursive function
+        /// TODO: add self here to set ssz_type
+        /// init wrapped_viewdu_type with child's type instance
+        pub fn allocateViewDU(self: *const @This(), arena_allocator: Allocator, node: *Node) !*ContainerTreeViewDU {
             var viewdu = try arena_allocator.create(ContainerTreeViewDU);
             viewdu.root_node = node;
             viewdu.nodes = try arena_allocator.alloc(?*Node, max_chunk_count);
@@ -205,12 +208,14 @@ pub fn createContainerType(comptime ST: type, hashFn: HashFn) type {
                 n.* = null;
             }
             viewdu.allocator = arena_allocator;
+            viewdu.ssz_type = self;
             const baseViewDU: *BasicContainerTreeViewDU = @ptrCast(viewdu);
             inline for (new_viewdu_fields) |field| {
                 // this type is *wrapped_viewdu_type
                 const ptr_type = field.type;
                 const wrapped_viewdu_type = @typeInfo(ptr_type).Pointer.child;
-                @field(viewdu.fields, field.name) = try wrapped_viewdu_type.init(arena_allocator, baseViewDU);
+                const ssz_type = &@field(self.ssz_fields, field.name);
+                @field(viewdu.fields, field.name) = try wrapped_viewdu_type.init(arena_allocator, baseViewDU, ssz_type);
             }
 
             return viewdu;
@@ -618,10 +623,11 @@ test "basic ContainerType {x: uint, y:bool}" {
     try expect(try viewdu_result.value.fields.x.get() == obj.x);
     try expect(try viewdu_result.value.fields.y.get() == obj.y);
 
-    // TODO: fix ViewDU.clone()
-    // const viewdu_result_2 = try viewdu_result.value.clone();
-    // try expect(try viewdu_result_2.value.fields.x.get() == obj.x);
-    // try expect(try viewdu_result_2.value.fields.y.get() == obj.y);
+    // viewDU.clone();
+    const viewdu_result_2 = try viewdu_result.value.clone();
+    defer viewdu_result_2.deinit();
+    try expect(try viewdu_result_2.value.fields.x.get() == obj.x);
+    try expect(try viewdu_result_2.value.fields.y.get() == obj.y);
 
     try pool.unref(viewdu_result.value.root_node);
 }
