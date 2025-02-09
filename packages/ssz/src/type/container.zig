@@ -79,23 +79,18 @@ pub fn createContainerType(comptime ST: type, hashFn: HashFn) type {
     comptime var new_viewdu_fields: [ssz_struct_info.fields.len]std.builtin.Type.StructField = undefined;
 
     inline for (ssz_struct_info.fields, 0..) |field, i| {
+        // viewdu_type is a pointer type
         const viewdu_type = field.type.getViewDUType();
 
         // with Zig 0.13, it's not possible to define getter and setter methods for fields in the same struct
         // so for each field, we need to define an internal struct with get() and set() methods as below
         const wrapped_viewdu_type = struct {
+            // parent needs to set these value right after allocation
             value: ?viewdu_type,
             parent: *BasicContainerTreeViewDU,
             ssz_type: *const field.type,
 
-            pub fn init(arena_allocator: Allocator, parent: *BasicContainerTreeViewDU, ssz_type: *const field.type) !*@This() {
-                const instance = try arena_allocator.create(@This());
-                instance.value = null;
-                instance.parent = parent;
-                instance.ssz_type = ssz_type;
-                return instance;
-            }
-
+            // TODO: straightforward return type
             pub fn get(self: *@This()) !viewdu_type {
                 if (self.value) |value| {
                     return value;
@@ -118,7 +113,7 @@ pub fn createContainerType(comptime ST: type, hashFn: HashFn) type {
 
         new_viewdu_fields[i] = .{
             .name = field.name,
-            .type = *wrapped_viewdu_type,
+            .type = wrapped_viewdu_type,
             .default_value = null,
             .is_comptime = false,
             // size of a pointer
@@ -139,7 +134,7 @@ pub fn createContainerType(comptime ST: type, hashFn: HashFn) type {
     });
 
     const ContainerType = struct {
-        const This = @This();
+        const Type = @This();
         pub const ContainerTreeViewDU = struct {
             pub const IViewDUResult = Parsed(@This());
             // BasicContainerTreeViewDU
@@ -147,7 +142,7 @@ pub fn createContainerType(comptime ST: type, hashFn: HashFn) type {
             nodes: []?*Node,
             allocator: Allocator,
             fields: FieldsTreeViewDU,
-            ssz_type: *const This,
+            ssz_type: *const Type,
 
             // TODO: commit(), hashTreeRoot(), serialize()
 
@@ -180,6 +175,10 @@ pub fn createContainerType(comptime ST: type, hashFn: HashFn) type {
             return *ContainerTreeViewDU;
         }
 
+        pub fn getViewDUResultType() type {
+            return ViewDUResult;
+        }
+
         /// public function for consumers
         /// TODO: ViewDUResult may not need an arena
         pub fn getViewDU(self: *const @This(), node: *Node) !ViewDUResult {
@@ -198,8 +197,6 @@ pub fn createContainerType(comptime ST: type, hashFn: HashFn) type {
         }
 
         /// recursive function
-        /// TODO: add self here to set ssz_type
-        /// init wrapped_viewdu_type with child's type instance
         pub fn allocateViewDU(self: *const @This(), arena_allocator: Allocator, node: *Node) !*ContainerTreeViewDU {
             var viewdu = try arena_allocator.create(ContainerTreeViewDU);
             viewdu.root_node = node;
@@ -211,11 +208,10 @@ pub fn createContainerType(comptime ST: type, hashFn: HashFn) type {
             viewdu.ssz_type = self;
             const baseViewDU: *BasicContainerTreeViewDU = @ptrCast(viewdu);
             inline for (new_viewdu_fields) |field| {
-                // this type is *wrapped_viewdu_type
-                const ptr_type = field.type;
-                const wrapped_viewdu_type = @typeInfo(ptr_type).Pointer.child;
                 const ssz_type = &@field(self.ssz_fields, field.name);
-                @field(viewdu.fields, field.name) = try wrapped_viewdu_type.init(arena_allocator, baseViewDU, ssz_type);
+                @field(viewdu.fields, field.name).ssz_type = ssz_type;
+                @field(viewdu.fields, field.name).parent = baseViewDU;
+                @field(viewdu.fields, field.name).value = null;
             }
 
             return viewdu;
@@ -634,8 +630,10 @@ test "basic ContainerType {x: uint, y:bool}" {
 
 test "ContainerType with embedded struct" {
     var allocator = std.testing.allocator;
+    var pool = try NodePool.init(allocator, 10);
+    defer pool.deinit();
     const UintType = @import("./uint.zig").createUintType(8);
-    const uintType = try UintType.init(null);
+    const uintType = try UintType.init(&pool);
     defer uintType.deinit();
     const SszType0 = struct {
         x: UintType,
@@ -646,7 +644,7 @@ test "ContainerType with embedded struct" {
     const containerType0 = try ContainerType0.init(allocator, SszType0{
         .x = uintType,
         .y = uintType,
-    }, null);
+    }, &pool);
     defer containerType0.deinit();
 
     const SszType1 = struct {
@@ -658,7 +656,7 @@ test "ContainerType with embedded struct" {
     var containerType1 = try ContainerType1.init(allocator, SszType1{
         .a = containerType0,
         .b = containerType0,
-    }, null);
+    }, &pool);
     defer containerType1.deinit();
 
     const a = ZigType0{ .x = 0xffffffffffffffff, .y = 0 };
@@ -667,13 +665,13 @@ test "ContainerType with embedded struct" {
     const size = containerType1.serializedSize(&obj);
     // a = 2 * 8 bytes, b = 2 * 8 bytes
     try expect(size == 32);
-    const bytes = try allocator.alloc(u8, size);
-    defer allocator.free(bytes);
+    const serialized_bytes = try allocator.alloc(u8, size);
+    defer allocator.free(serialized_bytes);
 
     // serialize + deserialize
-    _ = try containerType1.serializeToBytes(&obj, bytes);
+    _ = try containerType1.serializeToBytes(&obj, serialized_bytes);
     var obj2: ZigType1 = undefined;
-    _ = try containerType1.deserializeFromBytes(bytes, &obj2);
+    _ = try containerType1.deserializeFromBytes(serialized_bytes, &obj2);
     try expect(obj2.a.x == obj.a.x);
     try expect(obj2.a.y == obj.a.y);
     try expect(obj2.b.x == obj.b.x);
@@ -708,46 +706,50 @@ test "ContainerType with embedded struct" {
     try expect(containerType1.equals(&obj, parsed.value));
 
     // viewDU
-    var pool = try NodePool.init(allocator, 10);
-    defer pool.deinit();
-
-    // to be replaced by deserializeToViewDU()
-    var hash1: [32]u8 = [_]u8{0} ** 32;
-    hash1[0] = 11;
-    var hash2: [32]u8 = [_]u8{0} ** 32;
-    hash2[0] = 12;
-    var hash3: [32]u8 = [_]u8{0} ** 32;
-    hash3[0] = 21;
-    var hash4: [32]u8 = [_]u8{0} ** 32;
-    hash4[0] = 22;
-    const leaf1 = try pool.newLeaf(&hash1);
-    const leaf2 = try pool.newLeaf(&hash2);
-    const leaf3 = try pool.newLeaf(&hash3);
-    const leaf4 = try pool.newLeaf(&hash4);
-    const branch1 = try pool.newBranch(leaf1, leaf2);
-    const branch2 = try pool.newBranch(leaf3, leaf4);
-    const root_node = try pool.newBranch(branch1, branch2);
-    const viewdu_result = try containerType1.getViewDU(root_node);
+    const viewdu_result = try containerType1.deserializeToViewDU(serialized_bytes);
     defer viewdu_result.deinit();
-
     const viewdu = viewdu_result.value;
-    const a_view = try viewdu.fields.a.get();
-    try expect(try a_view.fields.x.get() == 11);
-    try expect(try a_view.fields.y.get() == 12);
 
-    const b_view = try viewdu.fields.b.get();
-    try expect(try b_view.fields.x.get() == 21);
-    try expect(try b_view.fields.y.get() == 22);
+    var a_view = try viewdu.fields.a.get();
+    try expect(try a_view.fields.x.get() == obj.a.x);
+    try expect(try a_view.fields.y.get() == obj.a.y);
+
+    var b_view = try viewdu.fields.b.get();
+    try expect(try b_view.fields.x.get() == obj.b.x);
+    try expect(try b_view.fields.y.get() == obj.b.y);
+
+    const viewdu_result_2 = try viewdu.clone();
+    defer viewdu_result_2.deinit();
+
+    a_view = try viewdu_result_2.value.fields.a.get();
+    try expect(try a_view.fields.x.get() == obj.a.x);
+    try expect(try a_view.fields.y.get() == obj.a.y);
+
+    b_view = try viewdu_result_2.value.fields.b.get();
+    try expect(try b_view.fields.x.get() == obj.b.x);
+    try expect(try b_view.fields.y.get() == obj.b.y);
 
     // better way, use ptrCast to provide better DX
     const WrappedViewDU = struct {
-        viewdu: ContainerType1.getViewDUType(),
+        viewdu_result: ContainerType1.getViewDUResultType(),
+
+        pub fn clone(self: *const @This()) !@This() {
+            const cloned = try self.viewdu_result.value.clone();
+            return .{
+                .viewdu_result = cloned,
+            };
+        }
+
+        pub fn deinit(self: *const @This()) void {
+            self.viewdu_result.deinit();
+        }
+
         pub fn getA(self: *const @This()) !ContainerType0.getViewDUType() {
-            return try self.viewdu.fields.a.get();
+            return try self.viewdu_result.value.fields.a.get();
         }
 
         pub fn getB(self: *const @This()) !ContainerType0.getViewDUType() {
-            return try self.viewdu.fields.b.get();
+            return try self.viewdu_result.value.fields.b.get();
         }
 
         pub fn getAX(self: *const @This()) !u64 {
@@ -771,11 +773,21 @@ test "ContainerType with embedded struct" {
         }
     };
 
-    const wrapped_viewdu: WrappedViewDU = .{ .viewdu = viewdu };
-    try expect(try wrapped_viewdu.getAX() == 11);
-    try expect(try wrapped_viewdu.getAY() == 12);
-    try expect(try wrapped_viewdu.getBX() == 21);
-    try expect(try wrapped_viewdu.getBY() == 22);
+    const wrapped_viewdu: WrappedViewDU = .{ .viewdu_result = viewdu_result };
+    // TODO: double deinit() causes segmentation fault
+    // defer wrapped_viewdu.deinit();
+    try expect(try wrapped_viewdu.getAX() == obj.a.x);
+    try expect(try wrapped_viewdu.getAY() == obj.a.y);
+    try expect(try wrapped_viewdu.getBX() == obj.b.x);
+    try expect(try wrapped_viewdu.getBY() == obj.b.y);
 
-    try pool.unref(root_node);
+    const wrapped_viewdu_2 = try wrapped_viewdu.clone();
+    defer wrapped_viewdu_2.deinit();
+
+    try expect(try wrapped_viewdu_2.getAX() == obj.a.x);
+    try expect(try wrapped_viewdu_2.getAY() == obj.a.y);
+    try expect(try wrapped_viewdu_2.getBX() == obj.b.x);
+    try expect(try wrapped_viewdu_2.getBY() == obj.b.y);
+
+    try pool.unref(viewdu.root_node);
 }
