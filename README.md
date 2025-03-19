@@ -13,11 +13,14 @@ This follows Typescript implementation of Lodestar team https://github.com/Chain
 
 ## Installation
 Clone the repository and build the project using Zig `git clone https://github.com/twoeths/ssz-z.git`
-- `zig build test:unit` to run all unit tests
-- `zig build test:int` to run all integration tests (tests across types)
-- `zig test --dep util -Mroot=src/hash/merkleize.zig  -Mutil=lib/hex.zig` run tests in merkleize.zig
-- `zig test --dep util --dep hash -Mroot=src/type/container.zig -Mutil=/Users/tuyennguyen/Projects/workshop/ssz-z/lib/hex.zig -Mhash=src/hash/merkleize.zig` to run tests in `src/type/container.zig`
-- `zig build test:unit --verbose` to see how to map modules
+- `cd packages/ssz && zig build test:unit` to run all unit tests
+- `cd packages/ssz && zig build test:lodestar` to run all lodestar tests
+- `cd packages/ssz && zig build test:int` to run all integration tests (tests across types)
+- `cd packages/persistent-merkle-tree && zig test --dep util -Mroot=src/merkleize.zig  -Mutil=../common/src/root.zig` run tests in merkleize.zig
+- `cd packages/ssz && zig test --dep util --dep persistent_merkle_tree -Mroot=src/type/container.zig -Mutil=../common/src/root.zig -Mpersistent_merkle_tree=../persistent-merkle-tree/src/root.zig` to run tests in `src/type/container.zig`
+- `zig build test:unit --verbose` to see how to map modules to run unit tests in a file
+- `cd packages/ssz && zig test --dep ssz --dep persistent_merkle_tree --dep util -Mroot=test/int/type/container.zig -Mutil=../common/src/root.zig -Mpersistent_merkle_tree=../persistent-merkle-tree/src/root.zig --dep util --dep persistent_merkle_tree -Mssz=src/root.zig` to run int tests in `test/int/type/container.zig`
+- `zig build test:int --verbose` to see how to map modules to run int tests in a file
 
 ## Tags
 

@@ -29,14 +29,14 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
-    const hash_module = b.createModule(.{
+    const merkle_tree_module = b.createModule(.{
         .root_source_file = b.path("../ssz/src/hash/root.zig"),
         .target = target,
         .optimize = optimize,
     });
 
     lib.root_module.addImport("util", common_module);
-    lib.root_module.addImport("hash", hash_module);
+    lib.root_module.addImport("persistent_merkle_tree", merkle_tree_module);
 
     // This declares intent for the library to be installed into the standard
     // location when the user invokes the "install" step (the default step when
@@ -60,7 +60,7 @@ pub fn build(b: *std.Build) void {
     });
 
     lib_unit_tests.root_module.addImport("util", common_module);
-    lib_unit_tests.root_module.addImport("hash", hash_module);
+    lib_unit_tests.root_module.addImport("persistent_merkle_tree", merkle_tree_module);
 
     const run_lib_unit_tests = b.addRunArtifact(lib_unit_tests);
 
@@ -70,11 +70,11 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
     ssz_module.addImport("util", common_module);
-    ssz_module.addImport("hash", hash_module);
+    ssz_module.addImport("persistent_merkle_tree", merkle_tree_module);
 
     // Similar to the run step above, this creates a test step in test folder
-    const run_lib_unit_valid_tests = addIntTest(b, target, optimize, common_module, hash_module, ssz_module);
-    const run_lodestar_tests = addLodestarTest(b, target, optimize, common_module, hash_module, ssz_module);
+    const run_lib_unit_valid_tests = addIntTest(b, target, optimize, common_module, merkle_tree_module, ssz_module);
+    const run_lodestar_tests = addLodestarTest(b, target, optimize, common_module, merkle_tree_module, ssz_module);
 
     const unit_test_hash_step = b.step("test:unit:hash", "Run hash unit tests");
     unit_test_hash_step.dependOn(&run_hash_unit_tests.step);
@@ -111,7 +111,7 @@ fn addTest(root_path: []const u8, b: *std.Build, target: std.Build.ResolvedTarge
     });
 
     lib_unit_valid_tests.root_module.addImport("util", common_module);
-    lib_unit_valid_tests.root_module.addImport("hash", hash_module);
+    lib_unit_valid_tests.root_module.addImport("persistent_merkle_tree", hash_module);
     lib_unit_valid_tests.root_module.addImport("ssz", ssz_module);
 
     const run_lib_unit_valid_tests = b.addRunArtifact(lib_unit_valid_tests);
