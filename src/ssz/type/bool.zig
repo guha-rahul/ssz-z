@@ -14,6 +14,9 @@ pub fn BoolType() type {
         }
 
         pub fn deserializeFromBytes(data: []const u8, out: *Type) !void {
+            if (data.len != 1) {
+                return error.InvalidSize;
+            }
             const byte = data[0];
             switch (byte) {
                 0 => out.* = false,
@@ -24,7 +27,7 @@ pub fn BoolType() type {
 
         pub fn validate(data: []const u8) !void {
             if (data.len != 1) {
-                return error.InvalidLength;
+                return error.InvalidSize;
             }
             switch (data[0]) {
                 0, 1 => {},

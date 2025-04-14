@@ -36,7 +36,7 @@ pub fn BitList(comptime limit: comptime_int) type {
         pub fn fromBoolSlice(allocator: std.mem.Allocator, bools: []const bool) !@This() {
             var bl = try @This().fromBitLen(allocator, bools.len);
             for (bools, 0..) |bit, i| {
-                try bl.set(i, bit);
+                try bl.set(allocator, i, bit);
             }
             return bl;
         }
@@ -68,10 +68,15 @@ pub fn BitList(comptime limit: comptime_int) type {
                 return error.tooLarge;
             }
 
+            const old_byte_len = self.data.items.len;
             const byte_len = std.math.divCeil(usize, bit_len, 8) catch unreachable;
             try self.data.ensureTotalCapacityPrecise(allocator, byte_len);
             self.data.items.len = byte_len;
             self.bit_len = bit_len;
+            // zero out additionally allocated bytes
+            if (old_byte_len < byte_len) {
+                @memset(self.data.items[old_byte_len..], 0);
+            }
         }
 
         /// Set bit value at index `bit_index`
@@ -107,6 +112,10 @@ pub fn BitList(comptime limit: comptime_int) type {
     };
 }
 
+pub fn isBitListType(ST: type) bool {
+    return ST.kind == .list and ST.Element.kind == .bool and ST.Type == BitList(ST.limit);
+}
+
 pub fn BitListType(comptime _limit: comptime_int) type {
     return struct {
         pub const kind = TypeKind.list;
@@ -130,19 +139,26 @@ pub fn BitListType(comptime _limit: comptime_int) type {
         }
 
         pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
-            const bit_len = value.bit_len + 1;
+            const bit_len = value.bit_len + 1; // + 1 for padding bit
             const byte_len = std.math.divCeil(usize, bit_len, 8) catch unreachable;
-            if (bit_len != 1) {
+            if (value.bit_len % 8 == 0) {
+                @memcpy(out[0 .. byte_len - 1], value.data.items);
+                // setting the byte in its entirety here
+                // ensures that a possibly uninitialized byte gets overridden entirely
+                out[byte_len - 1] = 1;
+            } else {
                 @memcpy(out[0..byte_len], value.data.items);
                 out[byte_len - 1] |= @as(u8, 1) << @intCast((bit_len - 1) % 8);
-            } else {
-                out[byte_len - 1] = @as(u8, 1) << @intCast((bit_len - 1) % 8);
             }
             return byte_len;
         }
 
         pub fn deserializeFromBytes(allocator: std.mem.Allocator, data: []const u8, out: *Type) !void {
-            // ensure 1 bit and trailing zeros in last byte
+            if (data.len == 0) {
+                return error.InvalidSize;
+            }
+
+            // ensure padding bit and trailing zeros in last byte
             const last_byte = data[data.len - 1];
 
             const last_byte_clz = @clz(last_byte);
@@ -160,10 +176,16 @@ pub fn BitListType(comptime _limit: comptime_int) type {
                 return;
             }
 
-            @memcpy(out.data.items, data);
+            // if the bit_len is a multiple of 8, we just copy one byte less
+            // and avoid removing the padding bit after
+            if (bit_len % 8 == 0) {
+                @memcpy(out.data.items, data[0 .. data.len - 1]);
+            } else {
+                @memcpy(out.data.items, data);
 
-            // remove padding bit
-            out.data.items[out.data.items.len - 1] ^= @as(u8, 1) << last_1_index;
+                // remove padding bit
+                out.data.items[out.data.items.len - 1] ^= @as(u8, 1) << last_1_index;
+            }
         }
 
         pub fn validate(data: []const u8) !void {

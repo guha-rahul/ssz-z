@@ -9,6 +9,9 @@ pub fn FixedVectorType(comptime ST: type, comptime _length: comptime_int) type {
         if (!isFixedType(ST)) {
             @compileError("ST must be fixed type");
         }
+        if (_length <= 0) {
+            @compileError("length must be greater than 0");
+        }
     }
     return struct {
         pub const kind = TypeKind.vector;
@@ -64,14 +67,17 @@ pub fn VariableVectorType(comptime ST: type, comptime _length: comptime_int) typ
         if (isFixedType(ST)) {
             @compileError("ST must not be fixed type");
         }
+        if (_length <= 0) {
+            @compileError("length must be greater than 0");
+        }
     }
     return struct {
         pub const kind = TypeKind.vector;
         pub const Element: type = ST;
         pub const length: usize = _length;
         pub const Type: type = [length]Element.Type;
-        pub const min_size: usize = Element.min_size * length;
-        pub const max_size: usize = Element.max_size * length;
+        pub const min_size: usize = Element.min_size * length + 4 * length;
+        pub const max_size: usize = Element.max_size * length + 4 * length;
         pub const chunk_count: usize = length;
 
         pub fn defaultValue(allocator: std.mem.Allocator) !Type {
@@ -86,14 +92,14 @@ pub fn VariableVectorType(comptime ST: type, comptime _length: comptime_int) typ
 
         pub fn serializedSize(value: *const Type) usize {
             var size: usize = 0;
-            for (value) |element| {
-                size += Element.serializedSize(element);
+            for (value) |*element| {
+                size += 4 + Element.serializedSize(element);
             }
             return size;
         }
 
         pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
-            var variable_index = value.items.len * 4;
+            var variable_index = length * 4;
             for (value, 0..) |element, i| {
                 // write offset
                 std.mem.writeInt(u32, out[i * 4 ..][0..4], @intCast(variable_index), .little);
@@ -106,13 +112,13 @@ pub fn VariableVectorType(comptime ST: type, comptime _length: comptime_int) typ
         pub fn deserializeFromBytes(allocator: std.mem.Allocator, data: []const u8, out: *Type) !void {
             const offsets = try readVariableOffsets(data);
             for (0..length) |i| {
-                try Element.deserializeFromBytes(allocator, data[offsets[i]..offsets[i + 1]], out[i]);
+                try Element.deserializeFromBytes(allocator, data[offsets[i]..offsets[i + 1]], &out[i]);
             }
         }
 
         pub fn readVariableOffsets(data: []const u8) ![length + 1]usize {
             var iterator = OffsetIterator(@This()).init(data);
-            var offsets: [length + 1]u8 = undefined;
+            var offsets: [length + 1]usize = undefined;
             for (0..length) |i| {
                 offsets[i] = try iterator.next();
             }

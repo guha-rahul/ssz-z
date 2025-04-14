@@ -69,6 +69,13 @@ pub fn maxChunksToDepth(n: usize) usize {
     return @intFromFloat(result);
 }
 
+pub fn mixInLength(len: usize, out: *[32]u8) !void {
+    var tmp: [64]u8 = [_]u8{0} ** 64;
+    @memcpy(tmp[0..32], out);
+    std.mem.writeInt(usize, tmp[32..][0..8], len, .little);
+    try sha256Hash(&tmp, out);
+}
+
 const rootToHex = @import("hex").rootToHex;
 const sha256Hash = @import("sha256.zig").sha256Hash;
 

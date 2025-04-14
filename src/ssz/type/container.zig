@@ -57,6 +57,9 @@ pub fn FixedContainerType(comptime ST: type) type {
         }
 
         pub fn deserializeFromBytes(data: []const u8, out: *Type) !void {
+            if (data.len != fixed_size) {
+                return error.InvalidSize;
+            }
             var i: usize = 0;
             inline for (fields) |field| {
                 try field.type.deserializeFromBytes(data[i .. i + field.type.fixed_size], &@field(out, field.name));
@@ -65,6 +68,9 @@ pub fn FixedContainerType(comptime ST: type) type {
         }
 
         pub fn validate(data: []const u8) !void {
+            if (data.len != fixed_size) {
+                return error.InvalidSize;
+            }
             var i: usize = 0;
             inline for (fields) |field| {
                 try field.type.validate(data[i .. i + field.type.fixed_size]);
@@ -132,8 +138,8 @@ pub fn VariableContainerType(comptime ST: type) type {
             _fixed_end += field.type.fixed_size;
             _fixed_count += 1;
         } else {
-            _min_size += field.type.min_size;
-            _max_size += field.type.max_size;
+            _min_size += field.type.min_size + 4;
+            _max_size += field.type.max_size + 4;
             _fixed_end += 4;
         }
 

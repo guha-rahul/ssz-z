@@ -1,5 +1,8 @@
 const ssz = @import("ssz");
 
+// the names of decls here must match the generic test subdirectories
+// (don't change the names)
+
 // basic_vector
 pub const vec_bool_1 = ssz.FixedVectorType(ssz.BoolType(), 1);
 pub const vec_bool_2 = ssz.FixedVectorType(ssz.BoolType(), 2);
@@ -81,52 +84,56 @@ pub const bitlist_5 = ssz.BitListType(5);
 pub const bitlist_8 = ssz.BitListType(8);
 pub const bitlist_16 = ssz.BitListType(16);
 pub const bitlist_31 = ssz.BitListType(31);
+pub const bitlist_32 = ssz.BitListType(32);
 pub const bitlist_512 = ssz.BitListType(512);
 pub const bitlist_513 = ssz.BitListType(513);
+pub const bitlist_no = ssz.BitListType(513);
 
 // bitvector
-pub const bitvector_1 = ssz.BitVectorType(1);
-pub const bitvector_2 = ssz.BitVectorType(2);
-pub const bitvector_3 = ssz.BitVectorType(3);
-pub const bitvector_4 = ssz.BitVectorType(4);
-pub const bitvector_5 = ssz.BitVectorType(5);
-pub const bitvector_8 = ssz.BitVectorType(8);
-pub const bitvector_16 = ssz.BitVectorType(16);
-pub const bitvector_31 = ssz.BitVectorType(31);
-pub const bitvector_512 = ssz.BitVectorType(512);
-pub const bitvector_513 = ssz.BitVectorType(513);
+pub const bitvec_1 = ssz.BitVectorType(1);
+pub const bitvec_2 = ssz.BitVectorType(2);
+pub const bitvec_3 = ssz.BitVectorType(3);
+pub const bitvec_4 = ssz.BitVectorType(4);
+pub const bitvec_5 = ssz.BitVectorType(5);
+pub const bitvec_8 = ssz.BitVectorType(8);
+pub const bitvec_9 = ssz.BitVectorType(9);
+pub const bitvec_16 = ssz.BitVectorType(16);
+pub const bitvec_31 = ssz.BitVectorType(31);
+pub const bitvec_32 = ssz.BitVectorType(32);
+pub const bitvec_512 = ssz.BitVectorType(512);
+pub const bitvec_513 = ssz.BitVectorType(513);
 
 // boolean
 pub const boolean = ssz.BoolType();
 
 // containers
-pub const single_field_test_struct = ssz.FixedContainerType(struct {
+pub const SingleFieldTestStruct = ssz.FixedContainerType(struct {
     A: ssz.UintType(8),
 });
-pub const small_test_struct = ssz.FixedContainerType(struct {
+pub const SmallTestStruct = ssz.FixedContainerType(struct {
     A: ssz.UintType(16),
     B: ssz.UintType(16),
 });
-pub const fixed_test_struct = ssz.FixedContainerType(struct {
+pub const FixedTestStruct = ssz.FixedContainerType(struct {
     A: ssz.UintType(8),
     B: ssz.UintType(64),
     C: ssz.UintType(32),
 });
-pub const var_test_struct = ssz.VariableContainerType(struct {
+pub const VarTestStruct = ssz.VariableContainerType(struct {
     A: ssz.UintType(16),
     B: ssz.FixedListType(ssz.UintType(16), 1024),
     C: ssz.UintType(8),
 });
-pub const complex_test_struct = ssz.VariableContainerType(struct {
+pub const ComplexTestStruct = ssz.VariableContainerType(struct {
     A: ssz.UintType(16),
     B: ssz.FixedListType(ssz.UintType(16), 128),
     C: ssz.UintType(8),
     D: ssz.ByteListType(256),
-    E: var_test_struct,
-    F: ssz.FixedVectorType(fixed_test_struct, 4),
-    G: ssz.VariableVectorType(var_test_struct, 2),
+    E: VarTestStruct,
+    F: ssz.FixedVectorType(FixedTestStruct, 4),
+    G: ssz.VariableVectorType(VarTestStruct, 2),
 });
-pub const bits_struct = ssz.VariableContainerType(struct {
+pub const BitsStruct = ssz.VariableContainerType(struct {
     A: ssz.BitListType(5),
     B: ssz.BitVectorType(2),
     C: ssz.BitVectorType(1),
@@ -135,9 +142,9 @@ pub const bits_struct = ssz.VariableContainerType(struct {
 });
 
 // uints
-pub const uint8 = ssz.UintType(8);
-pub const uint16 = ssz.UintType(16);
-pub const uint32 = ssz.UintType(32);
-pub const uint64 = ssz.UintType(64);
-pub const uint128 = ssz.UintType(128);
-pub const uint256 = ssz.UintType(256);
+pub const uint_8 = ssz.UintType(8);
+pub const uint_16 = ssz.UintType(16);
+pub const uint_32 = ssz.UintType(32);
+pub const uint_64 = ssz.UintType(64);
+pub const uint_128 = ssz.UintType(128);
+pub const uint_256 = ssz.UintType(256);

@@ -1,0 +1,193 @@
+const std = @import("std");
+const yaml = @import("yaml");
+const spec_test_options = @import("spec_test_options");
+const types = @import("generic_types.zig");
+const snappy = @import("snappy");
+const hex = @import("hex");
+const ssz = @import("ssz");
+
+const Allocator = std.mem.Allocator;
+
+pub fn parseYaml(comptime ST: type, allocator: Allocator, y: yaml.Yaml) !ST.Type {
+    if (comptime ssz.isBitVectorType(ST)) {
+        const bytes_buf = try allocator.alloc(u8, ST.byte_length + 2);
+        const yaml_bytes = try y.parse(allocator, []const u8);
+        const bytes = try hex.hexToBytes(bytes_buf, yaml_bytes);
+        return ST.Type{ .data = bytes[0..ST.byte_length].* };
+    } else if (comptime ssz.isBitListType(ST)) {
+        const bytes_buf = try allocator.alloc(u8, ((ST.limit + 7) / 8) + 2);
+        const yaml_bytes = try y.parse(allocator, []const u8);
+        const data = try hex.hexToBytes(bytes_buf, yaml_bytes);
+        // we need to find the padding bit to find the bit_len, and then remove it
+        // do this manually, otherwise we're testing the deserialization codepath against itself
+        const last_byte = data[data.len - 1];
+
+        const last_byte_clz = @clz(last_byte);
+        const last_1_index: u3 = @intCast(7 - last_byte_clz);
+        const bit_len = (data.len - 1) * 8 + last_1_index;
+        data[data.len - 1] ^= @as(u8, 1) << last_1_index;
+
+        var bl = try ST.Type.zero(allocator);
+        try bl.setBitLen(allocator, bit_len);
+        if (bit_len > 0) {
+            if (bit_len % 8 == 0) {
+                bl.data = std.ArrayListUnmanaged(u8).fromOwnedSlice(data[0 .. data.len - 1]);
+            } else {
+                bl.data = std.ArrayListUnmanaged(u8).fromOwnedSlice(data);
+            }
+        }
+
+        return bl;
+    } else if (ST.kind == .container) {
+        var out: ST.Type = if (comptime ssz.isFixedType(ST)) undefined else try ST.defaultValue(allocator);
+        const map = try y.docs.items[0].asMap();
+        inline for (ST.fields) |field| {
+            y.docs.items[0] = map.get(field.name).?;
+            @field(out, field.name) = try parseYaml(field.type, allocator, y);
+        }
+        return out;
+    } else if (ST.kind == .list) {
+        if (comptime ssz.isByteListType(ST)) {
+            const hex_bytes = try y.parse(allocator, []u8);
+            const bytes_buf = try allocator.alloc(u8, (hex_bytes.len - 2) / 2);
+            const bytes = try hex.hexToBytes(bytes_buf, hex_bytes);
+            return ST.Type.fromOwnedSlice(bytes);
+        } else if (comptime ssz.isBasicType(ST.Element)) {
+            return ST.Type.fromOwnedSlice(try y.parse(allocator, []ST.Element.Type));
+        } else {
+            const list = try y.docs.items[0].asList();
+            var out = try ST.Type.initCapacity(list.len);
+            out.expandToCapacity();
+            for (list, 0..) |v, i| {
+                y.docs.items[0] = v;
+                out.items[i] = try parseYaml(ST.Element, allocator, y);
+            }
+        }
+    } else if (ST.kind == .vector) {
+        if (comptime ssz.isByteVectorType(ST)) {
+            const hex_bytes = try y.parse(allocator, []u8);
+            const bytes_buf = try allocator.alloc(u8, (hex_bytes.len - 2) / 2);
+            const bytes = try hex.hexToBytes(bytes_buf, hex_bytes);
+            return ST.Type.fromOwnedSlice(bytes);
+        } else if (comptime ssz.isBasicType(ST.Element)) {
+            return try y.parse(allocator, ST.Type);
+        } else {
+            const list = try y.docs.items[0].asList();
+            var out: ST.Type = if (comptime ssz.isFixedType(ST)) undefined else try ST.defaultValue(allocator);
+            for (list, 0..) |v, i| {
+                y.docs.items[0] = v;
+                out[i] = try parseYaml(ST.Element, allocator, y);
+            }
+            return out;
+        }
+    } else return try y.parse(allocator, ST.Type);
+}
+
+pub fn validTestCase(comptime ST: type, gpa: Allocator, path: std.fs.Dir) !void {
+    var arena = std.heap.ArenaAllocator.init(gpa);
+    defer arena.deinit();
+    const allocator = arena.allocator();
+
+    // read expected root
+
+    const meta_file = try path.openFile("meta.yaml", .{});
+    defer meta_file.close();
+    const Meta = struct {
+        root: []const u8,
+    };
+    const meta_bytes = try meta_file.readToEndAlloc(allocator, 1_000);
+
+    var meta_yaml = yaml.Yaml{ .source = meta_bytes };
+    try meta_yaml.load(allocator);
+    const meta = try meta_yaml.parse(allocator, Meta);
+
+    const root_expected = try hex.hexToRoot(meta.root[0..66]);
+
+    // read expected value
+
+    const value_file = try path.openFile("value.yaml", .{});
+    defer value_file.close();
+    const value_bytes = try value_file.readToEndAlloc(allocator, 1_000_000);
+
+    var value_yaml = yaml.Yaml{ .source = value_bytes };
+    value_yaml.load(allocator) catch |e| {
+        value_yaml.parse_errors.renderToStdErr(.{ .ttyconf = .no_color });
+        return e;
+    };
+    const value_expected = try parseYaml(ST, allocator, value_yaml);
+
+    // read expected serialized
+
+    const serialized_file = try path.openFile("serialized.ssz_snappy", .{});
+    defer serialized_file.close();
+    const serialized_snappy_bytes = try serialized_file.readToEndAlloc(allocator, 1_000_000);
+
+    const serialized_buf = try allocator.alloc(u8, try snappy.uncompressedLength(serialized_snappy_bytes));
+    const serialized_len = try snappy.uncompress(serialized_snappy_bytes, serialized_buf);
+    const serialized_expected = serialized_buf[0..serialized_len];
+
+    // test serialization
+
+    const serialized_actual = try allocator.alloc(
+        u8,
+        if (comptime ssz.isFixedType(ST)) ST.fixed_size else ST.serializedSize(&value_expected),
+    );
+    const serialized_actual_size = ST.serializeIntoBytes(&value_expected, serialized_actual);
+    try std.testing.expectEqual(serialized_expected.len, serialized_actual_size);
+    try std.testing.expectEqualSlices(u8, serialized_expected, serialized_actual);
+
+    // test deserialization
+
+    var value_actual: ST.Type = if (comptime ssz.isFixedType(ST))
+        undefined
+    else
+        try ST.defaultValue(allocator);
+    if (comptime ssz.isFixedType(ST)) {
+        try ST.deserializeFromBytes(serialized_expected, &value_actual);
+    } else {
+        try ST.deserializeFromBytes(allocator, serialized_expected, &value_actual);
+    }
+    try std.testing.expectEqualDeep(value_expected, value_actual);
+
+    // test merkleization
+
+    const Hasher = ssz.Hasher(ST);
+    var hash_scratch: ssz.HasherData = if (comptime ssz.isBasicType(ST)) undefined else try Hasher.init(allocator);
+    var root_actual: [32]u8 = undefined;
+    try Hasher.hash(&hash_scratch, &value_expected, &root_actual);
+    try std.testing.expectEqualSlices(u8, &root_expected, &root_actual);
+}
+
+pub fn invalidTestCase(comptime ST: type, gpa: Allocator, path: std.fs.Dir) !void {
+    var arena = std.heap.ArenaAllocator.init(gpa);
+    defer arena.deinit();
+    const allocator = arena.allocator();
+
+    // read expected serialized
+
+    const serialized_file = try path.openFile("serialized.ssz_snappy", .{});
+    defer serialized_file.close();
+    const serialized_snappy_bytes = try serialized_file.readToEndAlloc(allocator, 1_000_000);
+
+    const serialized_buf = try allocator.alloc(u8, try snappy.uncompressedLength(serialized_snappy_bytes));
+    const serialized_len = try snappy.uncompress(serialized_snappy_bytes, serialized_buf);
+    const serialized_expected = serialized_buf[0..serialized_len];
+
+    // test deserialization
+
+    var value_actual: ST.Type = if (comptime ssz.isFixedType(ST))
+        undefined
+    else
+        try ST.defaultValue(allocator);
+
+    try std.testing.expectError(error.InvalidSSZ, deserialize(ST, allocator, serialized_expected, &value_actual));
+}
+
+// Wrap deserializeFromBytes with a single error type
+fn deserialize(comptime ST: type, allocator: Allocator, serialized_expected: []const u8, value_actual: anytype) !void {
+    if (comptime ssz.isFixedType(ST)) {
+        return ST.deserializeFromBytes(serialized_expected, value_actual) catch error.InvalidSSZ;
+    } else {
+        return ST.deserializeFromBytes(allocator, serialized_expected, value_actual) catch error.InvalidSSZ;
+    }
+}

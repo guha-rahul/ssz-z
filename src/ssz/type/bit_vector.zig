@@ -16,6 +16,14 @@ pub fn BitVector(comptime _length: comptime_int) type {
             };
         }
 
+        pub fn fromBoolArray(bools: [length]bool) !@This() {
+            var bv = init();
+            for (bools, 0..) |bit, i| {
+                try bv.set(i, bit);
+            }
+            return bv;
+        }
+
         pub fn get(self: *const @This(), bit_index: usize) !bool {
             if (bit_index >= length) {
                 return error.OutOfRange;
@@ -60,18 +68,28 @@ pub fn BitVector(comptime _length: comptime_int) type {
     };
 }
 
+pub fn isBitVectorType(ST: type) bool {
+    return ST.kind == .vector and ST.Element.kind == .bool and ST.Type == BitVector(ST.length);
+}
+
 pub fn BitVectorType(comptime _length: comptime_int) type {
+    comptime {
+        if (_length <= 0) {
+            @compileError("length must be greater than 0");
+        }
+    }
     return struct {
         pub const kind = TypeKind.vector;
         pub const Element: type = BoolType();
         pub const length: usize = _length;
+        pub const byte_length = std.math.divCeil(usize, length, 8) catch unreachable;
         pub const Type: type = BitVector(length);
-        pub const fixed_size: usize = std.math.divCeil(usize, length, 8) catch unreachable;
-        pub const chunk_count: usize = std.math.divCeil(usize, fixed_size, 32);
+        pub const fixed_size: usize = byte_length;
+        pub const chunk_count: usize = std.math.divCeil(usize, fixed_size, 32) catch unreachable;
 
         pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
-            @memcpy(out, &value.data);
-            return length;
+            @memcpy(out[0..byte_length], &value.data);
+            return byte_length;
         }
 
         pub fn deserializeFromBytes(data: []const u8, out: *Type) !void {
@@ -86,7 +104,7 @@ pub fn BitVectorType(comptime _length: comptime_int) type {
             }
 
             // ensure trailing zeros for non-byte-aligned lengths
-            if (length % 8 != 0 and @clz(data[fixed_size - 1]) >= @clz(@as(u8, length / 8))) {
+            if (length % 8 != 0 and @clz(data[fixed_size - 1]) < 8 - length % 8) {
                 return error.trailingData;
             }
         }
@@ -124,4 +142,9 @@ test "BitVectorType - sanity" {
     var b_buf: [Bits.fixed_size]u8 = undefined;
     _ = Bits.serializeIntoBytes(&b, &b_buf);
     try Bits.deserializeFromBytes(&b_buf, &b);
+}
+
+test {
+    std.debug.print("float {d}\n", .{3.14159565});
+    std.debug.print("int {d}\n", .{3});
 }

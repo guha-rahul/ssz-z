@@ -1,6 +1,7 @@
 const std = @import("std");
 
 const isBasicType = @import("type/type_kind.zig").isBasicType;
+const isBitListType = @import("type/bit_list.zig").isBitListType;
 const mt = @import("persistent-merkle-tree");
 
 pub fn Hasher(comptime ST: type) type {
@@ -20,16 +21,26 @@ pub fn Hasher(comptime ST: type) type {
                     }
                 },
                 .container => {
-                    const hasher_size = ((ST.max_chunk_count + 1) / 2) * 64;
-                    var children = try allocator.alloc(HasherData, ST.fields_len);
+                    const hasher_size = ((ST.chunk_count + 1) / 2) * 64;
+                    var children = try allocator.alloc(HasherData, ST.fields.len);
                     inline for (ST.fields, 0..) |field, i| {
-                        if (field.type.is_basic) {
+                        if (comptime isBasicType(field.type)) {
                             children[i] = try HasherData.initCapacity(allocator, 0, null);
                         } else {
                             children[i] = try Hasher(field.type).init(allocator);
                         }
                     }
                     return try HasherData.initCapacity(allocator, hasher_size, children);
+                },
+                .list => {
+                    const hasher_size = ((ST.chunk_count + 1) / 2) * 64;
+                    if (comptime isBasicType(ST.Element)) {
+                        return try HasherData.initCapacity(allocator, hasher_size, null);
+                    } else {
+                        var children = try allocator.alloc(HasherData, 1);
+                        children[0] = try Hasher(ST.Element).init(allocator);
+                        return try HasherData.initCapacity(allocator, hasher_size, children);
+                    }
                 },
                 else => unreachable,
             }
@@ -40,7 +51,7 @@ pub fn Hasher(comptime ST: type) type {
                 @memset(out, 0);
                 switch (ST.kind) {
                     .uint => {
-                        std.mem.writeInt(ST.Type, out[0..ST.size], value.*, .little);
+                        std.mem.writeInt(ST.Type, out[0..ST.fixed_size], value.*, .little);
                     },
                     .bool => {
                         out[0] = @intFromBool(value.*);
@@ -51,7 +62,9 @@ pub fn Hasher(comptime ST: type) type {
                 @memset(scratch.chunks.items, 0);
                 switch (ST.kind) {
                     .vector, .list => {
-                        if (isBasicType(ST.Element)) {
+                        if (comptime isBitListType(ST)) {
+                            @memcpy(scratch.chunks.items[0..value.data.items.len], value.data.items);
+                        } else if (comptime isBasicType(ST.Element)) {
                             _ = ST.serializeIntoBytes(value, scratch.chunks.items);
                         } else {
                             for (value, 0..) |element, i| {
@@ -70,14 +83,18 @@ pub fn Hasher(comptime ST: type) type {
                 try mt.merkleizeBlocksBytes(mt.sha256Hash, scratch.chunks.items, ST.chunk_count, out);
 
                 if (ST.kind == .list) {
-                    mt.mixInLength(value.len, out);
+                    if (ST.Element.kind == .bool) {
+                        try mt.mixInLength(value.bit_len, out);
+                    } else {
+                        try mt.mixInLength(value.items.len, out);
+                    }
                 }
             }
         }
     };
 }
 
-const HasherData = struct {
+pub const HasherData = struct {
     chunks: std.ArrayList(u8),
     children: ?[]HasherData,
 

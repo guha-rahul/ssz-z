@@ -4,7 +4,16 @@ const UintType = @import("uint.zig").UintType;
 const hexToBytes = @import("hex").hexToBytes;
 const hexByteLen = @import("hex").hexByteLen;
 
+pub fn isByteVectorType(ST: type) bool {
+    return ST.kind == .vector and ST.Element.kind == .uint and ST.Element.fixed_size == 1 and ST == ByteVectorType(ST.length);
+}
+
 pub fn ByteVectorType(comptime _length: comptime_int) type {
+    comptime {
+        if (_length <= 0) {
+            @compileError("length must be greater than 0");
+        }
+    }
     return struct {
         pub const kind = TypeKind.vector;
         pub const Element: type = UintType(8);

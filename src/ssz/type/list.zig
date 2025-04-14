@@ -110,7 +110,7 @@ pub fn VariableListType(comptime ST: type, comptime _limit: comptime_int) type {
         pub const limit: usize = _limit;
         pub const Type: type = std.ArrayListUnmanaged(Element.Type);
         pub const min_size: usize = 0;
-        pub const max_size: usize = Element.max_size * _limit;
+        pub const max_size: usize = Element.max_size * limit + 4 * limit;
         pub const chunk_count: usize = limit;
 
         pub fn defaultValue(allocator: std.mem.Allocator) !Type {
