@@ -15,7 +15,9 @@ comptime {
     std.debug.assert(@TypeOf(&sha256Hash) == HashFn);
 }
 
-pub fn sha256Hash(in: []const [32]u8, out: [][32]u8) HashError!void {
+pub const sha256Hash = hashtreeSha256Hash;
+
+pub fn stdSha256Hash(in: []const [32]u8, out: [][32]u8) HashError!void {
     if (in.len % 2 != 0) {
         return error.InvalidInput;
     }
@@ -28,6 +30,18 @@ pub fn sha256Hash(in: []const [32]u8, out: [][32]u8) HashError!void {
         // calling digest64Into is slow so call Sha256.hash() directly
         Sha256.hash(@ptrCast(in[i * 2 .. i * 2 + 2]), &out[i], .{});
     }
+}
+
+pub fn hashtreeSha256Hash(in: []const [32]u8, out: [][32]u8) HashError!void {
+    if (in.len % 2 != 0) {
+        return error.InvalidInput;
+    }
+
+    if (in.len != 2 * out.len) {
+        return error.InvalidInput;
+    }
+
+    @import("hashtree").hash(out, in);
 }
 
 test "digest64Into works correctly" {

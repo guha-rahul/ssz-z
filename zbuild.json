@@ -14,6 +14,9 @@
     },
     "yaml": {
       "url": "git+https://github.com/chainsafe/zig-yaml#e0e5962579e990a66c21424416c7ac092b20b772"
+    },
+    "hashtree": {
+      "url": "git+https://github.com/chainsafe/hashtree-z#197bd98ad7d72c29183ebea2a4f336b0e5c92da1"
     }
   },
   "write_files": {
@@ -31,6 +34,10 @@
     "build_options": {
       "zero_hash_max_depth": {
         "type": "usize"
+      },
+      "preset": {
+        "default": "minimal",
+        "type": "string"
       }
     },
     "spec_test_options": {
@@ -47,8 +54,8 @@
         "type": "string"
       },
       "spec_test_preset": {
-        "type": "string",
-        "default": "minimal"
+        "default": "minimal",
+        "type": "string"
       }
     }
   },
@@ -57,11 +64,20 @@
       "root_source_file": "src/hex.zig",
       "private": true
     },
-    "persistent-merkle-tree": {
-      "root_source_file": "src/persistent-merkle-tree/root.zig",
+    "hashing": {
+      "root_source_file": "src/hashing/root.zig",
       "imports": [
         "build_options",
-        "hex"
+        "hex",
+        "hashtree"
+      ]
+    },
+    "persistent_merkle_tree": {
+      "root_source_file": "src/persistent_merkle_tree/root.zig",
+      "imports": [
+        "build_options",
+        "hex",
+        "hashing"
       ]
     },
     "ssz": {
@@ -69,7 +85,7 @@
       "imports": [
         "build_options",
         "hex",
-        "persistent-merkle-tree"
+        "hashing"
       ]
     },
     "consensus_types": {
@@ -151,8 +167,7 @@
           "yaml"
         ]
       },
-      "filters": [
-      ]
+      "filters": []
     },
     "static_spec_tests": {
       "root_module": {
@@ -166,8 +181,7 @@
           "yaml"
         ]
       },
-      "filters": [
-      ]
+      "filters": []
     }
   }
 }

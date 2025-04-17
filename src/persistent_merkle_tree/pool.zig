@@ -8,7 +8,7 @@ const nm = @import("node.zig");
 const Node = nm.Node;
 const BranchNode = nm.BranchNode;
 const LeafNode = nm.LeafNode;
-const zh = @import("zero_hash.zig");
+const zh = @import("hashing");
 const Tree = @import("tree.zig").Tree;
 
 const LeafList = ArrayList(*Node);

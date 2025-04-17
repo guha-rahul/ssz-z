@@ -17,8 +17,6 @@ pub fn merkleize(chunks: [][32]u8, chunk_count: usize, out: *[32]u8) !void {
     const bit_len: usize = @sizeOf(usize) * 8 - @clz(chunk_count - 1);
     const layer_count: usize = @sizeOf(usize) * 8 - @clz(std.math.pow(usize, 2, bit_len) - 1);
 
-    // std.debug.print("chunk_count: {} bit_len: {} layer_count: {}\n", .{ chunk_count, bit_len, layer_count });
-
     if (chunks.len == 0) {
         @memcpy(out, try zh.getZeroHash(layer_count));
         return;

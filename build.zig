@@ -10,11 +10,15 @@ pub fn build(b: *std.Build) void {
 
     const dep_yaml = b.dependency("yaml", .{});
 
+    const dep_hashtree = b.dependency("hashtree", .{});
+
     const write_files_codegen = b.addWriteFiles();
 
     const options_build_options = b.addOptions();
     const option_zero_hash_max_depth = b.option(usize, "zero_hash_max_depth", "");
     options_build_options.addOption(?usize, "zero_hash_max_depth", option_zero_hash_max_depth);
+    const option_preset = b.option([]const u8, "preset", "") orelse "minimal";
+    options_build_options.addOption([]const u8, "preset", option_preset);
     const options_module_build_options = options_build_options.createModule();
 
     const options_spec_test_options = b.addOptions();
@@ -35,12 +39,19 @@ pub fn build(b: *std.Build) void {
     });
     b.modules.put(b.dupe("hex"), module_hex) catch @panic("OOM");
 
-    const @"module_persistent-merkle-tree" = b.createModule(.{
-        .root_source_file = b.path("src/persistent-merkle-tree/root.zig"),
+    const module_hashing = b.createModule(.{
+        .root_source_file = b.path("src/hashing/root.zig"),
         .target = target,
         .optimize = optimize,
     });
-    b.modules.put(b.dupe("persistent-merkle-tree"), @"module_persistent-merkle-tree") catch @panic("OOM");
+    b.modules.put(b.dupe("hashing"), module_hashing) catch @panic("OOM");
+
+    const module_persistent_merkle_tree = b.createModule(.{
+        .root_source_file = b.path("src/persistent_merkle_tree/root.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    b.modules.put(b.dupe("persistent_merkle_tree"), module_persistent_merkle_tree) catch @panic("OOM");
 
     const module_ssz = b.createModule(.{
         .root_source_file = b.path("src/ssz/root.zig"),
@@ -177,19 +188,33 @@ pub fn build(b: *std.Build) void {
     tls_run_test_hex.dependOn(&run_test_hex.step);
     tls_run_test.dependOn(&run_test_hex.step);
 
-    const @"test_persistent-merkle-tree" = b.addTest(.{
-        .name = "persistent-merkle-tree",
-        .root_module = @"module_persistent-merkle-tree",
+    const test_hashing = b.addTest(.{
+        .name = "hashing",
+        .root_module = module_hashing,
         .filters = &[_][]const u8{  },
     });
-    const @"install_test_persistent-merkle-tree" = b.addInstallArtifact(@"test_persistent-merkle-tree", .{});
-    const @"tls_install_test_persistent-merkle-tree" = b.step("build-test:persistent-merkle-tree", "Install the persistent-merkle-tree test");
-    @"tls_install_test_persistent-merkle-tree".dependOn(&@"install_test_persistent-merkle-tree".step);
+    const install_test_hashing = b.addInstallArtifact(test_hashing, .{});
+    const tls_install_test_hashing = b.step("build-test:hashing", "Install the hashing test");
+    tls_install_test_hashing.dependOn(&install_test_hashing.step);
 
-    const @"run_test_persistent-merkle-tree" = b.addRunArtifact(@"test_persistent-merkle-tree");
-    const @"tls_run_test_persistent-merkle-tree" = b.step("test:persistent-merkle-tree", "Run the persistent-merkle-tree test");
-    @"tls_run_test_persistent-merkle-tree".dependOn(&@"run_test_persistent-merkle-tree".step);
-    tls_run_test.dependOn(&@"run_test_persistent-merkle-tree".step);
+    const run_test_hashing = b.addRunArtifact(test_hashing);
+    const tls_run_test_hashing = b.step("test:hashing", "Run the hashing test");
+    tls_run_test_hashing.dependOn(&run_test_hashing.step);
+    tls_run_test.dependOn(&run_test_hashing.step);
+
+    const test_persistent_merkle_tree = b.addTest(.{
+        .name = "persistent_merkle_tree",
+        .root_module = module_persistent_merkle_tree,
+        .filters = &[_][]const u8{  },
+    });
+    const install_test_persistent_merkle_tree = b.addInstallArtifact(test_persistent_merkle_tree, .{});
+    const tls_install_test_persistent_merkle_tree = b.step("build-test:persistent_merkle_tree", "Install the persistent_merkle_tree test");
+    tls_install_test_persistent_merkle_tree.dependOn(&install_test_persistent_merkle_tree.step);
+
+    const run_test_persistent_merkle_tree = b.addRunArtifact(test_persistent_merkle_tree);
+    const tls_run_test_persistent_merkle_tree = b.step("test:persistent_merkle_tree", "Run the persistent_merkle_tree test");
+    tls_run_test_persistent_merkle_tree.dependOn(&run_test_persistent_merkle_tree.step);
+    tls_run_test.dependOn(&run_test_persistent_merkle_tree.step);
 
     const test_ssz = b.addTest(.{
         .name = "ssz",
@@ -375,12 +400,17 @@ pub fn build(b: *std.Build) void {
 
     _ = write_files_codegen.addCopyFile(run_exe_types_codegen.captureStdOut(), "types");
 
-    @"module_persistent-merkle-tree".addImport("build_options", options_module_build_options);
-    @"module_persistent-merkle-tree".addImport("hex", module_hex);
+    module_hashing.addImport("build_options", options_module_build_options);
+    module_hashing.addImport("hex", module_hex);
+    module_hashing.addImport("hashtree", dep_hashtree.module("hashtree"));
+
+    module_persistent_merkle_tree.addImport("build_options", options_module_build_options);
+    module_persistent_merkle_tree.addImport("hex", module_hex);
+    module_persistent_merkle_tree.addImport("hashing", module_hashing);
 
     module_ssz.addImport("build_options", options_module_build_options);
     module_ssz.addImport("hex", module_hex);
-    module_ssz.addImport("persistent-merkle-tree", @"module_persistent-merkle-tree");
+    module_ssz.addImport("hashing", module_hashing);
 
     module_consensus_types.addImport("ssz", module_ssz);
 

@@ -1,6 +1,6 @@
 const std = @import("std");
 const Allocator = std.mem.Allocator;
-const digest64Into = @import("sha256.zig").digest64Into;
+const digest64Into = @import("hashing").digest64Into;
 
 pub const NodeType = enum {
     Branch,

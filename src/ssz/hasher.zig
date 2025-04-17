@@ -2,7 +2,7 @@ const std = @import("std");
 
 const isBasicType = @import("type/type_kind.zig").isBasicType;
 const isBitListType = @import("type/bit_list.zig").isBitListType;
-const mt = @import("persistent-merkle-tree");
+const h = @import("hashing");
 
 pub fn Hasher(comptime ST: type) type {
     return struct {
@@ -77,11 +77,11 @@ pub fn Hasher(comptime ST: type) type {
                                 try Hasher(ST.Element).hash(&scratch.children.?[0], &element, &scratch.chunks.items[i]);
                             }
                         }
-                        try mt.merkleize(scratch.chunks.items, ST.max_chunk_count, out);
+                        try h.merkleize(scratch.chunks.items, ST.max_chunk_count, out);
                         if (ST.Element.kind == .bool) {
-                            mt.mixInLength(value.bit_len, out);
+                            h.mixInLength(value.bit_len, out);
                         } else {
-                            mt.mixInLength(value.items.len, out);
+                            h.mixInLength(value.items.len, out);
                         }
                     },
                     .vector => {
@@ -93,7 +93,7 @@ pub fn Hasher(comptime ST: type) type {
                                 try Hasher(ST.Element).hash(&scratch.children.?[0], &element, &scratch.chunks.items[i]);
                             }
                         }
-                        try mt.merkleize(scratch.chunks.items, ST.chunk_count, out);
+                        try h.merkleize(scratch.chunks.items, ST.chunk_count, out);
                     },
                     .container => {
                         @memset(scratch.chunks.items, [_]u8{0} ** 32);
@@ -101,7 +101,7 @@ pub fn Hasher(comptime ST: type) type {
                             const field_value = @field(value, field.name);
                             try Hasher(field.type).hash(&scratch.children.?[i], &field_value, &scratch.chunks.items[i]);
                         }
-                        try mt.merkleize(scratch.chunks.items, ST.chunk_count, out);
+                        try h.merkleize(scratch.chunks.items, ST.chunk_count, out);
                     },
                     else => unreachable,
                 }
