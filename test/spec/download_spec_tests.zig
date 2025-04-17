@@ -8,6 +8,7 @@ pub fn main() !void {
     const tests = &[_][]const u8{
         "general",
         "minimal",
+        "mainnet",
     };
     for (tests) |test_name| {
         try download_and_extract_spec_test(

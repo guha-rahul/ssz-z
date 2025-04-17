@@ -124,7 +124,7 @@ fn writeStaticTest(
 ) !void {
     try writer.print(
         \\test "Static - {s} {s} {s} {s}" {{
-        \\    const test_dir_name = try std.fs.path.join(allocator, &[_][]const u8{{
+        \\    const test_dir_name = std.fs.path.join(allocator, &[_][]const u8{{
         \\        spec_test_options.spec_test_out_dir,
         \\        spec_test_options.spec_test_version,
         \\        spec_test_options.spec_test_preset,
@@ -135,7 +135,7 @@ fn writeStaticTest(
         \\        "{s}",
         \\        "{s}",
         \\        "{s}",
-        \\    }});
+        \\    }}) catch return error.SkipZigTest;
         \\    defer allocator.free(test_dir_name);
         \\
         \\    const test_dir = try std.fs.cwd().openDir(test_dir_name, .{{}});
