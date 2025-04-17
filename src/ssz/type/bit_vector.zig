@@ -10,14 +10,12 @@ pub fn BitVector(comptime _length: comptime_int) type {
 
         pub const length = _length;
 
-        pub fn init() @This() {
-            return @This(){
-                .data = [_]u8{0} ** byte_len,
-            };
-        }
+        pub const empty: @This() = .{
+            .data = [_]u8{0} ** byte_len,
+        };
 
         pub fn fromBoolArray(bools: [length]bool) !@This() {
-            var bv = init();
+            var bv = empty;
             for (bools, 0..) |bit, i| {
                 try bv.set(i, bit);
             }
@@ -86,6 +84,8 @@ pub fn BitVectorType(comptime _length: comptime_int) type {
         pub const Type: type = BitVector(length);
         pub const fixed_size: usize = byte_length;
         pub const chunk_count: usize = std.math.divCeil(usize, fixed_size, 32) catch unreachable;
+
+        pub const default_value: Type = Type.empty;
 
         pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
             @memcpy(out[0..byte_length], &value.data);

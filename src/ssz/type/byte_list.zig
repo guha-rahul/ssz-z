@@ -9,6 +9,11 @@ pub fn isByteListType(ST: type) bool {
 }
 
 pub fn ByteListType(comptime _limit: comptime_int) type {
+    comptime {
+        if (_limit <= 0) {
+            @compileError("limit must be greater than 0");
+        }
+    }
     return struct {
         pub const kind = TypeKind.list;
         pub const Element: type = UintType(8);
@@ -16,14 +21,16 @@ pub fn ByteListType(comptime _limit: comptime_int) type {
         pub const Type: type = std.ArrayListUnmanaged(Element.Type);
         pub const min_size: usize = 0;
         pub const max_size: usize = Element.fixed_size * limit;
-        pub const chunk_count: usize = std.math.divCeil(usize, max_size, 32) catch unreachable;
+        pub const max_chunk_count: usize = std.math.divCeil(usize, max_size, 32) catch unreachable;
 
-        pub fn defaultValue(allocator: std.mem.Allocator) !Type {
-            return try Type.initCapacity(allocator, 0);
-        }
+        pub const default_value: Type = Type.empty;
 
         pub fn deinit(allocator: std.mem.Allocator, value: *Type) void {
             value.deinit(allocator);
+        }
+
+        pub fn chunkCount(value: *const Type) usize {
+            return (value.items.len + 31) / 32;
         }
 
         pub fn serializedSize(value: *const Type) usize {
@@ -33,6 +40,13 @@ pub fn ByteListType(comptime _limit: comptime_int) type {
         pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
             @memcpy(out[0..value.items.len], value.items);
             return value.items.len;
+        }
+
+        pub fn deserializedLength(data: []const u8) !usize {
+            if (data.len > limit) {
+                return error.gtLimit;
+            }
+            return data.len;
         }
 
         pub fn deserializeFromBytes(allocator: std.mem.Allocator, data: []const u8, out: *Type) !void {

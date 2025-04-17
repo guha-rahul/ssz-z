@@ -24,6 +24,8 @@ pub fn build(b: *std.Build) void {
     options_spec_test_options.addOption([]const u8, "spec_test_version", option_spec_test_version);
     const option_spec_test_out_dir = b.option([]const u8, "spec_test_out_dir", "") orelse "test/spec/spec_tests";
     options_spec_test_options.addOption([]const u8, "spec_test_out_dir", option_spec_test_out_dir);
+    const option_spec_test_preset = b.option([]const u8, "spec_test_preset", "") orelse "minimal";
+    options_spec_test_options.addOption([]const u8, "spec_test_preset", option_spec_test_preset);
     const options_module_spec_test_options = options_spec_test_options.createModule();
 
     const module_hex = b.createModule(.{
@@ -46,6 +48,13 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
     b.modules.put(b.dupe("ssz"), module_ssz) catch @panic("OOM");
+
+    const module_consensus_types = b.createModule(.{
+        .root_source_file = b.path("src/consensus_types/root.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    b.modules.put(b.dupe("consensus_types"), module_consensus_types) catch @panic("OOM");
 
     const module_types_codegen = b.createModule(.{
         .root_source_file = b.path("test/lodestar_types/root.zig"),
@@ -113,6 +122,28 @@ pub fn build(b: *std.Build) void {
     const tls_run_exe_write_generic_tests = b.step("run:write_generic_tests", "Run the write_generic_tests executable");
     tls_run_exe_write_generic_tests.dependOn(&run_exe_write_generic_tests.step);
 
+    const module_write_static_tests = b.createModule(.{
+        .root_source_file = b.path("test/spec/write_static_tests.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    b.modules.put(b.dupe("write_static_tests"), module_write_static_tests) catch @panic("OOM");
+
+    const exe_write_static_tests = b.addExecutable(.{
+        .name = "write_static_tests",
+        .root_module = module_write_static_tests,
+    });
+
+    const install_exe_write_static_tests = b.addInstallArtifact(exe_write_static_tests, .{});
+    const tls_install_exe_write_static_tests = b.step("build-exe:write_static_tests", "Install the write_static_tests executable");
+    tls_install_exe_write_static_tests.dependOn(&install_exe_write_static_tests.step);
+    b.getInstallStep().dependOn(&install_exe_write_static_tests.step);
+
+    const run_exe_write_static_tests = b.addRunArtifact(exe_write_static_tests);
+    if (b.args) |args| run_exe_write_static_tests.addArgs(args);
+    const tls_run_exe_write_static_tests = b.step("run:write_static_tests", "Run the write_static_tests executable");
+    tls_run_exe_write_static_tests.dependOn(&run_exe_write_static_tests.step);
+
     const module_types = b.createModule(.{
         .root_source_file = write_files_codegen.getDirectory().path(b, "types"),
         .target = target,
@@ -174,6 +205,20 @@ pub fn build(b: *std.Build) void {
     tls_run_test_ssz.dependOn(&run_test_ssz.step);
     tls_run_test.dependOn(&run_test_ssz.step);
 
+    const test_consensus_types = b.addTest(.{
+        .name = "consensus_types",
+        .root_module = module_consensus_types,
+        .filters = &[_][]const u8{  },
+    });
+    const install_test_consensus_types = b.addInstallArtifact(test_consensus_types, .{});
+    const tls_install_test_consensus_types = b.step("build-test:consensus_types", "Install the consensus_types test");
+    tls_install_test_consensus_types.dependOn(&install_test_consensus_types.step);
+
+    const run_test_consensus_types = b.addRunArtifact(test_consensus_types);
+    const tls_run_test_consensus_types = b.step("test:consensus_types", "Run the consensus_types test");
+    tls_run_test_consensus_types.dependOn(&run_test_consensus_types.step);
+    tls_run_test.dependOn(&run_test_consensus_types.step);
+
     const test_types_codegen = b.addTest(.{
         .name = "types_codegen",
         .root_module = module_types_codegen,
@@ -215,6 +260,20 @@ pub fn build(b: *std.Build) void {
     const tls_run_test_write_generic_tests = b.step("test:write_generic_tests", "Run the write_generic_tests test");
     tls_run_test_write_generic_tests.dependOn(&run_test_write_generic_tests.step);
     tls_run_test.dependOn(&run_test_write_generic_tests.step);
+
+    const test_write_static_tests = b.addTest(.{
+        .name = "write_static_tests",
+        .root_module = module_write_static_tests,
+        .filters = &[_][]const u8{  },
+    });
+    const install_test_write_static_tests = b.addInstallArtifact(test_write_static_tests, .{});
+    const tls_install_test_write_static_tests = b.step("build-test:write_static_tests", "Install the write_static_tests test");
+    tls_install_test_write_static_tests.dependOn(&install_test_write_static_tests.step);
+
+    const run_test_write_static_tests = b.addRunArtifact(test_write_static_tests);
+    const tls_run_test_write_static_tests = b.step("test:write_static_tests", "Run the write_static_tests test");
+    tls_run_test_write_static_tests.dependOn(&run_test_write_static_tests.step);
+    tls_run_test.dependOn(&run_test_write_static_tests.step);
 
     const test_types = b.addTest(.{
         .name = "types",
@@ -272,26 +331,47 @@ pub fn build(b: *std.Build) void {
     tls_run_test_lodestar_types.dependOn(&run_test_lodestar_types.step);
     tls_run_test.dependOn(&run_test_lodestar_types.step);
 
-    const module_spec_tests = b.createModule(.{
+    const module_generic_spec_tests = b.createModule(.{
         .root_source_file = b.path("test/spec/generic_tests.zig"),
         .target = target,
         .optimize = optimize,
     });
-    b.modules.put(b.dupe("spec_tests"), module_spec_tests) catch @panic("OOM");
+    b.modules.put(b.dupe("generic_spec_tests"), module_generic_spec_tests) catch @panic("OOM");
 
-    const test_spec_tests = b.addTest(.{
-        .name = "spec_tests",
-        .root_module = module_spec_tests,
-        .filters = &[_][]const u8{ "Valid" },
+    const test_generic_spec_tests = b.addTest(.{
+        .name = "generic_spec_tests",
+        .root_module = module_generic_spec_tests,
+        .filters = &[_][]const u8{  },
     });
-    const install_test_spec_tests = b.addInstallArtifact(test_spec_tests, .{});
-    const tls_install_test_spec_tests = b.step("build-test:spec_tests", "Install the spec_tests test");
-    tls_install_test_spec_tests.dependOn(&install_test_spec_tests.step);
+    const install_test_generic_spec_tests = b.addInstallArtifact(test_generic_spec_tests, .{});
+    const tls_install_test_generic_spec_tests = b.step("build-test:generic_spec_tests", "Install the generic_spec_tests test");
+    tls_install_test_generic_spec_tests.dependOn(&install_test_generic_spec_tests.step);
 
-    const run_test_spec_tests = b.addRunArtifact(test_spec_tests);
-    const tls_run_test_spec_tests = b.step("test:spec_tests", "Run the spec_tests test");
-    tls_run_test_spec_tests.dependOn(&run_test_spec_tests.step);
-    tls_run_test.dependOn(&run_test_spec_tests.step);
+    const run_test_generic_spec_tests = b.addRunArtifact(test_generic_spec_tests);
+    const tls_run_test_generic_spec_tests = b.step("test:generic_spec_tests", "Run the generic_spec_tests test");
+    tls_run_test_generic_spec_tests.dependOn(&run_test_generic_spec_tests.step);
+    tls_run_test.dependOn(&run_test_generic_spec_tests.step);
+
+    const module_static_spec_tests = b.createModule(.{
+        .root_source_file = b.path("test/spec/static_tests.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    b.modules.put(b.dupe("static_spec_tests"), module_static_spec_tests) catch @panic("OOM");
+
+    const test_static_spec_tests = b.addTest(.{
+        .name = "static_spec_tests",
+        .root_module = module_static_spec_tests,
+        .filters = &[_][]const u8{  },
+    });
+    const install_test_static_spec_tests = b.addInstallArtifact(test_static_spec_tests, .{});
+    const tls_install_test_static_spec_tests = b.step("build-test:static_spec_tests", "Install the static_spec_tests test");
+    tls_install_test_static_spec_tests.dependOn(&install_test_static_spec_tests.step);
+
+    const run_test_static_spec_tests = b.addRunArtifact(test_static_spec_tests);
+    const tls_run_test_static_spec_tests = b.step("test:static_spec_tests", "Run the static_spec_tests test");
+    tls_run_test_static_spec_tests.dependOn(&run_test_static_spec_tests.step);
+    tls_run_test.dependOn(&run_test_static_spec_tests.step);
 
     _ = write_files_codegen.addCopyFile(run_exe_types_codegen.captureStdOut(), "types");
 
@@ -302,21 +382,32 @@ pub fn build(b: *std.Build) void {
     module_ssz.addImport("hex", module_hex);
     module_ssz.addImport("persistent-merkle-tree", @"module_persistent-merkle-tree");
 
+    module_consensus_types.addImport("ssz", module_ssz);
+
     module_types_codegen.addImport("ssz", module_ssz);
 
     module_download_spec_tests.addImport("spec_test_options", options_module_spec_test_options);
 
     module_write_generic_tests.addImport("spec_test_options", options_module_spec_test_options);
 
+    module_write_static_tests.addImport("spec_test_options", options_module_spec_test_options);
+
     module_int.addImport("hex", module_hex);
     module_int.addImport("ssz", module_ssz);
 
     module_lodestar_types.addImport("ssz", module_ssz);
 
-    module_spec_tests.addImport("hex", module_hex);
-    module_spec_tests.addImport("snappy", dep_snappy.module("snappy"));
-    module_spec_tests.addImport("ssz", module_ssz);
-    module_spec_tests.addImport("spec_test_options", options_module_spec_test_options);
-    module_spec_tests.addImport("yaml", dep_yaml.module("yaml"));
+    module_generic_spec_tests.addImport("hex", module_hex);
+    module_generic_spec_tests.addImport("snappy", dep_snappy.module("snappy"));
+    module_generic_spec_tests.addImport("ssz", module_ssz);
+    module_generic_spec_tests.addImport("spec_test_options", options_module_spec_test_options);
+    module_generic_spec_tests.addImport("yaml", dep_yaml.module("yaml"));
+
+    module_static_spec_tests.addImport("hex", module_hex);
+    module_static_spec_tests.addImport("snappy", dep_snappy.module("snappy"));
+    module_static_spec_tests.addImport("ssz", module_ssz);
+    module_static_spec_tests.addImport("spec_test_options", options_module_spec_test_options);
+    module_static_spec_tests.addImport("consensus_types", module_consensus_types);
+    module_static_spec_tests.addImport("yaml", dep_yaml.module("yaml"));
 
 }

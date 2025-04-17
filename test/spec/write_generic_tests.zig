@@ -141,7 +141,7 @@ fn writeValidTest(
         \\    defer allocator.free(test_dir_name);
         \\
         \\    const test_dir = try std.fs.cwd().openDir(test_dir_name, .{{}});
-        \\    try test_case.validTestCase(types.{s}, allocator, test_dir);
+        \\    try test_case.validTestCase(types.{s}, allocator, test_dir, "meta.yaml");
         \\}}
         \\
         \\

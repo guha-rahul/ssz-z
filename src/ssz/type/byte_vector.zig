@@ -22,6 +22,8 @@ pub fn ByteVectorType(comptime _length: comptime_int) type {
         pub const fixed_size: usize = Element.fixed_size * length;
         pub const chunk_count: usize = std.math.divCeil(usize, fixed_size, 32) catch unreachable;
 
+        pub const default_value: Type = [_]Element.Type{Element.default_value} ** length;
+
         pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
             @memcpy(out[0..fixed_size], value);
             return length;

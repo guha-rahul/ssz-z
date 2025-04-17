@@ -9,6 +9,9 @@ pub fn FixedListType(comptime ST: type, comptime _limit: comptime_int) type {
         if (!isFixedType(ST)) {
             @compileError("ST must be fixed type");
         }
+        if (_limit <= 0) {
+            @compileError("limit must be greater than 0");
+        }
     }
     return struct {
         pub const kind = TypeKind.list;
@@ -17,14 +20,18 @@ pub fn FixedListType(comptime ST: type, comptime _limit: comptime_int) type {
         pub const Type: type = std.ArrayListUnmanaged(Element.Type);
         pub const min_size: usize = 0;
         pub const max_size: usize = Element.fixed_size * limit;
-        pub const chunk_count: usize = if (isBasicType(Element)) std.math.divCeil(usize, max_size, 32) catch unreachable else limit;
+        pub const max_chunk_count: usize = if (isBasicType(Element)) std.math.divCeil(usize, max_size, 32) catch unreachable else limit;
 
-        pub fn defaultValue(allocator: std.mem.Allocator) !Type {
-            return try Type.initCapacity(allocator, 0);
-        }
+        pub const default_value: Type = Type.empty;
 
         pub fn deinit(allocator: std.mem.Allocator, value: *Type) void {
             value.deinit(allocator);
+        }
+
+        pub fn chunkCount(value: *const Type) usize {
+            if (comptime isBasicType(Element)) {
+                return (Element.fixed_size * value.items.len + 31) / 32;
+            } else return value.items.len;
         }
 
         pub fn serializedSize(value: *const Type) usize {
@@ -55,6 +62,7 @@ pub fn FixedListType(comptime ST: type, comptime _limit: comptime_int) type {
 
             try out.ensureTotalCapacityPrecise(allocator, len);
             out.items.len = len;
+            @memset(out.items[0..len], Element.default_value);
             for (0..len) |i| {
                 try Element.deserializeFromBytes(
                     data[i * Element.fixed_size .. (i + 1) * Element.fixed_size],
@@ -103,6 +111,9 @@ pub fn VariableListType(comptime ST: type, comptime _limit: comptime_int) type {
         if (isFixedType(ST)) {
             @compileError("ST must not be fixed type");
         }
+        if (_limit <= 0) {
+            @compileError("limit must be greater than 0");
+        }
     }
     return struct {
         pub const kind = TypeKind.list;
@@ -111,14 +122,16 @@ pub fn VariableListType(comptime ST: type, comptime _limit: comptime_int) type {
         pub const Type: type = std.ArrayListUnmanaged(Element.Type);
         pub const min_size: usize = 0;
         pub const max_size: usize = Element.max_size * limit + 4 * limit;
-        pub const chunk_count: usize = limit;
+        pub const max_chunk_count: usize = limit;
 
-        pub fn defaultValue(allocator: std.mem.Allocator) !Type {
-            return try Type.initCapacity(allocator, 0);
-        }
+        pub const default_value: Type = Type.empty;
 
         pub fn deinit(allocator: std.mem.Allocator, value: *Type) void {
             value.deinit(allocator);
+        }
+
+        pub fn chunkCount(value: *const Type) usize {
+            return value.items.len;
         }
 
         pub fn serializedSize(value: *const Type) usize {
@@ -155,14 +168,19 @@ pub fn VariableListType(comptime ST: type, comptime _limit: comptime_int) type {
 
             try out.ensureTotalCapacityPrecise(allocator, len);
             out.items.len = len;
+            @memset(out.items[0..len], Element.default_value);
             for (0..len) |i| {
-                try Element.deserializeFromBytes(allocator, data[offsets[i]..offsets[i + 1]], &out.items[i]);
+                try Element.deserializeFromBytes(
+                    allocator,
+                    data[offsets[i]..offsets[i + 1]],
+                    &out.items[i],
+                );
             }
         }
 
         pub fn readVariableOffsets(allocator: std.mem.Allocator, data: []const u8) ![]u32 {
             var iterator = OffsetIterator(@This()).init(data);
-            const first_offset = try iterator.next();
+            const first_offset = if (data.len == 0) 0 else try iterator.next();
             const len = first_offset / 4;
 
             const offsets = try allocator.alloc(u32, len + 1);

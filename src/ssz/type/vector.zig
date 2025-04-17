@@ -21,6 +21,8 @@ pub fn FixedVectorType(comptime ST: type, comptime _length: comptime_int) type {
         pub const fixed_size: usize = Element.fixed_size * length;
         pub const chunk_count: usize = if (isBasicType(Element)) std.math.divCeil(usize, fixed_size, 32) catch unreachable else length;
 
+        pub const default_value: Type = [_]Element.Type{Element.default_value} ** length;
+
         pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
             var i: usize = 0;
             for (value) |element| {
@@ -80,9 +82,7 @@ pub fn VariableVectorType(comptime ST: type, comptime _length: comptime_int) typ
         pub const max_size: usize = Element.max_size * length + 4 * length;
         pub const chunk_count: usize = length;
 
-        pub fn defaultValue(allocator: std.mem.Allocator) !Type {
-            return [_]Element.Type{try Element.defaultValue(allocator)} ** length;
-        }
+        pub const default_value: Type = [_]Element.Type{Element.default_value} ** length;
 
         pub fn deinit(allocator: std.mem.Allocator, value: *Type) void {
             for (value) |element| {

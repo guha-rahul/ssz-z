@@ -15,8 +15,8 @@ comptime {
     std.debug.assert(@TypeOf(&sha256Hash) == HashFn);
 }
 
-pub fn sha256Hash(in: []const u8, out: []u8) HashError!void {
-    if (in.len % 64 != 0) {
+pub fn sha256Hash(in: []const [32]u8, out: [][32]u8) HashError!void {
+    if (in.len % 2 != 0) {
         return error.InvalidInput;
     }
 
@@ -24,10 +24,9 @@ pub fn sha256Hash(in: []const u8, out: []u8) HashError!void {
         return error.InvalidInput;
     }
 
-    for (0..in.len / 64) |i| {
+    for (0..in.len / 2) |i| {
         // calling digest64Into is slow so call Sha256.hash() directly
-        const chunkOut: *[32]u8 = @constCast(@ptrCast(out[i * 32 .. (i + 1) * 32]));
-        Sha256.hash(in[i * 64 .. (i + 1) * 64], chunkOut, .{});
+        Sha256.hash(@ptrCast(in[i * 2 .. i * 2 + 2]), &out[i], .{});
     }
 }
 
@@ -46,13 +45,18 @@ test "digest64Into works correctly" {
 }
 
 test "hashInto" {
-    const in = [_]u8{1} ** 128;
-    var out: [64]u8 = undefined;
+    const in = [_][32]u8{[_]u8{1} ** 32} ** 4;
+    var out: [2][32]u8 = undefined;
     try sha256Hash(&in, &out);
     // std.debug.print("@@@ out: {any}\n", .{out});
     var out2: [32]u8 = undefined;
-    digest64Into(in[0..32], in[32..64], &out2);
+    digest64Into(&in[0], &in[2], &out2);
     // std.debug.print("@@@ out2: {any}\n", .{out2});
-    try std.testing.expectEqualSlices(u8, &out2, out[0..32]);
-    try std.testing.expectEqualSlices(u8, &out2, out[32..64]);
+    try std.testing.expectEqualSlices(u8, &out2, &out[0]);
+    try std.testing.expectEqualSlices(u8, &out2, &out[1]);
 }
+
+// test {
+//     for (0..50) |i|
+//         std.debug.print("({})={}\n", .{ i, (@sizeOf(usize) * 8) - @clz(i) });
+// }

@@ -13,7 +13,7 @@
       "url": "git+https://github.com/chainsafe/snappy#7f30207aadbf9509b51ce9e0d4cdb7ae83a2a86e"
     },
     "yaml": {
-      "url": "git+https://github.com/chainsafe/zig-yaml#cd98c719c712c9fc96a61976cf923bbcb9a45e14"
+      "url": "git+https://github.com/chainsafe/zig-yaml#e0e5962579e990a66c21424416c7ac092b20b772"
     }
   },
   "write_files": {
@@ -45,6 +45,10 @@
       "spec_test_out_dir": {
         "default": "test/spec/spec_tests",
         "type": "string"
+      },
+      "spec_test_preset": {
+        "type": "string",
+        "default": "minimal"
       }
     }
   },
@@ -66,6 +70,12 @@
         "build_options",
         "hex",
         "persistent-merkle-tree"
+      ]
+    },
+    "consensus_types": {
+      "root_source_file": "src/consensus_types/root.zig",
+      "imports": [
+        "ssz"
       ]
     }
   },
@@ -89,6 +99,14 @@
     "write_generic_tests": {
       "root_module": {
         "root_source_file": "test/spec/write_generic_tests.zig",
+        "imports": [
+          "spec_test_options"
+        ]
+      }
+    },
+    "write_static_tests": {
+      "root_module": {
+        "root_source_file": "test/spec/write_static_tests.zig",
         "imports": [
           "spec_test_options"
         ]
@@ -122,7 +140,7 @@
       },
       "filters": []
     },
-    "spec_tests": {
+    "generic_spec_tests": {
       "root_module": {
         "root_source_file": "test/spec/generic_tests.zig",
         "imports": [
@@ -130,6 +148,21 @@
           "snappy",
           "ssz",
           "spec_test_options",
+          "yaml"
+        ]
+      },
+      "filters": [
+      ]
+    },
+    "static_spec_tests": {
+      "root_module": {
+        "root_source_file": "test/spec/static_tests.zig",
+        "imports": [
+          "hex",
+          "snappy",
+          "ssz",
+          "spec_test_options",
+          "consensus_types",
           "yaml"
         ]
       },

@@ -27,7 +27,7 @@ pub fn parseYaml(comptime ST: type, allocator: Allocator, y: yaml.Yaml) !ST.Type
         const bit_len = (data.len - 1) * 8 + last_1_index;
         data[data.len - 1] ^= @as(u8, 1) << last_1_index;
 
-        var bl = try ST.Type.zero(allocator);
+        var bl = ST.default_value;
         try bl.setBitLen(allocator, bit_len);
         if (bit_len > 0) {
             if (bit_len % 8 == 0) {
@@ -39,7 +39,7 @@ pub fn parseYaml(comptime ST: type, allocator: Allocator, y: yaml.Yaml) !ST.Type
 
         return bl;
     } else if (ST.kind == .container) {
-        var out: ST.Type = if (comptime ssz.isFixedType(ST)) undefined else try ST.defaultValue(allocator);
+        var out = ST.default_value;
         const map = try y.docs.items[0].asMap();
         inline for (ST.fields) |field| {
             y.docs.items[0] = map.get(field.name).?;
@@ -56,24 +56,25 @@ pub fn parseYaml(comptime ST: type, allocator: Allocator, y: yaml.Yaml) !ST.Type
             return ST.Type.fromOwnedSlice(try y.parse(allocator, []ST.Element.Type));
         } else {
             const list = try y.docs.items[0].asList();
-            var out = try ST.Type.initCapacity(list.len);
+            var out = try ST.Type.initCapacity(allocator, list.len);
             out.expandToCapacity();
             for (list, 0..) |v, i| {
                 y.docs.items[0] = v;
                 out.items[i] = try parseYaml(ST.Element, allocator, y);
             }
+            return out;
         }
     } else if (ST.kind == .vector) {
         if (comptime ssz.isByteVectorType(ST)) {
             const hex_bytes = try y.parse(allocator, []u8);
             const bytes_buf = try allocator.alloc(u8, (hex_bytes.len - 2) / 2);
             const bytes = try hex.hexToBytes(bytes_buf, hex_bytes);
-            return ST.Type.fromOwnedSlice(bytes);
+            return bytes[0..ST.fixed_size].*;
         } else if (comptime ssz.isBasicType(ST.Element)) {
             return try y.parse(allocator, ST.Type);
         } else {
             const list = try y.docs.items[0].asList();
-            var out: ST.Type = if (comptime ssz.isFixedType(ST)) undefined else try ST.defaultValue(allocator);
+            var out = ST.default_value;
             for (list, 0..) |v, i| {
                 y.docs.items[0] = v;
                 out[i] = try parseYaml(ST.Element, allocator, y);
@@ -83,14 +84,14 @@ pub fn parseYaml(comptime ST: type, allocator: Allocator, y: yaml.Yaml) !ST.Type
     } else return try y.parse(allocator, ST.Type);
 }
 
-pub fn validTestCase(comptime ST: type, gpa: Allocator, path: std.fs.Dir) !void {
+pub fn validTestCase(comptime ST: type, gpa: Allocator, path: std.fs.Dir, meta_file_name: []const u8) !void {
     var arena = std.heap.ArenaAllocator.init(gpa);
     defer arena.deinit();
     const allocator = arena.allocator();
 
     // read expected root
 
-    const meta_file = try path.openFile("meta.yaml", .{});
+    const meta_file = try path.openFile(meta_file_name, .{});
     defer meta_file.close();
     const Meta = struct {
         root: []const u8,
@@ -138,10 +139,8 @@ pub fn validTestCase(comptime ST: type, gpa: Allocator, path: std.fs.Dir) !void 
 
     // test deserialization
 
-    var value_actual: ST.Type = if (comptime ssz.isFixedType(ST))
-        undefined
-    else
-        try ST.defaultValue(allocator);
+    var value_actual = ST.default_value;
+
     if (comptime ssz.isFixedType(ST)) {
         try ST.deserializeFromBytes(serialized_expected, &value_actual);
     } else {
@@ -175,10 +174,7 @@ pub fn invalidTestCase(comptime ST: type, gpa: Allocator, path: std.fs.Dir) !voi
 
     // test deserialization
 
-    var value_actual: ST.Type = if (comptime ssz.isFixedType(ST))
-        undefined
-    else
-        try ST.defaultValue(allocator);
+    var value_actual = ST.default_value;
 
     try std.testing.expectError(error.InvalidSSZ, deserialize(ST, allocator, serialized_expected, &value_actual));
 }

@@ -9,13 +9,10 @@ pub fn BitList(comptime limit: comptime_int) type {
         data: std.ArrayListUnmanaged(u8),
         bit_len: usize,
 
-        pub fn zero(allocator: std.mem.Allocator) !@This() {
-            const data = try std.ArrayListUnmanaged(u8).initCapacity(allocator, 0);
-            return @This(){
-                .data = data,
-                .bit_len = 0,
-            };
-        }
+        pub const empty: @This() = .{
+            .data = std.ArrayListUnmanaged(u8).empty,
+            .bit_len = 0,
+        };
 
         pub fn fromBitLen(allocator: std.mem.Allocator, bit_len: usize) !@This() {
             if (bit_len > limit) {
@@ -68,7 +65,7 @@ pub fn BitList(comptime limit: comptime_int) type {
                 return error.tooLarge;
             }
 
-            const old_byte_len = self.data.items.len;
+            const old_byte_len = std.math.divCeil(usize, self.bit_len, 8) catch unreachable;
             const byte_len = std.math.divCeil(usize, bit_len, 8) catch unreachable;
             try self.data.ensureTotalCapacityPrecise(allocator, byte_len);
             self.data.items.len = byte_len;
@@ -117,6 +114,11 @@ pub fn isBitListType(ST: type) bool {
 }
 
 pub fn BitListType(comptime _limit: comptime_int) type {
+    comptime {
+        if (_limit <= 0) {
+            @compileError("limit must be greater than 0");
+        }
+    }
     return struct {
         pub const kind = TypeKind.list;
         pub const Element: type = BoolType();
@@ -124,14 +126,16 @@ pub fn BitListType(comptime _limit: comptime_int) type {
         pub const Type: type = BitList(limit);
         pub const min_size: usize = 1;
         pub const max_size: usize = std.math.divCeil(usize, limit + 1, 8) catch unreachable;
-        pub const chunk_count: usize = std.math.divCeil(usize, limit, 256) catch unreachable;
+        pub const max_chunk_count: usize = std.math.divCeil(usize, limit, 256) catch unreachable;
 
-        pub fn defaultValue(allocator: std.mem.Allocator) !Type {
-            return try Type.zero(allocator);
-        }
+        pub const default_value: Type = Type.empty;
 
         pub fn deinit(allocator: std.mem.Allocator, value: *Type) void {
             value.data.deinit(allocator);
+        }
+
+        pub fn chunkCount(value: *const Type) usize {
+            return (value.bit_len + 255) / 256;
         }
 
         pub fn serializedSize(value: *const Type) usize {

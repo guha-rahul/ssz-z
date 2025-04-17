@@ -7,8 +7,8 @@
     .minimum_zig_version = "0.14.0",
     .dependencies = .{
         .yaml = .{
-            .url = "git+https://github.com/chainsafe/zig-yaml#cd98c719c712c9fc96a61976cf923bbcb9a45e14",
-            .hash = "zig_yaml-0.1.0-C1161jSNAgCHd0qznl78aCb4r53NFl7VcO5_Yj7jKgv3",
+            .url = "git+https://github.com/chainsafe/zig-yaml#e0e5962579e990a66c21424416c7ac092b20b772",
+            .hash = "zig_yaml-0.1.0-C1161m2NAgDhth5OvjG1o1UNKcdo-XNfO82m10J1g4Cl",
         },
         .snappy = .{
             .url = "git+https://github.com/chainsafe/snappy#7f30207aadbf9509b51ce9e0d4cdb7ae83a2a86e",

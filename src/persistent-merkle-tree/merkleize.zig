@@ -2,56 +2,47 @@ const std = @import("std");
 const zh = @import("zero_hash.zig");
 const HashError = @import("hash_fn.zig").HashError;
 const HashFn = @import("hash_fn.zig").HashFn;
+const sha256Hash = @import("sha256.zig").sha256Hash;
+const digest64Into = @import("sha256.zig").digest64Into;
 
-pub fn merkleizeBlocksBytes(hashFn: HashFn, data: []u8, chunk_count: usize, out: *[32]u8) !void {
-    if (chunk_count < 1) {
+pub fn merkleize(chunks: [][32]u8, chunk_count: usize, out: *[32]u8) !void {
+    if (chunk_count == 0) {
         return error.InvalidInput;
     }
 
-    // Compute log2 and store it as f64
-    const chunk_count_f64: f64 = @floatFromInt(chunk_count);
-    const temp_f64 = std.math.log2(chunk_count_f64);
+    if (chunks.len == 1 and chunk_count == 1) {
+        @memcpy(out, &chunks[0]);
+        return;
+    }
+    const bit_len: usize = @sizeOf(usize) * 8 - @clz(chunk_count - 1);
+    const layer_count: usize = @sizeOf(usize) * 8 - @clz(std.math.pow(usize, 2, bit_len) - 1);
 
-    // Cast the result of ceil to usize using @intCast
-    const layer_count_f64 = @ceil(temp_f64);
-    const layer_count: usize = @intFromFloat(layer_count_f64);
+    // std.debug.print("chunk_count: {} bit_len: {} layer_count: {}\n", .{ chunk_count, bit_len, layer_count });
 
-    if (data.len == 0) {
-        const hash = try zh.getZeroHash(layer_count);
-        std.mem.copyForwards(u8, &out.*, &hash.*);
+    if (chunks.len == 0) {
+        @memcpy(out, try zh.getZeroHash(layer_count));
         return;
     }
 
-    if (data.len % 32 != 0) {
-        return error.InvalidInput;
-    }
-
-    if (chunk_count > 0 and data.len % 64 != 0) {
+    if (chunks.len % 2 != 0) {
         return error.InvalidInput;
     }
 
     // hash into the same buffer
-    var buffer_in = data;
-    var output_len = data.len / 2;
-    var input_len = data.len;
-
+    var buf = chunks;
     for (0..layer_count) |i| {
-        const buffer_out = data[0..output_len];
-        try hashFn(buffer_in, buffer_out);
-        const layer_chunk_count = buffer_out.len / 32;
-        if (layer_chunk_count % 2 == 1 and i < layer_count - 1) {
-            // extend to 1 more chunk
-            input_len = output_len + 32;
-            buffer_in = data[0..(output_len + 32)];
-            std.mem.copyForwards(u8, buffer_in[(buffer_in.len - 32)..], try zh.getZeroHash(i + 1));
-        } else {
-            buffer_in = buffer_out;
-            input_len = output_len;
+        if (buf.len % 2 == 1) {
+            buf.len += 1;
+            @memcpy(&buf[buf.len - 1], try zh.getZeroHash(i));
         }
-        output_len = input_len / 2;
+
+        const buf_out = buf[0 .. buf.len / 2];
+        try sha256Hash(buf, buf_out);
+
+        buf = buf_out;
     }
 
-    std.mem.copyForwards(u8, out, buffer_in[0..32]);
+    std.mem.copyForwards(u8, out, &buf[0]);
 }
 
 /// Given maxChunkCount return the chunkDepth
@@ -69,17 +60,14 @@ pub fn maxChunksToDepth(n: usize) usize {
     return @intFromFloat(result);
 }
 
-pub fn mixInLength(len: usize, out: *[32]u8) !void {
-    var tmp: [64]u8 = [_]u8{0} ** 64;
-    @memcpy(tmp[0..32], out);
-    std.mem.writeInt(usize, tmp[32..][0..8], len, .little);
-    try sha256Hash(&tmp, out);
+pub fn mixInLength(len: u256, out: *[32]u8) void {
+    var tmp: [32]u8 = undefined;
+    std.mem.writeInt(u256, &tmp, len, .little);
+    digest64Into(out, &tmp, out);
 }
 
 const rootToHex = @import("hex").rootToHex;
-const sha256Hash = @import("sha256.zig").sha256Hash;
-
-test "merkleizeBlocksBytes" {
+test "merkleize" {
     const TestCase = struct {
         chunk_count: usize,
         expected: []const u8,
@@ -99,30 +87,22 @@ test "merkleizeBlocksBytes" {
     };
 
     inline for (test_cases) |tc| {
-        const chunk_count = if (tc.chunk_count >= 1) tc.chunk_count else 1;
+        const chunk_count = if (tc.chunk_count % 2 == 1 and tc.chunk_count != 1) tc.chunk_count + 1 else tc.chunk_count;
+        const total_chunk_count = if (tc.chunk_count == 0) 1 else tc.chunk_count;
 
         const expected = tc.expected;
         var chunks = [_][32]u8{[_]u8{0} ** 32} ** chunk_count;
         for (&chunks, 0..) |*chunk, i| {
+            if (i >= tc.chunk_count) break;
             for (chunk) |*b| {
                 b.* = @intCast(i);
             }
         }
 
-        const chunk_with_pad = if (chunk_count % 2 == 1) chunk_count + 1 else chunk_count;
-        var all_data = [_]u8{0} ** (32 * chunk_with_pad);
-        concatChunks(&chunks, &all_data);
-
         var output: [32]u8 = undefined;
-        try merkleizeBlocksBytes(sha256Hash, &all_data, chunk_count, &output);
+        try merkleize(&chunks, total_chunk_count, &output);
         const hex = try rootToHex(&output);
         try std.testing.expectEqualSlices(u8, expected, &hex);
-    }
-}
-
-fn concatChunks(chunks: []const [32]u8, out: []u8) void {
-    for (chunks, 0..) |chunk, i| {
-        std.mem.copyForwards(u8, out[i * 32 .. (i + 1) * 32], &chunk);
     }
 }
 

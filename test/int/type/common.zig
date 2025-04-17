@@ -45,7 +45,7 @@ pub fn typeTest(comptime ST: type) type {
                 try ST.deserializeFromJson(&scanner, &json_value);
             } else {
                 // deserialize
-                var value = try ST.defaultValue(allocator);
+                var value = ST.default_value;
                 defer ST.deinit(allocator, &value);
 
                 try ST.deserializeFromBytes(allocator, serialized, &value);
@@ -64,7 +64,7 @@ pub fn typeTest(comptime ST: type) type {
                 // try std.testing.expectEqualSlices(u8, tc.rootHex, rootHex);
 
                 // deserialize from json
-                var json_value = try ST.defaultValue(allocator);
+                var json_value = ST.default_value;
                 defer ST.deinit(allocator, &json_value);
 
                 var scanner = std.json.Scanner.initCompleteInput(allocator, tc.json);

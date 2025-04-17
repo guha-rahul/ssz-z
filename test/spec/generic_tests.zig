@@ -21,7 +21,7 @@ test "Valid - uint_256_random_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_256, allocator, test_dir);
+    try test_case.validTestCase(types.uint_256, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_128_zero" {
@@ -36,7 +36,7 @@ test "Valid - uint_128_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_128, allocator, test_dir);
+    try test_case.validTestCase(types.uint_128, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_16_random_0" {
@@ -51,7 +51,7 @@ test "Valid - uint_16_random_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_16, allocator, test_dir);
+    try test_case.validTestCase(types.uint_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_8_random_3" {
@@ -66,7 +66,7 @@ test "Valid - uint_8_random_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_8, allocator, test_dir);
+    try test_case.validTestCase(types.uint_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_32_random_0" {
@@ -81,7 +81,7 @@ test "Valid - uint_32_random_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_32, allocator, test_dir);
+    try test_case.validTestCase(types.uint_32, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_8_random_2" {
@@ -96,7 +96,7 @@ test "Valid - uint_8_random_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_8, allocator, test_dir);
+    try test_case.validTestCase(types.uint_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_128_random_3" {
@@ -111,7 +111,7 @@ test "Valid - uint_128_random_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_128, allocator, test_dir);
+    try test_case.validTestCase(types.uint_128, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_8_random_1" {
@@ -126,7 +126,7 @@ test "Valid - uint_8_random_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_8, allocator, test_dir);
+    try test_case.validTestCase(types.uint_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_32_last_byte_empty" {
@@ -141,7 +141,7 @@ test "Valid - uint_32_last_byte_empty" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_32, allocator, test_dir);
+    try test_case.validTestCase(types.uint_32, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_128_last_byte_empty" {
@@ -156,7 +156,7 @@ test "Valid - uint_128_last_byte_empty" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_128, allocator, test_dir);
+    try test_case.validTestCase(types.uint_128, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_256_random_0" {
@@ -171,7 +171,7 @@ test "Valid - uint_256_random_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_256, allocator, test_dir);
+    try test_case.validTestCase(types.uint_256, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_16_last_byte_empty" {
@@ -186,7 +186,7 @@ test "Valid - uint_16_last_byte_empty" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_16, allocator, test_dir);
+    try test_case.validTestCase(types.uint_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_64_random_3" {
@@ -201,7 +201,7 @@ test "Valid - uint_64_random_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_64, allocator, test_dir);
+    try test_case.validTestCase(types.uint_64, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_32_random_4" {
@@ -216,7 +216,7 @@ test "Valid - uint_32_random_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_32, allocator, test_dir);
+    try test_case.validTestCase(types.uint_32, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_16_random_3" {
@@ -231,7 +231,7 @@ test "Valid - uint_16_random_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_16, allocator, test_dir);
+    try test_case.validTestCase(types.uint_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_32_random_1" {
@@ -246,7 +246,7 @@ test "Valid - uint_32_random_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_32, allocator, test_dir);
+    try test_case.validTestCase(types.uint_32, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_256_random_2" {
@@ -261,7 +261,7 @@ test "Valid - uint_256_random_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_256, allocator, test_dir);
+    try test_case.validTestCase(types.uint_256, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_8_max" {
@@ -276,7 +276,7 @@ test "Valid - uint_8_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_8, allocator, test_dir);
+    try test_case.validTestCase(types.uint_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_8_last_byte_empty" {
@@ -291,7 +291,7 @@ test "Valid - uint_8_last_byte_empty" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_8, allocator, test_dir);
+    try test_case.validTestCase(types.uint_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_256_random_3" {
@@ -306,7 +306,7 @@ test "Valid - uint_256_random_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_256, allocator, test_dir);
+    try test_case.validTestCase(types.uint_256, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_32_zero" {
@@ -321,7 +321,7 @@ test "Valid - uint_32_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_32, allocator, test_dir);
+    try test_case.validTestCase(types.uint_32, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_128_random_0" {
@@ -336,7 +336,7 @@ test "Valid - uint_128_random_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_128, allocator, test_dir);
+    try test_case.validTestCase(types.uint_128, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_128_max" {
@@ -351,7 +351,7 @@ test "Valid - uint_128_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_128, allocator, test_dir);
+    try test_case.validTestCase(types.uint_128, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_16_random_1" {
@@ -366,7 +366,7 @@ test "Valid - uint_16_random_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_16, allocator, test_dir);
+    try test_case.validTestCase(types.uint_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_16_zero" {
@@ -381,7 +381,7 @@ test "Valid - uint_16_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_16, allocator, test_dir);
+    try test_case.validTestCase(types.uint_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_64_max" {
@@ -396,7 +396,7 @@ test "Valid - uint_64_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_64, allocator, test_dir);
+    try test_case.validTestCase(types.uint_64, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_32_max" {
@@ -411,7 +411,7 @@ test "Valid - uint_32_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_32, allocator, test_dir);
+    try test_case.validTestCase(types.uint_32, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_16_random_2" {
@@ -426,7 +426,7 @@ test "Valid - uint_16_random_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_16, allocator, test_dir);
+    try test_case.validTestCase(types.uint_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_128_random_2" {
@@ -441,7 +441,7 @@ test "Valid - uint_128_random_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_128, allocator, test_dir);
+    try test_case.validTestCase(types.uint_128, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_64_last_byte_empty" {
@@ -456,7 +456,7 @@ test "Valid - uint_64_last_byte_empty" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_64, allocator, test_dir);
+    try test_case.validTestCase(types.uint_64, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_32_random_3" {
@@ -471,7 +471,7 @@ test "Valid - uint_32_random_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_32, allocator, test_dir);
+    try test_case.validTestCase(types.uint_32, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_256_last_byte_empty" {
@@ -486,7 +486,7 @@ test "Valid - uint_256_last_byte_empty" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_256, allocator, test_dir);
+    try test_case.validTestCase(types.uint_256, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_64_random_4" {
@@ -501,7 +501,7 @@ test "Valid - uint_64_random_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_64, allocator, test_dir);
+    try test_case.validTestCase(types.uint_64, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_8_zero" {
@@ -516,7 +516,7 @@ test "Valid - uint_8_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_8, allocator, test_dir);
+    try test_case.validTestCase(types.uint_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_8_random_0" {
@@ -531,7 +531,7 @@ test "Valid - uint_8_random_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_8, allocator, test_dir);
+    try test_case.validTestCase(types.uint_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_256_max" {
@@ -546,7 +546,7 @@ test "Valid - uint_256_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_256, allocator, test_dir);
+    try test_case.validTestCase(types.uint_256, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_64_zero" {
@@ -561,7 +561,7 @@ test "Valid - uint_64_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_64, allocator, test_dir);
+    try test_case.validTestCase(types.uint_64, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_32_random_2" {
@@ -576,7 +576,7 @@ test "Valid - uint_32_random_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_32, allocator, test_dir);
+    try test_case.validTestCase(types.uint_32, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_64_random_2" {
@@ -591,7 +591,7 @@ test "Valid - uint_64_random_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_64, allocator, test_dir);
+    try test_case.validTestCase(types.uint_64, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_64_random_0" {
@@ -606,7 +606,7 @@ test "Valid - uint_64_random_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_64, allocator, test_dir);
+    try test_case.validTestCase(types.uint_64, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_128_random_4" {
@@ -621,7 +621,7 @@ test "Valid - uint_128_random_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_128, allocator, test_dir);
+    try test_case.validTestCase(types.uint_128, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_256_random_4" {
@@ -636,7 +636,7 @@ test "Valid - uint_256_random_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_256, allocator, test_dir);
+    try test_case.validTestCase(types.uint_256, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_64_random_1" {
@@ -651,7 +651,7 @@ test "Valid - uint_64_random_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_64, allocator, test_dir);
+    try test_case.validTestCase(types.uint_64, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_8_random_4" {
@@ -666,7 +666,7 @@ test "Valid - uint_8_random_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_8, allocator, test_dir);
+    try test_case.validTestCase(types.uint_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_16_max" {
@@ -681,7 +681,7 @@ test "Valid - uint_16_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_16, allocator, test_dir);
+    try test_case.validTestCase(types.uint_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_256_zero" {
@@ -696,7 +696,7 @@ test "Valid - uint_256_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_256, allocator, test_dir);
+    try test_case.validTestCase(types.uint_256, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_128_random_1" {
@@ -711,7 +711,7 @@ test "Valid - uint_128_random_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_128, allocator, test_dir);
+    try test_case.validTestCase(types.uint_128, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - uint_16_random_4" {
@@ -726,7 +726,7 @@ test "Valid - uint_16_random_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.uint_16, allocator, test_dir);
+    try test_case.validTestCase(types.uint_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Invalid - uint_16_one_too_high" {
@@ -1011,7 +1011,7 @@ test "Valid - vec_uint8_16_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint8_16, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint8_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint32_4_zero" {
@@ -1026,7 +1026,7 @@ test "Valid - vec_uint32_4_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint32_4, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint32_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint64_4_random" {
@@ -1041,7 +1041,7 @@ test "Valid - vec_uint64_4_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint64_4, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint64_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint16_3_random" {
@@ -1056,7 +1056,7 @@ test "Valid - vec_uint16_3_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint16_3, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint16_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint8_2_zero" {
@@ -1071,7 +1071,7 @@ test "Valid - vec_uint8_2_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint8_2, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint8_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint16_5_max" {
@@ -1086,7 +1086,7 @@ test "Valid - vec_uint16_5_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint16_5, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint16_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_bool_8_zero" {
@@ -1101,7 +1101,7 @@ test "Valid - vec_bool_8_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_bool_8, allocator, test_dir);
+    try test_case.validTestCase(types.vec_bool_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint64_513_random" {
@@ -1116,7 +1116,7 @@ test "Valid - vec_uint64_513_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint64_513, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint64_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_bool_1_zero" {
@@ -1131,7 +1131,7 @@ test "Valid - vec_bool_1_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_bool_1, allocator, test_dir);
+    try test_case.validTestCase(types.vec_bool_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint32_513_max" {
@@ -1146,7 +1146,7 @@ test "Valid - vec_uint32_513_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint32_513, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint32_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_bool_513_max" {
@@ -1161,7 +1161,7 @@ test "Valid - vec_bool_513_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_bool_513, allocator, test_dir);
+    try test_case.validTestCase(types.vec_bool_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint64_3_zero" {
@@ -1176,7 +1176,7 @@ test "Valid - vec_uint64_3_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint64_3, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint64_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint8_2_max" {
@@ -1191,7 +1191,7 @@ test "Valid - vec_uint8_2_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint8_2, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint8_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint256_1_random" {
@@ -1206,7 +1206,7 @@ test "Valid - vec_uint256_1_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint256_1, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint256_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint16_2_zero" {
@@ -1221,7 +1221,7 @@ test "Valid - vec_uint16_2_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint16_2, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint16_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint128_1_zero" {
@@ -1236,7 +1236,7 @@ test "Valid - vec_uint128_1_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint128_1, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint128_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint8_8_max" {
@@ -1251,7 +1251,7 @@ test "Valid - vec_uint8_8_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint8_8, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint8_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint8_3_zero" {
@@ -1266,7 +1266,7 @@ test "Valid - vec_uint8_3_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint8_3, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint8_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint32_16_random" {
@@ -1281,7 +1281,7 @@ test "Valid - vec_uint32_16_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint32_16, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint32_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint16_513_max" {
@@ -1296,7 +1296,7 @@ test "Valid - vec_uint16_513_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint16_513, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint16_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint8_16_random" {
@@ -1311,7 +1311,7 @@ test "Valid - vec_uint8_16_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint8_16, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint8_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint64_31_zero" {
@@ -1326,7 +1326,7 @@ test "Valid - vec_uint64_31_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint64_31, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint64_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint64_2_zero" {
@@ -1341,7 +1341,7 @@ test "Valid - vec_uint64_2_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint64_2, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint64_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint8_8_random" {
@@ -1356,7 +1356,7 @@ test "Valid - vec_uint8_8_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint8_8, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint8_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint32_2_max" {
@@ -1371,7 +1371,7 @@ test "Valid - vec_uint32_2_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint32_2, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint32_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint256_513_random" {
@@ -1386,7 +1386,7 @@ test "Valid - vec_uint256_513_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint256_513, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint256_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint128_8_max" {
@@ -1401,7 +1401,7 @@ test "Valid - vec_uint128_8_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint128_8, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint128_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint32_31_zero" {
@@ -1416,7 +1416,7 @@ test "Valid - vec_uint32_31_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint32_31, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint32_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint64_512_random" {
@@ -1431,7 +1431,7 @@ test "Valid - vec_uint64_512_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint64_512, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint64_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint128_2_max" {
@@ -1446,7 +1446,7 @@ test "Valid - vec_uint128_2_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint128_2, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint128_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_bool_512_max" {
@@ -1461,7 +1461,7 @@ test "Valid - vec_bool_512_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_bool_512, allocator, test_dir);
+    try test_case.validTestCase(types.vec_bool_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint32_8_max" {
@@ -1476,7 +1476,7 @@ test "Valid - vec_uint32_8_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint32_8, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint32_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint32_512_random" {
@@ -1491,7 +1491,7 @@ test "Valid - vec_uint32_512_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint32_512, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint32_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint16_4_max" {
@@ -1506,7 +1506,7 @@ test "Valid - vec_uint16_4_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint16_4, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint16_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint16_513_zero" {
@@ -1521,7 +1521,7 @@ test "Valid - vec_uint16_513_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint16_513, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint16_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint32_513_random" {
@@ -1536,7 +1536,7 @@ test "Valid - vec_uint32_513_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint32_513, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint32_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_bool_4_zero" {
@@ -1551,7 +1551,7 @@ test "Valid - vec_bool_4_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_bool_4, allocator, test_dir);
+    try test_case.validTestCase(types.vec_bool_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint128_16_max" {
@@ -1566,7 +1566,7 @@ test "Valid - vec_uint128_16_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint128_16, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint128_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_bool_8_max" {
@@ -1581,7 +1581,7 @@ test "Valid - vec_bool_8_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_bool_8, allocator, test_dir);
+    try test_case.validTestCase(types.vec_bool_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint64_512_zero" {
@@ -1596,7 +1596,7 @@ test "Valid - vec_uint64_512_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint64_512, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint64_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint256_512_zero" {
@@ -1611,7 +1611,7 @@ test "Valid - vec_uint256_512_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint256_512, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint256_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint128_31_zero" {
@@ -1626,7 +1626,7 @@ test "Valid - vec_uint128_31_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint128_31, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint128_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint32_5_max" {
@@ -1641,7 +1641,7 @@ test "Valid - vec_uint32_5_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint32_5, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint32_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint32_513_zero" {
@@ -1656,7 +1656,7 @@ test "Valid - vec_uint32_513_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint32_513, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint32_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint128_3_max" {
@@ -1671,7 +1671,7 @@ test "Valid - vec_uint128_3_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint128_3, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint128_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint64_8_max" {
@@ -1686,7 +1686,7 @@ test "Valid - vec_uint64_8_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint64_8, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint64_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint16_1_max" {
@@ -1701,7 +1701,7 @@ test "Valid - vec_uint16_1_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint16_1, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint16_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint128_8_random" {
@@ -1716,7 +1716,7 @@ test "Valid - vec_uint128_8_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint128_8, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint128_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint128_5_random" {
@@ -1731,7 +1731,7 @@ test "Valid - vec_uint128_5_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint128_5, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint128_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint8_31_max" {
@@ -1746,7 +1746,7 @@ test "Valid - vec_uint8_31_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint8_31, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint8_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint256_3_zero" {
@@ -1761,7 +1761,7 @@ test "Valid - vec_uint256_3_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint256_3, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint256_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_bool_4_max" {
@@ -1776,7 +1776,7 @@ test "Valid - vec_bool_4_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_bool_4, allocator, test_dir);
+    try test_case.validTestCase(types.vec_bool_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint32_1_random" {
@@ -1791,7 +1791,7 @@ test "Valid - vec_uint32_1_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint32_1, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint32_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint16_16_max" {
@@ -1806,7 +1806,7 @@ test "Valid - vec_uint16_16_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint16_16, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint16_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint256_4_max" {
@@ -1821,7 +1821,7 @@ test "Valid - vec_uint256_4_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint256_4, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint256_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint32_3_random" {
@@ -1836,7 +1836,7 @@ test "Valid - vec_uint32_3_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint32_3, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint32_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint128_4_zero" {
@@ -1851,7 +1851,7 @@ test "Valid - vec_uint128_4_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint128_4, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint128_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint256_31_max" {
@@ -1866,7 +1866,7 @@ test "Valid - vec_uint256_31_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint256_31, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint256_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint8_3_max" {
@@ -1881,7 +1881,7 @@ test "Valid - vec_uint8_3_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint8_3, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint8_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint256_513_max" {
@@ -1896,7 +1896,7 @@ test "Valid - vec_uint256_513_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint256_513, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint256_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint64_2_max" {
@@ -1911,7 +1911,7 @@ test "Valid - vec_uint64_2_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint64_2, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint64_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint64_16_zero" {
@@ -1926,7 +1926,7 @@ test "Valid - vec_uint64_16_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint64_16, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint64_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint8_4_random" {
@@ -1941,7 +1941,7 @@ test "Valid - vec_uint8_4_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint8_4, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint8_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint64_16_random" {
@@ -1956,7 +1956,7 @@ test "Valid - vec_uint64_16_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint64_16, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint64_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint8_512_max" {
@@ -1971,7 +1971,7 @@ test "Valid - vec_uint8_512_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint8_512, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint8_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint8_3_random" {
@@ -1986,7 +1986,7 @@ test "Valid - vec_uint8_3_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint8_3, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint8_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint256_16_random" {
@@ -2001,7 +2001,7 @@ test "Valid - vec_uint256_16_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint256_16, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint256_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint64_1_zero" {
@@ -2016,7 +2016,7 @@ test "Valid - vec_uint64_1_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint64_1, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint64_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint128_16_random" {
@@ -2031,7 +2031,7 @@ test "Valid - vec_uint128_16_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint128_16, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint128_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint128_512_zero" {
@@ -2046,7 +2046,7 @@ test "Valid - vec_uint128_512_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint128_512, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint128_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint256_1_zero" {
@@ -2061,7 +2061,7 @@ test "Valid - vec_uint256_1_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint256_1, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint256_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint32_4_max" {
@@ -2076,7 +2076,7 @@ test "Valid - vec_uint32_4_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint32_4, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint32_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint64_513_max" {
@@ -2091,7 +2091,7 @@ test "Valid - vec_uint64_513_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint64_513, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint64_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint32_8_random" {
@@ -2106,7 +2106,7 @@ test "Valid - vec_uint32_8_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint32_8, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint32_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint16_512_zero" {
@@ -2121,7 +2121,7 @@ test "Valid - vec_uint16_512_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint16_512, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint16_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint256_5_random" {
@@ -2136,7 +2136,7 @@ test "Valid - vec_uint256_5_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint256_5, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint256_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint256_2_random" {
@@ -2151,7 +2151,7 @@ test "Valid - vec_uint256_2_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint256_2, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint256_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint128_31_random" {
@@ -2166,7 +2166,7 @@ test "Valid - vec_uint128_31_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint128_31, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint128_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint32_31_max" {
@@ -2181,7 +2181,7 @@ test "Valid - vec_uint32_31_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint32_31, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint32_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint64_1_max" {
@@ -2196,7 +2196,7 @@ test "Valid - vec_uint64_1_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint64_1, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint64_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_bool_2_max" {
@@ -2211,7 +2211,7 @@ test "Valid - vec_bool_2_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_bool_2, allocator, test_dir);
+    try test_case.validTestCase(types.vec_bool_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint16_8_random" {
@@ -2226,7 +2226,7 @@ test "Valid - vec_uint16_8_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint16_8, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint16_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint256_8_max" {
@@ -2241,7 +2241,7 @@ test "Valid - vec_uint256_8_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint256_8, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint256_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint128_5_zero" {
@@ -2256,7 +2256,7 @@ test "Valid - vec_uint128_5_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint128_5, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint128_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint128_2_random" {
@@ -2271,7 +2271,7 @@ test "Valid - vec_uint128_2_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint128_2, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint128_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint128_3_zero" {
@@ -2286,7 +2286,7 @@ test "Valid - vec_uint128_3_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint128_3, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint128_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint16_4_zero" {
@@ -2301,7 +2301,7 @@ test "Valid - vec_uint16_4_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint16_4, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint16_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint32_3_max" {
@@ -2316,7 +2316,7 @@ test "Valid - vec_uint32_3_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint32_3, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint32_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint128_1_max" {
@@ -2331,7 +2331,7 @@ test "Valid - vec_uint128_1_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint128_1, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint128_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint32_16_max" {
@@ -2346,7 +2346,7 @@ test "Valid - vec_uint32_16_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint32_16, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint32_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint256_2_max" {
@@ -2361,7 +2361,7 @@ test "Valid - vec_uint256_2_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint256_2, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint256_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint16_4_random" {
@@ -2376,7 +2376,7 @@ test "Valid - vec_uint16_4_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint16_4, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint16_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint256_4_random" {
@@ -2391,7 +2391,7 @@ test "Valid - vec_uint256_4_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint256_4, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint256_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint64_512_max" {
@@ -2406,7 +2406,7 @@ test "Valid - vec_uint64_512_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint64_512, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint64_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint64_8_zero" {
@@ -2421,7 +2421,7 @@ test "Valid - vec_uint64_8_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint64_8, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint64_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint32_2_zero" {
@@ -2436,7 +2436,7 @@ test "Valid - vec_uint32_2_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint32_2, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint32_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint128_3_random" {
@@ -2451,7 +2451,7 @@ test "Valid - vec_uint128_3_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint128_3, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint128_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint128_512_random" {
@@ -2466,7 +2466,7 @@ test "Valid - vec_uint128_512_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint128_512, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint128_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint16_1_random" {
@@ -2481,7 +2481,7 @@ test "Valid - vec_uint16_1_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint16_1, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint16_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint64_3_random" {
@@ -2496,7 +2496,7 @@ test "Valid - vec_uint64_3_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint64_3, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint64_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint8_4_zero" {
@@ -2511,7 +2511,7 @@ test "Valid - vec_uint8_4_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint8_4, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint8_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_bool_3_max" {
@@ -2526,7 +2526,7 @@ test "Valid - vec_bool_3_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_bool_3, allocator, test_dir);
+    try test_case.validTestCase(types.vec_bool_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint8_31_zero" {
@@ -2541,7 +2541,7 @@ test "Valid - vec_uint8_31_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint8_31, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint8_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint64_4_zero" {
@@ -2556,7 +2556,7 @@ test "Valid - vec_uint64_4_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint64_4, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint64_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint32_8_zero" {
@@ -2571,7 +2571,7 @@ test "Valid - vec_uint32_8_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint32_8, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint32_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint256_31_random" {
@@ -2586,7 +2586,7 @@ test "Valid - vec_uint256_31_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint256_31, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint256_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint256_512_random" {
@@ -2601,7 +2601,7 @@ test "Valid - vec_uint256_512_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint256_512, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint256_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint256_3_random" {
@@ -2616,7 +2616,7 @@ test "Valid - vec_uint256_3_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint256_3, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint256_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint8_4_max" {
@@ -2631,7 +2631,7 @@ test "Valid - vec_uint8_4_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint8_4, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint8_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_bool_5_max" {
@@ -2646,7 +2646,7 @@ test "Valid - vec_bool_5_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_bool_5, allocator, test_dir);
+    try test_case.validTestCase(types.vec_bool_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint256_8_zero" {
@@ -2661,7 +2661,7 @@ test "Valid - vec_uint256_8_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint256_8, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint256_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint16_5_zero" {
@@ -2676,7 +2676,7 @@ test "Valid - vec_uint16_5_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint16_5, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint16_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint32_5_random" {
@@ -2691,7 +2691,7 @@ test "Valid - vec_uint32_5_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint32_5, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint32_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_bool_2_zero" {
@@ -2706,7 +2706,7 @@ test "Valid - vec_bool_2_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_bool_2, allocator, test_dir);
+    try test_case.validTestCase(types.vec_bool_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint16_5_random" {
@@ -2721,7 +2721,7 @@ test "Valid - vec_uint16_5_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint16_5, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint16_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint16_31_zero" {
@@ -2736,7 +2736,7 @@ test "Valid - vec_uint16_31_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint16_31, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint16_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint128_1_random" {
@@ -2751,7 +2751,7 @@ test "Valid - vec_uint128_1_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint128_1, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint128_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint256_16_zero" {
@@ -2766,7 +2766,7 @@ test "Valid - vec_uint256_16_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint256_16, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint256_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint256_512_max" {
@@ -2781,7 +2781,7 @@ test "Valid - vec_uint256_512_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint256_512, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint256_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint16_3_max" {
@@ -2796,7 +2796,7 @@ test "Valid - vec_uint16_3_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint16_3, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint16_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint16_31_max" {
@@ -2811,7 +2811,7 @@ test "Valid - vec_uint16_31_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint16_31, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint16_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint16_513_random" {
@@ -2826,7 +2826,7 @@ test "Valid - vec_uint16_513_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint16_513, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint16_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint16_2_max" {
@@ -2841,7 +2841,7 @@ test "Valid - vec_uint16_2_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint16_2, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint16_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint128_2_zero" {
@@ -2856,7 +2856,7 @@ test "Valid - vec_uint128_2_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint128_2, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint128_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_bool_512_zero" {
@@ -2871,7 +2871,7 @@ test "Valid - vec_bool_512_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_bool_512, allocator, test_dir);
+    try test_case.validTestCase(types.vec_bool_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint128_513_random" {
@@ -2886,7 +2886,7 @@ test "Valid - vec_uint128_513_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint128_513, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint128_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint32_1_max" {
@@ -2901,7 +2901,7 @@ test "Valid - vec_uint32_1_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint32_1, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint32_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint8_513_zero" {
@@ -2916,7 +2916,7 @@ test "Valid - vec_uint8_513_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint8_513, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint8_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint8_1_random" {
@@ -2931,7 +2931,7 @@ test "Valid - vec_uint8_1_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint8_1, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint8_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint64_5_zero" {
@@ -2946,7 +2946,7 @@ test "Valid - vec_uint64_5_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint64_5, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint64_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint32_31_random" {
@@ -2961,7 +2961,7 @@ test "Valid - vec_uint32_31_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint32_31, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint32_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint32_5_zero" {
@@ -2976,7 +2976,7 @@ test "Valid - vec_uint32_5_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint32_5, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint32_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint256_8_random" {
@@ -2991,7 +2991,7 @@ test "Valid - vec_uint256_8_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint256_8, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint256_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint8_5_random" {
@@ -3006,7 +3006,7 @@ test "Valid - vec_uint8_5_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint8_5, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint8_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint8_5_max" {
@@ -3021,7 +3021,7 @@ test "Valid - vec_uint8_5_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint8_5, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint8_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_bool_5_zero" {
@@ -3036,7 +3036,7 @@ test "Valid - vec_bool_5_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_bool_5, allocator, test_dir);
+    try test_case.validTestCase(types.vec_bool_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint8_2_random" {
@@ -3051,7 +3051,7 @@ test "Valid - vec_uint8_2_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint8_2, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint8_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint128_5_max" {
@@ -3066,7 +3066,7 @@ test "Valid - vec_uint128_5_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint128_5, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint128_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint256_1_max" {
@@ -3081,7 +3081,7 @@ test "Valid - vec_uint256_1_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint256_1, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint256_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint8_1_max" {
@@ -3096,7 +3096,7 @@ test "Valid - vec_uint8_1_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint8_1, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint8_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint8_5_zero" {
@@ -3111,7 +3111,7 @@ test "Valid - vec_uint8_5_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint8_5, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint8_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint8_31_random" {
@@ -3126,7 +3126,7 @@ test "Valid - vec_uint8_31_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint8_31, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint8_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint64_1_random" {
@@ -3141,7 +3141,7 @@ test "Valid - vec_uint64_1_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint64_1, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint64_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint32_1_zero" {
@@ -3156,7 +3156,7 @@ test "Valid - vec_uint32_1_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint32_1, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint32_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint256_5_max" {
@@ -3171,7 +3171,7 @@ test "Valid - vec_uint256_5_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint256_5, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint256_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint8_512_random" {
@@ -3186,7 +3186,7 @@ test "Valid - vec_uint8_512_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint8_512, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint8_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_bool_16_zero" {
@@ -3201,7 +3201,7 @@ test "Valid - vec_bool_16_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_bool_16, allocator, test_dir);
+    try test_case.validTestCase(types.vec_bool_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint64_8_random" {
@@ -3216,7 +3216,7 @@ test "Valid - vec_uint64_8_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint64_8, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint64_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint8_513_max" {
@@ -3231,7 +3231,7 @@ test "Valid - vec_uint8_513_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint8_513, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint8_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint32_3_zero" {
@@ -3246,7 +3246,7 @@ test "Valid - vec_uint32_3_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint32_3, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint32_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint16_31_random" {
@@ -3261,7 +3261,7 @@ test "Valid - vec_uint16_31_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint16_31, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint16_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint8_512_zero" {
@@ -3276,7 +3276,7 @@ test "Valid - vec_uint8_512_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint8_512, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint8_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint32_16_zero" {
@@ -3291,7 +3291,7 @@ test "Valid - vec_uint32_16_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint32_16, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint32_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint32_2_random" {
@@ -3306,7 +3306,7 @@ test "Valid - vec_uint32_2_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint32_2, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint32_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_bool_31_max" {
@@ -3321,7 +3321,7 @@ test "Valid - vec_bool_31_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_bool_31, allocator, test_dir);
+    try test_case.validTestCase(types.vec_bool_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint256_513_zero" {
@@ -3336,7 +3336,7 @@ test "Valid - vec_uint256_513_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint256_513, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint256_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_bool_16_max" {
@@ -3351,7 +3351,7 @@ test "Valid - vec_bool_16_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_bool_16, allocator, test_dir);
+    try test_case.validTestCase(types.vec_bool_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint128_31_max" {
@@ -3366,7 +3366,7 @@ test "Valid - vec_uint128_31_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint128_31, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint128_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint32_512_zero" {
@@ -3381,7 +3381,7 @@ test "Valid - vec_uint32_512_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint32_512, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint32_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint64_5_max" {
@@ -3396,7 +3396,7 @@ test "Valid - vec_uint64_5_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint64_5, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint64_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint64_31_max" {
@@ -3411,7 +3411,7 @@ test "Valid - vec_uint64_31_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint64_31, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint64_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint64_4_max" {
@@ -3426,7 +3426,7 @@ test "Valid - vec_uint64_4_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint64_4, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint64_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint128_4_random" {
@@ -3441,7 +3441,7 @@ test "Valid - vec_uint128_4_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint128_4, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint128_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint128_4_max" {
@@ -3456,7 +3456,7 @@ test "Valid - vec_uint128_4_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint128_4, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint128_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint32_4_random" {
@@ -3471,7 +3471,7 @@ test "Valid - vec_uint32_4_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint32_4, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint32_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint16_2_random" {
@@ -3486,7 +3486,7 @@ test "Valid - vec_uint16_2_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint16_2, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint16_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_bool_3_zero" {
@@ -3501,7 +3501,7 @@ test "Valid - vec_bool_3_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_bool_3, allocator, test_dir);
+    try test_case.validTestCase(types.vec_bool_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint16_3_zero" {
@@ -3516,7 +3516,7 @@ test "Valid - vec_uint16_3_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint16_3, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint16_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint256_3_max" {
@@ -3531,7 +3531,7 @@ test "Valid - vec_uint256_3_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint256_3, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint256_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint16_16_random" {
@@ -3546,7 +3546,7 @@ test "Valid - vec_uint16_16_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint16_16, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint16_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint8_8_zero" {
@@ -3561,7 +3561,7 @@ test "Valid - vec_uint8_8_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint8_8, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint8_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint256_4_zero" {
@@ -3576,7 +3576,7 @@ test "Valid - vec_uint256_4_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint256_4, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint256_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint16_1_zero" {
@@ -3591,7 +3591,7 @@ test "Valid - vec_uint16_1_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint16_1, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint16_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint64_16_max" {
@@ -3606,7 +3606,7 @@ test "Valid - vec_uint64_16_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint64_16, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint64_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_bool_31_zero" {
@@ -3621,7 +3621,7 @@ test "Valid - vec_bool_31_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_bool_31, allocator, test_dir);
+    try test_case.validTestCase(types.vec_bool_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint256_16_max" {
@@ -3636,7 +3636,7 @@ test "Valid - vec_uint256_16_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint256_16, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint256_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint16_8_max" {
@@ -3651,7 +3651,7 @@ test "Valid - vec_uint16_8_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint16_8, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint16_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint64_513_zero" {
@@ -3666,7 +3666,7 @@ test "Valid - vec_uint64_513_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint64_513, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint64_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_bool_1_max" {
@@ -3681,7 +3681,7 @@ test "Valid - vec_bool_1_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_bool_1, allocator, test_dir);
+    try test_case.validTestCase(types.vec_bool_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint128_8_zero" {
@@ -3696,7 +3696,7 @@ test "Valid - vec_uint128_8_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint128_8, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint128_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint16_512_random" {
@@ -3711,7 +3711,7 @@ test "Valid - vec_uint16_512_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint16_512, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint16_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_bool_513_zero" {
@@ -3726,7 +3726,7 @@ test "Valid - vec_bool_513_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_bool_513, allocator, test_dir);
+    try test_case.validTestCase(types.vec_bool_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint128_512_max" {
@@ -3741,7 +3741,7 @@ test "Valid - vec_uint128_512_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint128_512, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint128_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint64_3_max" {
@@ -3756,7 +3756,7 @@ test "Valid - vec_uint64_3_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint64_3, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint64_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint64_31_random" {
@@ -3771,7 +3771,7 @@ test "Valid - vec_uint64_31_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint64_31, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint64_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint128_513_zero" {
@@ -3786,7 +3786,7 @@ test "Valid - vec_uint128_513_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint128_513, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint128_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint16_512_max" {
@@ -3801,7 +3801,7 @@ test "Valid - vec_uint16_512_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint16_512, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint16_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint256_5_zero" {
@@ -3816,7 +3816,7 @@ test "Valid - vec_uint256_5_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint256_5, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint256_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint32_512_max" {
@@ -3831,7 +3831,7 @@ test "Valid - vec_uint32_512_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint32_512, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint32_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint256_31_zero" {
@@ -3846,7 +3846,7 @@ test "Valid - vec_uint256_31_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint256_31, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint256_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint8_513_random" {
@@ -3861,7 +3861,7 @@ test "Valid - vec_uint8_513_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint8_513, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint8_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint64_2_random" {
@@ -3876,7 +3876,7 @@ test "Valid - vec_uint64_2_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint64_2, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint64_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint16_8_zero" {
@@ -3891,7 +3891,7 @@ test "Valid - vec_uint16_8_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint16_8, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint16_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint128_16_zero" {
@@ -3906,7 +3906,7 @@ test "Valid - vec_uint128_16_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint128_16, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint128_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint8_16_max" {
@@ -3921,7 +3921,7 @@ test "Valid - vec_uint8_16_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint8_16, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint8_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint128_513_max" {
@@ -3936,7 +3936,7 @@ test "Valid - vec_uint128_513_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint128_513, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint128_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint16_16_zero" {
@@ -3951,7 +3951,7 @@ test "Valid - vec_uint16_16_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint16_16, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint16_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint8_1_zero" {
@@ -3966,7 +3966,7 @@ test "Valid - vec_uint8_1_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint8_1, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint8_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint256_2_zero" {
@@ -3981,7 +3981,7 @@ test "Valid - vec_uint256_2_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint256_2, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint256_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - vec_uint64_5_random" {
@@ -3996,7 +3996,7 @@ test "Valid - vec_uint64_5_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.vec_uint64_5, allocator, test_dir);
+    try test_case.validTestCase(types.vec_uint64_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Invalid - vec_uint128_8_random_one_byte_more" {
@@ -17061,7 +17061,7 @@ test "Valid - BitsStruct_random_5" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_max_8" {
@@ -17076,7 +17076,7 @@ test "Valid - VarTestStruct_max_8" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_max_9" {
@@ -17091,7 +17091,7 @@ test "Valid - VarTestStruct_max_9" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_random_4" {
@@ -17106,7 +17106,7 @@ test "Valid - BitsStruct_random_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_max_5" {
@@ -17121,7 +17121,7 @@ test "Valid - BitsStruct_max_5" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - FixedTestStruct_zero_chaos_0" {
@@ -17136,7 +17136,7 @@ test "Valid - FixedTestStruct_zero_chaos_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_one_chaos_2" {
@@ -17151,7 +17151,7 @@ test "Valid - ComplexTestStruct_one_chaos_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_random_4" {
@@ -17166,7 +17166,7 @@ test "Valid - ComplexTestStruct_random_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_lengthy_chaos_1" {
@@ -17181,7 +17181,7 @@ test "Valid - BitsStruct_lengthy_chaos_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_zero_1" {
@@ -17196,7 +17196,7 @@ test "Valid - BitsStruct_zero_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_one_chaos_2" {
@@ -17211,7 +17211,7 @@ test "Valid - BitsStruct_one_chaos_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - FixedTestStruct_max_chaos_2" {
@@ -17226,7 +17226,7 @@ test "Valid - FixedTestStruct_max_chaos_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_lengthy_chaos_0" {
@@ -17241,7 +17241,7 @@ test "Valid - BitsStruct_lengthy_chaos_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_zero_7" {
@@ -17256,7 +17256,7 @@ test "Valid - VarTestStruct_zero_7" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SingleFieldTestStruct_random_8" {
@@ -17271,7 +17271,7 @@ test "Valid - SingleFieldTestStruct_random_8" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SmallTestStruct_zero_chaos_0" {
@@ -17286,7 +17286,7 @@ test "Valid - SmallTestStruct_zero_chaos_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_max_chaos_2" {
@@ -17301,7 +17301,7 @@ test "Valid - VarTestStruct_max_chaos_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_max_chaos_0" {
@@ -17316,7 +17316,7 @@ test "Valid - BitsStruct_max_chaos_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_random_7" {
@@ -17331,7 +17331,7 @@ test "Valid - VarTestStruct_random_7" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_one_5" {
@@ -17346,7 +17346,7 @@ test "Valid - VarTestStruct_one_5" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_random_9" {
@@ -17361,7 +17361,7 @@ test "Valid - BitsStruct_random_9" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_max_1" {
@@ -17376,7 +17376,7 @@ test "Valid - ComplexTestStruct_max_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_lengthy_6" {
@@ -17391,7 +17391,7 @@ test "Valid - ComplexTestStruct_lengthy_6" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SingleFieldTestStruct_random_4" {
@@ -17406,7 +17406,7 @@ test "Valid - SingleFieldTestStruct_random_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_max_4" {
@@ -17421,7 +17421,7 @@ test "Valid - VarTestStruct_max_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_random_chaos_2" {
@@ -17436,7 +17436,7 @@ test "Valid - ComplexTestStruct_random_chaos_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_random_3" {
@@ -17451,7 +17451,7 @@ test "Valid - ComplexTestStruct_random_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_random_chaos_0" {
@@ -17466,7 +17466,7 @@ test "Valid - BitsStruct_random_chaos_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_random_3" {
@@ -17481,7 +17481,7 @@ test "Valid - BitsStruct_random_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_lengthy_3" {
@@ -17496,7 +17496,7 @@ test "Valid - BitsStruct_lengthy_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_nil_1" {
@@ -17511,7 +17511,7 @@ test "Valid - ComplexTestStruct_nil_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - FixedTestStruct_random_chaos_2" {
@@ -17526,7 +17526,7 @@ test "Valid - FixedTestStruct_random_chaos_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_zero_8" {
@@ -17541,7 +17541,7 @@ test "Valid - VarTestStruct_zero_8" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_one_4" {
@@ -17556,7 +17556,7 @@ test "Valid - VarTestStruct_one_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SingleFieldTestStruct_max_chaos_0" {
@@ -17571,7 +17571,7 @@ test "Valid - SingleFieldTestStruct_max_chaos_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_one_8" {
@@ -17586,7 +17586,7 @@ test "Valid - ComplexTestStruct_one_8" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_max_3" {
@@ -17601,7 +17601,7 @@ test "Valid - ComplexTestStruct_max_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_zero_chaos_2" {
@@ -17616,7 +17616,7 @@ test "Valid - VarTestStruct_zero_chaos_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_max_chaos_0" {
@@ -17631,7 +17631,7 @@ test "Valid - ComplexTestStruct_max_chaos_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_one_3" {
@@ -17646,7 +17646,7 @@ test "Valid - VarTestStruct_one_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_zero_chaos_1" {
@@ -17661,7 +17661,7 @@ test "Valid - VarTestStruct_zero_chaos_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_zero_5" {
@@ -17676,7 +17676,7 @@ test "Valid - VarTestStruct_zero_5" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_max_1" {
@@ -17691,7 +17691,7 @@ test "Valid - BitsStruct_max_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_lengthy_1" {
@@ -17706,7 +17706,7 @@ test "Valid - ComplexTestStruct_lengthy_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_nil_chaos_0" {
@@ -17721,7 +17721,7 @@ test "Valid - VarTestStruct_nil_chaos_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_nil_7" {
@@ -17736,7 +17736,7 @@ test "Valid - BitsStruct_nil_7" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_zero_2" {
@@ -17751,7 +17751,7 @@ test "Valid - BitsStruct_zero_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_max_4" {
@@ -17766,7 +17766,7 @@ test "Valid - BitsStruct_max_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_max_9" {
@@ -17781,7 +17781,7 @@ test "Valid - BitsStruct_max_9" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - FixedTestStruct_max_chaos_1" {
@@ -17796,7 +17796,7 @@ test "Valid - FixedTestStruct_max_chaos_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SmallTestStruct_max" {
@@ -17811,7 +17811,7 @@ test "Valid - SmallTestStruct_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_random_chaos_1" {
@@ -17826,7 +17826,7 @@ test "Valid - ComplexTestStruct_random_chaos_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_lengthy_8" {
@@ -17841,7 +17841,7 @@ test "Valid - ComplexTestStruct_lengthy_8" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_lengthy_chaos_0" {
@@ -17856,7 +17856,7 @@ test "Valid - VarTestStruct_lengthy_chaos_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_random_1" {
@@ -17871,7 +17871,7 @@ test "Valid - VarTestStruct_random_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_one_7" {
@@ -17886,7 +17886,7 @@ test "Valid - VarTestStruct_one_7" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SingleFieldTestStruct_random_7" {
@@ -17901,7 +17901,7 @@ test "Valid - SingleFieldTestStruct_random_7" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_max_8" {
@@ -17916,7 +17916,7 @@ test "Valid - ComplexTestStruct_max_8" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_one_chaos_0" {
@@ -17931,7 +17931,7 @@ test "Valid - ComplexTestStruct_one_chaos_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_max_6" {
@@ -17946,7 +17946,7 @@ test "Valid - ComplexTestStruct_max_6" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_one_9" {
@@ -17961,7 +17961,7 @@ test "Valid - ComplexTestStruct_one_9" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_lengthy_chaos_0" {
@@ -17976,7 +17976,7 @@ test "Valid - ComplexTestStruct_lengthy_chaos_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_max_2" {
@@ -17991,7 +17991,7 @@ test "Valid - ComplexTestStruct_max_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_nil_chaos_2" {
@@ -18006,7 +18006,7 @@ test "Valid - VarTestStruct_nil_chaos_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_lengthy_6" {
@@ -18021,7 +18021,7 @@ test "Valid - VarTestStruct_lengthy_6" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_lengthy_4" {
@@ -18036,7 +18036,7 @@ test "Valid - VarTestStruct_lengthy_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_nil_5" {
@@ -18051,7 +18051,7 @@ test "Valid - VarTestStruct_nil_5" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_zero_1" {
@@ -18066,7 +18066,7 @@ test "Valid - ComplexTestStruct_zero_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_nil_5" {
@@ -18081,7 +18081,7 @@ test "Valid - ComplexTestStruct_nil_5" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_zero_3" {
@@ -18096,7 +18096,7 @@ test "Valid - BitsStruct_zero_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_random_chaos_2" {
@@ -18111,7 +18111,7 @@ test "Valid - VarTestStruct_random_chaos_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_random_1" {
@@ -18126,7 +18126,7 @@ test "Valid - BitsStruct_random_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_nil_2" {
@@ -18141,7 +18141,7 @@ test "Valid - ComplexTestStruct_nil_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_nil_2" {
@@ -18156,7 +18156,7 @@ test "Valid - VarTestStruct_nil_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_random_6" {
@@ -18171,7 +18171,7 @@ test "Valid - BitsStruct_random_6" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_lengthy_9" {
@@ -18186,7 +18186,7 @@ test "Valid - BitsStruct_lengthy_9" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_one_chaos_1" {
@@ -18201,7 +18201,7 @@ test "Valid - BitsStruct_one_chaos_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SingleFieldTestStruct_random_9" {
@@ -18216,7 +18216,7 @@ test "Valid - SingleFieldTestStruct_random_9" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SmallTestStruct_random_6" {
@@ -18231,7 +18231,7 @@ test "Valid - SmallTestStruct_random_6" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_zero_7" {
@@ -18246,7 +18246,7 @@ test "Valid - BitsStruct_zero_7" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SingleFieldTestStruct_zero" {
@@ -18261,7 +18261,7 @@ test "Valid - SingleFieldTestStruct_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_lengthy_8" {
@@ -18276,7 +18276,7 @@ test "Valid - VarTestStruct_lengthy_8" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_lengthy_9" {
@@ -18291,7 +18291,7 @@ test "Valid - VarTestStruct_lengthy_9" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_nil_6" {
@@ -18306,7 +18306,7 @@ test "Valid - VarTestStruct_nil_6" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - FixedTestStruct_random_1" {
@@ -18321,7 +18321,7 @@ test "Valid - FixedTestStruct_random_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_lengthy_7" {
@@ -18336,7 +18336,7 @@ test "Valid - ComplexTestStruct_lengthy_7" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_nil_chaos_1" {
@@ -18351,7 +18351,7 @@ test "Valid - BitsStruct_nil_chaos_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_random_chaos_1" {
@@ -18366,7 +18366,7 @@ test "Valid - VarTestStruct_random_chaos_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_nil_0" {
@@ -18381,7 +18381,7 @@ test "Valid - VarTestStruct_nil_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_one_1" {
@@ -18396,7 +18396,7 @@ test "Valid - ComplexTestStruct_one_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_random_5" {
@@ -18411,7 +18411,7 @@ test "Valid - VarTestStruct_random_5" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SmallTestStruct_random_9" {
@@ -18426,7 +18426,7 @@ test "Valid - SmallTestStruct_random_9" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_lengthy_1" {
@@ -18441,7 +18441,7 @@ test "Valid - VarTestStruct_lengthy_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_nil_1" {
@@ -18456,7 +18456,7 @@ test "Valid - BitsStruct_nil_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_max_3" {
@@ -18471,7 +18471,7 @@ test "Valid - BitsStruct_max_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_max_4" {
@@ -18486,7 +18486,7 @@ test "Valid - ComplexTestStruct_max_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - FixedTestStruct_random_6" {
@@ -18501,7 +18501,7 @@ test "Valid - FixedTestStruct_random_6" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SingleFieldTestStruct_random_chaos_0" {
@@ -18516,7 +18516,7 @@ test "Valid - SingleFieldTestStruct_random_chaos_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_zero_9" {
@@ -18531,7 +18531,7 @@ test "Valid - VarTestStruct_zero_9" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_one_4" {
@@ -18546,7 +18546,7 @@ test "Valid - ComplexTestStruct_one_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_lengthy_5" {
@@ -18561,7 +18561,7 @@ test "Valid - ComplexTestStruct_lengthy_5" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_random_6" {
@@ -18576,7 +18576,7 @@ test "Valid - VarTestStruct_random_6" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_random_chaos_2" {
@@ -18591,7 +18591,7 @@ test "Valid - BitsStruct_random_chaos_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_max_8" {
@@ -18606,7 +18606,7 @@ test "Valid - BitsStruct_max_8" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SingleFieldTestStruct_random_chaos_1" {
@@ -18621,7 +18621,7 @@ test "Valid - SingleFieldTestStruct_random_chaos_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_nil_8" {
@@ -18636,7 +18636,7 @@ test "Valid - BitsStruct_nil_8" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SmallTestStruct_max_chaos_2" {
@@ -18651,7 +18651,7 @@ test "Valid - SmallTestStruct_max_chaos_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SmallTestStruct_zero_chaos_2" {
@@ -18666,7 +18666,7 @@ test "Valid - SmallTestStruct_zero_chaos_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_max_chaos_0" {
@@ -18681,7 +18681,7 @@ test "Valid - VarTestStruct_max_chaos_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SmallTestStruct_random_1" {
@@ -18696,7 +18696,7 @@ test "Valid - SmallTestStruct_random_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - FixedTestStruct_zero_chaos_1" {
@@ -18711,7 +18711,7 @@ test "Valid - FixedTestStruct_zero_chaos_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - FixedTestStruct_random_4" {
@@ -18726,7 +18726,7 @@ test "Valid - FixedTestStruct_random_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_nil_7" {
@@ -18741,7 +18741,7 @@ test "Valid - ComplexTestStruct_nil_7" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_lengthy_2" {
@@ -18756,7 +18756,7 @@ test "Valid - VarTestStruct_lengthy_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SmallTestStruct_random_chaos_2" {
@@ -18771,7 +18771,7 @@ test "Valid - SmallTestStruct_random_chaos_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_one_0" {
@@ -18786,7 +18786,7 @@ test "Valid - VarTestStruct_one_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_random_2" {
@@ -18801,7 +18801,7 @@ test "Valid - BitsStruct_random_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_zero_chaos_2" {
@@ -18816,7 +18816,7 @@ test "Valid - BitsStruct_zero_chaos_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SingleFieldTestStruct_random_5" {
@@ -18831,7 +18831,7 @@ test "Valid - SingleFieldTestStruct_random_5" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SingleFieldTestStruct_max" {
@@ -18846,7 +18846,7 @@ test "Valid - SingleFieldTestStruct_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_lengthy_chaos_1" {
@@ -18861,7 +18861,7 @@ test "Valid - ComplexTestStruct_lengthy_chaos_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SmallTestStruct_max_chaos_0" {
@@ -18876,7 +18876,7 @@ test "Valid - SmallTestStruct_max_chaos_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_max_chaos_1" {
@@ -18891,7 +18891,7 @@ test "Valid - ComplexTestStruct_max_chaos_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_nil_0" {
@@ -18906,7 +18906,7 @@ test "Valid - ComplexTestStruct_nil_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_random_8" {
@@ -18921,7 +18921,7 @@ test "Valid - BitsStruct_random_8" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_zero_4" {
@@ -18936,7 +18936,7 @@ test "Valid - ComplexTestStruct_zero_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_one_chaos_0" {
@@ -18951,7 +18951,7 @@ test "Valid - VarTestStruct_one_chaos_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SingleFieldTestStruct_max_chaos_1" {
@@ -18966,7 +18966,7 @@ test "Valid - SingleFieldTestStruct_max_chaos_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SmallTestStruct_random_0" {
@@ -18981,7 +18981,7 @@ test "Valid - SmallTestStruct_random_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_nil_4" {
@@ -18996,7 +18996,7 @@ test "Valid - VarTestStruct_nil_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_max_5" {
@@ -19011,7 +19011,7 @@ test "Valid - ComplexTestStruct_max_5" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - FixedTestStruct_max_chaos_0" {
@@ -19026,7 +19026,7 @@ test "Valid - FixedTestStruct_max_chaos_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_one_chaos_1" {
@@ -19041,7 +19041,7 @@ test "Valid - VarTestStruct_one_chaos_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_random_chaos_1" {
@@ -19056,7 +19056,7 @@ test "Valid - BitsStruct_random_chaos_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_max_chaos_1" {
@@ -19071,7 +19071,7 @@ test "Valid - VarTestStruct_max_chaos_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_lengthy_5" {
@@ -19086,7 +19086,7 @@ test "Valid - BitsStruct_lengthy_5" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_zero_9" {
@@ -19101,7 +19101,7 @@ test "Valid - BitsStruct_zero_9" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_random_9" {
@@ -19116,7 +19116,7 @@ test "Valid - ComplexTestStruct_random_9" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_random_1" {
@@ -19131,7 +19131,7 @@ test "Valid - ComplexTestStruct_random_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_lengthy_9" {
@@ -19146,7 +19146,7 @@ test "Valid - ComplexTestStruct_lengthy_9" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - FixedTestStruct_max" {
@@ -19161,7 +19161,7 @@ test "Valid - FixedTestStruct_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SingleFieldTestStruct_random_6" {
@@ -19176,7 +19176,7 @@ test "Valid - SingleFieldTestStruct_random_6" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_nil_6" {
@@ -19191,7 +19191,7 @@ test "Valid - ComplexTestStruct_nil_6" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_zero_7" {
@@ -19206,7 +19206,7 @@ test "Valid - ComplexTestStruct_zero_7" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SmallTestStruct_random_chaos_1" {
@@ -19221,7 +19221,7 @@ test "Valid - SmallTestStruct_random_chaos_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_lengthy_0" {
@@ -19236,7 +19236,7 @@ test "Valid - ComplexTestStruct_lengthy_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_lengthy_8" {
@@ -19251,7 +19251,7 @@ test "Valid - BitsStruct_lengthy_8" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SmallTestStruct_random_chaos_0" {
@@ -19266,7 +19266,7 @@ test "Valid - SmallTestStruct_random_chaos_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_random_8" {
@@ -19281,7 +19281,7 @@ test "Valid - VarTestStruct_random_8" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SingleFieldTestStruct_zero_chaos_1" {
@@ -19296,7 +19296,7 @@ test "Valid - SingleFieldTestStruct_zero_chaos_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_zero" {
@@ -19311,7 +19311,7 @@ test "Valid - BitsStruct_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_lengthy_5" {
@@ -19326,7 +19326,7 @@ test "Valid - VarTestStruct_lengthy_5" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_random_9" {
@@ -19341,7 +19341,7 @@ test "Valid - VarTestStruct_random_9" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_random_7" {
@@ -19356,7 +19356,7 @@ test "Valid - BitsStruct_random_7" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_lengthy_chaos_2" {
@@ -19371,7 +19371,7 @@ test "Valid - ComplexTestStruct_lengthy_chaos_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_random_5" {
@@ -19386,7 +19386,7 @@ test "Valid - ComplexTestStruct_random_5" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_one_8" {
@@ -19401,7 +19401,7 @@ test "Valid - VarTestStruct_one_8" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_zero_chaos_2" {
@@ -19416,7 +19416,7 @@ test "Valid - ComplexTestStruct_zero_chaos_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_zero_chaos_0" {
@@ -19431,7 +19431,7 @@ test "Valid - BitsStruct_zero_chaos_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - FixedTestStruct_random_9" {
@@ -19446,7 +19446,7 @@ test "Valid - FixedTestStruct_random_9" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_random_4" {
@@ -19461,7 +19461,7 @@ test "Valid - VarTestStruct_random_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_nil_9" {
@@ -19476,7 +19476,7 @@ test "Valid - VarTestStruct_nil_9" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_zero_1" {
@@ -19491,7 +19491,7 @@ test "Valid - VarTestStruct_zero_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_max_0" {
@@ -19506,7 +19506,7 @@ test "Valid - BitsStruct_max_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_one_2" {
@@ -19521,7 +19521,7 @@ test "Valid - VarTestStruct_one_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_lengthy_0" {
@@ -19536,7 +19536,7 @@ test "Valid - VarTestStruct_lengthy_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_max" {
@@ -19551,7 +19551,7 @@ test "Valid - BitsStruct_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_one_7" {
@@ -19566,7 +19566,7 @@ test "Valid - BitsStruct_one_7" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SingleFieldTestStruct_random_3" {
@@ -19581,7 +19581,7 @@ test "Valid - SingleFieldTestStruct_random_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_max" {
@@ -19596,7 +19596,7 @@ test "Valid - VarTestStruct_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_max_2" {
@@ -19611,7 +19611,7 @@ test "Valid - VarTestStruct_max_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_nil_7" {
@@ -19626,7 +19626,7 @@ test "Valid - VarTestStruct_nil_7" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_one_6" {
@@ -19641,7 +19641,7 @@ test "Valid - VarTestStruct_one_6" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_nil_9" {
@@ -19656,7 +19656,7 @@ test "Valid - ComplexTestStruct_nil_9" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_one_1" {
@@ -19671,7 +19671,7 @@ test "Valid - VarTestStruct_one_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_random_chaos_0" {
@@ -19686,7 +19686,7 @@ test "Valid - ComplexTestStruct_random_chaos_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_one_6" {
@@ -19701,7 +19701,7 @@ test "Valid - BitsStruct_one_6" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_zero_8" {
@@ -19716,7 +19716,7 @@ test "Valid - BitsStruct_zero_8" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_nil_3" {
@@ -19731,7 +19731,7 @@ test "Valid - BitsStruct_nil_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - FixedTestStruct_random_chaos_1" {
@@ -19746,7 +19746,7 @@ test "Valid - FixedTestStruct_random_chaos_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_one_5" {
@@ -19761,7 +19761,7 @@ test "Valid - ComplexTestStruct_one_5" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_zero_5" {
@@ -19776,7 +19776,7 @@ test "Valid - BitsStruct_zero_5" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_one_chaos_2" {
@@ -19791,7 +19791,7 @@ test "Valid - VarTestStruct_one_chaos_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SingleFieldTestStruct_max_chaos_2" {
@@ -19806,7 +19806,7 @@ test "Valid - SingleFieldTestStruct_max_chaos_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_lengthy_1" {
@@ -19821,7 +19821,7 @@ test "Valid - BitsStruct_lengthy_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SingleFieldTestStruct_random_0" {
@@ -19836,7 +19836,7 @@ test "Valid - SingleFieldTestStruct_random_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_nil_4" {
@@ -19851,7 +19851,7 @@ test "Valid - BitsStruct_nil_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_random_0" {
@@ -19866,7 +19866,7 @@ test "Valid - VarTestStruct_random_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_zero_3" {
@@ -19881,7 +19881,7 @@ test "Valid - VarTestStruct_zero_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_nil_0" {
@@ -19896,7 +19896,7 @@ test "Valid - BitsStruct_nil_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_max_6" {
@@ -19911,7 +19911,7 @@ test "Valid - VarTestStruct_max_6" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_lengthy_6" {
@@ -19926,7 +19926,7 @@ test "Valid - BitsStruct_lengthy_6" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_one_6" {
@@ -19941,7 +19941,7 @@ test "Valid - ComplexTestStruct_one_6" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_nil_1" {
@@ -19956,7 +19956,7 @@ test "Valid - VarTestStruct_nil_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SmallTestStruct_random_7" {
@@ -19971,7 +19971,7 @@ test "Valid - SmallTestStruct_random_7" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_max_0" {
@@ -19986,7 +19986,7 @@ test "Valid - VarTestStruct_max_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_random_0" {
@@ -20001,7 +20001,7 @@ test "Valid - BitsStruct_random_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_zero_9" {
@@ -20016,7 +20016,7 @@ test "Valid - ComplexTestStruct_zero_9" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_random_6" {
@@ -20031,7 +20031,7 @@ test "Valid - ComplexTestStruct_random_6" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_zero_5" {
@@ -20046,7 +20046,7 @@ test "Valid - ComplexTestStruct_zero_5" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SingleFieldTestStruct_random_1" {
@@ -20061,7 +20061,7 @@ test "Valid - SingleFieldTestStruct_random_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_random_0" {
@@ -20076,7 +20076,7 @@ test "Valid - ComplexTestStruct_random_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SmallTestStruct_random_2" {
@@ -20091,7 +20091,7 @@ test "Valid - SmallTestStruct_random_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_nil_5" {
@@ -20106,7 +20106,7 @@ test "Valid - BitsStruct_nil_5" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_lengthy_7" {
@@ -20121,7 +20121,7 @@ test "Valid - VarTestStruct_lengthy_7" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_one_2" {
@@ -20136,7 +20136,7 @@ test "Valid - ComplexTestStruct_one_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_max_7" {
@@ -20151,7 +20151,7 @@ test "Valid - ComplexTestStruct_max_7" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_zero_6" {
@@ -20166,7 +20166,7 @@ test "Valid - ComplexTestStruct_zero_6" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_lengthy_chaos_2" {
@@ -20181,7 +20181,7 @@ test "Valid - BitsStruct_lengthy_chaos_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_zero_6" {
@@ -20196,7 +20196,7 @@ test "Valid - VarTestStruct_zero_6" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_max_7" {
@@ -20211,7 +20211,7 @@ test "Valid - BitsStruct_max_7" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_lengthy_2" {
@@ -20226,7 +20226,7 @@ test "Valid - ComplexTestStruct_lengthy_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - FixedTestStruct_random_0" {
@@ -20241,7 +20241,7 @@ test "Valid - FixedTestStruct_random_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - FixedTestStruct_zero_chaos_2" {
@@ -20256,7 +20256,7 @@ test "Valid - FixedTestStruct_zero_chaos_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_nil_8" {
@@ -20271,7 +20271,7 @@ test "Valid - VarTestStruct_nil_8" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - FixedTestStruct_random_8" {
@@ -20286,7 +20286,7 @@ test "Valid - FixedTestStruct_random_8" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_zero_2" {
@@ -20301,7 +20301,7 @@ test "Valid - ComplexTestStruct_zero_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_max" {
@@ -20316,7 +20316,7 @@ test "Valid - ComplexTestStruct_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_zero_chaos_0" {
@@ -20331,7 +20331,7 @@ test "Valid - ComplexTestStruct_zero_chaos_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_max_7" {
@@ -20346,7 +20346,7 @@ test "Valid - VarTestStruct_max_7" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_lengthy_7" {
@@ -20361,7 +20361,7 @@ test "Valid - BitsStruct_lengthy_7" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_zero_chaos_0" {
@@ -20376,7 +20376,7 @@ test "Valid - VarTestStruct_zero_chaos_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_one_chaos_1" {
@@ -20391,7 +20391,7 @@ test "Valid - ComplexTestStruct_one_chaos_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_random_2" {
@@ -20406,7 +20406,7 @@ test "Valid - ComplexTestStruct_random_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_lengthy_4" {
@@ -20421,7 +20421,7 @@ test "Valid - ComplexTestStruct_lengthy_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_lengthy_3" {
@@ -20436,7 +20436,7 @@ test "Valid - ComplexTestStruct_lengthy_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - FixedTestStruct_random_3" {
@@ -20451,7 +20451,7 @@ test "Valid - FixedTestStruct_random_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - FixedTestStruct_random_5" {
@@ -20466,7 +20466,7 @@ test "Valid - FixedTestStruct_random_5" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - FixedTestStruct_random_7" {
@@ -20481,7 +20481,7 @@ test "Valid - FixedTestStruct_random_7" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_zero_4" {
@@ -20496,7 +20496,7 @@ test "Valid - VarTestStruct_zero_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_max_chaos_2" {
@@ -20511,7 +20511,7 @@ test "Valid - BitsStruct_max_chaos_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_max_0" {
@@ -20526,7 +20526,7 @@ test "Valid - ComplexTestStruct_max_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_zero_0" {
@@ -20541,7 +20541,7 @@ test "Valid - BitsStruct_zero_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_one_3" {
@@ -20556,7 +20556,7 @@ test "Valid - BitsStruct_one_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_nil_chaos_1" {
@@ -20571,7 +20571,7 @@ test "Valid - VarTestStruct_nil_chaos_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_max_chaos_1" {
@@ -20586,7 +20586,7 @@ test "Valid - BitsStruct_max_chaos_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_random_chaos_0" {
@@ -20601,7 +20601,7 @@ test "Valid - VarTestStruct_random_chaos_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_one_9" {
@@ -20616,7 +20616,7 @@ test "Valid - VarTestStruct_one_9" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_random_8" {
@@ -20631,7 +20631,7 @@ test "Valid - ComplexTestStruct_random_8" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_one_1" {
@@ -20646,7 +20646,7 @@ test "Valid - BitsStruct_one_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_nil_8" {
@@ -20661,7 +20661,7 @@ test "Valid - ComplexTestStruct_nil_8" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SingleFieldTestStruct_zero_chaos_2" {
@@ -20676,7 +20676,7 @@ test "Valid - SingleFieldTestStruct_zero_chaos_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_random_2" {
@@ -20691,7 +20691,7 @@ test "Valid - VarTestStruct_random_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_one_4" {
@@ -20706,7 +20706,7 @@ test "Valid - BitsStruct_one_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_random_3" {
@@ -20721,7 +20721,7 @@ test "Valid - VarTestStruct_random_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_one_7" {
@@ -20736,7 +20736,7 @@ test "Valid - ComplexTestStruct_one_7" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - FixedTestStruct_zero" {
@@ -20751,7 +20751,7 @@ test "Valid - FixedTestStruct_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_zero_chaos_1" {
@@ -20766,7 +20766,7 @@ test "Valid - BitsStruct_zero_chaos_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_lengthy_3" {
@@ -20781,7 +20781,7 @@ test "Valid - VarTestStruct_lengthy_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SmallTestStruct_random_4" {
@@ -20796,7 +20796,7 @@ test "Valid - SmallTestStruct_random_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_nil_3" {
@@ -20811,7 +20811,7 @@ test "Valid - ComplexTestStruct_nil_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_lengthy_4" {
@@ -20826,7 +20826,7 @@ test "Valid - BitsStruct_lengthy_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_zero_0" {
@@ -20841,7 +20841,7 @@ test "Valid - ComplexTestStruct_zero_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_nil_3" {
@@ -20856,7 +20856,7 @@ test "Valid - VarTestStruct_nil_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_max_9" {
@@ -20871,7 +20871,7 @@ test "Valid - ComplexTestStruct_max_9" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_one_2" {
@@ -20886,7 +20886,7 @@ test "Valid - BitsStruct_one_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_nil_chaos_1" {
@@ -20901,7 +20901,7 @@ test "Valid - ComplexTestStruct_nil_chaos_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_lengthy_chaos_1" {
@@ -20916,7 +20916,7 @@ test "Valid - VarTestStruct_lengthy_chaos_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_lengthy_chaos_2" {
@@ -20931,7 +20931,7 @@ test "Valid - VarTestStruct_lengthy_chaos_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_zero_2" {
@@ -20946,7 +20946,7 @@ test "Valid - VarTestStruct_zero_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_nil_2" {
@@ -20961,7 +20961,7 @@ test "Valid - BitsStruct_nil_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_one_3" {
@@ -20976,7 +20976,7 @@ test "Valid - ComplexTestStruct_one_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_nil_chaos_2" {
@@ -20991,7 +20991,7 @@ test "Valid - BitsStruct_nil_chaos_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_nil_4" {
@@ -21006,7 +21006,7 @@ test "Valid - ComplexTestStruct_nil_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SmallTestStruct_random_8" {
@@ -21021,7 +21021,7 @@ test "Valid - SmallTestStruct_random_8" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_one_5" {
@@ -21036,7 +21036,7 @@ test "Valid - BitsStruct_one_5" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_zero_3" {
@@ -21051,7 +21051,7 @@ test "Valid - ComplexTestStruct_zero_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_max_3" {
@@ -21066,7 +21066,7 @@ test "Valid - VarTestStruct_max_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_nil_chaos_0" {
@@ -21081,7 +21081,7 @@ test "Valid - BitsStruct_nil_chaos_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_nil_9" {
@@ -21096,7 +21096,7 @@ test "Valid - BitsStruct_nil_9" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_max_2" {
@@ -21111,7 +21111,7 @@ test "Valid - BitsStruct_max_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_zero_0" {
@@ -21126,7 +21126,7 @@ test "Valid - VarTestStruct_zero_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_zero" {
@@ -21141,7 +21141,7 @@ test "Valid - ComplexTestStruct_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_nil_6" {
@@ -21156,7 +21156,7 @@ test "Valid - BitsStruct_nil_6" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_zero_8" {
@@ -21171,7 +21171,7 @@ test "Valid - ComplexTestStruct_zero_8" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_one_0" {
@@ -21186,7 +21186,7 @@ test "Valid - BitsStruct_one_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_max_chaos_2" {
@@ -21201,7 +21201,7 @@ test "Valid - ComplexTestStruct_max_chaos_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_one_0" {
@@ -21216,7 +21216,7 @@ test "Valid - ComplexTestStruct_one_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SingleFieldTestStruct_zero_chaos_0" {
@@ -21231,7 +21231,7 @@ test "Valid - SingleFieldTestStruct_zero_chaos_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_lengthy_0" {
@@ -21246,7 +21246,7 @@ test "Valid - BitsStruct_lengthy_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - FixedTestStruct_random_chaos_0" {
@@ -21261,7 +21261,7 @@ test "Valid - FixedTestStruct_random_chaos_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_one_8" {
@@ -21276,7 +21276,7 @@ test "Valid - BitsStruct_one_8" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_nil_chaos_0" {
@@ -21291,7 +21291,7 @@ test "Valid - ComplexTestStruct_nil_chaos_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_one_9" {
@@ -21306,7 +21306,7 @@ test "Valid - BitsStruct_one_9" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SingleFieldTestStruct_random_chaos_2" {
@@ -21321,7 +21321,7 @@ test "Valid - SingleFieldTestStruct_random_chaos_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_lengthy_2" {
@@ -21336,7 +21336,7 @@ test "Valid - BitsStruct_lengthy_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SmallTestStruct_zero" {
@@ -21351,7 +21351,7 @@ test "Valid - SmallTestStruct_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_max_6" {
@@ -21366,7 +21366,7 @@ test "Valid - BitsStruct_max_6" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_one_chaos_0" {
@@ -21381,7 +21381,7 @@ test "Valid - BitsStruct_one_chaos_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_zero_4" {
@@ -21396,7 +21396,7 @@ test "Valid - BitsStruct_zero_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_random_7" {
@@ -21411,7 +21411,7 @@ test "Valid - ComplexTestStruct_random_7" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SingleFieldTestStruct_random_2" {
@@ -21426,7 +21426,7 @@ test "Valid - SingleFieldTestStruct_random_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SingleFieldTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SmallTestStruct_random_5" {
@@ -21441,7 +21441,7 @@ test "Valid - SmallTestStruct_random_5" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_nil_chaos_2" {
@@ -21456,7 +21456,7 @@ test "Valid - ComplexTestStruct_nil_chaos_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - ComplexTestStruct_zero_chaos_1" {
@@ -21471,7 +21471,7 @@ test "Valid - ComplexTestStruct_zero_chaos_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.ComplexTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SmallTestStruct_max_chaos_1" {
@@ -21486,7 +21486,7 @@ test "Valid - SmallTestStruct_max_chaos_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_zero" {
@@ -21501,7 +21501,7 @@ test "Valid - VarTestStruct_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SmallTestStruct_random_3" {
@@ -21516,7 +21516,7 @@ test "Valid - SmallTestStruct_random_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_max_5" {
@@ -21531,7 +21531,7 @@ test "Valid - VarTestStruct_max_5" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - VarTestStruct_max_1" {
@@ -21546,7 +21546,7 @@ test "Valid - VarTestStruct_max_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.VarTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - SmallTestStruct_zero_chaos_1" {
@@ -21561,7 +21561,7 @@ test "Valid - SmallTestStruct_zero_chaos_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.SmallTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - FixedTestStruct_random_2" {
@@ -21576,7 +21576,7 @@ test "Valid - FixedTestStruct_random_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir);
+    try test_case.validTestCase(types.FixedTestStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - BitsStruct_zero_6" {
@@ -21591,7 +21591,7 @@ test "Valid - BitsStruct_zero_6" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.BitsStruct, allocator, test_dir);
+    try test_case.validTestCase(types.BitsStruct, allocator, test_dir, "meta.yaml");
 }
 
 test "Invalid - ComplexTestStruct_lengthy_offset_2_minus_one" {
@@ -22926,7 +22926,7 @@ test "Valid - bitvec_8_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitvec_8, allocator, test_dir);
+    try test_case.validTestCase(types.bitvec_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitvec_16_zero" {
@@ -22941,7 +22941,7 @@ test "Valid - bitvec_16_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitvec_16, allocator, test_dir);
+    try test_case.validTestCase(types.bitvec_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitvec_3_zero" {
@@ -22956,7 +22956,7 @@ test "Valid - bitvec_3_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitvec_3, allocator, test_dir);
+    try test_case.validTestCase(types.bitvec_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitvec_5_random" {
@@ -22971,7 +22971,7 @@ test "Valid - bitvec_5_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitvec_5, allocator, test_dir);
+    try test_case.validTestCase(types.bitvec_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitvec_1_max" {
@@ -22986,7 +22986,7 @@ test "Valid - bitvec_1_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitvec_1, allocator, test_dir);
+    try test_case.validTestCase(types.bitvec_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitvec_513_zero" {
@@ -23001,7 +23001,7 @@ test "Valid - bitvec_513_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitvec_513, allocator, test_dir);
+    try test_case.validTestCase(types.bitvec_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitvec_8_zero" {
@@ -23016,7 +23016,7 @@ test "Valid - bitvec_8_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitvec_8, allocator, test_dir);
+    try test_case.validTestCase(types.bitvec_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitvec_5_zero" {
@@ -23031,7 +23031,7 @@ test "Valid - bitvec_5_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitvec_5, allocator, test_dir);
+    try test_case.validTestCase(types.bitvec_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitvec_2_max" {
@@ -23046,7 +23046,7 @@ test "Valid - bitvec_2_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitvec_2, allocator, test_dir);
+    try test_case.validTestCase(types.bitvec_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitvec_512_random" {
@@ -23061,7 +23061,7 @@ test "Valid - bitvec_512_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitvec_512, allocator, test_dir);
+    try test_case.validTestCase(types.bitvec_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitvec_16_random" {
@@ -23076,7 +23076,7 @@ test "Valid - bitvec_16_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitvec_16, allocator, test_dir);
+    try test_case.validTestCase(types.bitvec_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitvec_2_random" {
@@ -23091,7 +23091,7 @@ test "Valid - bitvec_2_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitvec_2, allocator, test_dir);
+    try test_case.validTestCase(types.bitvec_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitvec_5_max" {
@@ -23106,7 +23106,7 @@ test "Valid - bitvec_5_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitvec_5, allocator, test_dir);
+    try test_case.validTestCase(types.bitvec_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitvec_1_random" {
@@ -23121,7 +23121,7 @@ test "Valid - bitvec_1_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitvec_1, allocator, test_dir);
+    try test_case.validTestCase(types.bitvec_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitvec_31_max" {
@@ -23136,7 +23136,7 @@ test "Valid - bitvec_31_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitvec_31, allocator, test_dir);
+    try test_case.validTestCase(types.bitvec_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitvec_16_max" {
@@ -23151,7 +23151,7 @@ test "Valid - bitvec_16_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitvec_16, allocator, test_dir);
+    try test_case.validTestCase(types.bitvec_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitvec_4_zero" {
@@ -23166,7 +23166,7 @@ test "Valid - bitvec_4_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitvec_4, allocator, test_dir);
+    try test_case.validTestCase(types.bitvec_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitvec_31_zero" {
@@ -23181,7 +23181,7 @@ test "Valid - bitvec_31_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitvec_31, allocator, test_dir);
+    try test_case.validTestCase(types.bitvec_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitvec_2_zero" {
@@ -23196,7 +23196,7 @@ test "Valid - bitvec_2_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitvec_2, allocator, test_dir);
+    try test_case.validTestCase(types.bitvec_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitvec_1_zero" {
@@ -23211,7 +23211,7 @@ test "Valid - bitvec_1_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitvec_1, allocator, test_dir);
+    try test_case.validTestCase(types.bitvec_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitvec_31_random" {
@@ -23226,7 +23226,7 @@ test "Valid - bitvec_31_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitvec_31, allocator, test_dir);
+    try test_case.validTestCase(types.bitvec_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitvec_8_random" {
@@ -23241,7 +23241,7 @@ test "Valid - bitvec_8_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitvec_8, allocator, test_dir);
+    try test_case.validTestCase(types.bitvec_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitvec_3_random" {
@@ -23256,7 +23256,7 @@ test "Valid - bitvec_3_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitvec_3, allocator, test_dir);
+    try test_case.validTestCase(types.bitvec_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitvec_513_max" {
@@ -23271,7 +23271,7 @@ test "Valid - bitvec_513_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitvec_513, allocator, test_dir);
+    try test_case.validTestCase(types.bitvec_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitvec_513_random" {
@@ -23286,7 +23286,7 @@ test "Valid - bitvec_513_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitvec_513, allocator, test_dir);
+    try test_case.validTestCase(types.bitvec_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitvec_4_max" {
@@ -23301,7 +23301,7 @@ test "Valid - bitvec_4_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitvec_4, allocator, test_dir);
+    try test_case.validTestCase(types.bitvec_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitvec_512_zero" {
@@ -23316,7 +23316,7 @@ test "Valid - bitvec_512_zero" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitvec_512, allocator, test_dir);
+    try test_case.validTestCase(types.bitvec_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitvec_4_random" {
@@ -23331,7 +23331,7 @@ test "Valid - bitvec_4_random" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitvec_4, allocator, test_dir);
+    try test_case.validTestCase(types.bitvec_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitvec_3_max" {
@@ -23346,7 +23346,7 @@ test "Valid - bitvec_3_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitvec_3, allocator, test_dir);
+    try test_case.validTestCase(types.bitvec_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitvec_512_max" {
@@ -23361,7 +23361,7 @@ test "Valid - bitvec_512_max" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitvec_512, allocator, test_dir);
+    try test_case.validTestCase(types.bitvec_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Invalid - bitvec_3_max_4" {
@@ -23826,7 +23826,7 @@ test "Valid - bitlist_2_nil_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_2, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_4_zero_1" {
@@ -23841,7 +23841,7 @@ test "Valid - bitlist_4_zero_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_4, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_8_lengthy_4" {
@@ -23856,7 +23856,7 @@ test "Valid - bitlist_8_lengthy_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_8, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_512_random_1" {
@@ -23871,7 +23871,7 @@ test "Valid - bitlist_512_random_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_512, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_513_random_4" {
@@ -23886,7 +23886,7 @@ test "Valid - bitlist_513_random_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_513, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_16_lengthy_3" {
@@ -23901,7 +23901,7 @@ test "Valid - bitlist_16_lengthy_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_16, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_5_random_0" {
@@ -23916,7 +23916,7 @@ test "Valid - bitlist_5_random_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_5, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_513_lengthy_4" {
@@ -23931,7 +23931,7 @@ test "Valid - bitlist_513_lengthy_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_513, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_31_max_0" {
@@ -23946,7 +23946,7 @@ test "Valid - bitlist_31_max_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_31, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_2_zero_0" {
@@ -23961,7 +23961,7 @@ test "Valid - bitlist_2_zero_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_2, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_31_random_2" {
@@ -23976,7 +23976,7 @@ test "Valid - bitlist_31_random_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_31, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_5_lengthy_4" {
@@ -23991,7 +23991,7 @@ test "Valid - bitlist_5_lengthy_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_5, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_1_random_3" {
@@ -24006,7 +24006,7 @@ test "Valid - bitlist_1_random_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_1, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_5_max_1" {
@@ -24021,7 +24021,7 @@ test "Valid - bitlist_5_max_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_5, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_31_zero_3" {
@@ -24036,7 +24036,7 @@ test "Valid - bitlist_31_zero_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_31, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_513_nil_2" {
@@ -24051,7 +24051,7 @@ test "Valid - bitlist_513_nil_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_513, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_2_nil_2" {
@@ -24066,7 +24066,7 @@ test "Valid - bitlist_2_nil_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_2, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_5_nil_4" {
@@ -24081,7 +24081,7 @@ test "Valid - bitlist_5_nil_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_5, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_8_lengthy_2" {
@@ -24096,7 +24096,7 @@ test "Valid - bitlist_8_lengthy_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_8, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_513_zero_2" {
@@ -24111,7 +24111,7 @@ test "Valid - bitlist_513_zero_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_513, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_5_random_2" {
@@ -24126,7 +24126,7 @@ test "Valid - bitlist_5_random_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_5, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_4_lengthy_4" {
@@ -24141,7 +24141,7 @@ test "Valid - bitlist_4_lengthy_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_4, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_4_zero_2" {
@@ -24156,7 +24156,7 @@ test "Valid - bitlist_4_zero_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_4, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_16_zero_4" {
@@ -24171,7 +24171,7 @@ test "Valid - bitlist_16_zero_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_16, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_8_lengthy_0" {
@@ -24186,7 +24186,7 @@ test "Valid - bitlist_8_lengthy_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_8, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_513_max_1" {
@@ -24201,7 +24201,7 @@ test "Valid - bitlist_513_max_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_513, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_3_lengthy_3" {
@@ -24216,7 +24216,7 @@ test "Valid - bitlist_3_lengthy_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_3, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_5_max_4" {
@@ -24231,7 +24231,7 @@ test "Valid - bitlist_5_max_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_5, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_5_nil_2" {
@@ -24246,7 +24246,7 @@ test "Valid - bitlist_5_nil_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_5, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_4_lengthy_0" {
@@ -24261,7 +24261,7 @@ test "Valid - bitlist_4_lengthy_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_4, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_31_lengthy_2" {
@@ -24276,7 +24276,7 @@ test "Valid - bitlist_31_lengthy_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_31, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_4_random_0" {
@@ -24291,7 +24291,7 @@ test "Valid - bitlist_4_random_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_4, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_513_nil_1" {
@@ -24306,7 +24306,7 @@ test "Valid - bitlist_513_nil_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_513, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_3_max_0" {
@@ -24321,7 +24321,7 @@ test "Valid - bitlist_3_max_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_3, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_5_lengthy_2" {
@@ -24336,7 +24336,7 @@ test "Valid - bitlist_5_lengthy_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_5, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_8_max_0" {
@@ -24351,7 +24351,7 @@ test "Valid - bitlist_8_max_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_8, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_31_random_4" {
@@ -24366,7 +24366,7 @@ test "Valid - bitlist_31_random_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_31, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_3_max_3" {
@@ -24381,7 +24381,7 @@ test "Valid - bitlist_3_max_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_3, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_3_random_4" {
@@ -24396,7 +24396,7 @@ test "Valid - bitlist_3_random_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_3, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_8_nil_4" {
@@ -24411,7 +24411,7 @@ test "Valid - bitlist_8_nil_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_8, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_4_random_4" {
@@ -24426,7 +24426,7 @@ test "Valid - bitlist_4_random_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_4, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_512_zero_4" {
@@ -24441,7 +24441,7 @@ test "Valid - bitlist_512_zero_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_512, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_16_nil_3" {
@@ -24456,7 +24456,7 @@ test "Valid - bitlist_16_nil_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_16, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_4_max_1" {
@@ -24471,7 +24471,7 @@ test "Valid - bitlist_4_max_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_4, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_3_nil_4" {
@@ -24486,7 +24486,7 @@ test "Valid - bitlist_3_nil_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_3, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_5_random_1" {
@@ -24501,7 +24501,7 @@ test "Valid - bitlist_5_random_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_5, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_8_nil_3" {
@@ -24516,7 +24516,7 @@ test "Valid - bitlist_8_nil_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_8, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_1_lengthy_2" {
@@ -24531,7 +24531,7 @@ test "Valid - bitlist_1_lengthy_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_1, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_4_random_1" {
@@ -24546,7 +24546,7 @@ test "Valid - bitlist_4_random_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_4, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_5_lengthy_3" {
@@ -24561,7 +24561,7 @@ test "Valid - bitlist_5_lengthy_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_5, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_31_random_3" {
@@ -24576,7 +24576,7 @@ test "Valid - bitlist_31_random_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_31, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_3_zero_1" {
@@ -24591,7 +24591,7 @@ test "Valid - bitlist_3_zero_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_3, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_16_lengthy_1" {
@@ -24606,7 +24606,7 @@ test "Valid - bitlist_16_lengthy_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_16, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_2_lengthy_3" {
@@ -24621,7 +24621,7 @@ test "Valid - bitlist_2_lengthy_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_2, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_16_random_0" {
@@ -24636,7 +24636,7 @@ test "Valid - bitlist_16_random_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_16, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_3_nil_2" {
@@ -24651,7 +24651,7 @@ test "Valid - bitlist_3_nil_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_3, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_16_lengthy_2" {
@@ -24666,7 +24666,7 @@ test "Valid - bitlist_16_lengthy_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_16, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_1_max_2" {
@@ -24681,7 +24681,7 @@ test "Valid - bitlist_1_max_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_1, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_16_zero_1" {
@@ -24696,7 +24696,7 @@ test "Valid - bitlist_16_zero_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_16, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_3_nil_3" {
@@ -24711,7 +24711,7 @@ test "Valid - bitlist_3_nil_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_3, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_1_lengthy_4" {
@@ -24726,7 +24726,7 @@ test "Valid - bitlist_1_lengthy_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_1, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_31_random_0" {
@@ -24741,7 +24741,7 @@ test "Valid - bitlist_31_random_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_31, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_3_lengthy_1" {
@@ -24756,7 +24756,7 @@ test "Valid - bitlist_3_lengthy_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_3, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_3_nil_0" {
@@ -24771,7 +24771,7 @@ test "Valid - bitlist_3_nil_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_3, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_16_zero_0" {
@@ -24786,7 +24786,7 @@ test "Valid - bitlist_16_zero_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_16, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_1_random_0" {
@@ -24801,7 +24801,7 @@ test "Valid - bitlist_1_random_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_1, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_4_nil_1" {
@@ -24816,7 +24816,7 @@ test "Valid - bitlist_4_nil_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_4, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_16_nil_0" {
@@ -24831,7 +24831,7 @@ test "Valid - bitlist_16_nil_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_16, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_1_nil_1" {
@@ -24846,7 +24846,7 @@ test "Valid - bitlist_1_nil_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_1, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_16_lengthy_0" {
@@ -24861,7 +24861,7 @@ test "Valid - bitlist_16_lengthy_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_16, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_2_random_3" {
@@ -24876,7 +24876,7 @@ test "Valid - bitlist_2_random_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_2, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_31_zero_2" {
@@ -24891,7 +24891,7 @@ test "Valid - bitlist_31_zero_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_31, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_512_zero_3" {
@@ -24906,7 +24906,7 @@ test "Valid - bitlist_512_zero_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_512, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_2_lengthy_1" {
@@ -24921,7 +24921,7 @@ test "Valid - bitlist_2_lengthy_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_2, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_513_random_1" {
@@ -24936,7 +24936,7 @@ test "Valid - bitlist_513_random_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_513, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_2_nil_0" {
@@ -24951,7 +24951,7 @@ test "Valid - bitlist_2_nil_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_2, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_16_nil_2" {
@@ -24966,7 +24966,7 @@ test "Valid - bitlist_16_nil_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_16, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_1_zero_0" {
@@ -24981,7 +24981,7 @@ test "Valid - bitlist_1_zero_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_1, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_512_nil_4" {
@@ -24996,7 +24996,7 @@ test "Valid - bitlist_512_nil_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_512, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_512_lengthy_2" {
@@ -25011,7 +25011,7 @@ test "Valid - bitlist_512_lengthy_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_512, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_31_nil_0" {
@@ -25026,7 +25026,7 @@ test "Valid - bitlist_31_nil_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_31, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_1_zero_4" {
@@ -25041,7 +25041,7 @@ test "Valid - bitlist_1_zero_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_1, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_3_random_1" {
@@ -25056,7 +25056,7 @@ test "Valid - bitlist_3_random_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_3, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_2_random_2" {
@@ -25071,7 +25071,7 @@ test "Valid - bitlist_2_random_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_2, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_8_random_0" {
@@ -25086,7 +25086,7 @@ test "Valid - bitlist_8_random_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_8, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_4_max_4" {
@@ -25101,7 +25101,7 @@ test "Valid - bitlist_4_max_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_4, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_5_random_4" {
@@ -25116,7 +25116,7 @@ test "Valid - bitlist_5_random_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_5, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_3_max_1" {
@@ -25131,7 +25131,7 @@ test "Valid - bitlist_3_max_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_3, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_1_zero_2" {
@@ -25146,7 +25146,7 @@ test "Valid - bitlist_1_zero_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_1, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_513_nil_0" {
@@ -25161,7 +25161,7 @@ test "Valid - bitlist_513_nil_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_513, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_5_zero_0" {
@@ -25176,7 +25176,7 @@ test "Valid - bitlist_5_zero_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_5, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_4_lengthy_2" {
@@ -25191,7 +25191,7 @@ test "Valid - bitlist_4_lengthy_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_4, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_8_zero_1" {
@@ -25206,7 +25206,7 @@ test "Valid - bitlist_8_zero_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_8, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_512_max_2" {
@@ -25221,7 +25221,7 @@ test "Valid - bitlist_512_max_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_512, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_4_zero_0" {
@@ -25236,7 +25236,7 @@ test "Valid - bitlist_4_zero_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_4, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_2_random_1" {
@@ -25251,7 +25251,7 @@ test "Valid - bitlist_2_random_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_2, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_16_max_1" {
@@ -25266,7 +25266,7 @@ test "Valid - bitlist_16_max_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_16, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_2_random_0" {
@@ -25281,7 +25281,7 @@ test "Valid - bitlist_2_random_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_2, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_3_lengthy_2" {
@@ -25296,7 +25296,7 @@ test "Valid - bitlist_3_lengthy_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_3, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_4_nil_0" {
@@ -25311,7 +25311,7 @@ test "Valid - bitlist_4_nil_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_4, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_8_zero_0" {
@@ -25326,7 +25326,7 @@ test "Valid - bitlist_8_zero_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_8, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_2_nil_1" {
@@ -25341,7 +25341,7 @@ test "Valid - bitlist_2_nil_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_2, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_31_zero_0" {
@@ -25356,7 +25356,7 @@ test "Valid - bitlist_31_zero_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_31, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_8_random_2" {
@@ -25371,7 +25371,7 @@ test "Valid - bitlist_8_random_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_8, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_1_nil_2" {
@@ -25386,7 +25386,7 @@ test "Valid - bitlist_1_nil_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_1, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_513_lengthy_0" {
@@ -25401,7 +25401,7 @@ test "Valid - bitlist_513_lengthy_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_513, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_2_max_4" {
@@ -25416,7 +25416,7 @@ test "Valid - bitlist_2_max_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_2, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_3_random_0" {
@@ -25431,7 +25431,7 @@ test "Valid - bitlist_3_random_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_3, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_16_nil_1" {
@@ -25446,7 +25446,7 @@ test "Valid - bitlist_16_nil_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_16, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_16_max_3" {
@@ -25461,7 +25461,7 @@ test "Valid - bitlist_16_max_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_16, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_513_random_2" {
@@ -25476,7 +25476,7 @@ test "Valid - bitlist_513_random_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_513, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_513_nil_4" {
@@ -25491,7 +25491,7 @@ test "Valid - bitlist_513_nil_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_513, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_3_zero_4" {
@@ -25506,7 +25506,7 @@ test "Valid - bitlist_3_zero_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_3, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_31_max_4" {
@@ -25521,7 +25521,7 @@ test "Valid - bitlist_31_max_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_31, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_5_lengthy_1" {
@@ -25536,7 +25536,7 @@ test "Valid - bitlist_5_lengthy_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_5, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_5_random_3" {
@@ -25551,7 +25551,7 @@ test "Valid - bitlist_5_random_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_5, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_513_max_2" {
@@ -25566,7 +25566,7 @@ test "Valid - bitlist_513_max_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_513, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_513_zero_0" {
@@ -25581,7 +25581,7 @@ test "Valid - bitlist_513_zero_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_513, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_1_nil_4" {
@@ -25596,7 +25596,7 @@ test "Valid - bitlist_1_nil_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_1, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_31_nil_3" {
@@ -25611,7 +25611,7 @@ test "Valid - bitlist_31_nil_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_31, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_513_lengthy_2" {
@@ -25626,7 +25626,7 @@ test "Valid - bitlist_513_lengthy_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_513, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_2_zero_1" {
@@ -25641,7 +25641,7 @@ test "Valid - bitlist_2_zero_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_2, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_1_random_2" {
@@ -25656,7 +25656,7 @@ test "Valid - bitlist_1_random_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_1, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_2_random_4" {
@@ -25671,7 +25671,7 @@ test "Valid - bitlist_2_random_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_2, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_8_nil_2" {
@@ -25686,7 +25686,7 @@ test "Valid - bitlist_8_nil_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_8, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_8_random_4" {
@@ -25701,7 +25701,7 @@ test "Valid - bitlist_8_random_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_8, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_4_nil_2" {
@@ -25716,7 +25716,7 @@ test "Valid - bitlist_4_nil_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_4, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_2_lengthy_0" {
@@ -25731,7 +25731,7 @@ test "Valid - bitlist_2_lengthy_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_2, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_513_max_3" {
@@ -25746,7 +25746,7 @@ test "Valid - bitlist_513_max_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_513, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_3_lengthy_4" {
@@ -25761,7 +25761,7 @@ test "Valid - bitlist_3_lengthy_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_3, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_512_zero_1" {
@@ -25776,7 +25776,7 @@ test "Valid - bitlist_512_zero_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_512, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_5_max_3" {
@@ -25791,7 +25791,7 @@ test "Valid - bitlist_5_max_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_5, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_31_lengthy_4" {
@@ -25806,7 +25806,7 @@ test "Valid - bitlist_31_lengthy_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_31, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_1_max_1" {
@@ -25821,7 +25821,7 @@ test "Valid - bitlist_1_max_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_1, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_2_lengthy_4" {
@@ -25836,7 +25836,7 @@ test "Valid - bitlist_2_lengthy_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_2, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_4_random_2" {
@@ -25851,7 +25851,7 @@ test "Valid - bitlist_4_random_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_4, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_1_max_4" {
@@ -25866,7 +25866,7 @@ test "Valid - bitlist_1_max_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_1, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_31_zero_1" {
@@ -25881,7 +25881,7 @@ test "Valid - bitlist_31_zero_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_31, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_3_lengthy_0" {
@@ -25896,7 +25896,7 @@ test "Valid - bitlist_3_lengthy_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_3, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_8_zero_2" {
@@ -25911,7 +25911,7 @@ test "Valid - bitlist_8_zero_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_8, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_1_random_4" {
@@ -25926,7 +25926,7 @@ test "Valid - bitlist_1_random_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_1, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_2_zero_3" {
@@ -25941,7 +25941,7 @@ test "Valid - bitlist_2_zero_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_2, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_3_random_3" {
@@ -25956,7 +25956,7 @@ test "Valid - bitlist_3_random_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_3, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_1_nil_3" {
@@ -25971,7 +25971,7 @@ test "Valid - bitlist_1_nil_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_1, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_3_random_2" {
@@ -25986,7 +25986,7 @@ test "Valid - bitlist_3_random_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_3, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_31_nil_2" {
@@ -26001,7 +26001,7 @@ test "Valid - bitlist_31_nil_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_31, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_8_zero_3" {
@@ -26016,7 +26016,7 @@ test "Valid - bitlist_8_zero_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_8, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_1_max_3" {
@@ -26031,7 +26031,7 @@ test "Valid - bitlist_1_max_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_1, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_513_random_0" {
@@ -26046,7 +26046,7 @@ test "Valid - bitlist_513_random_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_513, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_31_max_1" {
@@ -26061,7 +26061,7 @@ test "Valid - bitlist_31_max_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_31, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_16_max_2" {
@@ -26076,7 +26076,7 @@ test "Valid - bitlist_16_max_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_16, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_3_nil_1" {
@@ -26091,7 +26091,7 @@ test "Valid - bitlist_3_nil_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_3, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_5_nil_1" {
@@ -26106,7 +26106,7 @@ test "Valid - bitlist_5_nil_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_5, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_512_nil_1" {
@@ -26121,7 +26121,7 @@ test "Valid - bitlist_512_nil_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_512, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_8_max_1" {
@@ -26136,7 +26136,7 @@ test "Valid - bitlist_8_max_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_8, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_8_zero_4" {
@@ -26151,7 +26151,7 @@ test "Valid - bitlist_8_zero_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_8, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_512_random_2" {
@@ -26166,7 +26166,7 @@ test "Valid - bitlist_512_random_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_512, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_5_nil_0" {
@@ -26181,7 +26181,7 @@ test "Valid - bitlist_5_nil_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_5, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_16_zero_2" {
@@ -26196,7 +26196,7 @@ test "Valid - bitlist_16_zero_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_16, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_3_zero_3" {
@@ -26211,7 +26211,7 @@ test "Valid - bitlist_3_zero_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_3, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_512_random_3" {
@@ -26226,7 +26226,7 @@ test "Valid - bitlist_512_random_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_512, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_8_random_3" {
@@ -26241,7 +26241,7 @@ test "Valid - bitlist_8_random_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_8, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_4_max_2" {
@@ -26256,7 +26256,7 @@ test "Valid - bitlist_4_max_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_4, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_512_lengthy_4" {
@@ -26271,7 +26271,7 @@ test "Valid - bitlist_512_lengthy_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_512, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_512_zero_2" {
@@ -26286,7 +26286,7 @@ test "Valid - bitlist_512_zero_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_512, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_512_nil_0" {
@@ -26301,7 +26301,7 @@ test "Valid - bitlist_512_nil_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_512, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_4_nil_3" {
@@ -26316,7 +26316,7 @@ test "Valid - bitlist_4_nil_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_4, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_1_lengthy_3" {
@@ -26331,7 +26331,7 @@ test "Valid - bitlist_1_lengthy_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_1, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_16_random_2" {
@@ -26346,7 +26346,7 @@ test "Valid - bitlist_16_random_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_16, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_2_nil_3" {
@@ -26361,7 +26361,7 @@ test "Valid - bitlist_2_nil_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_2, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_512_zero_0" {
@@ -26376,7 +26376,7 @@ test "Valid - bitlist_512_zero_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_512, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_8_max_4" {
@@ -26391,7 +26391,7 @@ test "Valid - bitlist_8_max_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_8, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_2_zero_4" {
@@ -26406,7 +26406,7 @@ test "Valid - bitlist_2_zero_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_2, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_2_lengthy_2" {
@@ -26421,7 +26421,7 @@ test "Valid - bitlist_2_lengthy_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_2, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_31_max_2" {
@@ -26436,7 +26436,7 @@ test "Valid - bitlist_31_max_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_31, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_512_nil_2" {
@@ -26451,7 +26451,7 @@ test "Valid - bitlist_512_nil_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_512, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_512_lengthy_3" {
@@ -26466,7 +26466,7 @@ test "Valid - bitlist_512_lengthy_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_512, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_4_lengthy_1" {
@@ -26481,7 +26481,7 @@ test "Valid - bitlist_4_lengthy_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_4, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_2_max_0" {
@@ -26496,7 +26496,7 @@ test "Valid - bitlist_2_max_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_2, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_1_lengthy_0" {
@@ -26511,7 +26511,7 @@ test "Valid - bitlist_1_lengthy_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_1, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_31_lengthy_0" {
@@ -26526,7 +26526,7 @@ test "Valid - bitlist_31_lengthy_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_31, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_3_max_2" {
@@ -26541,7 +26541,7 @@ test "Valid - bitlist_3_max_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_3, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_31_max_3" {
@@ -26556,7 +26556,7 @@ test "Valid - bitlist_31_max_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_31, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_5_max_0" {
@@ -26571,7 +26571,7 @@ test "Valid - bitlist_5_max_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_5, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_1_random_1" {
@@ -26586,7 +26586,7 @@ test "Valid - bitlist_1_random_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_1, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_513_nil_3" {
@@ -26601,7 +26601,7 @@ test "Valid - bitlist_513_nil_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_513, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_2_max_3" {
@@ -26616,7 +26616,7 @@ test "Valid - bitlist_2_max_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_2, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_8_nil_0" {
@@ -26631,7 +26631,7 @@ test "Valid - bitlist_8_nil_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_8, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_8_lengthy_1" {
@@ -26646,7 +26646,7 @@ test "Valid - bitlist_8_lengthy_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_8, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_512_max_0" {
@@ -26661,7 +26661,7 @@ test "Valid - bitlist_512_max_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_512, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_512_max_3" {
@@ -26676,7 +26676,7 @@ test "Valid - bitlist_512_max_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_512, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_513_zero_3" {
@@ -26691,7 +26691,7 @@ test "Valid - bitlist_513_zero_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_513, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_513_lengthy_1" {
@@ -26706,7 +26706,7 @@ test "Valid - bitlist_513_lengthy_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_513, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_5_zero_4" {
@@ -26721,7 +26721,7 @@ test "Valid - bitlist_5_zero_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_5, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_8_random_1" {
@@ -26736,7 +26736,7 @@ test "Valid - bitlist_8_random_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_8, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_31_lengthy_1" {
@@ -26751,7 +26751,7 @@ test "Valid - bitlist_31_lengthy_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_31, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_5_nil_3" {
@@ -26766,7 +26766,7 @@ test "Valid - bitlist_5_nil_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_5, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_1_nil_0" {
@@ -26781,7 +26781,7 @@ test "Valid - bitlist_1_nil_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_1, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_512_random_0" {
@@ -26796,7 +26796,7 @@ test "Valid - bitlist_512_random_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_512, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_512_nil_3" {
@@ -26811,7 +26811,7 @@ test "Valid - bitlist_512_nil_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_512, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_512_lengthy_0" {
@@ -26826,7 +26826,7 @@ test "Valid - bitlist_512_lengthy_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_512, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_512_lengthy_1" {
@@ -26841,7 +26841,7 @@ test "Valid - bitlist_512_lengthy_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_512, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_5_lengthy_0" {
@@ -26856,7 +26856,7 @@ test "Valid - bitlist_5_lengthy_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_5, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_31_nil_1" {
@@ -26871,7 +26871,7 @@ test "Valid - bitlist_31_nil_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_31, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_3_zero_2" {
@@ -26886,7 +26886,7 @@ test "Valid - bitlist_3_zero_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_3, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_8_max_3" {
@@ -26901,7 +26901,7 @@ test "Valid - bitlist_8_max_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_8, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_513_max_4" {
@@ -26916,7 +26916,7 @@ test "Valid - bitlist_513_max_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_513, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_16_max_0" {
@@ -26931,7 +26931,7 @@ test "Valid - bitlist_16_max_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_16, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_5_zero_3" {
@@ -26946,7 +26946,7 @@ test "Valid - bitlist_5_zero_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_5, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_1_max_0" {
@@ -26961,7 +26961,7 @@ test "Valid - bitlist_1_max_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_1, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_513_lengthy_3" {
@@ -26976,7 +26976,7 @@ test "Valid - bitlist_513_lengthy_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_513, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_4_random_3" {
@@ -26991,7 +26991,7 @@ test "Valid - bitlist_4_random_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_4, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_512_random_4" {
@@ -27006,7 +27006,7 @@ test "Valid - bitlist_512_random_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_512, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_16_zero_3" {
@@ -27021,7 +27021,7 @@ test "Valid - bitlist_16_zero_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_16, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_512_max_1" {
@@ -27036,7 +27036,7 @@ test "Valid - bitlist_512_max_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_512, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_8_nil_1" {
@@ -27051,7 +27051,7 @@ test "Valid - bitlist_8_nil_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_8, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_16_random_1" {
@@ -27066,7 +27066,7 @@ test "Valid - bitlist_16_random_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_16, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_4_lengthy_3" {
@@ -27081,7 +27081,7 @@ test "Valid - bitlist_4_lengthy_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_4, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_31_nil_4" {
@@ -27096,7 +27096,7 @@ test "Valid - bitlist_31_nil_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_31, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_16_random_4" {
@@ -27111,7 +27111,7 @@ test "Valid - bitlist_16_random_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_16, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_5_zero_2" {
@@ -27126,7 +27126,7 @@ test "Valid - bitlist_5_zero_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_5, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_513_random_3" {
@@ -27141,7 +27141,7 @@ test "Valid - bitlist_513_random_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_513, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_5_zero_1" {
@@ -27156,7 +27156,7 @@ test "Valid - bitlist_5_zero_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_5, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_4_nil_4" {
@@ -27171,7 +27171,7 @@ test "Valid - bitlist_4_nil_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_4, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_3_zero_0" {
@@ -27186,7 +27186,7 @@ test "Valid - bitlist_3_zero_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_3, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_16_max_4" {
@@ -27201,7 +27201,7 @@ test "Valid - bitlist_16_max_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_16, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_8_max_2" {
@@ -27216,7 +27216,7 @@ test "Valid - bitlist_8_max_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_8, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_513_max_0" {
@@ -27231,7 +27231,7 @@ test "Valid - bitlist_513_max_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_513, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_4_max_3" {
@@ -27246,7 +27246,7 @@ test "Valid - bitlist_4_max_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_4, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_16_nil_4" {
@@ -27261,7 +27261,7 @@ test "Valid - bitlist_16_nil_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_16, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_31_lengthy_3" {
@@ -27276,7 +27276,7 @@ test "Valid - bitlist_31_lengthy_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_31, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_513_zero_1" {
@@ -27291,7 +27291,7 @@ test "Valid - bitlist_513_zero_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_513, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_3_max_4" {
@@ -27306,7 +27306,7 @@ test "Valid - bitlist_3_max_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_3, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_3, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_4_max_0" {
@@ -27321,7 +27321,7 @@ test "Valid - bitlist_4_max_0" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_4, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_31_random_1" {
@@ -27336,7 +27336,7 @@ test "Valid - bitlist_31_random_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_31, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_5_max_2" {
@@ -27351,7 +27351,7 @@ test "Valid - bitlist_5_max_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_5, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_5, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_16_lengthy_4" {
@@ -27366,7 +27366,7 @@ test "Valid - bitlist_16_lengthy_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_16, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_1_zero_1" {
@@ -27381,7 +27381,7 @@ test "Valid - bitlist_1_zero_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_1, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_512_max_4" {
@@ -27396,7 +27396,7 @@ test "Valid - bitlist_512_max_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_512, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_512, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_31_zero_4" {
@@ -27411,7 +27411,7 @@ test "Valid - bitlist_31_zero_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_31, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_31, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_1_lengthy_1" {
@@ -27426,7 +27426,7 @@ test "Valid - bitlist_1_lengthy_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_1, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_513_zero_4" {
@@ -27441,7 +27441,7 @@ test "Valid - bitlist_513_zero_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_513, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_513, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_8_lengthy_3" {
@@ -27456,7 +27456,7 @@ test "Valid - bitlist_8_lengthy_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_8, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_8, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_2_max_2" {
@@ -27471,7 +27471,7 @@ test "Valid - bitlist_2_max_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_2, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_2_max_1" {
@@ -27486,7 +27486,7 @@ test "Valid - bitlist_2_max_1" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_2, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_4_zero_3" {
@@ -27501,7 +27501,7 @@ test "Valid - bitlist_4_zero_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_4, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_16_random_3" {
@@ -27516,7 +27516,7 @@ test "Valid - bitlist_16_random_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_16, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_16, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_2_zero_2" {
@@ -27531,7 +27531,7 @@ test "Valid - bitlist_2_zero_2" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_2, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_2, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_1_zero_3" {
@@ -27546,7 +27546,7 @@ test "Valid - bitlist_1_zero_3" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_1, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_1, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - bitlist_4_zero_4" {
@@ -27561,7 +27561,7 @@ test "Valid - bitlist_4_zero_4" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.bitlist_4, allocator, test_dir);
+    try test_case.validTestCase(types.bitlist_4, allocator, test_dir, "meta.yaml");
 }
 
 test "Invalid - bitlist_no_delimiter_zeroes" {
@@ -27786,7 +27786,7 @@ test "Valid - true" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.boolean, allocator, test_dir);
+    try test_case.validTestCase(types.boolean, allocator, test_dir, "meta.yaml");
 }
 
 test "Valid - false" {
@@ -27801,7 +27801,7 @@ test "Valid - false" {
     defer allocator.free(test_dir_name);
 
     const test_dir = try std.fs.cwd().openDir(test_dir_name, .{});
-    try test_case.validTestCase(types.boolean, allocator, test_dir);
+    try test_case.validTestCase(types.boolean, allocator, test_dir, "meta.yaml");
 }
 
 test "Invalid - byte_full" {

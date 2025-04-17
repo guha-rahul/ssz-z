@@ -17,6 +17,8 @@ pub fn UintType(comptime bits: comptime_int) type {
         pub const Type: type = NativeType;
         pub const fixed_size: usize = bytes;
 
+        pub const default_value: Type = 0;
+
         pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
             std.mem.writeInt(Type, out[0..bytes], value.*, .little);
             return bytes;

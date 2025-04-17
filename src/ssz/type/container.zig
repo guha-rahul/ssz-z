@@ -47,6 +47,14 @@ pub fn FixedContainerType(comptime ST: type) type {
         pub const field_offsets: [fields.len]usize = _offsets;
         pub const chunk_count: usize = fields.len;
 
+        pub const default_value: Type = blk: {
+            var out: Type = undefined;
+            for (fields) |field| {
+                @field(out, field.name) = field.type.default_value;
+            }
+            break :blk out;
+        };
+
         pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
             var i: usize = 0;
             inline for (fields) |field| {
@@ -183,15 +191,13 @@ pub fn VariableContainerType(comptime ST: type) type {
         pub const fixed_count: usize = _fixed_count;
         pub const chunk_count: usize = fields.len;
 
-        pub fn defaultValue(allocator: std.mem.Allocator) !Type {
+        pub const default_value: Type = blk: {
             var out: Type = undefined;
-            inline for (fields) |field| {
-                if (!comptime isFixedType(field.type)) {
-                    @field(out, field.name) = try field.type.defaultValue(allocator);
-                }
+            for (fields) |field| {
+                @field(out, field.name) = field.type.default_value;
             }
-            return out;
-        }
+            break :blk out;
+        };
 
         pub fn deinit(allocator: std.mem.Allocator, value: *Type) void {
             inline for (fields) |field| {

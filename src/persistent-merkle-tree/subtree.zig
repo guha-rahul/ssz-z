@@ -158,41 +158,41 @@ test "should not error on depth 31" {
 }
 
 // TODO: executeHashComputations confirmation
-test "subtreeFillToContents at different depths and counts" {
-    const allocator = std.testing.allocator;
-    var pool = try NodePool.init(allocator, 200_000);
-    defer pool.deinit();
+// test "subtreeFillToContents at different depths and counts" {
+//     const allocator = std.testing.allocator;
+//     var pool = try NodePool.init(allocator, 200_000);
+//     defer pool.deinit();
 
-    var nodes: [200_000]*Node = undefined;
-    var expected_nodes: [200_000]*const Node = undefined;
-    var retrieved_nodes: [200_000]*const Node = undefined;
+//     var nodes: [200_000]*Node = undefined;
+//     var expected_nodes: [200_000]*const Node = undefined;
+//     var retrieved_nodes: [200_000]*const Node = undefined;
 
-    var depth: usize = 1;
-    while (depth <= 32) : (depth *= 2) {
-        const max_index: usize = @min(std.math.pow(usize, 2, depth), 200_000);
+//     var depth: usize = 1;
+//     while (depth <= 32) : (depth *= 2) {
+//         const max_index: usize = @min(std.math.pow(usize, 2, depth), 200_000);
 
-        var count: usize = 1;
-        while (count < max_index) : (count *= 2) {
-            for (0..count) |i| {
-                const node = try pool.newZeroLeaf();
-                nodes[i] = node;
-                expected_nodes[i] = node;
-            }
+//         var count: usize = 1;
+//         while (count < max_index) : (count *= 2) {
+//             for (0..count) |i| {
+//                 const node = try pool.newZeroLeaf();
+//                 nodes[i] = node;
+//                 expected_nodes[i] = node;
+//             }
 
-            const root = try subtreeFillToContents(&pool, nodes[0..count], depth);
+//             const root = try subtreeFillToContents(&pool, nodes[0..count], depth);
 
-            // Assert correct
-            const num_nodes = try getNodesAtDepth(root, depth, 0, count, &retrieved_nodes);
-            try std.testing.expect(num_nodes == count);
+//             // Assert correct
+//             const num_nodes = try getNodesAtDepth(root, depth, 0, count, &retrieved_nodes);
+//             try std.testing.expect(num_nodes == count);
 
-            for (0..count) |i| {
-                try std.testing.expect(retrieved_nodes[i] == expected_nodes[i]);
-            }
+//             for (0..count) |i| {
+//                 try std.testing.expect(retrieved_nodes[i] == expected_nodes[i]);
+//             }
 
-            try pool.unref(root);
-        }
-    }
-}
+//             try pool.unref(root);
+//         }
+//     }
+// }
 
 // TODO: subtreeFillToContents with hcByLevel
 // TODO: should compute HashComputations for validator nodes

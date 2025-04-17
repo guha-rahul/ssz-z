@@ -7,6 +7,8 @@ pub fn BoolType() type {
         pub const Type: type = bool;
         pub const fixed_size: usize = 1;
 
+        pub const default_value: Type = false;
+
         pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
             const byte: u8 = if (value.*) 1 else 0;
             out[0] = byte;
