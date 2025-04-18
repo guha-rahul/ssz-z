@@ -14,9 +14,7 @@ test "Valid - uint_256_random_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_256_random_1"
+        "uints/valid/uint_256_random_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -29,9 +27,7 @@ test "Valid - uint_128_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_128_zero"
+        "uints/valid/uint_128_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -44,9 +40,7 @@ test "Valid - uint_16_random_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_16_random_0"
+        "uints/valid/uint_16_random_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -59,9 +53,7 @@ test "Valid - uint_8_random_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_8_random_3"
+        "uints/valid/uint_8_random_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -74,9 +66,7 @@ test "Valid - uint_32_random_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_32_random_0"
+        "uints/valid/uint_32_random_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -89,9 +79,7 @@ test "Valid - uint_8_random_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_8_random_2"
+        "uints/valid/uint_8_random_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -104,9 +92,7 @@ test "Valid - uint_128_random_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_128_random_3"
+        "uints/valid/uint_128_random_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -119,9 +105,7 @@ test "Valid - uint_8_random_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_8_random_1"
+        "uints/valid/uint_8_random_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -134,9 +118,7 @@ test "Valid - uint_32_last_byte_empty" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_32_last_byte_empty"
+        "uints/valid/uint_32_last_byte_empty",
     });
     defer allocator.free(test_dir_name);
 
@@ -149,9 +131,7 @@ test "Valid - uint_128_last_byte_empty" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_128_last_byte_empty"
+        "uints/valid/uint_128_last_byte_empty",
     });
     defer allocator.free(test_dir_name);
 
@@ -164,9 +144,7 @@ test "Valid - uint_256_random_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_256_random_0"
+        "uints/valid/uint_256_random_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -179,9 +157,7 @@ test "Valid - uint_16_last_byte_empty" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_16_last_byte_empty"
+        "uints/valid/uint_16_last_byte_empty",
     });
     defer allocator.free(test_dir_name);
 
@@ -194,9 +170,7 @@ test "Valid - uint_64_random_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_64_random_3"
+        "uints/valid/uint_64_random_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -209,9 +183,7 @@ test "Valid - uint_32_random_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_32_random_4"
+        "uints/valid/uint_32_random_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -224,9 +196,7 @@ test "Valid - uint_16_random_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_16_random_3"
+        "uints/valid/uint_16_random_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -239,9 +209,7 @@ test "Valid - uint_32_random_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_32_random_1"
+        "uints/valid/uint_32_random_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -254,9 +222,7 @@ test "Valid - uint_256_random_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_256_random_2"
+        "uints/valid/uint_256_random_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -269,9 +235,7 @@ test "Valid - uint_8_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_8_max"
+        "uints/valid/uint_8_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -284,9 +248,7 @@ test "Valid - uint_8_last_byte_empty" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_8_last_byte_empty"
+        "uints/valid/uint_8_last_byte_empty",
     });
     defer allocator.free(test_dir_name);
 
@@ -299,9 +261,7 @@ test "Valid - uint_256_random_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_256_random_3"
+        "uints/valid/uint_256_random_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -314,9 +274,7 @@ test "Valid - uint_32_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_32_zero"
+        "uints/valid/uint_32_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -329,9 +287,7 @@ test "Valid - uint_128_random_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_128_random_0"
+        "uints/valid/uint_128_random_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -344,9 +300,7 @@ test "Valid - uint_128_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_128_max"
+        "uints/valid/uint_128_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -359,9 +313,7 @@ test "Valid - uint_16_random_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_16_random_1"
+        "uints/valid/uint_16_random_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -374,9 +326,7 @@ test "Valid - uint_16_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_16_zero"
+        "uints/valid/uint_16_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -389,9 +339,7 @@ test "Valid - uint_64_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_64_max"
+        "uints/valid/uint_64_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -404,9 +352,7 @@ test "Valid - uint_32_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_32_max"
+        "uints/valid/uint_32_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -419,9 +365,7 @@ test "Valid - uint_16_random_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_16_random_2"
+        "uints/valid/uint_16_random_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -434,9 +378,7 @@ test "Valid - uint_128_random_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_128_random_2"
+        "uints/valid/uint_128_random_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -449,9 +391,7 @@ test "Valid - uint_64_last_byte_empty" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_64_last_byte_empty"
+        "uints/valid/uint_64_last_byte_empty",
     });
     defer allocator.free(test_dir_name);
 
@@ -464,9 +404,7 @@ test "Valid - uint_32_random_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_32_random_3"
+        "uints/valid/uint_32_random_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -479,9 +417,7 @@ test "Valid - uint_256_last_byte_empty" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_256_last_byte_empty"
+        "uints/valid/uint_256_last_byte_empty",
     });
     defer allocator.free(test_dir_name);
 
@@ -494,9 +430,7 @@ test "Valid - uint_64_random_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_64_random_4"
+        "uints/valid/uint_64_random_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -509,9 +443,7 @@ test "Valid - uint_8_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_8_zero"
+        "uints/valid/uint_8_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -524,9 +456,7 @@ test "Valid - uint_8_random_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_8_random_0"
+        "uints/valid/uint_8_random_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -539,9 +469,7 @@ test "Valid - uint_256_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_256_max"
+        "uints/valid/uint_256_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -554,9 +482,7 @@ test "Valid - uint_64_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_64_zero"
+        "uints/valid/uint_64_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -569,9 +495,7 @@ test "Valid - uint_32_random_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_32_random_2"
+        "uints/valid/uint_32_random_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -584,9 +508,7 @@ test "Valid - uint_64_random_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_64_random_2"
+        "uints/valid/uint_64_random_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -599,9 +521,7 @@ test "Valid - uint_64_random_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_64_random_0"
+        "uints/valid/uint_64_random_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -614,9 +534,7 @@ test "Valid - uint_128_random_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_128_random_4"
+        "uints/valid/uint_128_random_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -629,9 +547,7 @@ test "Valid - uint_256_random_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_256_random_4"
+        "uints/valid/uint_256_random_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -644,9 +560,7 @@ test "Valid - uint_64_random_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_64_random_1"
+        "uints/valid/uint_64_random_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -659,9 +573,7 @@ test "Valid - uint_8_random_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_8_random_4"
+        "uints/valid/uint_8_random_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -674,9 +586,7 @@ test "Valid - uint_16_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_16_max"
+        "uints/valid/uint_16_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -689,9 +599,7 @@ test "Valid - uint_256_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_256_zero"
+        "uints/valid/uint_256_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -704,9 +612,7 @@ test "Valid - uint_128_random_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_128_random_1"
+        "uints/valid/uint_128_random_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -719,9 +625,7 @@ test "Valid - uint_16_random_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "uints",
-        "valid",
-        "uint_16_random_4"
+        "uints/valid/uint_16_random_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -1004,9 +908,7 @@ test "Valid - vec_uint8_16_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint8_16_zero"
+        "basic_vector/valid/vec_uint8_16_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -1019,9 +921,7 @@ test "Valid - vec_uint32_4_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint32_4_zero"
+        "basic_vector/valid/vec_uint32_4_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -1034,9 +934,7 @@ test "Valid - vec_uint64_4_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint64_4_random"
+        "basic_vector/valid/vec_uint64_4_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -1049,9 +947,7 @@ test "Valid - vec_uint16_3_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint16_3_random"
+        "basic_vector/valid/vec_uint16_3_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -1064,9 +960,7 @@ test "Valid - vec_uint8_2_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint8_2_zero"
+        "basic_vector/valid/vec_uint8_2_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -1079,9 +973,7 @@ test "Valid - vec_uint16_5_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint16_5_max"
+        "basic_vector/valid/vec_uint16_5_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -1094,9 +986,7 @@ test "Valid - vec_bool_8_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_bool_8_zero"
+        "basic_vector/valid/vec_bool_8_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -1109,9 +999,7 @@ test "Valid - vec_uint64_513_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint64_513_random"
+        "basic_vector/valid/vec_uint64_513_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -1124,9 +1012,7 @@ test "Valid - vec_bool_1_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_bool_1_zero"
+        "basic_vector/valid/vec_bool_1_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -1139,9 +1025,7 @@ test "Valid - vec_uint32_513_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint32_513_max"
+        "basic_vector/valid/vec_uint32_513_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -1154,9 +1038,7 @@ test "Valid - vec_bool_513_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_bool_513_max"
+        "basic_vector/valid/vec_bool_513_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -1169,9 +1051,7 @@ test "Valid - vec_uint64_3_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint64_3_zero"
+        "basic_vector/valid/vec_uint64_3_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -1184,9 +1064,7 @@ test "Valid - vec_uint8_2_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint8_2_max"
+        "basic_vector/valid/vec_uint8_2_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -1199,9 +1077,7 @@ test "Valid - vec_uint256_1_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint256_1_random"
+        "basic_vector/valid/vec_uint256_1_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -1214,9 +1090,7 @@ test "Valid - vec_uint16_2_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint16_2_zero"
+        "basic_vector/valid/vec_uint16_2_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -1229,9 +1103,7 @@ test "Valid - vec_uint128_1_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint128_1_zero"
+        "basic_vector/valid/vec_uint128_1_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -1244,9 +1116,7 @@ test "Valid - vec_uint8_8_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint8_8_max"
+        "basic_vector/valid/vec_uint8_8_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -1259,9 +1129,7 @@ test "Valid - vec_uint8_3_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint8_3_zero"
+        "basic_vector/valid/vec_uint8_3_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -1274,9 +1142,7 @@ test "Valid - vec_uint32_16_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint32_16_random"
+        "basic_vector/valid/vec_uint32_16_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -1289,9 +1155,7 @@ test "Valid - vec_uint16_513_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint16_513_max"
+        "basic_vector/valid/vec_uint16_513_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -1304,9 +1168,7 @@ test "Valid - vec_uint8_16_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint8_16_random"
+        "basic_vector/valid/vec_uint8_16_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -1319,9 +1181,7 @@ test "Valid - vec_uint64_31_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint64_31_zero"
+        "basic_vector/valid/vec_uint64_31_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -1334,9 +1194,7 @@ test "Valid - vec_uint64_2_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint64_2_zero"
+        "basic_vector/valid/vec_uint64_2_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -1349,9 +1207,7 @@ test "Valid - vec_uint8_8_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint8_8_random"
+        "basic_vector/valid/vec_uint8_8_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -1364,9 +1220,7 @@ test "Valid - vec_uint32_2_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint32_2_max"
+        "basic_vector/valid/vec_uint32_2_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -1379,9 +1233,7 @@ test "Valid - vec_uint256_513_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint256_513_random"
+        "basic_vector/valid/vec_uint256_513_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -1394,9 +1246,7 @@ test "Valid - vec_uint128_8_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint128_8_max"
+        "basic_vector/valid/vec_uint128_8_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -1409,9 +1259,7 @@ test "Valid - vec_uint32_31_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint32_31_zero"
+        "basic_vector/valid/vec_uint32_31_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -1424,9 +1272,7 @@ test "Valid - vec_uint64_512_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint64_512_random"
+        "basic_vector/valid/vec_uint64_512_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -1439,9 +1285,7 @@ test "Valid - vec_uint128_2_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint128_2_max"
+        "basic_vector/valid/vec_uint128_2_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -1454,9 +1298,7 @@ test "Valid - vec_bool_512_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_bool_512_max"
+        "basic_vector/valid/vec_bool_512_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -1469,9 +1311,7 @@ test "Valid - vec_uint32_8_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint32_8_max"
+        "basic_vector/valid/vec_uint32_8_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -1484,9 +1324,7 @@ test "Valid - vec_uint32_512_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint32_512_random"
+        "basic_vector/valid/vec_uint32_512_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -1499,9 +1337,7 @@ test "Valid - vec_uint16_4_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint16_4_max"
+        "basic_vector/valid/vec_uint16_4_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -1514,9 +1350,7 @@ test "Valid - vec_uint16_513_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint16_513_zero"
+        "basic_vector/valid/vec_uint16_513_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -1529,9 +1363,7 @@ test "Valid - vec_uint32_513_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint32_513_random"
+        "basic_vector/valid/vec_uint32_513_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -1544,9 +1376,7 @@ test "Valid - vec_bool_4_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_bool_4_zero"
+        "basic_vector/valid/vec_bool_4_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -1559,9 +1389,7 @@ test "Valid - vec_uint128_16_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint128_16_max"
+        "basic_vector/valid/vec_uint128_16_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -1574,9 +1402,7 @@ test "Valid - vec_bool_8_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_bool_8_max"
+        "basic_vector/valid/vec_bool_8_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -1589,9 +1415,7 @@ test "Valid - vec_uint64_512_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint64_512_zero"
+        "basic_vector/valid/vec_uint64_512_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -1604,9 +1428,7 @@ test "Valid - vec_uint256_512_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint256_512_zero"
+        "basic_vector/valid/vec_uint256_512_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -1619,9 +1441,7 @@ test "Valid - vec_uint128_31_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint128_31_zero"
+        "basic_vector/valid/vec_uint128_31_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -1634,9 +1454,7 @@ test "Valid - vec_uint32_5_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint32_5_max"
+        "basic_vector/valid/vec_uint32_5_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -1649,9 +1467,7 @@ test "Valid - vec_uint32_513_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint32_513_zero"
+        "basic_vector/valid/vec_uint32_513_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -1664,9 +1480,7 @@ test "Valid - vec_uint128_3_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint128_3_max"
+        "basic_vector/valid/vec_uint128_3_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -1679,9 +1493,7 @@ test "Valid - vec_uint64_8_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint64_8_max"
+        "basic_vector/valid/vec_uint64_8_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -1694,9 +1506,7 @@ test "Valid - vec_uint16_1_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint16_1_max"
+        "basic_vector/valid/vec_uint16_1_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -1709,9 +1519,7 @@ test "Valid - vec_uint128_8_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint128_8_random"
+        "basic_vector/valid/vec_uint128_8_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -1724,9 +1532,7 @@ test "Valid - vec_uint128_5_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint128_5_random"
+        "basic_vector/valid/vec_uint128_5_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -1739,9 +1545,7 @@ test "Valid - vec_uint8_31_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint8_31_max"
+        "basic_vector/valid/vec_uint8_31_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -1754,9 +1558,7 @@ test "Valid - vec_uint256_3_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint256_3_zero"
+        "basic_vector/valid/vec_uint256_3_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -1769,9 +1571,7 @@ test "Valid - vec_bool_4_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_bool_4_max"
+        "basic_vector/valid/vec_bool_4_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -1784,9 +1584,7 @@ test "Valid - vec_uint32_1_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint32_1_random"
+        "basic_vector/valid/vec_uint32_1_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -1799,9 +1597,7 @@ test "Valid - vec_uint16_16_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint16_16_max"
+        "basic_vector/valid/vec_uint16_16_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -1814,9 +1610,7 @@ test "Valid - vec_uint256_4_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint256_4_max"
+        "basic_vector/valid/vec_uint256_4_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -1829,9 +1623,7 @@ test "Valid - vec_uint32_3_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint32_3_random"
+        "basic_vector/valid/vec_uint32_3_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -1844,9 +1636,7 @@ test "Valid - vec_uint128_4_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint128_4_zero"
+        "basic_vector/valid/vec_uint128_4_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -1859,9 +1649,7 @@ test "Valid - vec_uint256_31_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint256_31_max"
+        "basic_vector/valid/vec_uint256_31_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -1874,9 +1662,7 @@ test "Valid - vec_uint8_3_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint8_3_max"
+        "basic_vector/valid/vec_uint8_3_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -1889,9 +1675,7 @@ test "Valid - vec_uint256_513_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint256_513_max"
+        "basic_vector/valid/vec_uint256_513_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -1904,9 +1688,7 @@ test "Valid - vec_uint64_2_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint64_2_max"
+        "basic_vector/valid/vec_uint64_2_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -1919,9 +1701,7 @@ test "Valid - vec_uint64_16_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint64_16_zero"
+        "basic_vector/valid/vec_uint64_16_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -1934,9 +1714,7 @@ test "Valid - vec_uint8_4_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint8_4_random"
+        "basic_vector/valid/vec_uint8_4_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -1949,9 +1727,7 @@ test "Valid - vec_uint64_16_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint64_16_random"
+        "basic_vector/valid/vec_uint64_16_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -1964,9 +1740,7 @@ test "Valid - vec_uint8_512_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint8_512_max"
+        "basic_vector/valid/vec_uint8_512_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -1979,9 +1753,7 @@ test "Valid - vec_uint8_3_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint8_3_random"
+        "basic_vector/valid/vec_uint8_3_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -1994,9 +1766,7 @@ test "Valid - vec_uint256_16_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint256_16_random"
+        "basic_vector/valid/vec_uint256_16_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -2009,9 +1779,7 @@ test "Valid - vec_uint64_1_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint64_1_zero"
+        "basic_vector/valid/vec_uint64_1_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -2024,9 +1792,7 @@ test "Valid - vec_uint128_16_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint128_16_random"
+        "basic_vector/valid/vec_uint128_16_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -2039,9 +1805,7 @@ test "Valid - vec_uint128_512_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint128_512_zero"
+        "basic_vector/valid/vec_uint128_512_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -2054,9 +1818,7 @@ test "Valid - vec_uint256_1_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint256_1_zero"
+        "basic_vector/valid/vec_uint256_1_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -2069,9 +1831,7 @@ test "Valid - vec_uint32_4_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint32_4_max"
+        "basic_vector/valid/vec_uint32_4_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -2084,9 +1844,7 @@ test "Valid - vec_uint64_513_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint64_513_max"
+        "basic_vector/valid/vec_uint64_513_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -2099,9 +1857,7 @@ test "Valid - vec_uint32_8_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint32_8_random"
+        "basic_vector/valid/vec_uint32_8_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -2114,9 +1870,7 @@ test "Valid - vec_uint16_512_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint16_512_zero"
+        "basic_vector/valid/vec_uint16_512_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -2129,9 +1883,7 @@ test "Valid - vec_uint256_5_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint256_5_random"
+        "basic_vector/valid/vec_uint256_5_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -2144,9 +1896,7 @@ test "Valid - vec_uint256_2_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint256_2_random"
+        "basic_vector/valid/vec_uint256_2_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -2159,9 +1909,7 @@ test "Valid - vec_uint128_31_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint128_31_random"
+        "basic_vector/valid/vec_uint128_31_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -2174,9 +1922,7 @@ test "Valid - vec_uint32_31_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint32_31_max"
+        "basic_vector/valid/vec_uint32_31_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -2189,9 +1935,7 @@ test "Valid - vec_uint64_1_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint64_1_max"
+        "basic_vector/valid/vec_uint64_1_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -2204,9 +1948,7 @@ test "Valid - vec_bool_2_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_bool_2_max"
+        "basic_vector/valid/vec_bool_2_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -2219,9 +1961,7 @@ test "Valid - vec_uint16_8_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint16_8_random"
+        "basic_vector/valid/vec_uint16_8_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -2234,9 +1974,7 @@ test "Valid - vec_uint256_8_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint256_8_max"
+        "basic_vector/valid/vec_uint256_8_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -2249,9 +1987,7 @@ test "Valid - vec_uint128_5_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint128_5_zero"
+        "basic_vector/valid/vec_uint128_5_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -2264,9 +2000,7 @@ test "Valid - vec_uint128_2_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint128_2_random"
+        "basic_vector/valid/vec_uint128_2_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -2279,9 +2013,7 @@ test "Valid - vec_uint128_3_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint128_3_zero"
+        "basic_vector/valid/vec_uint128_3_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -2294,9 +2026,7 @@ test "Valid - vec_uint16_4_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint16_4_zero"
+        "basic_vector/valid/vec_uint16_4_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -2309,9 +2039,7 @@ test "Valid - vec_uint32_3_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint32_3_max"
+        "basic_vector/valid/vec_uint32_3_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -2324,9 +2052,7 @@ test "Valid - vec_uint128_1_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint128_1_max"
+        "basic_vector/valid/vec_uint128_1_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -2339,9 +2065,7 @@ test "Valid - vec_uint32_16_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint32_16_max"
+        "basic_vector/valid/vec_uint32_16_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -2354,9 +2078,7 @@ test "Valid - vec_uint256_2_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint256_2_max"
+        "basic_vector/valid/vec_uint256_2_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -2369,9 +2091,7 @@ test "Valid - vec_uint16_4_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint16_4_random"
+        "basic_vector/valid/vec_uint16_4_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -2384,9 +2104,7 @@ test "Valid - vec_uint256_4_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint256_4_random"
+        "basic_vector/valid/vec_uint256_4_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -2399,9 +2117,7 @@ test "Valid - vec_uint64_512_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint64_512_max"
+        "basic_vector/valid/vec_uint64_512_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -2414,9 +2130,7 @@ test "Valid - vec_uint64_8_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint64_8_zero"
+        "basic_vector/valid/vec_uint64_8_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -2429,9 +2143,7 @@ test "Valid - vec_uint32_2_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint32_2_zero"
+        "basic_vector/valid/vec_uint32_2_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -2444,9 +2156,7 @@ test "Valid - vec_uint128_3_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint128_3_random"
+        "basic_vector/valid/vec_uint128_3_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -2459,9 +2169,7 @@ test "Valid - vec_uint128_512_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint128_512_random"
+        "basic_vector/valid/vec_uint128_512_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -2474,9 +2182,7 @@ test "Valid - vec_uint16_1_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint16_1_random"
+        "basic_vector/valid/vec_uint16_1_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -2489,9 +2195,7 @@ test "Valid - vec_uint64_3_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint64_3_random"
+        "basic_vector/valid/vec_uint64_3_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -2504,9 +2208,7 @@ test "Valid - vec_uint8_4_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint8_4_zero"
+        "basic_vector/valid/vec_uint8_4_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -2519,9 +2221,7 @@ test "Valid - vec_bool_3_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_bool_3_max"
+        "basic_vector/valid/vec_bool_3_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -2534,9 +2234,7 @@ test "Valid - vec_uint8_31_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint8_31_zero"
+        "basic_vector/valid/vec_uint8_31_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -2549,9 +2247,7 @@ test "Valid - vec_uint64_4_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint64_4_zero"
+        "basic_vector/valid/vec_uint64_4_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -2564,9 +2260,7 @@ test "Valid - vec_uint32_8_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint32_8_zero"
+        "basic_vector/valid/vec_uint32_8_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -2579,9 +2273,7 @@ test "Valid - vec_uint256_31_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint256_31_random"
+        "basic_vector/valid/vec_uint256_31_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -2594,9 +2286,7 @@ test "Valid - vec_uint256_512_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint256_512_random"
+        "basic_vector/valid/vec_uint256_512_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -2609,9 +2299,7 @@ test "Valid - vec_uint256_3_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint256_3_random"
+        "basic_vector/valid/vec_uint256_3_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -2624,9 +2312,7 @@ test "Valid - vec_uint8_4_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint8_4_max"
+        "basic_vector/valid/vec_uint8_4_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -2639,9 +2325,7 @@ test "Valid - vec_bool_5_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_bool_5_max"
+        "basic_vector/valid/vec_bool_5_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -2654,9 +2338,7 @@ test "Valid - vec_uint256_8_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint256_8_zero"
+        "basic_vector/valid/vec_uint256_8_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -2669,9 +2351,7 @@ test "Valid - vec_uint16_5_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint16_5_zero"
+        "basic_vector/valid/vec_uint16_5_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -2684,9 +2364,7 @@ test "Valid - vec_uint32_5_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint32_5_random"
+        "basic_vector/valid/vec_uint32_5_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -2699,9 +2377,7 @@ test "Valid - vec_bool_2_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_bool_2_zero"
+        "basic_vector/valid/vec_bool_2_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -2714,9 +2390,7 @@ test "Valid - vec_uint16_5_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint16_5_random"
+        "basic_vector/valid/vec_uint16_5_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -2729,9 +2403,7 @@ test "Valid - vec_uint16_31_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint16_31_zero"
+        "basic_vector/valid/vec_uint16_31_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -2744,9 +2416,7 @@ test "Valid - vec_uint128_1_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint128_1_random"
+        "basic_vector/valid/vec_uint128_1_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -2759,9 +2429,7 @@ test "Valid - vec_uint256_16_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint256_16_zero"
+        "basic_vector/valid/vec_uint256_16_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -2774,9 +2442,7 @@ test "Valid - vec_uint256_512_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint256_512_max"
+        "basic_vector/valid/vec_uint256_512_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -2789,9 +2455,7 @@ test "Valid - vec_uint16_3_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint16_3_max"
+        "basic_vector/valid/vec_uint16_3_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -2804,9 +2468,7 @@ test "Valid - vec_uint16_31_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint16_31_max"
+        "basic_vector/valid/vec_uint16_31_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -2819,9 +2481,7 @@ test "Valid - vec_uint16_513_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint16_513_random"
+        "basic_vector/valid/vec_uint16_513_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -2834,9 +2494,7 @@ test "Valid - vec_uint16_2_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint16_2_max"
+        "basic_vector/valid/vec_uint16_2_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -2849,9 +2507,7 @@ test "Valid - vec_uint128_2_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint128_2_zero"
+        "basic_vector/valid/vec_uint128_2_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -2864,9 +2520,7 @@ test "Valid - vec_bool_512_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_bool_512_zero"
+        "basic_vector/valid/vec_bool_512_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -2879,9 +2533,7 @@ test "Valid - vec_uint128_513_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint128_513_random"
+        "basic_vector/valid/vec_uint128_513_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -2894,9 +2546,7 @@ test "Valid - vec_uint32_1_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint32_1_max"
+        "basic_vector/valid/vec_uint32_1_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -2909,9 +2559,7 @@ test "Valid - vec_uint8_513_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint8_513_zero"
+        "basic_vector/valid/vec_uint8_513_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -2924,9 +2572,7 @@ test "Valid - vec_uint8_1_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint8_1_random"
+        "basic_vector/valid/vec_uint8_1_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -2939,9 +2585,7 @@ test "Valid - vec_uint64_5_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint64_5_zero"
+        "basic_vector/valid/vec_uint64_5_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -2954,9 +2598,7 @@ test "Valid - vec_uint32_31_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint32_31_random"
+        "basic_vector/valid/vec_uint32_31_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -2969,9 +2611,7 @@ test "Valid - vec_uint32_5_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint32_5_zero"
+        "basic_vector/valid/vec_uint32_5_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -2984,9 +2624,7 @@ test "Valid - vec_uint256_8_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint256_8_random"
+        "basic_vector/valid/vec_uint256_8_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -2999,9 +2637,7 @@ test "Valid - vec_uint8_5_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint8_5_random"
+        "basic_vector/valid/vec_uint8_5_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -3014,9 +2650,7 @@ test "Valid - vec_uint8_5_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint8_5_max"
+        "basic_vector/valid/vec_uint8_5_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -3029,9 +2663,7 @@ test "Valid - vec_bool_5_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_bool_5_zero"
+        "basic_vector/valid/vec_bool_5_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -3044,9 +2676,7 @@ test "Valid - vec_uint8_2_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint8_2_random"
+        "basic_vector/valid/vec_uint8_2_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -3059,9 +2689,7 @@ test "Valid - vec_uint128_5_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint128_5_max"
+        "basic_vector/valid/vec_uint128_5_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -3074,9 +2702,7 @@ test "Valid - vec_uint256_1_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint256_1_max"
+        "basic_vector/valid/vec_uint256_1_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -3089,9 +2715,7 @@ test "Valid - vec_uint8_1_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint8_1_max"
+        "basic_vector/valid/vec_uint8_1_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -3104,9 +2728,7 @@ test "Valid - vec_uint8_5_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint8_5_zero"
+        "basic_vector/valid/vec_uint8_5_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -3119,9 +2741,7 @@ test "Valid - vec_uint8_31_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint8_31_random"
+        "basic_vector/valid/vec_uint8_31_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -3134,9 +2754,7 @@ test "Valid - vec_uint64_1_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint64_1_random"
+        "basic_vector/valid/vec_uint64_1_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -3149,9 +2767,7 @@ test "Valid - vec_uint32_1_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint32_1_zero"
+        "basic_vector/valid/vec_uint32_1_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -3164,9 +2780,7 @@ test "Valid - vec_uint256_5_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint256_5_max"
+        "basic_vector/valid/vec_uint256_5_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -3179,9 +2793,7 @@ test "Valid - vec_uint8_512_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint8_512_random"
+        "basic_vector/valid/vec_uint8_512_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -3194,9 +2806,7 @@ test "Valid - vec_bool_16_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_bool_16_zero"
+        "basic_vector/valid/vec_bool_16_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -3209,9 +2819,7 @@ test "Valid - vec_uint64_8_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint64_8_random"
+        "basic_vector/valid/vec_uint64_8_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -3224,9 +2832,7 @@ test "Valid - vec_uint8_513_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint8_513_max"
+        "basic_vector/valid/vec_uint8_513_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -3239,9 +2845,7 @@ test "Valid - vec_uint32_3_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint32_3_zero"
+        "basic_vector/valid/vec_uint32_3_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -3254,9 +2858,7 @@ test "Valid - vec_uint16_31_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint16_31_random"
+        "basic_vector/valid/vec_uint16_31_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -3269,9 +2871,7 @@ test "Valid - vec_uint8_512_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint8_512_zero"
+        "basic_vector/valid/vec_uint8_512_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -3284,9 +2884,7 @@ test "Valid - vec_uint32_16_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint32_16_zero"
+        "basic_vector/valid/vec_uint32_16_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -3299,9 +2897,7 @@ test "Valid - vec_uint32_2_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint32_2_random"
+        "basic_vector/valid/vec_uint32_2_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -3314,9 +2910,7 @@ test "Valid - vec_bool_31_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_bool_31_max"
+        "basic_vector/valid/vec_bool_31_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -3329,9 +2923,7 @@ test "Valid - vec_uint256_513_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint256_513_zero"
+        "basic_vector/valid/vec_uint256_513_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -3344,9 +2936,7 @@ test "Valid - vec_bool_16_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_bool_16_max"
+        "basic_vector/valid/vec_bool_16_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -3359,9 +2949,7 @@ test "Valid - vec_uint128_31_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint128_31_max"
+        "basic_vector/valid/vec_uint128_31_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -3374,9 +2962,7 @@ test "Valid - vec_uint32_512_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint32_512_zero"
+        "basic_vector/valid/vec_uint32_512_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -3389,9 +2975,7 @@ test "Valid - vec_uint64_5_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint64_5_max"
+        "basic_vector/valid/vec_uint64_5_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -3404,9 +2988,7 @@ test "Valid - vec_uint64_31_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint64_31_max"
+        "basic_vector/valid/vec_uint64_31_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -3419,9 +3001,7 @@ test "Valid - vec_uint64_4_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint64_4_max"
+        "basic_vector/valid/vec_uint64_4_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -3434,9 +3014,7 @@ test "Valid - vec_uint128_4_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint128_4_random"
+        "basic_vector/valid/vec_uint128_4_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -3449,9 +3027,7 @@ test "Valid - vec_uint128_4_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint128_4_max"
+        "basic_vector/valid/vec_uint128_4_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -3464,9 +3040,7 @@ test "Valid - vec_uint32_4_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint32_4_random"
+        "basic_vector/valid/vec_uint32_4_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -3479,9 +3053,7 @@ test "Valid - vec_uint16_2_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint16_2_random"
+        "basic_vector/valid/vec_uint16_2_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -3494,9 +3066,7 @@ test "Valid - vec_bool_3_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_bool_3_zero"
+        "basic_vector/valid/vec_bool_3_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -3509,9 +3079,7 @@ test "Valid - vec_uint16_3_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint16_3_zero"
+        "basic_vector/valid/vec_uint16_3_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -3524,9 +3092,7 @@ test "Valid - vec_uint256_3_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint256_3_max"
+        "basic_vector/valid/vec_uint256_3_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -3539,9 +3105,7 @@ test "Valid - vec_uint16_16_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint16_16_random"
+        "basic_vector/valid/vec_uint16_16_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -3554,9 +3118,7 @@ test "Valid - vec_uint8_8_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint8_8_zero"
+        "basic_vector/valid/vec_uint8_8_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -3569,9 +3131,7 @@ test "Valid - vec_uint256_4_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint256_4_zero"
+        "basic_vector/valid/vec_uint256_4_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -3584,9 +3144,7 @@ test "Valid - vec_uint16_1_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint16_1_zero"
+        "basic_vector/valid/vec_uint16_1_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -3599,9 +3157,7 @@ test "Valid - vec_uint64_16_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint64_16_max"
+        "basic_vector/valid/vec_uint64_16_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -3614,9 +3170,7 @@ test "Valid - vec_bool_31_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_bool_31_zero"
+        "basic_vector/valid/vec_bool_31_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -3629,9 +3183,7 @@ test "Valid - vec_uint256_16_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint256_16_max"
+        "basic_vector/valid/vec_uint256_16_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -3644,9 +3196,7 @@ test "Valid - vec_uint16_8_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint16_8_max"
+        "basic_vector/valid/vec_uint16_8_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -3659,9 +3209,7 @@ test "Valid - vec_uint64_513_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint64_513_zero"
+        "basic_vector/valid/vec_uint64_513_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -3674,9 +3222,7 @@ test "Valid - vec_bool_1_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_bool_1_max"
+        "basic_vector/valid/vec_bool_1_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -3689,9 +3235,7 @@ test "Valid - vec_uint128_8_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint128_8_zero"
+        "basic_vector/valid/vec_uint128_8_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -3704,9 +3248,7 @@ test "Valid - vec_uint16_512_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint16_512_random"
+        "basic_vector/valid/vec_uint16_512_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -3719,9 +3261,7 @@ test "Valid - vec_bool_513_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_bool_513_zero"
+        "basic_vector/valid/vec_bool_513_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -3734,9 +3274,7 @@ test "Valid - vec_uint128_512_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint128_512_max"
+        "basic_vector/valid/vec_uint128_512_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -3749,9 +3287,7 @@ test "Valid - vec_uint64_3_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint64_3_max"
+        "basic_vector/valid/vec_uint64_3_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -3764,9 +3300,7 @@ test "Valid - vec_uint64_31_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint64_31_random"
+        "basic_vector/valid/vec_uint64_31_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -3779,9 +3313,7 @@ test "Valid - vec_uint128_513_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint128_513_zero"
+        "basic_vector/valid/vec_uint128_513_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -3794,9 +3326,7 @@ test "Valid - vec_uint16_512_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint16_512_max"
+        "basic_vector/valid/vec_uint16_512_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -3809,9 +3339,7 @@ test "Valid - vec_uint256_5_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint256_5_zero"
+        "basic_vector/valid/vec_uint256_5_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -3824,9 +3352,7 @@ test "Valid - vec_uint32_512_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint32_512_max"
+        "basic_vector/valid/vec_uint32_512_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -3839,9 +3365,7 @@ test "Valid - vec_uint256_31_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint256_31_zero"
+        "basic_vector/valid/vec_uint256_31_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -3854,9 +3378,7 @@ test "Valid - vec_uint8_513_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint8_513_random"
+        "basic_vector/valid/vec_uint8_513_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -3869,9 +3391,7 @@ test "Valid - vec_uint64_2_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint64_2_random"
+        "basic_vector/valid/vec_uint64_2_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -3884,9 +3404,7 @@ test "Valid - vec_uint16_8_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint16_8_zero"
+        "basic_vector/valid/vec_uint16_8_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -3899,9 +3417,7 @@ test "Valid - vec_uint128_16_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint128_16_zero"
+        "basic_vector/valid/vec_uint128_16_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -3914,9 +3430,7 @@ test "Valid - vec_uint8_16_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint8_16_max"
+        "basic_vector/valid/vec_uint8_16_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -3929,9 +3443,7 @@ test "Valid - vec_uint128_513_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint128_513_max"
+        "basic_vector/valid/vec_uint128_513_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -3944,9 +3456,7 @@ test "Valid - vec_uint16_16_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint16_16_zero"
+        "basic_vector/valid/vec_uint16_16_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -3959,9 +3469,7 @@ test "Valid - vec_uint8_1_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint8_1_zero"
+        "basic_vector/valid/vec_uint8_1_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -3974,9 +3482,7 @@ test "Valid - vec_uint256_2_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint256_2_zero"
+        "basic_vector/valid/vec_uint256_2_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -3989,9 +3495,7 @@ test "Valid - vec_uint64_5_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "basic_vector",
-        "valid",
-        "vec_uint64_5_random"
+        "basic_vector/valid/vec_uint64_5_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -17054,9 +16558,7 @@ test "Valid - BitsStruct_random_5" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_random_5"
+        "containers/valid/BitsStruct_random_5",
     });
     defer allocator.free(test_dir_name);
 
@@ -17069,9 +16571,7 @@ test "Valid - VarTestStruct_max_8" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_max_8"
+        "containers/valid/VarTestStruct_max_8",
     });
     defer allocator.free(test_dir_name);
 
@@ -17084,9 +16584,7 @@ test "Valid - VarTestStruct_max_9" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_max_9"
+        "containers/valid/VarTestStruct_max_9",
     });
     defer allocator.free(test_dir_name);
 
@@ -17099,9 +16597,7 @@ test "Valid - BitsStruct_random_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_random_4"
+        "containers/valid/BitsStruct_random_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -17114,9 +16610,7 @@ test "Valid - BitsStruct_max_5" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_max_5"
+        "containers/valid/BitsStruct_max_5",
     });
     defer allocator.free(test_dir_name);
 
@@ -17129,9 +16623,7 @@ test "Valid - FixedTestStruct_zero_chaos_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "FixedTestStruct_zero_chaos_0"
+        "containers/valid/FixedTestStruct_zero_chaos_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -17144,9 +16636,7 @@ test "Valid - ComplexTestStruct_one_chaos_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_one_chaos_2"
+        "containers/valid/ComplexTestStruct_one_chaos_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -17159,9 +16649,7 @@ test "Valid - ComplexTestStruct_random_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_random_4"
+        "containers/valid/ComplexTestStruct_random_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -17174,9 +16662,7 @@ test "Valid - BitsStruct_lengthy_chaos_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_lengthy_chaos_1"
+        "containers/valid/BitsStruct_lengthy_chaos_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -17189,9 +16675,7 @@ test "Valid - BitsStruct_zero_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_zero_1"
+        "containers/valid/BitsStruct_zero_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -17204,9 +16688,7 @@ test "Valid - BitsStruct_one_chaos_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_one_chaos_2"
+        "containers/valid/BitsStruct_one_chaos_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -17219,9 +16701,7 @@ test "Valid - FixedTestStruct_max_chaos_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "FixedTestStruct_max_chaos_2"
+        "containers/valid/FixedTestStruct_max_chaos_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -17234,9 +16714,7 @@ test "Valid - BitsStruct_lengthy_chaos_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_lengthy_chaos_0"
+        "containers/valid/BitsStruct_lengthy_chaos_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -17249,9 +16727,7 @@ test "Valid - VarTestStruct_zero_7" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_zero_7"
+        "containers/valid/VarTestStruct_zero_7",
     });
     defer allocator.free(test_dir_name);
 
@@ -17264,9 +16740,7 @@ test "Valid - SingleFieldTestStruct_random_8" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SingleFieldTestStruct_random_8"
+        "containers/valid/SingleFieldTestStruct_random_8",
     });
     defer allocator.free(test_dir_name);
 
@@ -17279,9 +16753,7 @@ test "Valid - SmallTestStruct_zero_chaos_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SmallTestStruct_zero_chaos_0"
+        "containers/valid/SmallTestStruct_zero_chaos_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -17294,9 +16766,7 @@ test "Valid - VarTestStruct_max_chaos_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_max_chaos_2"
+        "containers/valid/VarTestStruct_max_chaos_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -17309,9 +16779,7 @@ test "Valid - BitsStruct_max_chaos_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_max_chaos_0"
+        "containers/valid/BitsStruct_max_chaos_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -17324,9 +16792,7 @@ test "Valid - VarTestStruct_random_7" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_random_7"
+        "containers/valid/VarTestStruct_random_7",
     });
     defer allocator.free(test_dir_name);
 
@@ -17339,9 +16805,7 @@ test "Valid - VarTestStruct_one_5" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_one_5"
+        "containers/valid/VarTestStruct_one_5",
     });
     defer allocator.free(test_dir_name);
 
@@ -17354,9 +16818,7 @@ test "Valid - BitsStruct_random_9" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_random_9"
+        "containers/valid/BitsStruct_random_9",
     });
     defer allocator.free(test_dir_name);
 
@@ -17369,9 +16831,7 @@ test "Valid - ComplexTestStruct_max_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_max_1"
+        "containers/valid/ComplexTestStruct_max_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -17384,9 +16844,7 @@ test "Valid - ComplexTestStruct_lengthy_6" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_lengthy_6"
+        "containers/valid/ComplexTestStruct_lengthy_6",
     });
     defer allocator.free(test_dir_name);
 
@@ -17399,9 +16857,7 @@ test "Valid - SingleFieldTestStruct_random_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SingleFieldTestStruct_random_4"
+        "containers/valid/SingleFieldTestStruct_random_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -17414,9 +16870,7 @@ test "Valid - VarTestStruct_max_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_max_4"
+        "containers/valid/VarTestStruct_max_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -17429,9 +16883,7 @@ test "Valid - ComplexTestStruct_random_chaos_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_random_chaos_2"
+        "containers/valid/ComplexTestStruct_random_chaos_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -17444,9 +16896,7 @@ test "Valid - ComplexTestStruct_random_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_random_3"
+        "containers/valid/ComplexTestStruct_random_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -17459,9 +16909,7 @@ test "Valid - BitsStruct_random_chaos_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_random_chaos_0"
+        "containers/valid/BitsStruct_random_chaos_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -17474,9 +16922,7 @@ test "Valid - BitsStruct_random_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_random_3"
+        "containers/valid/BitsStruct_random_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -17489,9 +16935,7 @@ test "Valid - BitsStruct_lengthy_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_lengthy_3"
+        "containers/valid/BitsStruct_lengthy_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -17504,9 +16948,7 @@ test "Valid - ComplexTestStruct_nil_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_nil_1"
+        "containers/valid/ComplexTestStruct_nil_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -17519,9 +16961,7 @@ test "Valid - FixedTestStruct_random_chaos_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "FixedTestStruct_random_chaos_2"
+        "containers/valid/FixedTestStruct_random_chaos_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -17534,9 +16974,7 @@ test "Valid - VarTestStruct_zero_8" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_zero_8"
+        "containers/valid/VarTestStruct_zero_8",
     });
     defer allocator.free(test_dir_name);
 
@@ -17549,9 +16987,7 @@ test "Valid - VarTestStruct_one_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_one_4"
+        "containers/valid/VarTestStruct_one_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -17564,9 +17000,7 @@ test "Valid - SingleFieldTestStruct_max_chaos_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SingleFieldTestStruct_max_chaos_0"
+        "containers/valid/SingleFieldTestStruct_max_chaos_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -17579,9 +17013,7 @@ test "Valid - ComplexTestStruct_one_8" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_one_8"
+        "containers/valid/ComplexTestStruct_one_8",
     });
     defer allocator.free(test_dir_name);
 
@@ -17594,9 +17026,7 @@ test "Valid - ComplexTestStruct_max_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_max_3"
+        "containers/valid/ComplexTestStruct_max_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -17609,9 +17039,7 @@ test "Valid - VarTestStruct_zero_chaos_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_zero_chaos_2"
+        "containers/valid/VarTestStruct_zero_chaos_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -17624,9 +17052,7 @@ test "Valid - ComplexTestStruct_max_chaos_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_max_chaos_0"
+        "containers/valid/ComplexTestStruct_max_chaos_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -17639,9 +17065,7 @@ test "Valid - VarTestStruct_one_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_one_3"
+        "containers/valid/VarTestStruct_one_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -17654,9 +17078,7 @@ test "Valid - VarTestStruct_zero_chaos_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_zero_chaos_1"
+        "containers/valid/VarTestStruct_zero_chaos_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -17669,9 +17091,7 @@ test "Valid - VarTestStruct_zero_5" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_zero_5"
+        "containers/valid/VarTestStruct_zero_5",
     });
     defer allocator.free(test_dir_name);
 
@@ -17684,9 +17104,7 @@ test "Valid - BitsStruct_max_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_max_1"
+        "containers/valid/BitsStruct_max_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -17699,9 +17117,7 @@ test "Valid - ComplexTestStruct_lengthy_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_lengthy_1"
+        "containers/valid/ComplexTestStruct_lengthy_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -17714,9 +17130,7 @@ test "Valid - VarTestStruct_nil_chaos_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_nil_chaos_0"
+        "containers/valid/VarTestStruct_nil_chaos_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -17729,9 +17143,7 @@ test "Valid - BitsStruct_nil_7" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_nil_7"
+        "containers/valid/BitsStruct_nil_7",
     });
     defer allocator.free(test_dir_name);
 
@@ -17744,9 +17156,7 @@ test "Valid - BitsStruct_zero_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_zero_2"
+        "containers/valid/BitsStruct_zero_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -17759,9 +17169,7 @@ test "Valid - BitsStruct_max_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_max_4"
+        "containers/valid/BitsStruct_max_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -17774,9 +17182,7 @@ test "Valid - BitsStruct_max_9" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_max_9"
+        "containers/valid/BitsStruct_max_9",
     });
     defer allocator.free(test_dir_name);
 
@@ -17789,9 +17195,7 @@ test "Valid - FixedTestStruct_max_chaos_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "FixedTestStruct_max_chaos_1"
+        "containers/valid/FixedTestStruct_max_chaos_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -17804,9 +17208,7 @@ test "Valid - SmallTestStruct_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SmallTestStruct_max"
+        "containers/valid/SmallTestStruct_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -17819,9 +17221,7 @@ test "Valid - ComplexTestStruct_random_chaos_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_random_chaos_1"
+        "containers/valid/ComplexTestStruct_random_chaos_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -17834,9 +17234,7 @@ test "Valid - ComplexTestStruct_lengthy_8" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_lengthy_8"
+        "containers/valid/ComplexTestStruct_lengthy_8",
     });
     defer allocator.free(test_dir_name);
 
@@ -17849,9 +17247,7 @@ test "Valid - VarTestStruct_lengthy_chaos_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_lengthy_chaos_0"
+        "containers/valid/VarTestStruct_lengthy_chaos_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -17864,9 +17260,7 @@ test "Valid - VarTestStruct_random_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_random_1"
+        "containers/valid/VarTestStruct_random_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -17879,9 +17273,7 @@ test "Valid - VarTestStruct_one_7" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_one_7"
+        "containers/valid/VarTestStruct_one_7",
     });
     defer allocator.free(test_dir_name);
 
@@ -17894,9 +17286,7 @@ test "Valid - SingleFieldTestStruct_random_7" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SingleFieldTestStruct_random_7"
+        "containers/valid/SingleFieldTestStruct_random_7",
     });
     defer allocator.free(test_dir_name);
 
@@ -17909,9 +17299,7 @@ test "Valid - ComplexTestStruct_max_8" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_max_8"
+        "containers/valid/ComplexTestStruct_max_8",
     });
     defer allocator.free(test_dir_name);
 
@@ -17924,9 +17312,7 @@ test "Valid - ComplexTestStruct_one_chaos_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_one_chaos_0"
+        "containers/valid/ComplexTestStruct_one_chaos_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -17939,9 +17325,7 @@ test "Valid - ComplexTestStruct_max_6" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_max_6"
+        "containers/valid/ComplexTestStruct_max_6",
     });
     defer allocator.free(test_dir_name);
 
@@ -17954,9 +17338,7 @@ test "Valid - ComplexTestStruct_one_9" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_one_9"
+        "containers/valid/ComplexTestStruct_one_9",
     });
     defer allocator.free(test_dir_name);
 
@@ -17969,9 +17351,7 @@ test "Valid - ComplexTestStruct_lengthy_chaos_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_lengthy_chaos_0"
+        "containers/valid/ComplexTestStruct_lengthy_chaos_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -17984,9 +17364,7 @@ test "Valid - ComplexTestStruct_max_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_max_2"
+        "containers/valid/ComplexTestStruct_max_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -17999,9 +17377,7 @@ test "Valid - VarTestStruct_nil_chaos_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_nil_chaos_2"
+        "containers/valid/VarTestStruct_nil_chaos_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -18014,9 +17390,7 @@ test "Valid - VarTestStruct_lengthy_6" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_lengthy_6"
+        "containers/valid/VarTestStruct_lengthy_6",
     });
     defer allocator.free(test_dir_name);
 
@@ -18029,9 +17403,7 @@ test "Valid - VarTestStruct_lengthy_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_lengthy_4"
+        "containers/valid/VarTestStruct_lengthy_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -18044,9 +17416,7 @@ test "Valid - VarTestStruct_nil_5" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_nil_5"
+        "containers/valid/VarTestStruct_nil_5",
     });
     defer allocator.free(test_dir_name);
 
@@ -18059,9 +17429,7 @@ test "Valid - ComplexTestStruct_zero_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_zero_1"
+        "containers/valid/ComplexTestStruct_zero_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -18074,9 +17442,7 @@ test "Valid - ComplexTestStruct_nil_5" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_nil_5"
+        "containers/valid/ComplexTestStruct_nil_5",
     });
     defer allocator.free(test_dir_name);
 
@@ -18089,9 +17455,7 @@ test "Valid - BitsStruct_zero_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_zero_3"
+        "containers/valid/BitsStruct_zero_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -18104,9 +17468,7 @@ test "Valid - VarTestStruct_random_chaos_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_random_chaos_2"
+        "containers/valid/VarTestStruct_random_chaos_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -18119,9 +17481,7 @@ test "Valid - BitsStruct_random_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_random_1"
+        "containers/valid/BitsStruct_random_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -18134,9 +17494,7 @@ test "Valid - ComplexTestStruct_nil_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_nil_2"
+        "containers/valid/ComplexTestStruct_nil_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -18149,9 +17507,7 @@ test "Valid - VarTestStruct_nil_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_nil_2"
+        "containers/valid/VarTestStruct_nil_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -18164,9 +17520,7 @@ test "Valid - BitsStruct_random_6" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_random_6"
+        "containers/valid/BitsStruct_random_6",
     });
     defer allocator.free(test_dir_name);
 
@@ -18179,9 +17533,7 @@ test "Valid - BitsStruct_lengthy_9" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_lengthy_9"
+        "containers/valid/BitsStruct_lengthy_9",
     });
     defer allocator.free(test_dir_name);
 
@@ -18194,9 +17546,7 @@ test "Valid - BitsStruct_one_chaos_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_one_chaos_1"
+        "containers/valid/BitsStruct_one_chaos_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -18209,9 +17559,7 @@ test "Valid - SingleFieldTestStruct_random_9" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SingleFieldTestStruct_random_9"
+        "containers/valid/SingleFieldTestStruct_random_9",
     });
     defer allocator.free(test_dir_name);
 
@@ -18224,9 +17572,7 @@ test "Valid - SmallTestStruct_random_6" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SmallTestStruct_random_6"
+        "containers/valid/SmallTestStruct_random_6",
     });
     defer allocator.free(test_dir_name);
 
@@ -18239,9 +17585,7 @@ test "Valid - BitsStruct_zero_7" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_zero_7"
+        "containers/valid/BitsStruct_zero_7",
     });
     defer allocator.free(test_dir_name);
 
@@ -18254,9 +17598,7 @@ test "Valid - SingleFieldTestStruct_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SingleFieldTestStruct_zero"
+        "containers/valid/SingleFieldTestStruct_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -18269,9 +17611,7 @@ test "Valid - VarTestStruct_lengthy_8" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_lengthy_8"
+        "containers/valid/VarTestStruct_lengthy_8",
     });
     defer allocator.free(test_dir_name);
 
@@ -18284,9 +17624,7 @@ test "Valid - VarTestStruct_lengthy_9" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_lengthy_9"
+        "containers/valid/VarTestStruct_lengthy_9",
     });
     defer allocator.free(test_dir_name);
 
@@ -18299,9 +17637,7 @@ test "Valid - VarTestStruct_nil_6" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_nil_6"
+        "containers/valid/VarTestStruct_nil_6",
     });
     defer allocator.free(test_dir_name);
 
@@ -18314,9 +17650,7 @@ test "Valid - FixedTestStruct_random_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "FixedTestStruct_random_1"
+        "containers/valid/FixedTestStruct_random_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -18329,9 +17663,7 @@ test "Valid - ComplexTestStruct_lengthy_7" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_lengthy_7"
+        "containers/valid/ComplexTestStruct_lengthy_7",
     });
     defer allocator.free(test_dir_name);
 
@@ -18344,9 +17676,7 @@ test "Valid - BitsStruct_nil_chaos_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_nil_chaos_1"
+        "containers/valid/BitsStruct_nil_chaos_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -18359,9 +17689,7 @@ test "Valid - VarTestStruct_random_chaos_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_random_chaos_1"
+        "containers/valid/VarTestStruct_random_chaos_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -18374,9 +17702,7 @@ test "Valid - VarTestStruct_nil_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_nil_0"
+        "containers/valid/VarTestStruct_nil_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -18389,9 +17715,7 @@ test "Valid - ComplexTestStruct_one_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_one_1"
+        "containers/valid/ComplexTestStruct_one_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -18404,9 +17728,7 @@ test "Valid - VarTestStruct_random_5" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_random_5"
+        "containers/valid/VarTestStruct_random_5",
     });
     defer allocator.free(test_dir_name);
 
@@ -18419,9 +17741,7 @@ test "Valid - SmallTestStruct_random_9" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SmallTestStruct_random_9"
+        "containers/valid/SmallTestStruct_random_9",
     });
     defer allocator.free(test_dir_name);
 
@@ -18434,9 +17754,7 @@ test "Valid - VarTestStruct_lengthy_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_lengthy_1"
+        "containers/valid/VarTestStruct_lengthy_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -18449,9 +17767,7 @@ test "Valid - BitsStruct_nil_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_nil_1"
+        "containers/valid/BitsStruct_nil_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -18464,9 +17780,7 @@ test "Valid - BitsStruct_max_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_max_3"
+        "containers/valid/BitsStruct_max_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -18479,9 +17793,7 @@ test "Valid - ComplexTestStruct_max_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_max_4"
+        "containers/valid/ComplexTestStruct_max_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -18494,9 +17806,7 @@ test "Valid - FixedTestStruct_random_6" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "FixedTestStruct_random_6"
+        "containers/valid/FixedTestStruct_random_6",
     });
     defer allocator.free(test_dir_name);
 
@@ -18509,9 +17819,7 @@ test "Valid - SingleFieldTestStruct_random_chaos_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SingleFieldTestStruct_random_chaos_0"
+        "containers/valid/SingleFieldTestStruct_random_chaos_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -18524,9 +17832,7 @@ test "Valid - VarTestStruct_zero_9" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_zero_9"
+        "containers/valid/VarTestStruct_zero_9",
     });
     defer allocator.free(test_dir_name);
 
@@ -18539,9 +17845,7 @@ test "Valid - ComplexTestStruct_one_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_one_4"
+        "containers/valid/ComplexTestStruct_one_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -18554,9 +17858,7 @@ test "Valid - ComplexTestStruct_lengthy_5" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_lengthy_5"
+        "containers/valid/ComplexTestStruct_lengthy_5",
     });
     defer allocator.free(test_dir_name);
 
@@ -18569,9 +17871,7 @@ test "Valid - VarTestStruct_random_6" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_random_6"
+        "containers/valid/VarTestStruct_random_6",
     });
     defer allocator.free(test_dir_name);
 
@@ -18584,9 +17884,7 @@ test "Valid - BitsStruct_random_chaos_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_random_chaos_2"
+        "containers/valid/BitsStruct_random_chaos_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -18599,9 +17897,7 @@ test "Valid - BitsStruct_max_8" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_max_8"
+        "containers/valid/BitsStruct_max_8",
     });
     defer allocator.free(test_dir_name);
 
@@ -18614,9 +17910,7 @@ test "Valid - SingleFieldTestStruct_random_chaos_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SingleFieldTestStruct_random_chaos_1"
+        "containers/valid/SingleFieldTestStruct_random_chaos_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -18629,9 +17923,7 @@ test "Valid - BitsStruct_nil_8" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_nil_8"
+        "containers/valid/BitsStruct_nil_8",
     });
     defer allocator.free(test_dir_name);
 
@@ -18644,9 +17936,7 @@ test "Valid - SmallTestStruct_max_chaos_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SmallTestStruct_max_chaos_2"
+        "containers/valid/SmallTestStruct_max_chaos_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -18659,9 +17949,7 @@ test "Valid - SmallTestStruct_zero_chaos_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SmallTestStruct_zero_chaos_2"
+        "containers/valid/SmallTestStruct_zero_chaos_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -18674,9 +17962,7 @@ test "Valid - VarTestStruct_max_chaos_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_max_chaos_0"
+        "containers/valid/VarTestStruct_max_chaos_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -18689,9 +17975,7 @@ test "Valid - SmallTestStruct_random_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SmallTestStruct_random_1"
+        "containers/valid/SmallTestStruct_random_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -18704,9 +17988,7 @@ test "Valid - FixedTestStruct_zero_chaos_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "FixedTestStruct_zero_chaos_1"
+        "containers/valid/FixedTestStruct_zero_chaos_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -18719,9 +18001,7 @@ test "Valid - FixedTestStruct_random_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "FixedTestStruct_random_4"
+        "containers/valid/FixedTestStruct_random_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -18734,9 +18014,7 @@ test "Valid - ComplexTestStruct_nil_7" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_nil_7"
+        "containers/valid/ComplexTestStruct_nil_7",
     });
     defer allocator.free(test_dir_name);
 
@@ -18749,9 +18027,7 @@ test "Valid - VarTestStruct_lengthy_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_lengthy_2"
+        "containers/valid/VarTestStruct_lengthy_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -18764,9 +18040,7 @@ test "Valid - SmallTestStruct_random_chaos_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SmallTestStruct_random_chaos_2"
+        "containers/valid/SmallTestStruct_random_chaos_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -18779,9 +18053,7 @@ test "Valid - VarTestStruct_one_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_one_0"
+        "containers/valid/VarTestStruct_one_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -18794,9 +18066,7 @@ test "Valid - BitsStruct_random_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_random_2"
+        "containers/valid/BitsStruct_random_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -18809,9 +18079,7 @@ test "Valid - BitsStruct_zero_chaos_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_zero_chaos_2"
+        "containers/valid/BitsStruct_zero_chaos_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -18824,9 +18092,7 @@ test "Valid - SingleFieldTestStruct_random_5" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SingleFieldTestStruct_random_5"
+        "containers/valid/SingleFieldTestStruct_random_5",
     });
     defer allocator.free(test_dir_name);
 
@@ -18839,9 +18105,7 @@ test "Valid - SingleFieldTestStruct_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SingleFieldTestStruct_max"
+        "containers/valid/SingleFieldTestStruct_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -18854,9 +18118,7 @@ test "Valid - ComplexTestStruct_lengthy_chaos_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_lengthy_chaos_1"
+        "containers/valid/ComplexTestStruct_lengthy_chaos_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -18869,9 +18131,7 @@ test "Valid - SmallTestStruct_max_chaos_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SmallTestStruct_max_chaos_0"
+        "containers/valid/SmallTestStruct_max_chaos_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -18884,9 +18144,7 @@ test "Valid - ComplexTestStruct_max_chaos_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_max_chaos_1"
+        "containers/valid/ComplexTestStruct_max_chaos_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -18899,9 +18157,7 @@ test "Valid - ComplexTestStruct_nil_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_nil_0"
+        "containers/valid/ComplexTestStruct_nil_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -18914,9 +18170,7 @@ test "Valid - BitsStruct_random_8" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_random_8"
+        "containers/valid/BitsStruct_random_8",
     });
     defer allocator.free(test_dir_name);
 
@@ -18929,9 +18183,7 @@ test "Valid - ComplexTestStruct_zero_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_zero_4"
+        "containers/valid/ComplexTestStruct_zero_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -18944,9 +18196,7 @@ test "Valid - VarTestStruct_one_chaos_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_one_chaos_0"
+        "containers/valid/VarTestStruct_one_chaos_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -18959,9 +18209,7 @@ test "Valid - SingleFieldTestStruct_max_chaos_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SingleFieldTestStruct_max_chaos_1"
+        "containers/valid/SingleFieldTestStruct_max_chaos_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -18974,9 +18222,7 @@ test "Valid - SmallTestStruct_random_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SmallTestStruct_random_0"
+        "containers/valid/SmallTestStruct_random_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -18989,9 +18235,7 @@ test "Valid - VarTestStruct_nil_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_nil_4"
+        "containers/valid/VarTestStruct_nil_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -19004,9 +18248,7 @@ test "Valid - ComplexTestStruct_max_5" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_max_5"
+        "containers/valid/ComplexTestStruct_max_5",
     });
     defer allocator.free(test_dir_name);
 
@@ -19019,9 +18261,7 @@ test "Valid - FixedTestStruct_max_chaos_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "FixedTestStruct_max_chaos_0"
+        "containers/valid/FixedTestStruct_max_chaos_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -19034,9 +18274,7 @@ test "Valid - VarTestStruct_one_chaos_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_one_chaos_1"
+        "containers/valid/VarTestStruct_one_chaos_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -19049,9 +18287,7 @@ test "Valid - BitsStruct_random_chaos_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_random_chaos_1"
+        "containers/valid/BitsStruct_random_chaos_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -19064,9 +18300,7 @@ test "Valid - VarTestStruct_max_chaos_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_max_chaos_1"
+        "containers/valid/VarTestStruct_max_chaos_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -19079,9 +18313,7 @@ test "Valid - BitsStruct_lengthy_5" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_lengthy_5"
+        "containers/valid/BitsStruct_lengthy_5",
     });
     defer allocator.free(test_dir_name);
 
@@ -19094,9 +18326,7 @@ test "Valid - BitsStruct_zero_9" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_zero_9"
+        "containers/valid/BitsStruct_zero_9",
     });
     defer allocator.free(test_dir_name);
 
@@ -19109,9 +18339,7 @@ test "Valid - ComplexTestStruct_random_9" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_random_9"
+        "containers/valid/ComplexTestStruct_random_9",
     });
     defer allocator.free(test_dir_name);
 
@@ -19124,9 +18352,7 @@ test "Valid - ComplexTestStruct_random_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_random_1"
+        "containers/valid/ComplexTestStruct_random_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -19139,9 +18365,7 @@ test "Valid - ComplexTestStruct_lengthy_9" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_lengthy_9"
+        "containers/valid/ComplexTestStruct_lengthy_9",
     });
     defer allocator.free(test_dir_name);
 
@@ -19154,9 +18378,7 @@ test "Valid - FixedTestStruct_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "FixedTestStruct_max"
+        "containers/valid/FixedTestStruct_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -19169,9 +18391,7 @@ test "Valid - SingleFieldTestStruct_random_6" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SingleFieldTestStruct_random_6"
+        "containers/valid/SingleFieldTestStruct_random_6",
     });
     defer allocator.free(test_dir_name);
 
@@ -19184,9 +18404,7 @@ test "Valid - ComplexTestStruct_nil_6" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_nil_6"
+        "containers/valid/ComplexTestStruct_nil_6",
     });
     defer allocator.free(test_dir_name);
 
@@ -19199,9 +18417,7 @@ test "Valid - ComplexTestStruct_zero_7" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_zero_7"
+        "containers/valid/ComplexTestStruct_zero_7",
     });
     defer allocator.free(test_dir_name);
 
@@ -19214,9 +18430,7 @@ test "Valid - SmallTestStruct_random_chaos_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SmallTestStruct_random_chaos_1"
+        "containers/valid/SmallTestStruct_random_chaos_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -19229,9 +18443,7 @@ test "Valid - ComplexTestStruct_lengthy_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_lengthy_0"
+        "containers/valid/ComplexTestStruct_lengthy_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -19244,9 +18456,7 @@ test "Valid - BitsStruct_lengthy_8" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_lengthy_8"
+        "containers/valid/BitsStruct_lengthy_8",
     });
     defer allocator.free(test_dir_name);
 
@@ -19259,9 +18469,7 @@ test "Valid - SmallTestStruct_random_chaos_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SmallTestStruct_random_chaos_0"
+        "containers/valid/SmallTestStruct_random_chaos_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -19274,9 +18482,7 @@ test "Valid - VarTestStruct_random_8" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_random_8"
+        "containers/valid/VarTestStruct_random_8",
     });
     defer allocator.free(test_dir_name);
 
@@ -19289,9 +18495,7 @@ test "Valid - SingleFieldTestStruct_zero_chaos_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SingleFieldTestStruct_zero_chaos_1"
+        "containers/valid/SingleFieldTestStruct_zero_chaos_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -19304,9 +18508,7 @@ test "Valid - BitsStruct_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_zero"
+        "containers/valid/BitsStruct_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -19319,9 +18521,7 @@ test "Valid - VarTestStruct_lengthy_5" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_lengthy_5"
+        "containers/valid/VarTestStruct_lengthy_5",
     });
     defer allocator.free(test_dir_name);
 
@@ -19334,9 +18534,7 @@ test "Valid - VarTestStruct_random_9" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_random_9"
+        "containers/valid/VarTestStruct_random_9",
     });
     defer allocator.free(test_dir_name);
 
@@ -19349,9 +18547,7 @@ test "Valid - BitsStruct_random_7" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_random_7"
+        "containers/valid/BitsStruct_random_7",
     });
     defer allocator.free(test_dir_name);
 
@@ -19364,9 +18560,7 @@ test "Valid - ComplexTestStruct_lengthy_chaos_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_lengthy_chaos_2"
+        "containers/valid/ComplexTestStruct_lengthy_chaos_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -19379,9 +18573,7 @@ test "Valid - ComplexTestStruct_random_5" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_random_5"
+        "containers/valid/ComplexTestStruct_random_5",
     });
     defer allocator.free(test_dir_name);
 
@@ -19394,9 +18586,7 @@ test "Valid - VarTestStruct_one_8" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_one_8"
+        "containers/valid/VarTestStruct_one_8",
     });
     defer allocator.free(test_dir_name);
 
@@ -19409,9 +18599,7 @@ test "Valid - ComplexTestStruct_zero_chaos_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_zero_chaos_2"
+        "containers/valid/ComplexTestStruct_zero_chaos_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -19424,9 +18612,7 @@ test "Valid - BitsStruct_zero_chaos_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_zero_chaos_0"
+        "containers/valid/BitsStruct_zero_chaos_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -19439,9 +18625,7 @@ test "Valid - FixedTestStruct_random_9" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "FixedTestStruct_random_9"
+        "containers/valid/FixedTestStruct_random_9",
     });
     defer allocator.free(test_dir_name);
 
@@ -19454,9 +18638,7 @@ test "Valid - VarTestStruct_random_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_random_4"
+        "containers/valid/VarTestStruct_random_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -19469,9 +18651,7 @@ test "Valid - VarTestStruct_nil_9" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_nil_9"
+        "containers/valid/VarTestStruct_nil_9",
     });
     defer allocator.free(test_dir_name);
 
@@ -19484,9 +18664,7 @@ test "Valid - VarTestStruct_zero_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_zero_1"
+        "containers/valid/VarTestStruct_zero_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -19499,9 +18677,7 @@ test "Valid - BitsStruct_max_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_max_0"
+        "containers/valid/BitsStruct_max_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -19514,9 +18690,7 @@ test "Valid - VarTestStruct_one_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_one_2"
+        "containers/valid/VarTestStruct_one_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -19529,9 +18703,7 @@ test "Valid - VarTestStruct_lengthy_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_lengthy_0"
+        "containers/valid/VarTestStruct_lengthy_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -19544,9 +18716,7 @@ test "Valid - BitsStruct_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_max"
+        "containers/valid/BitsStruct_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -19559,9 +18729,7 @@ test "Valid - BitsStruct_one_7" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_one_7"
+        "containers/valid/BitsStruct_one_7",
     });
     defer allocator.free(test_dir_name);
 
@@ -19574,9 +18742,7 @@ test "Valid - SingleFieldTestStruct_random_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SingleFieldTestStruct_random_3"
+        "containers/valid/SingleFieldTestStruct_random_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -19589,9 +18755,7 @@ test "Valid - VarTestStruct_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_max"
+        "containers/valid/VarTestStruct_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -19604,9 +18768,7 @@ test "Valid - VarTestStruct_max_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_max_2"
+        "containers/valid/VarTestStruct_max_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -19619,9 +18781,7 @@ test "Valid - VarTestStruct_nil_7" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_nil_7"
+        "containers/valid/VarTestStruct_nil_7",
     });
     defer allocator.free(test_dir_name);
 
@@ -19634,9 +18794,7 @@ test "Valid - VarTestStruct_one_6" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_one_6"
+        "containers/valid/VarTestStruct_one_6",
     });
     defer allocator.free(test_dir_name);
 
@@ -19649,9 +18807,7 @@ test "Valid - ComplexTestStruct_nil_9" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_nil_9"
+        "containers/valid/ComplexTestStruct_nil_9",
     });
     defer allocator.free(test_dir_name);
 
@@ -19664,9 +18820,7 @@ test "Valid - VarTestStruct_one_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_one_1"
+        "containers/valid/VarTestStruct_one_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -19679,9 +18833,7 @@ test "Valid - ComplexTestStruct_random_chaos_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_random_chaos_0"
+        "containers/valid/ComplexTestStruct_random_chaos_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -19694,9 +18846,7 @@ test "Valid - BitsStruct_one_6" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_one_6"
+        "containers/valid/BitsStruct_one_6",
     });
     defer allocator.free(test_dir_name);
 
@@ -19709,9 +18859,7 @@ test "Valid - BitsStruct_zero_8" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_zero_8"
+        "containers/valid/BitsStruct_zero_8",
     });
     defer allocator.free(test_dir_name);
 
@@ -19724,9 +18872,7 @@ test "Valid - BitsStruct_nil_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_nil_3"
+        "containers/valid/BitsStruct_nil_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -19739,9 +18885,7 @@ test "Valid - FixedTestStruct_random_chaos_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "FixedTestStruct_random_chaos_1"
+        "containers/valid/FixedTestStruct_random_chaos_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -19754,9 +18898,7 @@ test "Valid - ComplexTestStruct_one_5" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_one_5"
+        "containers/valid/ComplexTestStruct_one_5",
     });
     defer allocator.free(test_dir_name);
 
@@ -19769,9 +18911,7 @@ test "Valid - BitsStruct_zero_5" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_zero_5"
+        "containers/valid/BitsStruct_zero_5",
     });
     defer allocator.free(test_dir_name);
 
@@ -19784,9 +18924,7 @@ test "Valid - VarTestStruct_one_chaos_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_one_chaos_2"
+        "containers/valid/VarTestStruct_one_chaos_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -19799,9 +18937,7 @@ test "Valid - SingleFieldTestStruct_max_chaos_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SingleFieldTestStruct_max_chaos_2"
+        "containers/valid/SingleFieldTestStruct_max_chaos_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -19814,9 +18950,7 @@ test "Valid - BitsStruct_lengthy_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_lengthy_1"
+        "containers/valid/BitsStruct_lengthy_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -19829,9 +18963,7 @@ test "Valid - SingleFieldTestStruct_random_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SingleFieldTestStruct_random_0"
+        "containers/valid/SingleFieldTestStruct_random_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -19844,9 +18976,7 @@ test "Valid - BitsStruct_nil_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_nil_4"
+        "containers/valid/BitsStruct_nil_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -19859,9 +18989,7 @@ test "Valid - VarTestStruct_random_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_random_0"
+        "containers/valid/VarTestStruct_random_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -19874,9 +19002,7 @@ test "Valid - VarTestStruct_zero_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_zero_3"
+        "containers/valid/VarTestStruct_zero_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -19889,9 +19015,7 @@ test "Valid - BitsStruct_nil_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_nil_0"
+        "containers/valid/BitsStruct_nil_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -19904,9 +19028,7 @@ test "Valid - VarTestStruct_max_6" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_max_6"
+        "containers/valid/VarTestStruct_max_6",
     });
     defer allocator.free(test_dir_name);
 
@@ -19919,9 +19041,7 @@ test "Valid - BitsStruct_lengthy_6" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_lengthy_6"
+        "containers/valid/BitsStruct_lengthy_6",
     });
     defer allocator.free(test_dir_name);
 
@@ -19934,9 +19054,7 @@ test "Valid - ComplexTestStruct_one_6" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_one_6"
+        "containers/valid/ComplexTestStruct_one_6",
     });
     defer allocator.free(test_dir_name);
 
@@ -19949,9 +19067,7 @@ test "Valid - VarTestStruct_nil_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_nil_1"
+        "containers/valid/VarTestStruct_nil_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -19964,9 +19080,7 @@ test "Valid - SmallTestStruct_random_7" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SmallTestStruct_random_7"
+        "containers/valid/SmallTestStruct_random_7",
     });
     defer allocator.free(test_dir_name);
 
@@ -19979,9 +19093,7 @@ test "Valid - VarTestStruct_max_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_max_0"
+        "containers/valid/VarTestStruct_max_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -19994,9 +19106,7 @@ test "Valid - BitsStruct_random_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_random_0"
+        "containers/valid/BitsStruct_random_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -20009,9 +19119,7 @@ test "Valid - ComplexTestStruct_zero_9" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_zero_9"
+        "containers/valid/ComplexTestStruct_zero_9",
     });
     defer allocator.free(test_dir_name);
 
@@ -20024,9 +19132,7 @@ test "Valid - ComplexTestStruct_random_6" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_random_6"
+        "containers/valid/ComplexTestStruct_random_6",
     });
     defer allocator.free(test_dir_name);
 
@@ -20039,9 +19145,7 @@ test "Valid - ComplexTestStruct_zero_5" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_zero_5"
+        "containers/valid/ComplexTestStruct_zero_5",
     });
     defer allocator.free(test_dir_name);
 
@@ -20054,9 +19158,7 @@ test "Valid - SingleFieldTestStruct_random_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SingleFieldTestStruct_random_1"
+        "containers/valid/SingleFieldTestStruct_random_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -20069,9 +19171,7 @@ test "Valid - ComplexTestStruct_random_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_random_0"
+        "containers/valid/ComplexTestStruct_random_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -20084,9 +19184,7 @@ test "Valid - SmallTestStruct_random_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SmallTestStruct_random_2"
+        "containers/valid/SmallTestStruct_random_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -20099,9 +19197,7 @@ test "Valid - BitsStruct_nil_5" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_nil_5"
+        "containers/valid/BitsStruct_nil_5",
     });
     defer allocator.free(test_dir_name);
 
@@ -20114,9 +19210,7 @@ test "Valid - VarTestStruct_lengthy_7" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_lengthy_7"
+        "containers/valid/VarTestStruct_lengthy_7",
     });
     defer allocator.free(test_dir_name);
 
@@ -20129,9 +19223,7 @@ test "Valid - ComplexTestStruct_one_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_one_2"
+        "containers/valid/ComplexTestStruct_one_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -20144,9 +19236,7 @@ test "Valid - ComplexTestStruct_max_7" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_max_7"
+        "containers/valid/ComplexTestStruct_max_7",
     });
     defer allocator.free(test_dir_name);
 
@@ -20159,9 +19249,7 @@ test "Valid - ComplexTestStruct_zero_6" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_zero_6"
+        "containers/valid/ComplexTestStruct_zero_6",
     });
     defer allocator.free(test_dir_name);
 
@@ -20174,9 +19262,7 @@ test "Valid - BitsStruct_lengthy_chaos_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_lengthy_chaos_2"
+        "containers/valid/BitsStruct_lengthy_chaos_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -20189,9 +19275,7 @@ test "Valid - VarTestStruct_zero_6" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_zero_6"
+        "containers/valid/VarTestStruct_zero_6",
     });
     defer allocator.free(test_dir_name);
 
@@ -20204,9 +19288,7 @@ test "Valid - BitsStruct_max_7" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_max_7"
+        "containers/valid/BitsStruct_max_7",
     });
     defer allocator.free(test_dir_name);
 
@@ -20219,9 +19301,7 @@ test "Valid - ComplexTestStruct_lengthy_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_lengthy_2"
+        "containers/valid/ComplexTestStruct_lengthy_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -20234,9 +19314,7 @@ test "Valid - FixedTestStruct_random_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "FixedTestStruct_random_0"
+        "containers/valid/FixedTestStruct_random_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -20249,9 +19327,7 @@ test "Valid - FixedTestStruct_zero_chaos_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "FixedTestStruct_zero_chaos_2"
+        "containers/valid/FixedTestStruct_zero_chaos_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -20264,9 +19340,7 @@ test "Valid - VarTestStruct_nil_8" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_nil_8"
+        "containers/valid/VarTestStruct_nil_8",
     });
     defer allocator.free(test_dir_name);
 
@@ -20279,9 +19353,7 @@ test "Valid - FixedTestStruct_random_8" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "FixedTestStruct_random_8"
+        "containers/valid/FixedTestStruct_random_8",
     });
     defer allocator.free(test_dir_name);
 
@@ -20294,9 +19366,7 @@ test "Valid - ComplexTestStruct_zero_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_zero_2"
+        "containers/valid/ComplexTestStruct_zero_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -20309,9 +19379,7 @@ test "Valid - ComplexTestStruct_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_max"
+        "containers/valid/ComplexTestStruct_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -20324,9 +19392,7 @@ test "Valid - ComplexTestStruct_zero_chaos_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_zero_chaos_0"
+        "containers/valid/ComplexTestStruct_zero_chaos_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -20339,9 +19405,7 @@ test "Valid - VarTestStruct_max_7" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_max_7"
+        "containers/valid/VarTestStruct_max_7",
     });
     defer allocator.free(test_dir_name);
 
@@ -20354,9 +19418,7 @@ test "Valid - BitsStruct_lengthy_7" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_lengthy_7"
+        "containers/valid/BitsStruct_lengthy_7",
     });
     defer allocator.free(test_dir_name);
 
@@ -20369,9 +19431,7 @@ test "Valid - VarTestStruct_zero_chaos_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_zero_chaos_0"
+        "containers/valid/VarTestStruct_zero_chaos_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -20384,9 +19444,7 @@ test "Valid - ComplexTestStruct_one_chaos_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_one_chaos_1"
+        "containers/valid/ComplexTestStruct_one_chaos_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -20399,9 +19457,7 @@ test "Valid - ComplexTestStruct_random_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_random_2"
+        "containers/valid/ComplexTestStruct_random_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -20414,9 +19470,7 @@ test "Valid - ComplexTestStruct_lengthy_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_lengthy_4"
+        "containers/valid/ComplexTestStruct_lengthy_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -20429,9 +19483,7 @@ test "Valid - ComplexTestStruct_lengthy_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_lengthy_3"
+        "containers/valid/ComplexTestStruct_lengthy_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -20444,9 +19496,7 @@ test "Valid - FixedTestStruct_random_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "FixedTestStruct_random_3"
+        "containers/valid/FixedTestStruct_random_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -20459,9 +19509,7 @@ test "Valid - FixedTestStruct_random_5" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "FixedTestStruct_random_5"
+        "containers/valid/FixedTestStruct_random_5",
     });
     defer allocator.free(test_dir_name);
 
@@ -20474,9 +19522,7 @@ test "Valid - FixedTestStruct_random_7" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "FixedTestStruct_random_7"
+        "containers/valid/FixedTestStruct_random_7",
     });
     defer allocator.free(test_dir_name);
 
@@ -20489,9 +19535,7 @@ test "Valid - VarTestStruct_zero_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_zero_4"
+        "containers/valid/VarTestStruct_zero_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -20504,9 +19548,7 @@ test "Valid - BitsStruct_max_chaos_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_max_chaos_2"
+        "containers/valid/BitsStruct_max_chaos_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -20519,9 +19561,7 @@ test "Valid - ComplexTestStruct_max_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_max_0"
+        "containers/valid/ComplexTestStruct_max_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -20534,9 +19574,7 @@ test "Valid - BitsStruct_zero_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_zero_0"
+        "containers/valid/BitsStruct_zero_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -20549,9 +19587,7 @@ test "Valid - BitsStruct_one_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_one_3"
+        "containers/valid/BitsStruct_one_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -20564,9 +19600,7 @@ test "Valid - VarTestStruct_nil_chaos_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_nil_chaos_1"
+        "containers/valid/VarTestStruct_nil_chaos_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -20579,9 +19613,7 @@ test "Valid - BitsStruct_max_chaos_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_max_chaos_1"
+        "containers/valid/BitsStruct_max_chaos_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -20594,9 +19626,7 @@ test "Valid - VarTestStruct_random_chaos_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_random_chaos_0"
+        "containers/valid/VarTestStruct_random_chaos_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -20609,9 +19639,7 @@ test "Valid - VarTestStruct_one_9" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_one_9"
+        "containers/valid/VarTestStruct_one_9",
     });
     defer allocator.free(test_dir_name);
 
@@ -20624,9 +19652,7 @@ test "Valid - ComplexTestStruct_random_8" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_random_8"
+        "containers/valid/ComplexTestStruct_random_8",
     });
     defer allocator.free(test_dir_name);
 
@@ -20639,9 +19665,7 @@ test "Valid - BitsStruct_one_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_one_1"
+        "containers/valid/BitsStruct_one_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -20654,9 +19678,7 @@ test "Valid - ComplexTestStruct_nil_8" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_nil_8"
+        "containers/valid/ComplexTestStruct_nil_8",
     });
     defer allocator.free(test_dir_name);
 
@@ -20669,9 +19691,7 @@ test "Valid - SingleFieldTestStruct_zero_chaos_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SingleFieldTestStruct_zero_chaos_2"
+        "containers/valid/SingleFieldTestStruct_zero_chaos_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -20684,9 +19704,7 @@ test "Valid - VarTestStruct_random_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_random_2"
+        "containers/valid/VarTestStruct_random_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -20699,9 +19717,7 @@ test "Valid - BitsStruct_one_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_one_4"
+        "containers/valid/BitsStruct_one_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -20714,9 +19730,7 @@ test "Valid - VarTestStruct_random_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_random_3"
+        "containers/valid/VarTestStruct_random_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -20729,9 +19743,7 @@ test "Valid - ComplexTestStruct_one_7" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_one_7"
+        "containers/valid/ComplexTestStruct_one_7",
     });
     defer allocator.free(test_dir_name);
 
@@ -20744,9 +19756,7 @@ test "Valid - FixedTestStruct_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "FixedTestStruct_zero"
+        "containers/valid/FixedTestStruct_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -20759,9 +19769,7 @@ test "Valid - BitsStruct_zero_chaos_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_zero_chaos_1"
+        "containers/valid/BitsStruct_zero_chaos_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -20774,9 +19782,7 @@ test "Valid - VarTestStruct_lengthy_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_lengthy_3"
+        "containers/valid/VarTestStruct_lengthy_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -20789,9 +19795,7 @@ test "Valid - SmallTestStruct_random_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SmallTestStruct_random_4"
+        "containers/valid/SmallTestStruct_random_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -20804,9 +19808,7 @@ test "Valid - ComplexTestStruct_nil_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_nil_3"
+        "containers/valid/ComplexTestStruct_nil_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -20819,9 +19821,7 @@ test "Valid - BitsStruct_lengthy_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_lengthy_4"
+        "containers/valid/BitsStruct_lengthy_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -20834,9 +19834,7 @@ test "Valid - ComplexTestStruct_zero_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_zero_0"
+        "containers/valid/ComplexTestStruct_zero_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -20849,9 +19847,7 @@ test "Valid - VarTestStruct_nil_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_nil_3"
+        "containers/valid/VarTestStruct_nil_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -20864,9 +19860,7 @@ test "Valid - ComplexTestStruct_max_9" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_max_9"
+        "containers/valid/ComplexTestStruct_max_9",
     });
     defer allocator.free(test_dir_name);
 
@@ -20879,9 +19873,7 @@ test "Valid - BitsStruct_one_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_one_2"
+        "containers/valid/BitsStruct_one_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -20894,9 +19886,7 @@ test "Valid - ComplexTestStruct_nil_chaos_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_nil_chaos_1"
+        "containers/valid/ComplexTestStruct_nil_chaos_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -20909,9 +19899,7 @@ test "Valid - VarTestStruct_lengthy_chaos_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_lengthy_chaos_1"
+        "containers/valid/VarTestStruct_lengthy_chaos_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -20924,9 +19912,7 @@ test "Valid - VarTestStruct_lengthy_chaos_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_lengthy_chaos_2"
+        "containers/valid/VarTestStruct_lengthy_chaos_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -20939,9 +19925,7 @@ test "Valid - VarTestStruct_zero_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_zero_2"
+        "containers/valid/VarTestStruct_zero_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -20954,9 +19938,7 @@ test "Valid - BitsStruct_nil_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_nil_2"
+        "containers/valid/BitsStruct_nil_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -20969,9 +19951,7 @@ test "Valid - ComplexTestStruct_one_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_one_3"
+        "containers/valid/ComplexTestStruct_one_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -20984,9 +19964,7 @@ test "Valid - BitsStruct_nil_chaos_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_nil_chaos_2"
+        "containers/valid/BitsStruct_nil_chaos_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -20999,9 +19977,7 @@ test "Valid - ComplexTestStruct_nil_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_nil_4"
+        "containers/valid/ComplexTestStruct_nil_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -21014,9 +19990,7 @@ test "Valid - SmallTestStruct_random_8" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SmallTestStruct_random_8"
+        "containers/valid/SmallTestStruct_random_8",
     });
     defer allocator.free(test_dir_name);
 
@@ -21029,9 +20003,7 @@ test "Valid - BitsStruct_one_5" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_one_5"
+        "containers/valid/BitsStruct_one_5",
     });
     defer allocator.free(test_dir_name);
 
@@ -21044,9 +20016,7 @@ test "Valid - ComplexTestStruct_zero_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_zero_3"
+        "containers/valid/ComplexTestStruct_zero_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -21059,9 +20029,7 @@ test "Valid - VarTestStruct_max_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_max_3"
+        "containers/valid/VarTestStruct_max_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -21074,9 +20042,7 @@ test "Valid - BitsStruct_nil_chaos_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_nil_chaos_0"
+        "containers/valid/BitsStruct_nil_chaos_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -21089,9 +20055,7 @@ test "Valid - BitsStruct_nil_9" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_nil_9"
+        "containers/valid/BitsStruct_nil_9",
     });
     defer allocator.free(test_dir_name);
 
@@ -21104,9 +20068,7 @@ test "Valid - BitsStruct_max_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_max_2"
+        "containers/valid/BitsStruct_max_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -21119,9 +20081,7 @@ test "Valid - VarTestStruct_zero_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_zero_0"
+        "containers/valid/VarTestStruct_zero_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -21134,9 +20094,7 @@ test "Valid - ComplexTestStruct_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_zero"
+        "containers/valid/ComplexTestStruct_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -21149,9 +20107,7 @@ test "Valid - BitsStruct_nil_6" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_nil_6"
+        "containers/valid/BitsStruct_nil_6",
     });
     defer allocator.free(test_dir_name);
 
@@ -21164,9 +20120,7 @@ test "Valid - ComplexTestStruct_zero_8" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_zero_8"
+        "containers/valid/ComplexTestStruct_zero_8",
     });
     defer allocator.free(test_dir_name);
 
@@ -21179,9 +20133,7 @@ test "Valid - BitsStruct_one_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_one_0"
+        "containers/valid/BitsStruct_one_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -21194,9 +20146,7 @@ test "Valid - ComplexTestStruct_max_chaos_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_max_chaos_2"
+        "containers/valid/ComplexTestStruct_max_chaos_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -21209,9 +20159,7 @@ test "Valid - ComplexTestStruct_one_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_one_0"
+        "containers/valid/ComplexTestStruct_one_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -21224,9 +20172,7 @@ test "Valid - SingleFieldTestStruct_zero_chaos_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SingleFieldTestStruct_zero_chaos_0"
+        "containers/valid/SingleFieldTestStruct_zero_chaos_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -21239,9 +20185,7 @@ test "Valid - BitsStruct_lengthy_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_lengthy_0"
+        "containers/valid/BitsStruct_lengthy_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -21254,9 +20198,7 @@ test "Valid - FixedTestStruct_random_chaos_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "FixedTestStruct_random_chaos_0"
+        "containers/valid/FixedTestStruct_random_chaos_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -21269,9 +20211,7 @@ test "Valid - BitsStruct_one_8" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_one_8"
+        "containers/valid/BitsStruct_one_8",
     });
     defer allocator.free(test_dir_name);
 
@@ -21284,9 +20224,7 @@ test "Valid - ComplexTestStruct_nil_chaos_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_nil_chaos_0"
+        "containers/valid/ComplexTestStruct_nil_chaos_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -21299,9 +20237,7 @@ test "Valid - BitsStruct_one_9" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_one_9"
+        "containers/valid/BitsStruct_one_9",
     });
     defer allocator.free(test_dir_name);
 
@@ -21314,9 +20250,7 @@ test "Valid - SingleFieldTestStruct_random_chaos_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SingleFieldTestStruct_random_chaos_2"
+        "containers/valid/SingleFieldTestStruct_random_chaos_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -21329,9 +20263,7 @@ test "Valid - BitsStruct_lengthy_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_lengthy_2"
+        "containers/valid/BitsStruct_lengthy_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -21344,9 +20276,7 @@ test "Valid - SmallTestStruct_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SmallTestStruct_zero"
+        "containers/valid/SmallTestStruct_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -21359,9 +20289,7 @@ test "Valid - BitsStruct_max_6" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_max_6"
+        "containers/valid/BitsStruct_max_6",
     });
     defer allocator.free(test_dir_name);
 
@@ -21374,9 +20302,7 @@ test "Valid - BitsStruct_one_chaos_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_one_chaos_0"
+        "containers/valid/BitsStruct_one_chaos_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -21389,9 +20315,7 @@ test "Valid - BitsStruct_zero_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_zero_4"
+        "containers/valid/BitsStruct_zero_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -21404,9 +20328,7 @@ test "Valid - ComplexTestStruct_random_7" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_random_7"
+        "containers/valid/ComplexTestStruct_random_7",
     });
     defer allocator.free(test_dir_name);
 
@@ -21419,9 +20341,7 @@ test "Valid - SingleFieldTestStruct_random_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SingleFieldTestStruct_random_2"
+        "containers/valid/SingleFieldTestStruct_random_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -21434,9 +20354,7 @@ test "Valid - SmallTestStruct_random_5" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SmallTestStruct_random_5"
+        "containers/valid/SmallTestStruct_random_5",
     });
     defer allocator.free(test_dir_name);
 
@@ -21449,9 +20367,7 @@ test "Valid - ComplexTestStruct_nil_chaos_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_nil_chaos_2"
+        "containers/valid/ComplexTestStruct_nil_chaos_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -21464,9 +20380,7 @@ test "Valid - ComplexTestStruct_zero_chaos_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "ComplexTestStruct_zero_chaos_1"
+        "containers/valid/ComplexTestStruct_zero_chaos_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -21479,9 +20393,7 @@ test "Valid - SmallTestStruct_max_chaos_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SmallTestStruct_max_chaos_1"
+        "containers/valid/SmallTestStruct_max_chaos_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -21494,9 +20406,7 @@ test "Valid - VarTestStruct_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_zero"
+        "containers/valid/VarTestStruct_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -21509,9 +20419,7 @@ test "Valid - SmallTestStruct_random_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SmallTestStruct_random_3"
+        "containers/valid/SmallTestStruct_random_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -21524,9 +20432,7 @@ test "Valid - VarTestStruct_max_5" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_max_5"
+        "containers/valid/VarTestStruct_max_5",
     });
     defer allocator.free(test_dir_name);
 
@@ -21539,9 +20445,7 @@ test "Valid - VarTestStruct_max_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "VarTestStruct_max_1"
+        "containers/valid/VarTestStruct_max_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -21554,9 +20458,7 @@ test "Valid - SmallTestStruct_zero_chaos_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "SmallTestStruct_zero_chaos_1"
+        "containers/valid/SmallTestStruct_zero_chaos_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -21569,9 +20471,7 @@ test "Valid - FixedTestStruct_random_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "FixedTestStruct_random_2"
+        "containers/valid/FixedTestStruct_random_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -21584,9 +20484,7 @@ test "Valid - BitsStruct_zero_6" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "containers",
-        "valid",
-        "BitsStruct_zero_6"
+        "containers/valid/BitsStruct_zero_6",
     });
     defer allocator.free(test_dir_name);
 
@@ -22919,9 +21817,7 @@ test "Valid - bitvec_8_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitvector",
-        "valid",
-        "bitvec_8_max"
+        "bitvector/valid/bitvec_8_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -22934,9 +21830,7 @@ test "Valid - bitvec_16_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitvector",
-        "valid",
-        "bitvec_16_zero"
+        "bitvector/valid/bitvec_16_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -22949,9 +21843,7 @@ test "Valid - bitvec_3_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitvector",
-        "valid",
-        "bitvec_3_zero"
+        "bitvector/valid/bitvec_3_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -22964,9 +21856,7 @@ test "Valid - bitvec_5_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitvector",
-        "valid",
-        "bitvec_5_random"
+        "bitvector/valid/bitvec_5_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -22979,9 +21869,7 @@ test "Valid - bitvec_1_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitvector",
-        "valid",
-        "bitvec_1_max"
+        "bitvector/valid/bitvec_1_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -22994,9 +21882,7 @@ test "Valid - bitvec_513_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitvector",
-        "valid",
-        "bitvec_513_zero"
+        "bitvector/valid/bitvec_513_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -23009,9 +21895,7 @@ test "Valid - bitvec_8_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitvector",
-        "valid",
-        "bitvec_8_zero"
+        "bitvector/valid/bitvec_8_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -23024,9 +21908,7 @@ test "Valid - bitvec_5_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitvector",
-        "valid",
-        "bitvec_5_zero"
+        "bitvector/valid/bitvec_5_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -23039,9 +21921,7 @@ test "Valid - bitvec_2_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitvector",
-        "valid",
-        "bitvec_2_max"
+        "bitvector/valid/bitvec_2_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -23054,9 +21934,7 @@ test "Valid - bitvec_512_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitvector",
-        "valid",
-        "bitvec_512_random"
+        "bitvector/valid/bitvec_512_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -23069,9 +21947,7 @@ test "Valid - bitvec_16_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitvector",
-        "valid",
-        "bitvec_16_random"
+        "bitvector/valid/bitvec_16_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -23084,9 +21960,7 @@ test "Valid - bitvec_2_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitvector",
-        "valid",
-        "bitvec_2_random"
+        "bitvector/valid/bitvec_2_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -23099,9 +21973,7 @@ test "Valid - bitvec_5_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitvector",
-        "valid",
-        "bitvec_5_max"
+        "bitvector/valid/bitvec_5_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -23114,9 +21986,7 @@ test "Valid - bitvec_1_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitvector",
-        "valid",
-        "bitvec_1_random"
+        "bitvector/valid/bitvec_1_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -23129,9 +21999,7 @@ test "Valid - bitvec_31_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitvector",
-        "valid",
-        "bitvec_31_max"
+        "bitvector/valid/bitvec_31_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -23144,9 +22012,7 @@ test "Valid - bitvec_16_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitvector",
-        "valid",
-        "bitvec_16_max"
+        "bitvector/valid/bitvec_16_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -23159,9 +22025,7 @@ test "Valid - bitvec_4_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitvector",
-        "valid",
-        "bitvec_4_zero"
+        "bitvector/valid/bitvec_4_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -23174,9 +22038,7 @@ test "Valid - bitvec_31_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitvector",
-        "valid",
-        "bitvec_31_zero"
+        "bitvector/valid/bitvec_31_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -23189,9 +22051,7 @@ test "Valid - bitvec_2_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitvector",
-        "valid",
-        "bitvec_2_zero"
+        "bitvector/valid/bitvec_2_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -23204,9 +22064,7 @@ test "Valid - bitvec_1_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitvector",
-        "valid",
-        "bitvec_1_zero"
+        "bitvector/valid/bitvec_1_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -23219,9 +22077,7 @@ test "Valid - bitvec_31_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitvector",
-        "valid",
-        "bitvec_31_random"
+        "bitvector/valid/bitvec_31_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -23234,9 +22090,7 @@ test "Valid - bitvec_8_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitvector",
-        "valid",
-        "bitvec_8_random"
+        "bitvector/valid/bitvec_8_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -23249,9 +22103,7 @@ test "Valid - bitvec_3_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitvector",
-        "valid",
-        "bitvec_3_random"
+        "bitvector/valid/bitvec_3_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -23264,9 +22116,7 @@ test "Valid - bitvec_513_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitvector",
-        "valid",
-        "bitvec_513_max"
+        "bitvector/valid/bitvec_513_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -23279,9 +22129,7 @@ test "Valid - bitvec_513_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitvector",
-        "valid",
-        "bitvec_513_random"
+        "bitvector/valid/bitvec_513_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -23294,9 +22142,7 @@ test "Valid - bitvec_4_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitvector",
-        "valid",
-        "bitvec_4_max"
+        "bitvector/valid/bitvec_4_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -23309,9 +22155,7 @@ test "Valid - bitvec_512_zero" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitvector",
-        "valid",
-        "bitvec_512_zero"
+        "bitvector/valid/bitvec_512_zero",
     });
     defer allocator.free(test_dir_name);
 
@@ -23324,9 +22168,7 @@ test "Valid - bitvec_4_random" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitvector",
-        "valid",
-        "bitvec_4_random"
+        "bitvector/valid/bitvec_4_random",
     });
     defer allocator.free(test_dir_name);
 
@@ -23339,9 +22181,7 @@ test "Valid - bitvec_3_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitvector",
-        "valid",
-        "bitvec_3_max"
+        "bitvector/valid/bitvec_3_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -23354,9 +22194,7 @@ test "Valid - bitvec_512_max" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitvector",
-        "valid",
-        "bitvec_512_max"
+        "bitvector/valid/bitvec_512_max",
     });
     defer allocator.free(test_dir_name);
 
@@ -23819,9 +22657,7 @@ test "Valid - bitlist_2_nil_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_2_nil_4"
+        "bitlist/valid/bitlist_2_nil_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -23834,9 +22670,7 @@ test "Valid - bitlist_4_zero_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_4_zero_1"
+        "bitlist/valid/bitlist_4_zero_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -23849,9 +22683,7 @@ test "Valid - bitlist_8_lengthy_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_8_lengthy_4"
+        "bitlist/valid/bitlist_8_lengthy_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -23864,9 +22696,7 @@ test "Valid - bitlist_512_random_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_512_random_1"
+        "bitlist/valid/bitlist_512_random_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -23879,9 +22709,7 @@ test "Valid - bitlist_513_random_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_513_random_4"
+        "bitlist/valid/bitlist_513_random_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -23894,9 +22722,7 @@ test "Valid - bitlist_16_lengthy_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_16_lengthy_3"
+        "bitlist/valid/bitlist_16_lengthy_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -23909,9 +22735,7 @@ test "Valid - bitlist_5_random_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_5_random_0"
+        "bitlist/valid/bitlist_5_random_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -23924,9 +22748,7 @@ test "Valid - bitlist_513_lengthy_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_513_lengthy_4"
+        "bitlist/valid/bitlist_513_lengthy_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -23939,9 +22761,7 @@ test "Valid - bitlist_31_max_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_31_max_0"
+        "bitlist/valid/bitlist_31_max_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -23954,9 +22774,7 @@ test "Valid - bitlist_2_zero_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_2_zero_0"
+        "bitlist/valid/bitlist_2_zero_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -23969,9 +22787,7 @@ test "Valid - bitlist_31_random_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_31_random_2"
+        "bitlist/valid/bitlist_31_random_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -23984,9 +22800,7 @@ test "Valid - bitlist_5_lengthy_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_5_lengthy_4"
+        "bitlist/valid/bitlist_5_lengthy_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -23999,9 +22813,7 @@ test "Valid - bitlist_1_random_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_1_random_3"
+        "bitlist/valid/bitlist_1_random_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -24014,9 +22826,7 @@ test "Valid - bitlist_5_max_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_5_max_1"
+        "bitlist/valid/bitlist_5_max_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -24029,9 +22839,7 @@ test "Valid - bitlist_31_zero_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_31_zero_3"
+        "bitlist/valid/bitlist_31_zero_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -24044,9 +22852,7 @@ test "Valid - bitlist_513_nil_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_513_nil_2"
+        "bitlist/valid/bitlist_513_nil_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -24059,9 +22865,7 @@ test "Valid - bitlist_2_nil_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_2_nil_2"
+        "bitlist/valid/bitlist_2_nil_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -24074,9 +22878,7 @@ test "Valid - bitlist_5_nil_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_5_nil_4"
+        "bitlist/valid/bitlist_5_nil_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -24089,9 +22891,7 @@ test "Valid - bitlist_8_lengthy_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_8_lengthy_2"
+        "bitlist/valid/bitlist_8_lengthy_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -24104,9 +22904,7 @@ test "Valid - bitlist_513_zero_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_513_zero_2"
+        "bitlist/valid/bitlist_513_zero_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -24119,9 +22917,7 @@ test "Valid - bitlist_5_random_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_5_random_2"
+        "bitlist/valid/bitlist_5_random_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -24134,9 +22930,7 @@ test "Valid - bitlist_4_lengthy_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_4_lengthy_4"
+        "bitlist/valid/bitlist_4_lengthy_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -24149,9 +22943,7 @@ test "Valid - bitlist_4_zero_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_4_zero_2"
+        "bitlist/valid/bitlist_4_zero_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -24164,9 +22956,7 @@ test "Valid - bitlist_16_zero_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_16_zero_4"
+        "bitlist/valid/bitlist_16_zero_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -24179,9 +22969,7 @@ test "Valid - bitlist_8_lengthy_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_8_lengthy_0"
+        "bitlist/valid/bitlist_8_lengthy_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -24194,9 +22982,7 @@ test "Valid - bitlist_513_max_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_513_max_1"
+        "bitlist/valid/bitlist_513_max_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -24209,9 +22995,7 @@ test "Valid - bitlist_3_lengthy_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_3_lengthy_3"
+        "bitlist/valid/bitlist_3_lengthy_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -24224,9 +23008,7 @@ test "Valid - bitlist_5_max_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_5_max_4"
+        "bitlist/valid/bitlist_5_max_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -24239,9 +23021,7 @@ test "Valid - bitlist_5_nil_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_5_nil_2"
+        "bitlist/valid/bitlist_5_nil_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -24254,9 +23034,7 @@ test "Valid - bitlist_4_lengthy_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_4_lengthy_0"
+        "bitlist/valid/bitlist_4_lengthy_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -24269,9 +23047,7 @@ test "Valid - bitlist_31_lengthy_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_31_lengthy_2"
+        "bitlist/valid/bitlist_31_lengthy_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -24284,9 +23060,7 @@ test "Valid - bitlist_4_random_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_4_random_0"
+        "bitlist/valid/bitlist_4_random_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -24299,9 +23073,7 @@ test "Valid - bitlist_513_nil_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_513_nil_1"
+        "bitlist/valid/bitlist_513_nil_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -24314,9 +23086,7 @@ test "Valid - bitlist_3_max_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_3_max_0"
+        "bitlist/valid/bitlist_3_max_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -24329,9 +23099,7 @@ test "Valid - bitlist_5_lengthy_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_5_lengthy_2"
+        "bitlist/valid/bitlist_5_lengthy_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -24344,9 +23112,7 @@ test "Valid - bitlist_8_max_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_8_max_0"
+        "bitlist/valid/bitlist_8_max_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -24359,9 +23125,7 @@ test "Valid - bitlist_31_random_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_31_random_4"
+        "bitlist/valid/bitlist_31_random_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -24374,9 +23138,7 @@ test "Valid - bitlist_3_max_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_3_max_3"
+        "bitlist/valid/bitlist_3_max_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -24389,9 +23151,7 @@ test "Valid - bitlist_3_random_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_3_random_4"
+        "bitlist/valid/bitlist_3_random_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -24404,9 +23164,7 @@ test "Valid - bitlist_8_nil_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_8_nil_4"
+        "bitlist/valid/bitlist_8_nil_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -24419,9 +23177,7 @@ test "Valid - bitlist_4_random_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_4_random_4"
+        "bitlist/valid/bitlist_4_random_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -24434,9 +23190,7 @@ test "Valid - bitlist_512_zero_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_512_zero_4"
+        "bitlist/valid/bitlist_512_zero_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -24449,9 +23203,7 @@ test "Valid - bitlist_16_nil_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_16_nil_3"
+        "bitlist/valid/bitlist_16_nil_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -24464,9 +23216,7 @@ test "Valid - bitlist_4_max_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_4_max_1"
+        "bitlist/valid/bitlist_4_max_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -24479,9 +23229,7 @@ test "Valid - bitlist_3_nil_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_3_nil_4"
+        "bitlist/valid/bitlist_3_nil_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -24494,9 +23242,7 @@ test "Valid - bitlist_5_random_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_5_random_1"
+        "bitlist/valid/bitlist_5_random_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -24509,9 +23255,7 @@ test "Valid - bitlist_8_nil_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_8_nil_3"
+        "bitlist/valid/bitlist_8_nil_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -24524,9 +23268,7 @@ test "Valid - bitlist_1_lengthy_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_1_lengthy_2"
+        "bitlist/valid/bitlist_1_lengthy_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -24539,9 +23281,7 @@ test "Valid - bitlist_4_random_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_4_random_1"
+        "bitlist/valid/bitlist_4_random_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -24554,9 +23294,7 @@ test "Valid - bitlist_5_lengthy_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_5_lengthy_3"
+        "bitlist/valid/bitlist_5_lengthy_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -24569,9 +23307,7 @@ test "Valid - bitlist_31_random_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_31_random_3"
+        "bitlist/valid/bitlist_31_random_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -24584,9 +23320,7 @@ test "Valid - bitlist_3_zero_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_3_zero_1"
+        "bitlist/valid/bitlist_3_zero_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -24599,9 +23333,7 @@ test "Valid - bitlist_16_lengthy_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_16_lengthy_1"
+        "bitlist/valid/bitlist_16_lengthy_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -24614,9 +23346,7 @@ test "Valid - bitlist_2_lengthy_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_2_lengthy_3"
+        "bitlist/valid/bitlist_2_lengthy_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -24629,9 +23359,7 @@ test "Valid - bitlist_16_random_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_16_random_0"
+        "bitlist/valid/bitlist_16_random_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -24644,9 +23372,7 @@ test "Valid - bitlist_3_nil_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_3_nil_2"
+        "bitlist/valid/bitlist_3_nil_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -24659,9 +23385,7 @@ test "Valid - bitlist_16_lengthy_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_16_lengthy_2"
+        "bitlist/valid/bitlist_16_lengthy_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -24674,9 +23398,7 @@ test "Valid - bitlist_1_max_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_1_max_2"
+        "bitlist/valid/bitlist_1_max_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -24689,9 +23411,7 @@ test "Valid - bitlist_16_zero_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_16_zero_1"
+        "bitlist/valid/bitlist_16_zero_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -24704,9 +23424,7 @@ test "Valid - bitlist_3_nil_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_3_nil_3"
+        "bitlist/valid/bitlist_3_nil_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -24719,9 +23437,7 @@ test "Valid - bitlist_1_lengthy_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_1_lengthy_4"
+        "bitlist/valid/bitlist_1_lengthy_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -24734,9 +23450,7 @@ test "Valid - bitlist_31_random_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_31_random_0"
+        "bitlist/valid/bitlist_31_random_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -24749,9 +23463,7 @@ test "Valid - bitlist_3_lengthy_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_3_lengthy_1"
+        "bitlist/valid/bitlist_3_lengthy_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -24764,9 +23476,7 @@ test "Valid - bitlist_3_nil_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_3_nil_0"
+        "bitlist/valid/bitlist_3_nil_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -24779,9 +23489,7 @@ test "Valid - bitlist_16_zero_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_16_zero_0"
+        "bitlist/valid/bitlist_16_zero_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -24794,9 +23502,7 @@ test "Valid - bitlist_1_random_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_1_random_0"
+        "bitlist/valid/bitlist_1_random_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -24809,9 +23515,7 @@ test "Valid - bitlist_4_nil_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_4_nil_1"
+        "bitlist/valid/bitlist_4_nil_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -24824,9 +23528,7 @@ test "Valid - bitlist_16_nil_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_16_nil_0"
+        "bitlist/valid/bitlist_16_nil_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -24839,9 +23541,7 @@ test "Valid - bitlist_1_nil_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_1_nil_1"
+        "bitlist/valid/bitlist_1_nil_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -24854,9 +23554,7 @@ test "Valid - bitlist_16_lengthy_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_16_lengthy_0"
+        "bitlist/valid/bitlist_16_lengthy_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -24869,9 +23567,7 @@ test "Valid - bitlist_2_random_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_2_random_3"
+        "bitlist/valid/bitlist_2_random_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -24884,9 +23580,7 @@ test "Valid - bitlist_31_zero_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_31_zero_2"
+        "bitlist/valid/bitlist_31_zero_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -24899,9 +23593,7 @@ test "Valid - bitlist_512_zero_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_512_zero_3"
+        "bitlist/valid/bitlist_512_zero_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -24914,9 +23606,7 @@ test "Valid - bitlist_2_lengthy_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_2_lengthy_1"
+        "bitlist/valid/bitlist_2_lengthy_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -24929,9 +23619,7 @@ test "Valid - bitlist_513_random_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_513_random_1"
+        "bitlist/valid/bitlist_513_random_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -24944,9 +23632,7 @@ test "Valid - bitlist_2_nil_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_2_nil_0"
+        "bitlist/valid/bitlist_2_nil_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -24959,9 +23645,7 @@ test "Valid - bitlist_16_nil_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_16_nil_2"
+        "bitlist/valid/bitlist_16_nil_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -24974,9 +23658,7 @@ test "Valid - bitlist_1_zero_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_1_zero_0"
+        "bitlist/valid/bitlist_1_zero_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -24989,9 +23671,7 @@ test "Valid - bitlist_512_nil_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_512_nil_4"
+        "bitlist/valid/bitlist_512_nil_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -25004,9 +23684,7 @@ test "Valid - bitlist_512_lengthy_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_512_lengthy_2"
+        "bitlist/valid/bitlist_512_lengthy_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -25019,9 +23697,7 @@ test "Valid - bitlist_31_nil_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_31_nil_0"
+        "bitlist/valid/bitlist_31_nil_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -25034,9 +23710,7 @@ test "Valid - bitlist_1_zero_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_1_zero_4"
+        "bitlist/valid/bitlist_1_zero_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -25049,9 +23723,7 @@ test "Valid - bitlist_3_random_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_3_random_1"
+        "bitlist/valid/bitlist_3_random_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -25064,9 +23736,7 @@ test "Valid - bitlist_2_random_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_2_random_2"
+        "bitlist/valid/bitlist_2_random_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -25079,9 +23749,7 @@ test "Valid - bitlist_8_random_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_8_random_0"
+        "bitlist/valid/bitlist_8_random_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -25094,9 +23762,7 @@ test "Valid - bitlist_4_max_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_4_max_4"
+        "bitlist/valid/bitlist_4_max_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -25109,9 +23775,7 @@ test "Valid - bitlist_5_random_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_5_random_4"
+        "bitlist/valid/bitlist_5_random_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -25124,9 +23788,7 @@ test "Valid - bitlist_3_max_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_3_max_1"
+        "bitlist/valid/bitlist_3_max_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -25139,9 +23801,7 @@ test "Valid - bitlist_1_zero_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_1_zero_2"
+        "bitlist/valid/bitlist_1_zero_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -25154,9 +23814,7 @@ test "Valid - bitlist_513_nil_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_513_nil_0"
+        "bitlist/valid/bitlist_513_nil_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -25169,9 +23827,7 @@ test "Valid - bitlist_5_zero_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_5_zero_0"
+        "bitlist/valid/bitlist_5_zero_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -25184,9 +23840,7 @@ test "Valid - bitlist_4_lengthy_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_4_lengthy_2"
+        "bitlist/valid/bitlist_4_lengthy_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -25199,9 +23853,7 @@ test "Valid - bitlist_8_zero_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_8_zero_1"
+        "bitlist/valid/bitlist_8_zero_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -25214,9 +23866,7 @@ test "Valid - bitlist_512_max_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_512_max_2"
+        "bitlist/valid/bitlist_512_max_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -25229,9 +23879,7 @@ test "Valid - bitlist_4_zero_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_4_zero_0"
+        "bitlist/valid/bitlist_4_zero_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -25244,9 +23892,7 @@ test "Valid - bitlist_2_random_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_2_random_1"
+        "bitlist/valid/bitlist_2_random_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -25259,9 +23905,7 @@ test "Valid - bitlist_16_max_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_16_max_1"
+        "bitlist/valid/bitlist_16_max_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -25274,9 +23918,7 @@ test "Valid - bitlist_2_random_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_2_random_0"
+        "bitlist/valid/bitlist_2_random_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -25289,9 +23931,7 @@ test "Valid - bitlist_3_lengthy_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_3_lengthy_2"
+        "bitlist/valid/bitlist_3_lengthy_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -25304,9 +23944,7 @@ test "Valid - bitlist_4_nil_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_4_nil_0"
+        "bitlist/valid/bitlist_4_nil_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -25319,9 +23957,7 @@ test "Valid - bitlist_8_zero_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_8_zero_0"
+        "bitlist/valid/bitlist_8_zero_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -25334,9 +23970,7 @@ test "Valid - bitlist_2_nil_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_2_nil_1"
+        "bitlist/valid/bitlist_2_nil_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -25349,9 +23983,7 @@ test "Valid - bitlist_31_zero_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_31_zero_0"
+        "bitlist/valid/bitlist_31_zero_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -25364,9 +23996,7 @@ test "Valid - bitlist_8_random_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_8_random_2"
+        "bitlist/valid/bitlist_8_random_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -25379,9 +24009,7 @@ test "Valid - bitlist_1_nil_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_1_nil_2"
+        "bitlist/valid/bitlist_1_nil_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -25394,9 +24022,7 @@ test "Valid - bitlist_513_lengthy_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_513_lengthy_0"
+        "bitlist/valid/bitlist_513_lengthy_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -25409,9 +24035,7 @@ test "Valid - bitlist_2_max_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_2_max_4"
+        "bitlist/valid/bitlist_2_max_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -25424,9 +24048,7 @@ test "Valid - bitlist_3_random_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_3_random_0"
+        "bitlist/valid/bitlist_3_random_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -25439,9 +24061,7 @@ test "Valid - bitlist_16_nil_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_16_nil_1"
+        "bitlist/valid/bitlist_16_nil_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -25454,9 +24074,7 @@ test "Valid - bitlist_16_max_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_16_max_3"
+        "bitlist/valid/bitlist_16_max_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -25469,9 +24087,7 @@ test "Valid - bitlist_513_random_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_513_random_2"
+        "bitlist/valid/bitlist_513_random_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -25484,9 +24100,7 @@ test "Valid - bitlist_513_nil_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_513_nil_4"
+        "bitlist/valid/bitlist_513_nil_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -25499,9 +24113,7 @@ test "Valid - bitlist_3_zero_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_3_zero_4"
+        "bitlist/valid/bitlist_3_zero_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -25514,9 +24126,7 @@ test "Valid - bitlist_31_max_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_31_max_4"
+        "bitlist/valid/bitlist_31_max_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -25529,9 +24139,7 @@ test "Valid - bitlist_5_lengthy_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_5_lengthy_1"
+        "bitlist/valid/bitlist_5_lengthy_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -25544,9 +24152,7 @@ test "Valid - bitlist_5_random_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_5_random_3"
+        "bitlist/valid/bitlist_5_random_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -25559,9 +24165,7 @@ test "Valid - bitlist_513_max_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_513_max_2"
+        "bitlist/valid/bitlist_513_max_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -25574,9 +24178,7 @@ test "Valid - bitlist_513_zero_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_513_zero_0"
+        "bitlist/valid/bitlist_513_zero_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -25589,9 +24191,7 @@ test "Valid - bitlist_1_nil_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_1_nil_4"
+        "bitlist/valid/bitlist_1_nil_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -25604,9 +24204,7 @@ test "Valid - bitlist_31_nil_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_31_nil_3"
+        "bitlist/valid/bitlist_31_nil_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -25619,9 +24217,7 @@ test "Valid - bitlist_513_lengthy_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_513_lengthy_2"
+        "bitlist/valid/bitlist_513_lengthy_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -25634,9 +24230,7 @@ test "Valid - bitlist_2_zero_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_2_zero_1"
+        "bitlist/valid/bitlist_2_zero_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -25649,9 +24243,7 @@ test "Valid - bitlist_1_random_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_1_random_2"
+        "bitlist/valid/bitlist_1_random_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -25664,9 +24256,7 @@ test "Valid - bitlist_2_random_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_2_random_4"
+        "bitlist/valid/bitlist_2_random_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -25679,9 +24269,7 @@ test "Valid - bitlist_8_nil_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_8_nil_2"
+        "bitlist/valid/bitlist_8_nil_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -25694,9 +24282,7 @@ test "Valid - bitlist_8_random_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_8_random_4"
+        "bitlist/valid/bitlist_8_random_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -25709,9 +24295,7 @@ test "Valid - bitlist_4_nil_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_4_nil_2"
+        "bitlist/valid/bitlist_4_nil_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -25724,9 +24308,7 @@ test "Valid - bitlist_2_lengthy_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_2_lengthy_0"
+        "bitlist/valid/bitlist_2_lengthy_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -25739,9 +24321,7 @@ test "Valid - bitlist_513_max_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_513_max_3"
+        "bitlist/valid/bitlist_513_max_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -25754,9 +24334,7 @@ test "Valid - bitlist_3_lengthy_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_3_lengthy_4"
+        "bitlist/valid/bitlist_3_lengthy_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -25769,9 +24347,7 @@ test "Valid - bitlist_512_zero_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_512_zero_1"
+        "bitlist/valid/bitlist_512_zero_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -25784,9 +24360,7 @@ test "Valid - bitlist_5_max_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_5_max_3"
+        "bitlist/valid/bitlist_5_max_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -25799,9 +24373,7 @@ test "Valid - bitlist_31_lengthy_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_31_lengthy_4"
+        "bitlist/valid/bitlist_31_lengthy_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -25814,9 +24386,7 @@ test "Valid - bitlist_1_max_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_1_max_1"
+        "bitlist/valid/bitlist_1_max_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -25829,9 +24399,7 @@ test "Valid - bitlist_2_lengthy_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_2_lengthy_4"
+        "bitlist/valid/bitlist_2_lengthy_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -25844,9 +24412,7 @@ test "Valid - bitlist_4_random_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_4_random_2"
+        "bitlist/valid/bitlist_4_random_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -25859,9 +24425,7 @@ test "Valid - bitlist_1_max_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_1_max_4"
+        "bitlist/valid/bitlist_1_max_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -25874,9 +24438,7 @@ test "Valid - bitlist_31_zero_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_31_zero_1"
+        "bitlist/valid/bitlist_31_zero_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -25889,9 +24451,7 @@ test "Valid - bitlist_3_lengthy_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_3_lengthy_0"
+        "bitlist/valid/bitlist_3_lengthy_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -25904,9 +24464,7 @@ test "Valid - bitlist_8_zero_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_8_zero_2"
+        "bitlist/valid/bitlist_8_zero_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -25919,9 +24477,7 @@ test "Valid - bitlist_1_random_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_1_random_4"
+        "bitlist/valid/bitlist_1_random_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -25934,9 +24490,7 @@ test "Valid - bitlist_2_zero_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_2_zero_3"
+        "bitlist/valid/bitlist_2_zero_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -25949,9 +24503,7 @@ test "Valid - bitlist_3_random_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_3_random_3"
+        "bitlist/valid/bitlist_3_random_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -25964,9 +24516,7 @@ test "Valid - bitlist_1_nil_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_1_nil_3"
+        "bitlist/valid/bitlist_1_nil_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -25979,9 +24529,7 @@ test "Valid - bitlist_3_random_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_3_random_2"
+        "bitlist/valid/bitlist_3_random_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -25994,9 +24542,7 @@ test "Valid - bitlist_31_nil_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_31_nil_2"
+        "bitlist/valid/bitlist_31_nil_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -26009,9 +24555,7 @@ test "Valid - bitlist_8_zero_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_8_zero_3"
+        "bitlist/valid/bitlist_8_zero_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -26024,9 +24568,7 @@ test "Valid - bitlist_1_max_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_1_max_3"
+        "bitlist/valid/bitlist_1_max_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -26039,9 +24581,7 @@ test "Valid - bitlist_513_random_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_513_random_0"
+        "bitlist/valid/bitlist_513_random_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -26054,9 +24594,7 @@ test "Valid - bitlist_31_max_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_31_max_1"
+        "bitlist/valid/bitlist_31_max_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -26069,9 +24607,7 @@ test "Valid - bitlist_16_max_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_16_max_2"
+        "bitlist/valid/bitlist_16_max_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -26084,9 +24620,7 @@ test "Valid - bitlist_3_nil_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_3_nil_1"
+        "bitlist/valid/bitlist_3_nil_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -26099,9 +24633,7 @@ test "Valid - bitlist_5_nil_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_5_nil_1"
+        "bitlist/valid/bitlist_5_nil_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -26114,9 +24646,7 @@ test "Valid - bitlist_512_nil_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_512_nil_1"
+        "bitlist/valid/bitlist_512_nil_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -26129,9 +24659,7 @@ test "Valid - bitlist_8_max_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_8_max_1"
+        "bitlist/valid/bitlist_8_max_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -26144,9 +24672,7 @@ test "Valid - bitlist_8_zero_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_8_zero_4"
+        "bitlist/valid/bitlist_8_zero_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -26159,9 +24685,7 @@ test "Valid - bitlist_512_random_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_512_random_2"
+        "bitlist/valid/bitlist_512_random_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -26174,9 +24698,7 @@ test "Valid - bitlist_5_nil_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_5_nil_0"
+        "bitlist/valid/bitlist_5_nil_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -26189,9 +24711,7 @@ test "Valid - bitlist_16_zero_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_16_zero_2"
+        "bitlist/valid/bitlist_16_zero_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -26204,9 +24724,7 @@ test "Valid - bitlist_3_zero_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_3_zero_3"
+        "bitlist/valid/bitlist_3_zero_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -26219,9 +24737,7 @@ test "Valid - bitlist_512_random_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_512_random_3"
+        "bitlist/valid/bitlist_512_random_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -26234,9 +24750,7 @@ test "Valid - bitlist_8_random_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_8_random_3"
+        "bitlist/valid/bitlist_8_random_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -26249,9 +24763,7 @@ test "Valid - bitlist_4_max_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_4_max_2"
+        "bitlist/valid/bitlist_4_max_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -26264,9 +24776,7 @@ test "Valid - bitlist_512_lengthy_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_512_lengthy_4"
+        "bitlist/valid/bitlist_512_lengthy_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -26279,9 +24789,7 @@ test "Valid - bitlist_512_zero_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_512_zero_2"
+        "bitlist/valid/bitlist_512_zero_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -26294,9 +24802,7 @@ test "Valid - bitlist_512_nil_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_512_nil_0"
+        "bitlist/valid/bitlist_512_nil_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -26309,9 +24815,7 @@ test "Valid - bitlist_4_nil_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_4_nil_3"
+        "bitlist/valid/bitlist_4_nil_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -26324,9 +24828,7 @@ test "Valid - bitlist_1_lengthy_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_1_lengthy_3"
+        "bitlist/valid/bitlist_1_lengthy_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -26339,9 +24841,7 @@ test "Valid - bitlist_16_random_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_16_random_2"
+        "bitlist/valid/bitlist_16_random_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -26354,9 +24854,7 @@ test "Valid - bitlist_2_nil_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_2_nil_3"
+        "bitlist/valid/bitlist_2_nil_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -26369,9 +24867,7 @@ test "Valid - bitlist_512_zero_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_512_zero_0"
+        "bitlist/valid/bitlist_512_zero_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -26384,9 +24880,7 @@ test "Valid - bitlist_8_max_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_8_max_4"
+        "bitlist/valid/bitlist_8_max_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -26399,9 +24893,7 @@ test "Valid - bitlist_2_zero_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_2_zero_4"
+        "bitlist/valid/bitlist_2_zero_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -26414,9 +24906,7 @@ test "Valid - bitlist_2_lengthy_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_2_lengthy_2"
+        "bitlist/valid/bitlist_2_lengthy_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -26429,9 +24919,7 @@ test "Valid - bitlist_31_max_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_31_max_2"
+        "bitlist/valid/bitlist_31_max_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -26444,9 +24932,7 @@ test "Valid - bitlist_512_nil_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_512_nil_2"
+        "bitlist/valid/bitlist_512_nil_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -26459,9 +24945,7 @@ test "Valid - bitlist_512_lengthy_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_512_lengthy_3"
+        "bitlist/valid/bitlist_512_lengthy_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -26474,9 +24958,7 @@ test "Valid - bitlist_4_lengthy_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_4_lengthy_1"
+        "bitlist/valid/bitlist_4_lengthy_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -26489,9 +24971,7 @@ test "Valid - bitlist_2_max_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_2_max_0"
+        "bitlist/valid/bitlist_2_max_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -26504,9 +24984,7 @@ test "Valid - bitlist_1_lengthy_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_1_lengthy_0"
+        "bitlist/valid/bitlist_1_lengthy_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -26519,9 +24997,7 @@ test "Valid - bitlist_31_lengthy_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_31_lengthy_0"
+        "bitlist/valid/bitlist_31_lengthy_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -26534,9 +25010,7 @@ test "Valid - bitlist_3_max_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_3_max_2"
+        "bitlist/valid/bitlist_3_max_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -26549,9 +25023,7 @@ test "Valid - bitlist_31_max_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_31_max_3"
+        "bitlist/valid/bitlist_31_max_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -26564,9 +25036,7 @@ test "Valid - bitlist_5_max_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_5_max_0"
+        "bitlist/valid/bitlist_5_max_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -26579,9 +25049,7 @@ test "Valid - bitlist_1_random_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_1_random_1"
+        "bitlist/valid/bitlist_1_random_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -26594,9 +25062,7 @@ test "Valid - bitlist_513_nil_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_513_nil_3"
+        "bitlist/valid/bitlist_513_nil_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -26609,9 +25075,7 @@ test "Valid - bitlist_2_max_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_2_max_3"
+        "bitlist/valid/bitlist_2_max_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -26624,9 +25088,7 @@ test "Valid - bitlist_8_nil_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_8_nil_0"
+        "bitlist/valid/bitlist_8_nil_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -26639,9 +25101,7 @@ test "Valid - bitlist_8_lengthy_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_8_lengthy_1"
+        "bitlist/valid/bitlist_8_lengthy_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -26654,9 +25114,7 @@ test "Valid - bitlist_512_max_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_512_max_0"
+        "bitlist/valid/bitlist_512_max_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -26669,9 +25127,7 @@ test "Valid - bitlist_512_max_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_512_max_3"
+        "bitlist/valid/bitlist_512_max_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -26684,9 +25140,7 @@ test "Valid - bitlist_513_zero_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_513_zero_3"
+        "bitlist/valid/bitlist_513_zero_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -26699,9 +25153,7 @@ test "Valid - bitlist_513_lengthy_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_513_lengthy_1"
+        "bitlist/valid/bitlist_513_lengthy_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -26714,9 +25166,7 @@ test "Valid - bitlist_5_zero_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_5_zero_4"
+        "bitlist/valid/bitlist_5_zero_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -26729,9 +25179,7 @@ test "Valid - bitlist_8_random_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_8_random_1"
+        "bitlist/valid/bitlist_8_random_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -26744,9 +25192,7 @@ test "Valid - bitlist_31_lengthy_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_31_lengthy_1"
+        "bitlist/valid/bitlist_31_lengthy_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -26759,9 +25205,7 @@ test "Valid - bitlist_5_nil_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_5_nil_3"
+        "bitlist/valid/bitlist_5_nil_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -26774,9 +25218,7 @@ test "Valid - bitlist_1_nil_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_1_nil_0"
+        "bitlist/valid/bitlist_1_nil_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -26789,9 +25231,7 @@ test "Valid - bitlist_512_random_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_512_random_0"
+        "bitlist/valid/bitlist_512_random_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -26804,9 +25244,7 @@ test "Valid - bitlist_512_nil_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_512_nil_3"
+        "bitlist/valid/bitlist_512_nil_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -26819,9 +25257,7 @@ test "Valid - bitlist_512_lengthy_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_512_lengthy_0"
+        "bitlist/valid/bitlist_512_lengthy_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -26834,9 +25270,7 @@ test "Valid - bitlist_512_lengthy_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_512_lengthy_1"
+        "bitlist/valid/bitlist_512_lengthy_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -26849,9 +25283,7 @@ test "Valid - bitlist_5_lengthy_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_5_lengthy_0"
+        "bitlist/valid/bitlist_5_lengthy_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -26864,9 +25296,7 @@ test "Valid - bitlist_31_nil_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_31_nil_1"
+        "bitlist/valid/bitlist_31_nil_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -26879,9 +25309,7 @@ test "Valid - bitlist_3_zero_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_3_zero_2"
+        "bitlist/valid/bitlist_3_zero_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -26894,9 +25322,7 @@ test "Valid - bitlist_8_max_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_8_max_3"
+        "bitlist/valid/bitlist_8_max_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -26909,9 +25335,7 @@ test "Valid - bitlist_513_max_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_513_max_4"
+        "bitlist/valid/bitlist_513_max_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -26924,9 +25348,7 @@ test "Valid - bitlist_16_max_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_16_max_0"
+        "bitlist/valid/bitlist_16_max_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -26939,9 +25361,7 @@ test "Valid - bitlist_5_zero_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_5_zero_3"
+        "bitlist/valid/bitlist_5_zero_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -26954,9 +25374,7 @@ test "Valid - bitlist_1_max_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_1_max_0"
+        "bitlist/valid/bitlist_1_max_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -26969,9 +25387,7 @@ test "Valid - bitlist_513_lengthy_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_513_lengthy_3"
+        "bitlist/valid/bitlist_513_lengthy_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -26984,9 +25400,7 @@ test "Valid - bitlist_4_random_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_4_random_3"
+        "bitlist/valid/bitlist_4_random_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -26999,9 +25413,7 @@ test "Valid - bitlist_512_random_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_512_random_4"
+        "bitlist/valid/bitlist_512_random_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -27014,9 +25426,7 @@ test "Valid - bitlist_16_zero_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_16_zero_3"
+        "bitlist/valid/bitlist_16_zero_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -27029,9 +25439,7 @@ test "Valid - bitlist_512_max_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_512_max_1"
+        "bitlist/valid/bitlist_512_max_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -27044,9 +25452,7 @@ test "Valid - bitlist_8_nil_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_8_nil_1"
+        "bitlist/valid/bitlist_8_nil_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -27059,9 +25465,7 @@ test "Valid - bitlist_16_random_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_16_random_1"
+        "bitlist/valid/bitlist_16_random_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -27074,9 +25478,7 @@ test "Valid - bitlist_4_lengthy_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_4_lengthy_3"
+        "bitlist/valid/bitlist_4_lengthy_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -27089,9 +25491,7 @@ test "Valid - bitlist_31_nil_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_31_nil_4"
+        "bitlist/valid/bitlist_31_nil_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -27104,9 +25504,7 @@ test "Valid - bitlist_16_random_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_16_random_4"
+        "bitlist/valid/bitlist_16_random_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -27119,9 +25517,7 @@ test "Valid - bitlist_5_zero_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_5_zero_2"
+        "bitlist/valid/bitlist_5_zero_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -27134,9 +25530,7 @@ test "Valid - bitlist_513_random_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_513_random_3"
+        "bitlist/valid/bitlist_513_random_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -27149,9 +25543,7 @@ test "Valid - bitlist_5_zero_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_5_zero_1"
+        "bitlist/valid/bitlist_5_zero_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -27164,9 +25556,7 @@ test "Valid - bitlist_4_nil_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_4_nil_4"
+        "bitlist/valid/bitlist_4_nil_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -27179,9 +25569,7 @@ test "Valid - bitlist_3_zero_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_3_zero_0"
+        "bitlist/valid/bitlist_3_zero_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -27194,9 +25582,7 @@ test "Valid - bitlist_16_max_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_16_max_4"
+        "bitlist/valid/bitlist_16_max_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -27209,9 +25595,7 @@ test "Valid - bitlist_8_max_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_8_max_2"
+        "bitlist/valid/bitlist_8_max_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -27224,9 +25608,7 @@ test "Valid - bitlist_513_max_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_513_max_0"
+        "bitlist/valid/bitlist_513_max_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -27239,9 +25621,7 @@ test "Valid - bitlist_4_max_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_4_max_3"
+        "bitlist/valid/bitlist_4_max_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -27254,9 +25634,7 @@ test "Valid - bitlist_16_nil_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_16_nil_4"
+        "bitlist/valid/bitlist_16_nil_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -27269,9 +25647,7 @@ test "Valid - bitlist_31_lengthy_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_31_lengthy_3"
+        "bitlist/valid/bitlist_31_lengthy_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -27284,9 +25660,7 @@ test "Valid - bitlist_513_zero_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_513_zero_1"
+        "bitlist/valid/bitlist_513_zero_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -27299,9 +25673,7 @@ test "Valid - bitlist_3_max_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_3_max_4"
+        "bitlist/valid/bitlist_3_max_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -27314,9 +25686,7 @@ test "Valid - bitlist_4_max_0" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_4_max_0"
+        "bitlist/valid/bitlist_4_max_0",
     });
     defer allocator.free(test_dir_name);
 
@@ -27329,9 +25699,7 @@ test "Valid - bitlist_31_random_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_31_random_1"
+        "bitlist/valid/bitlist_31_random_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -27344,9 +25712,7 @@ test "Valid - bitlist_5_max_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_5_max_2"
+        "bitlist/valid/bitlist_5_max_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -27359,9 +25725,7 @@ test "Valid - bitlist_16_lengthy_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_16_lengthy_4"
+        "bitlist/valid/bitlist_16_lengthy_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -27374,9 +25738,7 @@ test "Valid - bitlist_1_zero_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_1_zero_1"
+        "bitlist/valid/bitlist_1_zero_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -27389,9 +25751,7 @@ test "Valid - bitlist_512_max_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_512_max_4"
+        "bitlist/valid/bitlist_512_max_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -27404,9 +25764,7 @@ test "Valid - bitlist_31_zero_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_31_zero_4"
+        "bitlist/valid/bitlist_31_zero_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -27419,9 +25777,7 @@ test "Valid - bitlist_1_lengthy_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_1_lengthy_1"
+        "bitlist/valid/bitlist_1_lengthy_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -27434,9 +25790,7 @@ test "Valid - bitlist_513_zero_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_513_zero_4"
+        "bitlist/valid/bitlist_513_zero_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -27449,9 +25803,7 @@ test "Valid - bitlist_8_lengthy_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_8_lengthy_3"
+        "bitlist/valid/bitlist_8_lengthy_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -27464,9 +25816,7 @@ test "Valid - bitlist_2_max_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_2_max_2"
+        "bitlist/valid/bitlist_2_max_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -27479,9 +25829,7 @@ test "Valid - bitlist_2_max_1" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_2_max_1"
+        "bitlist/valid/bitlist_2_max_1",
     });
     defer allocator.free(test_dir_name);
 
@@ -27494,9 +25842,7 @@ test "Valid - bitlist_4_zero_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_4_zero_3"
+        "bitlist/valid/bitlist_4_zero_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -27509,9 +25855,7 @@ test "Valid - bitlist_16_random_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_16_random_3"
+        "bitlist/valid/bitlist_16_random_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -27524,9 +25868,7 @@ test "Valid - bitlist_2_zero_2" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_2_zero_2"
+        "bitlist/valid/bitlist_2_zero_2",
     });
     defer allocator.free(test_dir_name);
 
@@ -27539,9 +25881,7 @@ test "Valid - bitlist_1_zero_3" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_1_zero_3"
+        "bitlist/valid/bitlist_1_zero_3",
     });
     defer allocator.free(test_dir_name);
 
@@ -27554,9 +25894,7 @@ test "Valid - bitlist_4_zero_4" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "bitlist",
-        "valid",
-        "bitlist_4_zero_4"
+        "bitlist/valid/bitlist_4_zero_4",
     });
     defer allocator.free(test_dir_name);
 
@@ -27779,9 +26117,7 @@ test "Valid - true" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "boolean",
-        "valid",
-        "true"
+        "boolean/valid/true",
     });
     defer allocator.free(test_dir_name);
 
@@ -27794,9 +26130,7 @@ test "Valid - false" {
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
         generic_tests_dir_name,
-        "boolean",
-        "valid",
-        "false"
+        "boolean/valid/false",
     });
     defer allocator.free(test_dir_name);
 

@@ -4,8 +4,9 @@ const spec_test_options = @import("spec_test_options");
 pub fn main() !void {
     const allocator = std.heap.page_allocator;
 
-    // TODO improve zbuild to unbreak enum options
-    const preset_str = spec_test_options.spec_test_preset;
+    // minimal preset includes many more testcases
+    // so use that for generating tests
+    const preset_str = "minimal";
 
     const out = try std.fs.cwd().createFile("test/spec/static_tests.zig", .{});
     defer out.close();
@@ -18,6 +19,7 @@ pub fn main() !void {
         \\
         \\const std = @import("std");
         \\const spec_test_options = @import("spec_test_options");
+        \\const build_options = @import("build_options");
         \\const types = @import("consensus_types");
         \\const test_case = @import("test_case.zig");
         \\
@@ -124,21 +126,17 @@ fn writeStaticTest(
 ) !void {
     try writer.print(
         \\test "Static - {s} {s} {s} {s}" {{
-        \\    const test_dir_name = std.fs.path.join(allocator, &[_][]const u8{{
+        \\    const test_dir_name = try std.fs.path.join(allocator, &[_][]const u8{{
         \\        spec_test_options.spec_test_out_dir,
         \\        spec_test_options.spec_test_version,
-        \\        spec_test_options.spec_test_preset,
+        \\        build_options.preset,
         \\        "tests",
-        \\        spec_test_options.spec_test_preset,
-        \\        "{s}",
-        \\        "ssz_static",
-        \\        "{s}",
-        \\        "{s}",
-        \\        "{s}",
-        \\    }}) catch return error.SkipZigTest;
+        \\        build_options.preset,
+        \\        "{s}/ssz_static/{s}/{s}/{s}",
+        \\    }});
         \\    defer allocator.free(test_dir_name);
         \\
-        \\    const test_dir = try std.fs.cwd().openDir(test_dir_name, .{{}});
+        \\    const test_dir = std.fs.cwd().openDir(test_dir_name, .{{}}) catch return error.SkipZigTest;
         \\    try test_case.validTestCase(types.{s}.{s}, allocator, test_dir, "roots.yaml");
         \\}}
         \\

@@ -17,7 +17,7 @@ pub fn build(b: *std.Build) void {
     const options_build_options = b.addOptions();
     const option_zero_hash_max_depth = b.option(usize, "zero_hash_max_depth", "");
     options_build_options.addOption(?usize, "zero_hash_max_depth", option_zero_hash_max_depth);
-    const option_preset = b.option([]const u8, "preset", "") orelse "minimal";
+    const option_preset = b.option([]const u8, "preset", "") orelse "mainnet";
     options_build_options.addOption([]const u8, "preset", option_preset);
     const options_module_build_options = options_build_options.createModule();
 
@@ -28,8 +28,6 @@ pub fn build(b: *std.Build) void {
     options_spec_test_options.addOption([]const u8, "spec_test_version", option_spec_test_version);
     const option_spec_test_out_dir = b.option([]const u8, "spec_test_out_dir", "") orelse "test/spec/spec_tests";
     options_spec_test_options.addOption([]const u8, "spec_test_out_dir", option_spec_test_out_dir);
-    const option_spec_test_preset = b.option([]const u8, "spec_test_preset", "") orelse "minimal";
-    options_spec_test_options.addOption([]const u8, "spec_test_preset", option_spec_test_preset);
     const options_module_spec_test_options = options_spec_test_options.createModule();
 
     const module_hex = b.createModule(.{
@@ -412,6 +410,7 @@ pub fn build(b: *std.Build) void {
     module_ssz.addImport("hex", module_hex);
     module_ssz.addImport("hashing", module_hashing);
 
+    module_consensus_types.addImport("build_options", options_module_build_options);
     module_consensus_types.addImport("ssz", module_ssz);
 
     module_types_codegen.addImport("ssz", module_ssz);
@@ -436,6 +435,7 @@ pub fn build(b: *std.Build) void {
     module_static_spec_tests.addImport("hex", module_hex);
     module_static_spec_tests.addImport("snappy", dep_snappy.module("snappy"));
     module_static_spec_tests.addImport("ssz", module_ssz);
+    module_static_spec_tests.addImport("build_options", options_module_build_options);
     module_static_spec_tests.addImport("spec_test_options", options_module_spec_test_options);
     module_static_spec_tests.addImport("consensus_types", module_consensus_types);
     module_static_spec_tests.addImport("yaml", dep_yaml.module("yaml"));

@@ -36,7 +36,7 @@
         "type": "usize"
       },
       "preset": {
-        "default": "minimal",
+        "default": "mainnet",
         "type": "string"
       }
     },
@@ -51,10 +51,6 @@
       },
       "spec_test_out_dir": {
         "default": "test/spec/spec_tests",
-        "type": "string"
-      },
-      "spec_test_preset": {
-        "default": "minimal",
         "type": "string"
       }
     }
@@ -91,6 +87,7 @@
     "consensus_types": {
       "root_source_file": "src/consensus_types/root.zig",
       "imports": [
+        "build_options",
         "ssz"
       ]
     }
@@ -176,12 +173,14 @@
           "hex",
           "snappy",
           "ssz",
+          "build_options",
           "spec_test_options",
           "consensus_types",
           "yaml"
         ]
       },
-      "filters": []
+      "filters": [
+      ]
     }
   }
 }

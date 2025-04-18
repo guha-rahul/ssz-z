@@ -57,12 +57,12 @@ const PresetMainnet = struct {
     pub const MIN_ACTIVATION_BALANCE = 32000000000;
     pub const MAX_EFFECTIVE_BALANCE_ELECTRA = 2048000000000;
     pub const PENDING_DEPOSITS_LIMIT = 134217728;
-    pub const PENDING_PARTIAL_WITHDRAWALS_LIMIT = 64;
-    pub const PENDING_CONSOLIDATIONS_LIMIT = 64;
+    pub const PENDING_PARTIAL_WITHDRAWALS_LIMIT = 134217728;
+    pub const PENDING_CONSOLIDATIONS_LIMIT = 262144;
     pub const MAX_ATTESTER_SLASHINGS_ELECTRA = 1;
     pub const MAX_ATTESTATIONS_ELECTRA = 8;
-    pub const MAX_DEPOSIT_REQUESTS_PER_PAYLOAD = 4;
-    pub const MAX_WITHDRAWAL_REQUESTS_PER_PAYLOAD = 2;
+    pub const MAX_DEPOSIT_REQUESTS_PER_PAYLOAD = 8192;
+    pub const MAX_WITHDRAWAL_REQUESTS_PER_PAYLOAD = 16;
     pub const MAX_CONSOLIDATION_REQUESTS_PER_PAYLOAD = 2;
 };
 
@@ -132,6 +132,6 @@ const PresetMinimal = struct {
     pub const MAX_CONSOLIDATION_REQUESTS_PER_PAYLOAD = 2;
 };
 
-// TODO: get preset from build option
-// eg: switch (@import("consensus_types_build_options").preset orelse .mainnet)
-pub const active_preset = PresetMinimal;
+const preset_str = @import("build_options").preset;
+
+pub const active_preset = if (std.mem.eql(u8, preset_str, "minimal")) PresetMinimal else PresetMainnet;

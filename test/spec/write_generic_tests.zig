@@ -134,9 +134,7 @@ fn writeValidTest(
         \\        spec_test_options.spec_test_out_dir,
         \\        spec_test_options.spec_test_version,
         \\        generic_tests_dir_name,
-        \\        "{s}",
-        \\        "valid",
-        \\        "{s}"
+        \\        "{s}/valid/{s}",
         \\    }});
         \\    defer allocator.free(test_dir_name);
         \\

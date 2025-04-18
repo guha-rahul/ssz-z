@@ -1,7 +1,7 @@
 const std = @import("std");
 const testing = std.testing;
 
-const primitive = @import("primitive.zig");
+pub const primitive = @import("primitive.zig");
 pub const phase0 = @import("phase0.zig");
 pub const altair = @import("altair.zig");
 pub const bellatrix = @import("bellatrix.zig");
@@ -10,7 +10,6 @@ pub const deneb = @import("deneb.zig");
 pub const electra = @import("electra.zig");
 
 test {
-    testing.refAllDecls(phase0);
     testing.refAllDecls(phase0);
 }
 
