@@ -109,49 +109,49 @@ pub fn build(b: *std.Build) void {
     const tls_run_exe_download_spec_tests = b.step("run:download_spec_tests", "Run the download_spec_tests executable");
     tls_run_exe_download_spec_tests.dependOn(&run_exe_download_spec_tests.step);
 
-    const module_write_generic_tests = b.createModule(.{
+    const module_write_generic_spec_tests = b.createModule(.{
         .root_source_file = b.path("test/spec/write_generic_tests.zig"),
         .target = target,
         .optimize = optimize,
     });
-    b.modules.put(b.dupe("write_generic_tests"), module_write_generic_tests) catch @panic("OOM");
+    b.modules.put(b.dupe("write_generic_spec_tests"), module_write_generic_spec_tests) catch @panic("OOM");
 
-    const exe_write_generic_tests = b.addExecutable(.{
-        .name = "write_generic_tests",
-        .root_module = module_write_generic_tests,
+    const exe_write_generic_spec_tests = b.addExecutable(.{
+        .name = "write_generic_spec_tests",
+        .root_module = module_write_generic_spec_tests,
     });
 
-    const install_exe_write_generic_tests = b.addInstallArtifact(exe_write_generic_tests, .{});
-    const tls_install_exe_write_generic_tests = b.step("build-exe:write_generic_tests", "Install the write_generic_tests executable");
-    tls_install_exe_write_generic_tests.dependOn(&install_exe_write_generic_tests.step);
-    b.getInstallStep().dependOn(&install_exe_write_generic_tests.step);
+    const install_exe_write_generic_spec_tests = b.addInstallArtifact(exe_write_generic_spec_tests, .{});
+    const tls_install_exe_write_generic_spec_tests = b.step("build-exe:write_generic_spec_tests", "Install the write_generic_spec_tests executable");
+    tls_install_exe_write_generic_spec_tests.dependOn(&install_exe_write_generic_spec_tests.step);
+    b.getInstallStep().dependOn(&install_exe_write_generic_spec_tests.step);
 
-    const run_exe_write_generic_tests = b.addRunArtifact(exe_write_generic_tests);
-    if (b.args) |args| run_exe_write_generic_tests.addArgs(args);
-    const tls_run_exe_write_generic_tests = b.step("run:write_generic_tests", "Run the write_generic_tests executable");
-    tls_run_exe_write_generic_tests.dependOn(&run_exe_write_generic_tests.step);
+    const run_exe_write_generic_spec_tests = b.addRunArtifact(exe_write_generic_spec_tests);
+    if (b.args) |args| run_exe_write_generic_spec_tests.addArgs(args);
+    const tls_run_exe_write_generic_spec_tests = b.step("run:write_generic_spec_tests", "Run the write_generic_spec_tests executable");
+    tls_run_exe_write_generic_spec_tests.dependOn(&run_exe_write_generic_spec_tests.step);
 
-    const module_write_static_tests = b.createModule(.{
+    const module_write_static_spec_tests = b.createModule(.{
         .root_source_file = b.path("test/spec/write_static_tests.zig"),
         .target = target,
         .optimize = optimize,
     });
-    b.modules.put(b.dupe("write_static_tests"), module_write_static_tests) catch @panic("OOM");
+    b.modules.put(b.dupe("write_static_spec_tests"), module_write_static_spec_tests) catch @panic("OOM");
 
-    const exe_write_static_tests = b.addExecutable(.{
-        .name = "write_static_tests",
-        .root_module = module_write_static_tests,
+    const exe_write_static_spec_tests = b.addExecutable(.{
+        .name = "write_static_spec_tests",
+        .root_module = module_write_static_spec_tests,
     });
 
-    const install_exe_write_static_tests = b.addInstallArtifact(exe_write_static_tests, .{});
-    const tls_install_exe_write_static_tests = b.step("build-exe:write_static_tests", "Install the write_static_tests executable");
-    tls_install_exe_write_static_tests.dependOn(&install_exe_write_static_tests.step);
-    b.getInstallStep().dependOn(&install_exe_write_static_tests.step);
+    const install_exe_write_static_spec_tests = b.addInstallArtifact(exe_write_static_spec_tests, .{});
+    const tls_install_exe_write_static_spec_tests = b.step("build-exe:write_static_spec_tests", "Install the write_static_spec_tests executable");
+    tls_install_exe_write_static_spec_tests.dependOn(&install_exe_write_static_spec_tests.step);
+    b.getInstallStep().dependOn(&install_exe_write_static_spec_tests.step);
 
-    const run_exe_write_static_tests = b.addRunArtifact(exe_write_static_tests);
-    if (b.args) |args| run_exe_write_static_tests.addArgs(args);
-    const tls_run_exe_write_static_tests = b.step("run:write_static_tests", "Run the write_static_tests executable");
-    tls_run_exe_write_static_tests.dependOn(&run_exe_write_static_tests.step);
+    const run_exe_write_static_spec_tests = b.addRunArtifact(exe_write_static_spec_tests);
+    if (b.args) |args| run_exe_write_static_spec_tests.addArgs(args);
+    const tls_run_exe_write_static_spec_tests = b.step("run:write_static_spec_tests", "Run the write_static_spec_tests executable");
+    tls_run_exe_write_static_spec_tests.dependOn(&run_exe_write_static_spec_tests.step);
 
     const module_types = b.createModule(.{
         .root_source_file = write_files_codegen.getDirectory().path(b, "types"),
@@ -270,33 +270,33 @@ pub fn build(b: *std.Build) void {
     tls_run_test_download_spec_tests.dependOn(&run_test_download_spec_tests.step);
     tls_run_test.dependOn(&run_test_download_spec_tests.step);
 
-    const test_write_generic_tests = b.addTest(.{
-        .name = "write_generic_tests",
-        .root_module = module_write_generic_tests,
+    const test_write_generic_spec_tests = b.addTest(.{
+        .name = "write_generic_spec_tests",
+        .root_module = module_write_generic_spec_tests,
         .filters = &[_][]const u8{  },
     });
-    const install_test_write_generic_tests = b.addInstallArtifact(test_write_generic_tests, .{});
-    const tls_install_test_write_generic_tests = b.step("build-test:write_generic_tests", "Install the write_generic_tests test");
-    tls_install_test_write_generic_tests.dependOn(&install_test_write_generic_tests.step);
+    const install_test_write_generic_spec_tests = b.addInstallArtifact(test_write_generic_spec_tests, .{});
+    const tls_install_test_write_generic_spec_tests = b.step("build-test:write_generic_spec_tests", "Install the write_generic_spec_tests test");
+    tls_install_test_write_generic_spec_tests.dependOn(&install_test_write_generic_spec_tests.step);
 
-    const run_test_write_generic_tests = b.addRunArtifact(test_write_generic_tests);
-    const tls_run_test_write_generic_tests = b.step("test:write_generic_tests", "Run the write_generic_tests test");
-    tls_run_test_write_generic_tests.dependOn(&run_test_write_generic_tests.step);
-    tls_run_test.dependOn(&run_test_write_generic_tests.step);
+    const run_test_write_generic_spec_tests = b.addRunArtifact(test_write_generic_spec_tests);
+    const tls_run_test_write_generic_spec_tests = b.step("test:write_generic_spec_tests", "Run the write_generic_spec_tests test");
+    tls_run_test_write_generic_spec_tests.dependOn(&run_test_write_generic_spec_tests.step);
+    tls_run_test.dependOn(&run_test_write_generic_spec_tests.step);
 
-    const test_write_static_tests = b.addTest(.{
-        .name = "write_static_tests",
-        .root_module = module_write_static_tests,
+    const test_write_static_spec_tests = b.addTest(.{
+        .name = "write_static_spec_tests",
+        .root_module = module_write_static_spec_tests,
         .filters = &[_][]const u8{  },
     });
-    const install_test_write_static_tests = b.addInstallArtifact(test_write_static_tests, .{});
-    const tls_install_test_write_static_tests = b.step("build-test:write_static_tests", "Install the write_static_tests test");
-    tls_install_test_write_static_tests.dependOn(&install_test_write_static_tests.step);
+    const install_test_write_static_spec_tests = b.addInstallArtifact(test_write_static_spec_tests, .{});
+    const tls_install_test_write_static_spec_tests = b.step("build-test:write_static_spec_tests", "Install the write_static_spec_tests test");
+    tls_install_test_write_static_spec_tests.dependOn(&install_test_write_static_spec_tests.step);
 
-    const run_test_write_static_tests = b.addRunArtifact(test_write_static_tests);
-    const tls_run_test_write_static_tests = b.step("test:write_static_tests", "Run the write_static_tests test");
-    tls_run_test_write_static_tests.dependOn(&run_test_write_static_tests.step);
-    tls_run_test.dependOn(&run_test_write_static_tests.step);
+    const run_test_write_static_spec_tests = b.addRunArtifact(test_write_static_spec_tests);
+    const tls_run_test_write_static_spec_tests = b.step("test:write_static_spec_tests", "Run the write_static_spec_tests test");
+    tls_run_test_write_static_spec_tests.dependOn(&run_test_write_static_spec_tests.step);
+    tls_run_test.dependOn(&run_test_write_static_spec_tests.step);
 
     const test_types = b.addTest(.{
         .name = "types",
@@ -417,9 +417,9 @@ pub fn build(b: *std.Build) void {
 
     module_download_spec_tests.addImport("spec_test_options", options_module_spec_test_options);
 
-    module_write_generic_tests.addImport("spec_test_options", options_module_spec_test_options);
+    module_write_generic_spec_tests.addImport("spec_test_options", options_module_spec_test_options);
 
-    module_write_static_tests.addImport("spec_test_options", options_module_spec_test_options);
+    module_write_static_spec_tests.addImport("spec_test_options", options_module_spec_test_options);
 
     module_int.addImport("hex", module_hex);
     module_int.addImport("ssz", module_ssz);

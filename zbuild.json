@@ -109,7 +109,7 @@
         ]
       }
     },
-    "write_generic_tests": {
+    "write_generic_spec_tests": {
       "root_module": {
         "root_source_file": "test/spec/write_generic_tests.zig",
         "imports": [
@@ -117,7 +117,7 @@
         ]
       }
     },
-    "write_static_tests": {
+    "write_static_spec_tests": {
       "root_module": {
         "root_source_file": "test/spec/write_static_tests.zig",
         "imports": [
