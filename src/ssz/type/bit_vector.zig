@@ -114,8 +114,8 @@ pub fn BitVectorType(comptime _length: comptime_int) type {
                 .string => |v| v,
                 else => return error.InvalidJson,
             };
-            const written = try hexToBytes(hex_bytes, &out.data);
-            if (written != fixed_size) {
+            const written = try hexToBytes(&out.data, hex_bytes);
+            if (written.len != fixed_size) {
                 return error.invalidLength;
             }
             // ensure trailing zeros for non-byte-aligned lengths

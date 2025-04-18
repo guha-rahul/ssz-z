@@ -46,7 +46,7 @@ pub fn ByteVectorType(comptime _length: comptime_int) type {
             if (hexByteLen(hex_bytes) != length) {
                 return error.InvalidJson;
             }
-            _ = try hexToBytes(hex_bytes, out);
+            _ = try hexToBytes(out, hex_bytes);
         }
     };
 }

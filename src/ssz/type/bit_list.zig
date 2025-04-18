@@ -215,8 +215,8 @@ pub fn BitListType(comptime _limit: comptime_int) type {
             const bytes = try allocator.alloc(u8, hexByteLen(hex_bytes));
             errdefer allocator.free(bytes);
             defer allocator.free(bytes);
-            const written = try hexToBytes(hex_bytes, bytes);
-            if (written > max_size) {
+            const written = try hexToBytes(bytes, hex_bytes);
+            if (written.len > max_size) {
                 return error.invalidLength;
             }
             try deserializeFromBytes(allocator, bytes, out);

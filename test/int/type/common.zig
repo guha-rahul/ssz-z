@@ -19,7 +19,7 @@ pub fn typeTest(comptime ST: type) type {
         pub fn run(allocator: std.mem.Allocator, tc: *const TypeTestCase) !void {
             var serializedMax = [_]u8{0} ** 1024;
             const serialized = serializedMax[0..((tc.serializedHex.len - 2) / 2)];
-            _ = try hexToBytes(tc.serializedHex, serialized);
+            _ = try hexToBytes(serialized, tc.serializedHex);
 
             if (comptime isFixedType(ST)) {
                 // deserialize

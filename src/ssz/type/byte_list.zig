@@ -72,7 +72,7 @@ pub fn ByteListType(comptime _limit: comptime_int) type {
 
             try out.ensureTotalCapacityPrecise(allocator, hex_bytes_len);
             out.items.len = hex_bytes_len;
-            _ = try hexToBytes(hex_bytes, out.items);
+            _ = try hexToBytes(out.items, hex_bytes);
         }
     };
 }
