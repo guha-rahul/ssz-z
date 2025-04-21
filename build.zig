@@ -371,27 +371,6 @@ pub fn build(b: *std.Build) void {
     tls_run_test_int.dependOn(&run_test_int.step);
     tls_run_test.dependOn(&run_test_int.step);
 
-    const module_lodestar_types = b.createModule(.{
-        .root_source_file = b.path("test/lodestar_types/root.zig"),
-        .target = target,
-        .optimize = optimize,
-    });
-    b.modules.put(b.dupe("lodestar_types"), module_lodestar_types) catch @panic("OOM");
-
-    const test_lodestar_types = b.addTest(.{
-        .name = "lodestar_types",
-        .root_module = module_lodestar_types,
-        .filters = &[_][]const u8{  },
-    });
-    const install_test_lodestar_types = b.addInstallArtifact(test_lodestar_types, .{});
-    const tls_install_test_lodestar_types = b.step("build-test:lodestar_types", "Install the lodestar_types test");
-    tls_install_test_lodestar_types.dependOn(&install_test_lodestar_types.step);
-
-    const run_test_lodestar_types = b.addRunArtifact(test_lodestar_types);
-    const tls_run_test_lodestar_types = b.step("test:lodestar_types", "Run the lodestar_types test");
-    tls_run_test_lodestar_types.dependOn(&run_test_lodestar_types.step);
-    tls_run_test.dependOn(&run_test_lodestar_types.step);
-
     const module_generic_spec_tests = b.createModule(.{
         .root_source_file = b.path("test/spec/generic_tests.zig"),
         .target = target,
@@ -465,8 +444,6 @@ pub fn build(b: *std.Build) void {
 
     module_int.addImport("hex", module_hex);
     module_int.addImport("ssz", module_ssz);
-
-    module_lodestar_types.addImport("ssz", module_ssz);
 
     module_generic_spec_tests.addImport("hex", module_hex);
     module_generic_spec_tests.addImport("snappy", dep_snappy.module("snappy"));
