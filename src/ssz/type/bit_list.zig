@@ -157,6 +157,26 @@ pub fn BitListType(comptime _limit: comptime_int) type {
             return byte_len;
         }
 
+        pub fn deserializedLength(data: []const u8) !usize {
+            if (data.len == 0) {
+                return error.InvalidSize;
+            }
+
+            // ensure padding bit and trailing zeros in last byte
+            const last_byte = data[data.len - 1];
+
+            const last_byte_clz = @clz(last_byte);
+            if (last_byte_clz == 8) {
+                return error.noPaddingBit;
+            }
+            const last_1_index: u3 = @intCast(7 - last_byte_clz);
+            const bit_len = (data.len - 1) * 8 + last_1_index;
+            if (bit_len > limit) {
+                return error.tooLarge;
+            }
+            return bit_len;
+        }
+
         pub fn deserializeFromBytes(allocator: std.mem.Allocator, data: []const u8, out: *Type) !void {
             if (data.len == 0) {
                 return error.InvalidSize;
@@ -193,6 +213,10 @@ pub fn BitListType(comptime _limit: comptime_int) type {
         }
 
         pub fn validate(data: []const u8) !void {
+            if (data.len == 0) {
+                return error.InvalidSize;
+            }
+
             // ensure 1 bit and trailing zeros in last byte
             const last_byte = data[data.len - 1];
 

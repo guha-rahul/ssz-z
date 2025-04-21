@@ -238,7 +238,7 @@ pub fn VariableContainerType(comptime ST: type) type {
         }
 
         pub fn deserializeFromBytes(allocator: std.mem.Allocator, data: []const u8, out: *Type) !void {
-            if (data.len > max_size) {
+            if (data.len > max_size or data.len < min_size) {
                 return error.InvalidSize;
             }
 
@@ -324,18 +324,15 @@ pub fn VariableContainerType(comptime ST: type) type {
         }
 
         pub fn validate(data: []const u8) !void {
+            if (data.len > max_size or data.len < min_size) {
+                return error.InvalidSize;
+            }
+
             const ranges = try readFieldRanges(data);
             inline for (fields, 0..) |field, i| {
                 const start = ranges[i][0];
                 const end = ranges[i][1];
-                if (comptime isFixedType(field.type)) {
-                    const field_size = end - start;
-                    if (field_size != field.type.fixed_size) {
-                        return false;
-                    }
-                } else {
-                    try field.type.validate(data[start..end]);
-                }
+                try field.type.validate(data[start..end]);
             }
         }
 

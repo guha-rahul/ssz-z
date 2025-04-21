@@ -37,6 +37,12 @@ pub fn ByteVectorType(comptime _length: comptime_int) type {
             @memcpy(out, data[0..fixed_size]);
         }
 
+        pub fn validate(data: []const u8) !void {
+            if (data.len != fixed_size) {
+                return error.invalidLength;
+            }
+        }
+
         pub fn deserializeFromJson(source: *std.json.Scanner, out: *Type) !void {
             const hex_bytes = switch (try source.next()) {
                 .string => |v| v,

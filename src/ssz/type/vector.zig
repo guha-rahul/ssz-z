@@ -44,6 +44,15 @@ pub fn FixedVectorType(comptime ST: type, comptime _length: comptime_int) type {
             }
         }
 
+        pub fn validate(data: []const u8) !void {
+            if (data.len != fixed_size) {
+                return error.invalidSize;
+            }
+            for (0..length) |i| {
+                try Element.validate(data[i * Element.fixed_size .. (i + 1) * Element.fixed_size]);
+            }
+        }
+
         pub fn deserializeFromJson(source: *std.json.Scanner, out: *Type) !void {
             // start array token "["
             switch (try source.next()) {
@@ -110,6 +119,10 @@ pub fn VariableVectorType(comptime ST: type, comptime _length: comptime_int) typ
         }
 
         pub fn deserializeFromBytes(allocator: std.mem.Allocator, data: []const u8, out: *Type) !void {
+            if (data.len > max_size or data.len < min_size) {
+                return error.InvalidSize;
+            }
+
             const offsets = try readVariableOffsets(data);
             for (0..length) |i| {
                 try Element.deserializeFromBytes(allocator, data[offsets[i]..offsets[i + 1]], &out[i]);
@@ -128,7 +141,11 @@ pub fn VariableVectorType(comptime ST: type, comptime _length: comptime_int) typ
         }
 
         pub fn validate(data: []const u8) !void {
-            const offsets = readVariableOffsets(data);
+            if (data.len > max_size or data.len < min_size) {
+                return error.InvalidSize;
+            }
+
+            const offsets = try readVariableOffsets(data);
             for (0..length) |i| {
                 try Element.validate(data[offsets[i]..offsets[i + 1]]);
             }

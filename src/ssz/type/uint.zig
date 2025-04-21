@@ -19,6 +19,11 @@ pub fn UintType(comptime bits: comptime_int) type {
 
         pub const default_value: Type = 0;
 
+        pub fn hashTreeRoot(value: *const Type, out: *[32]u8) !void {
+            @memset(out, 0);
+            std.mem.writeInt(Type, out[0..fixed_size], value.*, .little);
+        }
+
         pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
             std.mem.writeInt(Type, out[0..bytes], value.*, .little);
             return bytes;

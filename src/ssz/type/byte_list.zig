@@ -49,6 +49,12 @@ pub fn ByteListType(comptime _limit: comptime_int) type {
             return data.len;
         }
 
+        pub fn validate(data: []const u8) !void {
+            if (data.len > limit) {
+                return error.gtLimit;
+            }
+        }
+
         pub fn deserializeFromBytes(allocator: std.mem.Allocator, data: []const u8, out: *Type) !void {
             if (data.len > limit) {
                 return error.invalidLength;

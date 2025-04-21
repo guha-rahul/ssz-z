@@ -156,6 +156,9 @@ pub fn VariableListType(comptime ST: type, comptime _limit: comptime_int) type {
         }
 
         pub fn deserializedLength(data: []const u8) !usize {
+            if (data.len == 0) {
+                return 0;
+            }
             var iterator = try OffsetIterator(@This()).init(data);
             return try iterator.firstOffset() / 4;
         }
@@ -196,6 +199,7 @@ pub fn VariableListType(comptime ST: type, comptime _limit: comptime_int) type {
 
         pub fn validate(data: []const u8) !void {
             var iterator = OffsetIterator(@This()).init(data);
+            if (data.len == 0) return;
             const first_offset = try iterator.next();
             const len = first_offset / 4;
 
