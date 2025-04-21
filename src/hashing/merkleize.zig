@@ -40,7 +40,7 @@ pub fn merkleize(chunks: [][32]u8, chunk_count: usize, out: *[32]u8) !void {
         buf = buf_out;
     }
 
-    std.mem.copyForwards(u8, out, &buf[0]);
+    @memcpy(out, &buf[0]);
 }
 
 /// Given maxChunkCount return the chunkDepth
