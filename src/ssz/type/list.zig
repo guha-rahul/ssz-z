@@ -67,14 +67,6 @@ pub fn FixedListType(comptime ST: type, comptime _limit: comptime_int) type {
             return i;
         }
 
-        pub fn deserializedLength(data: []const u8) !usize {
-            const len = try std.math.divExact(usize, data.len, Element.fixed_size);
-            if (len > limit) {
-                return error.gtLimit;
-            }
-            return len;
-        }
-
         pub fn deserializeFromBytes(allocator: std.mem.Allocator, data: []const u8, out: *Type) !void {
             const len = try std.math.divExact(usize, data.len, Element.fixed_size);
             if (len > limit) {
@@ -124,6 +116,42 @@ pub fn FixedListType(comptime ST: type, comptime _limit: comptime_int) type {
                 try Element.validate(data[i * Element.fixed_size .. (i + 1) * Element.fixed_size]);
             }
         }
+
+        pub const serialized = struct {
+            pub fn length(data: []const u8) !usize {
+                const len = try std.math.divExact(usize, data.len, Element.fixed_size);
+                if (len > limit) {
+                    return error.gtLimit;
+                }
+                return len;
+            }
+
+            pub fn hashTreeRoot(allocator: std.mem.Allocator, data: []const u8, out: *[32]u8) !void {
+                const len = try length(data);
+
+                const chunk_count = if (comptime isBasicType(Element))
+                    (Element.fixed_size * len + 31) / 32
+                else
+                    len;
+                const chunks = try allocator.alloc([32]u8, (chunk_count + 1) / 2 * 2);
+                defer allocator.free(chunks);
+
+                @memset(chunks, [_]u8{0} ** 32);
+
+                if (comptime isBasicType(Element)) {
+                    @memcpy(@as([]u8, @ptrCast(chunks))[0..data.len], data);
+                } else {
+                    for (0..len) |i| {
+                        try Element.serialized.hashTreeRoot(
+                            data[i * Element.fixed_size .. (i + 1) * Element.fixed_size],
+                            &chunks[i],
+                        );
+                    }
+                }
+                try merkleize(@ptrCast(chunks), chunk_depth, out);
+                mixInLength(len, out);
+            }
+        };
     };
 }
 
@@ -137,6 +165,7 @@ pub fn VariableListType(comptime ST: type, comptime _limit: comptime_int) type {
         }
     }
     return struct {
+        const Self = @This();
         pub const kind = TypeKind.list;
         pub const Element: type = ST;
         pub const limit: usize = _limit;
@@ -193,14 +222,6 @@ pub fn VariableListType(comptime ST: type, comptime _limit: comptime_int) type {
             return variable_index;
         }
 
-        pub fn deserializedLength(data: []const u8) !usize {
-            if (data.len == 0) {
-                return 0;
-            }
-            var iterator = try OffsetIterator(@This()).init(data);
-            return try iterator.firstOffset() / 4;
-        }
-
         pub fn deserializeFromBytes(allocator: std.mem.Allocator, data: []const u8, out: *Type) !void {
             const offsets = try readVariableOffsets(allocator, data);
             defer allocator.free(offsets);
@@ -220,7 +241,7 @@ pub fn VariableListType(comptime ST: type, comptime _limit: comptime_int) type {
         }
 
         pub fn readVariableOffsets(allocator: std.mem.Allocator, data: []const u8) ![]u32 {
-            var iterator = OffsetIterator(@This()).init(data);
+            var iterator = OffsetIterator(Self).init(data);
             const first_offset = if (data.len == 0) 0 else try iterator.next();
             const len = first_offset / 4;
 
@@ -236,7 +257,7 @@ pub fn VariableListType(comptime ST: type, comptime _limit: comptime_int) type {
         }
 
         pub fn validate(data: []const u8) !void {
-            var iterator = OffsetIterator(@This()).init(data);
+            var iterator = OffsetIterator(Self).init(data);
             if (data.len == 0) return;
             const first_offset = try iterator.next();
             const len = first_offset / 4;
@@ -251,6 +272,38 @@ pub fn VariableListType(comptime ST: type, comptime _limit: comptime_int) type {
             }
             try Element.validate(data[curr_offset..data.len]);
         }
+
+        pub const serialized = struct {
+            pub fn length(data: []const u8) !usize {
+                if (data.len == 0) {
+                    return 0;
+                }
+                var iterator = OffsetIterator(Self).init(data);
+                return try iterator.firstOffset() / 4;
+            }
+
+            pub fn hashTreeRoot(allocator: std.mem.Allocator, data: []const u8, out: *[32]u8) !void {
+                const len = try length(data);
+                const chunk_count = len;
+
+                const chunks = try allocator.alloc([32]u8, (chunk_count + 1) / 2 * 2);
+                defer allocator.free(chunks);
+                @memset(chunks, [_]u8{0} ** 32);
+
+                const offsets = try readVariableOffsets(allocator, data);
+                defer allocator.free(offsets);
+
+                for (0..len) |i| {
+                    try Element.serialized.hashTreeRoot(
+                        allocator,
+                        data[offsets[i]..offsets[i + 1]],
+                        &chunks[i],
+                    );
+                }
+                try merkleize(@ptrCast(chunks), chunk_depth, out);
+                mixInLength(len, out);
+            }
+        };
 
         pub fn deserializeFromJson(allocator: std.mem.Allocator, source: *std.json.Scanner, out: *Type) !void {
             // start array token "["

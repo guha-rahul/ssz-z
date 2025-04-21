@@ -118,6 +118,14 @@ pub fn BitVectorType(comptime _length: comptime_int) type {
             }
         }
 
+        pub const serialized = struct {
+            pub fn hashTreeRoot(data: []const u8, out: *[32]u8) !void {
+                var chunks = [_][32]u8{[_]u8{0} ** 32} ** ((chunk_count + 1) / 2 * 2);
+                @memcpy(@as([]u8, @ptrCast(&chunks))[0..fixed_size], data);
+                try merkleize(@ptrCast(&chunks), chunk_depth, out);
+            }
+        };
+
         pub fn deserializeFromJson(source: *std.json.Scanner, out: *Type) !void {
             const hex_bytes = switch (try source.next()) {
                 .string => |v| v,

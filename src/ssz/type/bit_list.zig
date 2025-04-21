@@ -172,26 +172,6 @@ pub fn BitListType(comptime _limit: comptime_int) type {
             return byte_len;
         }
 
-        pub fn deserializedLength(data: []const u8) !usize {
-            if (data.len == 0) {
-                return error.InvalidSize;
-            }
-
-            // ensure padding bit and trailing zeros in last byte
-            const last_byte = data[data.len - 1];
-
-            const last_byte_clz = @clz(last_byte);
-            if (last_byte_clz == 8) {
-                return error.noPaddingBit;
-            }
-            const last_1_index: u3 = @intCast(7 - last_byte_clz);
-            const bit_len = (data.len - 1) * 8 + last_1_index;
-            if (bit_len > limit) {
-                return error.tooLarge;
-            }
-            return bit_len;
-        }
-
         pub fn deserializeFromBytes(allocator: std.mem.Allocator, data: []const u8, out: *Type) !void {
             if (data.len == 0) {
                 return error.InvalidSize;
@@ -245,6 +225,59 @@ pub fn BitListType(comptime _limit: comptime_int) type {
                 return error.tooLarge;
             }
         }
+
+        pub const serialized = struct {
+            pub fn length(data: []const u8) !usize {
+                if (data.len == 0) {
+                    return error.InvalidSize;
+                }
+
+                // ensure padding bit and trailing zeros in last byte
+                const last_byte = data[data.len - 1];
+
+                const last_byte_clz = @clz(last_byte);
+                if (last_byte_clz == 8) {
+                    return error.noPaddingBit;
+                }
+                const last_1_index: u3 = @intCast(7 - last_byte_clz);
+                const bit_len = (data.len - 1) * 8 + last_1_index;
+                if (bit_len > limit) {
+                    return error.tooLarge;
+                }
+                return bit_len;
+            }
+
+            pub fn hashTreeRoot(allocator: std.mem.Allocator, data: []const u8, out: *[32]u8) !void {
+                if (data.len == 0) {
+                    return error.InvalidSize;
+                }
+
+                // ensure padding bit and trailing zeros in last byte
+                const last_byte = data[data.len - 1];
+
+                const last_byte_clz = @clz(last_byte);
+                if (last_byte_clz == 8) {
+                    return error.noPaddingBit;
+                }
+                const last_1_index: u3 = @intCast(7 - last_byte_clz);
+                const bit_len = (data.len - 1) * 8 + last_1_index;
+                const chunk_count = (bit_len + 255) / 256;
+                const chunks = try allocator.alloc([32]u8, (chunk_count + 1) / 2 * 2);
+                defer allocator.free(chunks);
+
+                @memset(chunks, [_]u8{0} ** 32);
+                if (bit_len % 8 == 0) {
+                    @memcpy(@as([]u8, @ptrCast(chunks))[0 .. data.len - 1], data[0 .. data.len - 1]);
+                } else {
+                    @memcpy(@as([]u8, @ptrCast(chunks))[0..data.len], data);
+                    // remove padding bit
+                    @as([]u8, @ptrCast(chunks))[data.len - 1] ^= @as(u8, 1) << last_1_index;
+                }
+
+                try merkleize(@ptrCast(chunks), chunk_depth, out);
+                mixInLength(bit_len, out);
+            }
+        };
 
         pub fn deserializeFromJson(allocator: std.mem.Allocator, source: *std.json.Scanner, out: *Type) !void {
             const hex_bytes = switch (try source.next()) {

@@ -58,18 +58,33 @@ pub fn ByteListType(comptime _limit: comptime_int) type {
             return value.items.len;
         }
 
-        pub fn deserializedLength(data: []const u8) !usize {
-            if (data.len > limit) {
-                return error.gtLimit;
-            }
-            return data.len;
-        }
-
         pub fn validate(data: []const u8) !void {
             if (data.len > limit) {
                 return error.gtLimit;
             }
         }
+
+        pub const serialized = struct {
+            pub fn length(data: []const u8) !usize {
+                if (data.len > limit) {
+                    return error.gtLimit;
+                }
+                return data.len;
+            }
+
+            pub fn hashTreeRoot(allocator: std.mem.Allocator, data: []const u8, out: *[32]u8) !void {
+                const len = try length(data);
+                const chunk_count = (len + 31) / 32;
+                const chunks = try allocator.alloc([32]u8, (chunk_count + 1) / 2 * 2);
+                defer allocator.free(chunks);
+
+                @memset(chunks, [_]u8{0} ** 32);
+                @memcpy(@as([]u8, @ptrCast(chunks))[0..data.len], data);
+
+                try merkleize(@ptrCast(chunks), chunk_depth, out);
+                mixInLength(len, out);
+            }
+        };
 
         pub fn deserializeFromBytes(allocator: std.mem.Allocator, data: []const u8, out: *Type) !void {
             if (data.len > limit) {

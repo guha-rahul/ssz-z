@@ -22,6 +22,7 @@ const zbench = @import("zbench");
 // hash state             2        1.903s         951.658ms ± 1.306ms    (950.734ms ... 952.582ms)    952.582ms  952.582ms  952.582ms
 // hash state prealloc    2        1.85s          925.309ms ± 4.776ms    (921.932ms ... 928.687ms)    928.687ms  928.687ms  928.687ms
 // hash state oneshot     2        1.856s         928.067ms ± 523.611us  (927.697ms ... 928.437ms)    928.437ms  928.437ms  928.437ms
+// hash state serialized  2        1.844s         922.405ms ± 4.557ms    (919.183ms ... 925.628ms)    925.628ms  925.628ms  925.628ms
 
 const SerializeState = struct {
     state: *BeaconState.Type,
@@ -92,6 +93,14 @@ const HashStateOneshot = struct {
     }
 };
 
+const HashStateSerialized = struct {
+    bytes: []const u8,
+    pub fn run(self: HashStateSerialized, allocator: std.mem.Allocator) void {
+        var out: [32]u8 = undefined;
+        BeaconState.serialized.hashTreeRoot(allocator, self.bytes, &out) catch unreachable;
+    }
+};
+
 pub fn main() !void {
     const allocator = std.heap.page_allocator;
     const stdout = std.io.getStdOut().writer();
@@ -133,6 +142,9 @@ pub fn main() !void {
 
     const hash_state_oneshot = HashStateOneshot{ .state = state };
     try bench.addParam("hash state oneshot", &hash_state_oneshot, .{});
+
+    const hash_state_serialized = HashStateSerialized{ .bytes = state_bytes };
+    try bench.addParam("hash state serialized", &hash_state_serialized, .{});
 
     try bench.run(stdout);
 }

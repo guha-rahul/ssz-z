@@ -68,6 +68,23 @@ pub fn FixedVectorType(comptime ST: type, comptime _length: comptime_int) type {
             }
         }
 
+        pub const serialized = struct {
+            pub fn hashTreeRoot(data: []const u8, out: *[32]u8) !void {
+                var chunks = [_][32]u8{[_]u8{0} ** 32} ** ((chunk_count + 1) / 2 * 2);
+                if (comptime isBasicType(Element)) {
+                    @memcpy(@as([]u8, @ptrCast(&chunks))[0..fixed_size], data);
+                } else {
+                    for (0..length) |i| {
+                        try Element.serialized.hashTreeRoot(
+                            data[i * Element.fixed_size .. (i + 1) * Element.fixed_size],
+                            &chunks[i],
+                        );
+                    }
+                }
+                try merkleize(@ptrCast(&chunks), chunk_depth, out);
+            }
+        };
+
         pub fn deserializeFromJson(source: *std.json.Scanner, out: *Type) !void {
             // start array token "["
             switch (try source.next()) {
@@ -174,6 +191,17 @@ pub fn VariableVectorType(comptime ST: type, comptime _length: comptime_int) typ
                 try Element.validate(data[offsets[i]..offsets[i + 1]]);
             }
         }
+
+        pub const serialized = struct {
+            pub fn hashTreeRoot(allocator: std.mem.Allocator, data: []const u8, out: *[32]u8) !void {
+                var chunks = [_][32]u8{[_]u8{0} ** 32} ** ((chunk_count + 1) / 2 * 2);
+                const offsets = try readVariableOffsets(data);
+                for (0..length) |i| {
+                    try Element.serialized.hashTreeRoot(allocator, data[offsets[i]..offsets[i + 1]], &chunks[i]);
+                }
+                try merkleize(@ptrCast(&chunks), chunk_depth, out);
+            }
+        };
 
         pub fn deserializeFromJson(allocator: std.mem.Allocator, source: *std.json.Scanner, out: *Type) !void {
             // start array token "["

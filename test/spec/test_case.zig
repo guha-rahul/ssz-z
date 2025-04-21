@@ -171,6 +171,14 @@ pub fn validTestCase(comptime ST: type, gpa: Allocator, path: std.fs.Dir, meta_f
     }
     try std.testing.expectEqualSlices(u8, &root_expected, &root_actual_oneshot);
 
+    var root_actual_serialized: [32]u8 = undefined;
+    if (comptime ssz.isFixedType(ST)) {
+        try ST.serialized.hashTreeRoot(serialized_expected, &root_actual_serialized);
+    } else {
+        try ST.serialized.hashTreeRoot(allocator, serialized_expected, &root_actual_serialized);
+    }
+    try std.testing.expectEqualSlices(u8, &root_expected, &root_actual_serialized);
+
     const Hasher = ssz.Hasher(ST);
     var hash_scratch: ssz.HasherData = if (comptime ssz.isBasicType(ST)) undefined else try Hasher.init(allocator);
     var root_actual: [32]u8 = undefined;

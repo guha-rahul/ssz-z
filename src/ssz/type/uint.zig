@@ -43,6 +43,13 @@ pub fn UintType(comptime bits: comptime_int) type {
             }
         }
 
+        pub const serialized = struct {
+            pub fn hashTreeRoot(data: []const u8, out: *[32]u8) !void {
+                @memset(out, 0);
+                @memcpy(out[0..fixed_size], data);
+            }
+        };
+
         pub fn deserializeFromJson(scanner: *std.json.Scanner, out: *Type) !void {
             try switch (try scanner.next()) {
                 .string => |v| {

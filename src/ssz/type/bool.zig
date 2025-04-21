@@ -42,6 +42,13 @@ pub fn BoolType() type {
             }
         }
 
+        pub const serialized = struct {
+            pub fn hashTreeRoot(data: []const u8, out: *[32]u8) !void {
+                @memset(out, 0);
+                @memcpy(out[0..fixed_size], data);
+            }
+        };
+
         pub fn deserializeFromJson(scanner: *std.json.Scanner, out: *Type) !void {
             switch (try scanner.next()) {
                 .true => out.* = true,

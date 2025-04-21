@@ -97,6 +97,18 @@ pub fn FixedContainerType(comptime ST: type) type {
             }
         }
 
+        pub const serialized = struct {
+            pub fn hashTreeRoot(data: []const u8, out: *[32]u8) !void {
+                var chunks = [_][32]u8{[_]u8{0} ** 32} ** ((chunk_count + 1) / 2 * 2);
+                var i: usize = 0;
+                inline for (fields, 0..) |field, field_i| {
+                    try field.type.serialized.hashTreeRoot(data[i .. i + field.type.fixed_size], &chunks[field_i]);
+                    i += field.type.fixed_size;
+                }
+                try merkleize(@ptrCast(&chunks), chunk_depth, out);
+            }
+        };
+
         pub fn deserializeFromJson(source: *std.json.Scanner, out: *Type) !void {
             // start object token "{"
             switch (try source.next()) {
@@ -359,6 +371,30 @@ pub fn VariableContainerType(comptime ST: type) type {
                 try field.type.validate(data[start..end]);
             }
         }
+
+        pub const serialized = struct {
+            pub fn hashTreeRoot(allocator: std.mem.Allocator, data: []const u8, out: *[32]u8) !void {
+                var chunks = [_][32]u8{[_]u8{0} ** 32} ** ((chunk_count + 1) / 2 * 2);
+                const ranges = try readFieldRanges(data);
+
+                inline for (fields, 0..) |field, i| {
+                    if (comptime isFixedType(field.type)) {
+                        try field.type.serialized.hashTreeRoot(
+                            data[ranges[i][0]..ranges[i][1]],
+                            &chunks[i],
+                        );
+                    } else {
+                        try field.type.serialized.hashTreeRoot(
+                            allocator,
+                            data[ranges[i][0]..ranges[i][1]],
+                            &chunks[i],
+                        );
+                    }
+                }
+
+                try merkleize(@ptrCast(&chunks), chunk_depth, out);
+            }
+        };
 
         pub fn deserializeFromJson(allocator: std.mem.Allocator, source: *std.json.Scanner, out: *Type) !void {
             // start object token "{"
