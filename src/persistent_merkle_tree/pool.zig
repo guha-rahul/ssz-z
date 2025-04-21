@@ -36,7 +36,7 @@ pub const NodePool = struct {
         const zero_list = try allocator.alloc(*Node, zh.zero_hash_max_depth);
         for (0..zh.zero_hash_max_depth) |i| {
             const prev_zero = if (i == 0) null else zero_list[i - 1];
-            zero_list[i] = try nm.initZeroNode(allocator, try zh.getZeroHash(i), prev_zero, prev_zero);
+            zero_list[i] = try nm.initZeroNode(allocator, try zh.getZeroHash(@intCast(i)), prev_zero, prev_zero);
         }
         return NodePool{
             .leaf_nodes = try LeafList.initCapacity(allocator, capacity),
