@@ -2,6 +2,7 @@ const std = @import("std");
 const TypeKind = @import("type_kind.zig").TypeKind;
 const isFixedType = @import("type_kind.zig").isFixedType;
 const merkleize = @import("hashing").merkleize;
+const maxChunksToDepth = @import("hashing").maxChunksToDepth;
 
 pub fn FixedContainerType(comptime ST: type) type {
     const ssz_fields = switch (@typeInfo(ST)) {
@@ -47,6 +48,7 @@ pub fn FixedContainerType(comptime ST: type) type {
         pub const fixed_size: usize = _fixed_size;
         pub const field_offsets: [fields.len]usize = _offsets;
         pub const chunk_count: usize = fields.len;
+        pub const chunk_depth: u8 = maxChunksToDepth(chunk_count);
 
         pub const default_value: Type = blk: {
             var out: Type = undefined;
@@ -61,7 +63,7 @@ pub fn FixedContainerType(comptime ST: type) type {
             inline for (fields, 0..) |field, i| {
                 try field.type.hashTreeRoot(&@field(value, field.name), &chunks[i]);
             }
-            try merkleize(&chunks, chunk_count, out);
+            try merkleize(&chunks, chunk_depth, out);
         }
 
         pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
@@ -199,6 +201,7 @@ pub fn VariableContainerType(comptime ST: type) type {
         pub const fixed_end: usize = _fixed_end;
         pub const fixed_count: usize = _fixed_count;
         pub const chunk_count: usize = fields.len;
+        pub const chunk_depth: u8 = maxChunksToDepth(chunk_count);
 
         pub const default_value: Type = blk: {
             var out: Type = undefined;
@@ -225,7 +228,7 @@ pub fn VariableContainerType(comptime ST: type) type {
                     try field.type.hashTreeRoot(allocator, &@field(value, field.name), &chunks[i]);
                 }
             }
-            try merkleize(&chunks, chunk_count, out);
+            try merkleize(&chunks, chunk_depth, out);
         }
 
         pub fn serializedSize(value: *const Type) usize {

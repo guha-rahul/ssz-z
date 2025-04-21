@@ -5,6 +5,7 @@ const isFixedType = @import("type_kind.zig").isFixedType;
 const OffsetIterator = @import("offsets.zig").OffsetIterator;
 const merkleize = @import("hashing").merkleize;
 const mixInLength = @import("hashing").mixInLength;
+const maxChunksToDepth = @import("hashing").maxChunksToDepth;
 
 pub fn FixedListType(comptime ST: type, comptime _limit: comptime_int) type {
     comptime {
@@ -23,6 +24,7 @@ pub fn FixedListType(comptime ST: type, comptime _limit: comptime_int) type {
         pub const min_size: usize = 0;
         pub const max_size: usize = Element.fixed_size * limit;
         pub const max_chunk_count: usize = if (isBasicType(Element)) std.math.divCeil(usize, max_size, 32) catch unreachable else limit;
+        pub const chunk_depth: u8 = maxChunksToDepth(max_chunk_count);
 
         pub const default_value: Type = Type.empty;
 
@@ -49,7 +51,7 @@ pub fn FixedListType(comptime ST: type, comptime _limit: comptime_int) type {
                     try Element.hashTreeRoot(&element, &chunks[i]);
                 }
             }
-            try merkleize(chunks, max_chunk_count, out);
+            try merkleize(chunks, chunk_depth, out);
             mixInLength(value.items.len, out);
         }
 
@@ -142,6 +144,7 @@ pub fn VariableListType(comptime ST: type, comptime _limit: comptime_int) type {
         pub const min_size: usize = 0;
         pub const max_size: usize = Element.max_size * limit + 4 * limit;
         pub const max_chunk_count: usize = limit;
+        pub const chunk_depth: u8 = maxChunksToDepth(max_chunk_count);
 
         pub const default_value: Type = Type.empty;
 
@@ -165,7 +168,7 @@ pub fn VariableListType(comptime ST: type, comptime _limit: comptime_int) type {
             for (value.items, 0..) |element, i| {
                 try Element.hashTreeRoot(allocator, &element, &chunks[i]);
             }
-            try merkleize(chunks, max_chunk_count, out);
+            try merkleize(chunks, chunk_depth, out);
             mixInLength(value.items.len, out);
         }
 

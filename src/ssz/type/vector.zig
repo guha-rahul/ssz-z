@@ -4,6 +4,7 @@ const isBasicType = @import("type_kind.zig").isBasicType;
 const isFixedType = @import("type_kind.zig").isFixedType;
 const OffsetIterator = @import("offsets.zig").OffsetIterator;
 const merkleize = @import("hashing").merkleize;
+const maxChunksToDepth = @import("hashing").maxChunksToDepth;
 
 pub fn FixedVectorType(comptime ST: type, comptime _length: comptime_int) type {
     comptime {
@@ -21,6 +22,7 @@ pub fn FixedVectorType(comptime ST: type, comptime _length: comptime_int) type {
         pub const Type: type = [length]Element.Type;
         pub const fixed_size: usize = Element.fixed_size * length;
         pub const chunk_count: usize = if (isBasicType(Element)) std.math.divCeil(usize, fixed_size, 32) catch unreachable else length;
+        pub const chunk_depth: u8 = maxChunksToDepth(chunk_count);
 
         pub const default_value: Type = [_]Element.Type{Element.default_value} ** length;
 
@@ -33,7 +35,7 @@ pub fn FixedVectorType(comptime ST: type, comptime _length: comptime_int) type {
                     try Element.hashTreeRoot(&element, &chunks[i]);
                 }
             }
-            try merkleize(&chunks, chunk_count, out);
+            try merkleize(&chunks, chunk_depth, out);
         }
 
         pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
@@ -103,6 +105,7 @@ pub fn VariableVectorType(comptime ST: type, comptime _length: comptime_int) typ
         pub const min_size: usize = Element.min_size * length + 4 * length;
         pub const max_size: usize = Element.max_size * length + 4 * length;
         pub const chunk_count: usize = length;
+        pub const chunk_depth: u8 = maxChunksToDepth(chunk_count);
 
         pub const default_value: Type = [_]Element.Type{Element.default_value} ** length;
 
@@ -117,7 +120,7 @@ pub fn VariableVectorType(comptime ST: type, comptime _length: comptime_int) typ
             for (value, 0..) |element, i| {
                 try Element.hashTreeRoot(allocator, &element, &chunks[i]);
             }
-            try merkleize(&chunks, chunk_count, out);
+            try merkleize(&chunks, chunk_depth, out);
         }
 
         pub fn serializedSize(value: *const Type) usize {

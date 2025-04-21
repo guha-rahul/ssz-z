@@ -5,6 +5,7 @@ const hexToBytes = @import("hex").hexToBytes;
 const hexByteLen = @import("hex").hexByteLen;
 const merkleize = @import("hashing").merkleize;
 const mixInLength = @import("hashing").mixInLength;
+const maxChunksToDepth = @import("hashing").maxChunksToDepth;
 
 pub fn isByteListType(ST: type) bool {
     return ST.kind == .list and ST.Element.kind == .uint and ST.Element.fixed_size == 1 and ST == ByteListType(ST.limit);
@@ -24,6 +25,7 @@ pub fn ByteListType(comptime _limit: comptime_int) type {
         pub const min_size: usize = 0;
         pub const max_size: usize = Element.fixed_size * limit;
         pub const max_chunk_count: usize = std.math.divCeil(usize, max_size, 32) catch unreachable;
+        pub const chunk_depth: u8 = maxChunksToDepth(max_chunk_count);
 
         pub const default_value: Type = Type.empty;
 
@@ -43,7 +45,7 @@ pub fn ByteListType(comptime _limit: comptime_int) type {
 
             _ = serializeIntoBytes(value, @ptrCast(chunks));
 
-            try merkleize(chunks, max_chunk_count, out);
+            try merkleize(chunks, chunk_depth, out);
             mixInLength(value.items.len, out);
         }
 

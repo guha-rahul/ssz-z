@@ -5,20 +5,13 @@ const HashFn = @import("hash_fn.zig").HashFn;
 const sha256Hash = @import("sha256.zig").sha256Hash;
 const digest64Into = @import("sha256.zig").digest64Into;
 
-pub fn merkleize(chunks: [][32]u8, chunk_count: usize, out: *[32]u8) !void {
-    if (chunk_count == 0) {
-        return error.InvalidInput;
-    }
-
-    if (chunks.len == 1 and chunk_count == 1) {
+pub fn merkleize(chunks: [][32]u8, chunk_depth: u8, out: *[32]u8) !void {
+    if (chunks.len == 1 and (chunk_depth == 1 or chunk_depth == 0)) {
         @memcpy(out, &chunks[0]);
         return;
     }
-    const bit_len: usize = @sizeOf(usize) * 8 - @clz(chunk_count - 1);
-    const layer_count: usize = @sizeOf(usize) * 8 - @clz(std.math.pow(usize, 2, bit_len) - 1);
-
     if (chunks.len == 0) {
-        @memcpy(out, try zh.getZeroHash(layer_count));
+        @memcpy(out, try zh.getZeroHash(chunk_depth));
         return;
     }
 
@@ -28,7 +21,7 @@ pub fn merkleize(chunks: [][32]u8, chunk_count: usize, out: *[32]u8) !void {
 
     // hash into the same buffer
     var buf = chunks;
-    for (0..layer_count) |i| {
+    for (0..chunk_depth) |i| {
         if (buf.len % 2 == 1) {
             buf.len += 1;
             @memcpy(&buf[buf.len - 1], try zh.getZeroHash(i));
@@ -48,14 +41,10 @@ pub fn merkleize(chunks: [][32]u8, chunk_count: usize, out: *[32]u8) !void {
 /// n: [0,1,2,3,4,5,6,7,8,9]
 /// d: [0,0,1,2,2,3,3,3,3,4]
 /// ```
-pub fn maxChunksToDepth(n: usize) usize {
+pub fn maxChunksToDepth(n: usize) u8 {
     if (n == 0) return 0;
-
-    // Compute log2(n) and ceil it
-    const temp_f64: f64 = @floatFromInt(n);
-    const chunk_f64 = std.math.log2(temp_f64);
-    const result = std.math.ceil(chunk_f64);
-    return @intFromFloat(result);
+    const bit_len: usize = @sizeOf(usize) * 8 - @clz(n - 1);
+    return @sizeOf(usize) * 8 - @clz(std.math.pow(usize, 2, bit_len) - 1);
 }
 
 pub fn mixInLength(len: u256, out: *[32]u8) void {
@@ -86,7 +75,7 @@ test "merkleize" {
 
     inline for (test_cases) |tc| {
         const chunk_count = if (tc.chunk_count % 2 == 1 and tc.chunk_count != 1) tc.chunk_count + 1 else tc.chunk_count;
-        const total_chunk_count = if (tc.chunk_count == 0) 1 else tc.chunk_count;
+        const chunk_depth = maxChunksToDepth(tc.chunk_count);
 
         const expected = tc.expected;
         var chunks = [_][32]u8{[_]u8{0} ** 32} ** chunk_count;
@@ -98,7 +87,7 @@ test "merkleize" {
         }
 
         var output: [32]u8 = undefined;
-        try merkleize(&chunks, total_chunk_count, &output);
+        try merkleize(&chunks, chunk_depth, &output);
         const hex = try rootToHex(&output);
         try std.testing.expectEqualSlices(u8, expected, &hex);
     }

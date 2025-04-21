@@ -5,6 +5,7 @@ const hexToBytes = @import("hex").hexToBytes;
 const hexByteLen = @import("hex").hexByteLen;
 const merkleize = @import("hashing").merkleize;
 const mixInLength = @import("hashing").mixInLength;
+const maxChunksToDepth = @import("hashing").maxChunksToDepth;
 
 pub fn BitList(comptime limit: comptime_int) type {
     return struct {
@@ -129,6 +130,7 @@ pub fn BitListType(comptime _limit: comptime_int) type {
         pub const min_size: usize = 1;
         pub const max_size: usize = std.math.divCeil(usize, limit + 1, 8) catch unreachable;
         pub const max_chunk_count: usize = std.math.divCeil(usize, limit, 256) catch unreachable;
+        pub const chunk_depth: u8 = maxChunksToDepth(max_chunk_count);
 
         pub const default_value: Type = Type.empty;
 
@@ -147,7 +149,7 @@ pub fn BitListType(comptime _limit: comptime_int) type {
             @memset(chunks, [_]u8{0} ** 32);
             @memcpy(@as([]u8, @ptrCast(chunks))[0..value.data.items.len], value.data.items);
 
-            try merkleize(chunks, max_chunk_count, out);
+            try merkleize(chunks, chunk_depth, out);
             mixInLength(value.bit_len, out);
         }
 

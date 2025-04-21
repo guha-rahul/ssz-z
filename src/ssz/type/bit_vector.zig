@@ -3,6 +3,7 @@ const merkleize = @import("hashing").merkleize;
 const TypeKind = @import("type_kind.zig").TypeKind;
 const BoolType = @import("bool.zig").BoolType;
 const hexToBytes = @import("hex").hexToBytes;
+const maxChunksToDepth = @import("hashing").maxChunksToDepth;
 
 pub fn BitVector(comptime _length: comptime_int) type {
     const byte_len = std.math.divCeil(usize, _length, 8) catch unreachable;
@@ -85,13 +86,14 @@ pub fn BitVectorType(comptime _length: comptime_int) type {
         pub const Type: type = BitVector(length);
         pub const fixed_size: usize = byte_length;
         pub const chunk_count: usize = std.math.divCeil(usize, fixed_size, 32) catch unreachable;
+        pub const chunk_depth: u8 = maxChunksToDepth(chunk_count);
 
         pub const default_value: Type = Type.empty;
 
         pub fn hashTreeRoot(value: *const Type, out: *[32]u8) !void {
             var chunks = [_][32]u8{[_]u8{0} ** 32} ** ((chunk_count + 1) / 2 * 2);
             _ = serializeIntoBytes(value, @ptrCast(&chunks));
-            try merkleize(&chunks, chunk_count, out);
+            try merkleize(&chunks, chunk_depth, out);
         }
 
         pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
