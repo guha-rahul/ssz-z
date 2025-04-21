@@ -1,31 +1,92 @@
 # ssz-z
-An implementation of the Simple Serialize (SSZ) specification written in the Zig programming language.
 
-## About
-This library provides an implementation of the [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/tree/dev/ssz) specification, written in [Zig](https://ziglang.org/).
+A Zig implementation of Ethereum’s [SSZ (Simple Serialize)](https://github.com/ethereum/consensus-specs/tree/dev/ssz) serialization format, Merkleization, and consensus‐type definitions. Provides:
 
-This follows Typescript implementation of Lodestar team https://github.com/ChainSafe/ssz
+- Hashing utilities (SHA‑256, zero‐hash tree, Merkleization)
+- A SSZ library for defining, serializing, deserializing, and seeking into SSZ types (basic, vector, list, container, serialized views)
+- A full set of Ethereum consensus types (phase0, altair, bellatrix, capella, deneb, electra) defined as SSZ containers
 
-## Features
-- **generic**: If you have an application struct, just write a respective ssz struct and create a ssz type then you have an ssz implementation. More on that in the example below.
-- **batch hash** designed to support batch hash through `merkleize` function
-- **HashFn by type** support generic `HashFn` as a parameter when creating a new type
 
 ## Installation
-Clone the repository and build the project using Zig `git clone https://github.com/twoeths/ssz-z.git`
-- `cd packages/ssz && zig build test:unit` to run all unit tests
-- `cd packages/ssz && zig build test:lodestar` to run all lodestar tests
-- `cd packages/ssz && zig build test:int` to run all integration tests (tests across types)
-- `cd packages/persistent-merkle-tree && zig test --dep util -Mroot=src/merkleize.zig  -Mutil=../common/src/root.zig` run tests in merkleize.zig
-- `cd packages/ssz && zig test --dep util --dep persistent_merkle_tree -Mroot=src/type/container.zig -Mutil=../common/src/root.zig -Mpersistent_merkle_tree=../persistent-merkle-tree/src/root.zig` to run tests in `src/type/container.zig`
-- `zig build test:unit --verbose` to see how to map modules to run unit tests in a file
-- `cd packages/ssz && zig test --dep ssz --dep persistent_merkle_tree --dep util -Mroot=test/int/type/container.zig -Mutil=../common/src/root.zig -Mpersistent_merkle_tree=../persistent-merkle-tree/src/root.zig --dep util --dep persistent_merkle_tree -Mssz=src/root.zig` to run int tests in `test/int/type/container.zig`
-- `zig build test:int --verbose` to see how to map modules to run int tests in a file
+`zig fetch git+https://github.com/ChainSafe/ssz-z`
 
-## Tags
+## Usage
 
-- Zig
-- SSZ
-- Ethereum
-- Serialization
-- Consensus
+This project provides several modules:
+- `hashing`
+- `persistent_merkle_tree`
+- `ssz`
+- `consensus_types`
+
+### Ssz
+
+```zig
+const std = @import("std");
+const ssz = @import("ssz");
+
+// All types defined by the spec are available (except union)
+// An ssz type definition returns a namespace of related decls used to operate on the datatype
+
+const uint64 = ssz.UintType(64);
+
+test "uint64" {
+    std.testing.expectEqual(u64, uint64.Type);
+    std.testing.expectEqual(8, uint64.fixed_size);
+    std.testing.expectEqual(0, uint64.default_value);
+
+    const i: uint64.Type = 42;
+    var i_buf: [uint64.fixed_size] = undefined;
+
+    const bytes_written = uint64.serializeToBytes(&i, &i_buf);
+    std.testing.expectEqual(uint64.fixed_size, bytes_written);
+
+    var j: uint64:Type = undefined;
+    try uint64.deserializeToBytes(&i_buf, &j);
+
+    var root: [32]u8 = undefined;
+    try uint64.hashTreeRoot(&i, &root);
+    try uint64.serialized.hashTreeRoot(&i_buf, &root);
+}
+
+// Composite types are broken into fixed and variably-sized variants
+const checkpoint = ssz.FixedContainerType(struct {
+    epoch: ssz.UintType(64),
+    root: ssz.ByteVectorType(32),
+});
+
+const beacon_state = ssz.VariableContainerType(struct {
+    ...
+});
+
+// variably-sized variants require an allocator for most operations
+// TODO more examples
+
+
+```
+
+### Consensus types
+
+```zig
+const consensus_types = @import("consensus_types");
+
+const Checkpoint = consensus_types.phase0.Checkpoint;
+
+pub fn main() !void {
+    var c: Checkpoint.Type = Checkpoint.default_value;
+    c.epoch = 42;
+}
+```
+
+## Developer Usage
+- `git clone https://github.com/ChainSafe/ssz-z.git`
+- `zig build run:download_spec_tests`
+- `zig build run:write_generic_spec_tests`
+- `zig build run:write_static_spec_tests`
+- `zig build test:int`
+- `zig build test:generic_spec_tests`
+- `zig build test:static_spec_tests -Dpreset=mainnet`
+- `zig build test:static_spec_tests -Dpreset=minimal`
+
+# License
+
+Apache-2.0
