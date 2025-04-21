@@ -3,6 +3,8 @@ const TypeKind = @import("type_kind.zig").TypeKind;
 const UintType = @import("uint.zig").UintType;
 const hexToBytes = @import("hex").hexToBytes;
 const hexByteLen = @import("hex").hexByteLen;
+const merkleize = @import("hashing").merkleize;
+const mixInLength = @import("hashing").mixInLength;
 
 pub fn isByteListType(ST: type) bool {
     return ST.kind == .list and ST.Element.kind == .uint and ST.Element.fixed_size == 1 and ST == ByteListType(ST.limit);
@@ -31,6 +33,18 @@ pub fn ByteListType(comptime _limit: comptime_int) type {
 
         pub fn chunkCount(value: *const Type) usize {
             return (value.items.len + 31) / 32;
+        }
+
+        pub fn hashTreeRoot(allocator: std.mem.Allocator, value: *const Type, out: *[32]u8) !void {
+            const chunks = try allocator.alloc([32]u8, (chunkCount(value) + 1) / 2 * 2);
+            defer allocator.free(chunks);
+
+            @memset(chunks, [_]u8{0} ** 32);
+
+            _ = serializeIntoBytes(value, @ptrCast(chunks));
+
+            try merkleize(chunks, max_chunk_count, out);
+            mixInLength(value.items.len, out);
         }
 
         pub fn serializedSize(value: *const Type) usize {

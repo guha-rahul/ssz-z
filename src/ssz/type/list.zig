@@ -3,6 +3,8 @@ const TypeKind = @import("type_kind.zig").TypeKind;
 const isBasicType = @import("type_kind.zig").isBasicType;
 const isFixedType = @import("type_kind.zig").isFixedType;
 const OffsetIterator = @import("offsets.zig").OffsetIterator;
+const merkleize = @import("hashing").merkleize;
+const mixInLength = @import("hashing").mixInLength;
 
 pub fn FixedListType(comptime ST: type, comptime _limit: comptime_int) type {
     comptime {
@@ -32,6 +34,23 @@ pub fn FixedListType(comptime ST: type, comptime _limit: comptime_int) type {
             if (comptime isBasicType(Element)) {
                 return (Element.fixed_size * value.items.len + 31) / 32;
             } else return value.items.len;
+        }
+
+        pub fn hashTreeRoot(allocator: std.mem.Allocator, value: *const Type, out: *[32]u8) !void {
+            const chunks = try allocator.alloc([32]u8, (chunkCount(value) + 1) / 2 * 2);
+            defer allocator.free(chunks);
+
+            @memset(chunks, [_]u8{0} ** 32);
+
+            if (comptime isBasicType(Element)) {
+                _ = serializeIntoBytes(value, @ptrCast(chunks));
+            } else {
+                for (value.items, 0..) |element, i| {
+                    try Element.hashTreeRoot(&element, &chunks[i]);
+                }
+            }
+            try merkleize(chunks, max_chunk_count, out);
+            mixInLength(value.items.len, out);
         }
 
         pub fn serializedSize(value: *const Type) usize {
@@ -127,11 +146,27 @@ pub fn VariableListType(comptime ST: type, comptime _limit: comptime_int) type {
         pub const default_value: Type = Type.empty;
 
         pub fn deinit(allocator: std.mem.Allocator, value: *Type) void {
+            for (value.items) |element| {
+                Element.deinit(allocator, element);
+            }
             value.deinit(allocator);
         }
 
         pub fn chunkCount(value: *const Type) usize {
             return value.items.len;
+        }
+
+        pub fn hashTreeRoot(allocator: std.mem.Allocator, value: *const Type, out: *[32]u8) !void {
+            const chunks = try allocator.alloc([32]u8, (chunkCount(value) + 1) / 2 * 2);
+            defer allocator.free(chunks);
+
+            @memset(chunks, [_]u8{0} ** 32);
+
+            for (value.items, 0..) |element, i| {
+                try Element.hashTreeRoot(allocator, &element, &chunks[i]);
+            }
+            try merkleize(chunks, max_chunk_count, out);
+            mixInLength(value.items.len, out);
         }
 
         pub fn serializedSize(value: *const Type) usize {

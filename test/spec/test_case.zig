@@ -163,6 +163,14 @@ pub fn validTestCase(comptime ST: type, gpa: Allocator, path: std.fs.Dir, meta_f
 
     // test merkleization
 
+    var root_actual_oneshot: [32]u8 = undefined;
+    if (comptime ssz.isFixedType(ST)) {
+        try ST.hashTreeRoot(value_expected, &root_actual_oneshot);
+    } else {
+        try ST.hashTreeRoot(allocator, value_expected, &root_actual_oneshot);
+    }
+    try std.testing.expectEqualSlices(u8, &root_expected, &root_actual_oneshot);
+
     const Hasher = ssz.Hasher(ST);
     var hash_scratch: ssz.HasherData = if (comptime ssz.isBasicType(ST)) undefined else try Hasher.init(allocator);
     var root_actual: [32]u8 = undefined;

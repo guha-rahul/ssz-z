@@ -1,6 +1,7 @@
 const std = @import("std");
 const TypeKind = @import("type_kind.zig").TypeKind;
 const isFixedType = @import("type_kind.zig").isFixedType;
+const merkleize = @import("hashing").merkleize;
 
 pub fn FixedContainerType(comptime ST: type) type {
     const ssz_fields = switch (@typeInfo(ST)) {
@@ -54,6 +55,14 @@ pub fn FixedContainerType(comptime ST: type) type {
             }
             break :blk out;
         };
+
+        pub fn hashTreeRoot(value: *const Type, out: *[32]u8) !void {
+            var chunks = [_][32]u8{[_]u8{0} ** 32} ** ((chunk_count + 1) / 2 * 2);
+            inline for (fields, 0..) |field, i| {
+                try field.type.hashTreeRoot(&@field(value, field.name), &chunks[i]);
+            }
+            try merkleize(&chunks, chunk_count, out);
+        }
 
         pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
             var i: usize = 0;
@@ -205,6 +214,18 @@ pub fn VariableContainerType(comptime ST: type) type {
                     field.type.deinit(allocator, &@field(value, field.name));
                 }
             }
+        }
+
+        pub fn hashTreeRoot(allocator: std.mem.Allocator, value: *const Type, out: *[32]u8) !void {
+            var chunks = [_][32]u8{[_]u8{0} ** 32} ** ((chunk_count + 1) / 2 * 2);
+            inline for (fields, 0..) |field, i| {
+                if (comptime isFixedType(field.type)) {
+                    try field.type.hashTreeRoot(&@field(value, field.name), &chunks[i]);
+                } else {
+                    try field.type.hashTreeRoot(allocator, &@field(value, field.name), &chunks[i]);
+                }
+            }
+            try merkleize(&chunks, chunk_count, out);
         }
 
         pub fn serializedSize(value: *const Type) usize {

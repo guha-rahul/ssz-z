@@ -3,6 +3,7 @@ const TypeKind = @import("type_kind.zig").TypeKind;
 const isBasicType = @import("type_kind.zig").isBasicType;
 const isFixedType = @import("type_kind.zig").isFixedType;
 const OffsetIterator = @import("offsets.zig").OffsetIterator;
+const merkleize = @import("hashing").merkleize;
 
 pub fn FixedVectorType(comptime ST: type, comptime _length: comptime_int) type {
     comptime {
@@ -22,6 +23,18 @@ pub fn FixedVectorType(comptime ST: type, comptime _length: comptime_int) type {
         pub const chunk_count: usize = if (isBasicType(Element)) std.math.divCeil(usize, fixed_size, 32) catch unreachable else length;
 
         pub const default_value: Type = [_]Element.Type{Element.default_value} ** length;
+
+        pub fn hashTreeRoot(value: *const Type, out: *[32]u8) !void {
+            var chunks = [_][32]u8{[_]u8{0} ** 32} ** ((chunk_count + 1) / 2 * 2);
+            if (comptime isBasicType(Element)) {
+                _ = serializeIntoBytes(value, @ptrCast(&chunks));
+            } else {
+                for (value, 0..) |element, i| {
+                    try Element.hashTreeRoot(&element, &chunks[i]);
+                }
+            }
+            try merkleize(&chunks, chunk_count, out);
+        }
 
         pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
             var i: usize = 0;
@@ -97,6 +110,14 @@ pub fn VariableVectorType(comptime ST: type, comptime _length: comptime_int) typ
             for (value) |element| {
                 Element.deinit(allocator, element);
             }
+        }
+
+        pub fn hashTreeRoot(allocator: std.mem.Allocator, value: *const Type, out: *[32]u8) !void {
+            var chunks = [_][32]u8{[_]u8{0} ** 32} ** ((chunk_count + 1) / 2 * 2);
+            for (value, 0..) |element, i| {
+                try Element.hashTreeRoot(allocator, &element, &chunks[i]);
+            }
+            try merkleize(&chunks, chunk_count, out);
         }
 
         pub fn serializedSize(value: *const Type) usize {

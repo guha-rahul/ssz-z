@@ -3,6 +3,7 @@ const TypeKind = @import("type_kind.zig").TypeKind;
 const UintType = @import("uint.zig").UintType;
 const hexToBytes = @import("hex").hexToBytes;
 const hexByteLen = @import("hex").hexByteLen;
+const merkleize = @import("hashing").merkleize;
 
 pub fn isByteVectorType(ST: type) bool {
     return ST.kind == .vector and ST.Element.kind == .uint and ST.Element.fixed_size == 1 and ST == ByteVectorType(ST.length);
@@ -23,6 +24,12 @@ pub fn ByteVectorType(comptime _length: comptime_int) type {
         pub const chunk_count: usize = std.math.divCeil(usize, fixed_size, 32) catch unreachable;
 
         pub const default_value: Type = [_]Element.Type{Element.default_value} ** length;
+
+        pub fn hashTreeRoot(value: *const Type, out: *[32]u8) !void {
+            var chunks = [_][32]u8{[_]u8{0} ** 32} ** ((chunk_count + 1) / 2 * 2);
+            _ = serializeIntoBytes(value, @ptrCast(&chunks));
+            try merkleize(&chunks, chunk_count, out);
+        }
 
         pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
             @memcpy(out[0..fixed_size], value);

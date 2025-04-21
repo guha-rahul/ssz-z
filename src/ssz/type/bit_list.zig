@@ -3,6 +3,8 @@ const TypeKind = @import("type_kind.zig").TypeKind;
 const BoolType = @import("bool.zig").BoolType;
 const hexToBytes = @import("hex").hexToBytes;
 const hexByteLen = @import("hex").hexByteLen;
+const merkleize = @import("hashing").merkleize;
+const mixInLength = @import("hashing").mixInLength;
 
 pub fn BitList(comptime limit: comptime_int) type {
     return struct {
@@ -136,6 +138,17 @@ pub fn BitListType(comptime _limit: comptime_int) type {
 
         pub fn chunkCount(value: *const Type) usize {
             return (value.bit_len + 255) / 256;
+        }
+
+        pub fn hashTreeRoot(allocator: std.mem.Allocator, value: *const Type, out: *[32]u8) !void {
+            const chunks = try allocator.alloc([32]u8, (chunkCount(value) + 1) / 2 * 2);
+            defer allocator.free(chunks);
+
+            @memset(chunks, [_]u8{0} ** 32);
+            @memcpy(@as([]u8, @ptrCast(chunks))[0..value.data.items.len], value.data.items);
+
+            try merkleize(chunks, max_chunk_count, out);
+            mixInLength(value.bit_len, out);
         }
 
         pub fn serializedSize(value: *const Type) usize {

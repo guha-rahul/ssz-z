@@ -9,6 +9,11 @@ pub fn BoolType() type {
 
         pub const default_value: Type = false;
 
+        pub fn hashTreeRoot(value: *const Type, out: *[32]u8) !void {
+            @memset(out, 0);
+            out[0] = if (value.*) 1 else 0;
+        }
+
         pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
             const byte: u8 = if (value.*) 1 else 0;
             out[0] = byte;
