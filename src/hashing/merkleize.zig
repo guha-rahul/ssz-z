@@ -5,35 +5,27 @@ const HashFn = @import("hash_fn.zig").HashFn;
 const sha256Hash = @import("sha256.zig").sha256Hash;
 const digest64Into = @import("sha256.zig").digest64Into;
 
-pub fn merkleize(chunks: [][32]u8, chunk_depth: u8, out: *[32]u8) !void {
-    if (chunks.len == 1 and (chunk_depth == 1 or chunk_depth == 0)) {
-        @memcpy(out, &chunks[0]);
-        return;
-    }
-    if (chunks.len == 0) {
+pub fn merkleize(chunk_pairs: [][2][32]u8, chunk_depth: u8, out: *[32]u8) !void {
+    if (chunk_pairs.len == 0) {
         @memcpy(out, try zh.getZeroHash(chunk_depth));
         return;
     }
 
-    if (chunks.len % 2 != 0) {
-        return error.InvalidInput;
-    }
-
     // hash into the same buffer
-    var buf = chunks;
+    var chunks: [][32]u8 = @ptrCast(chunk_pairs);
     for (0..chunk_depth) |i| {
-        if (buf.len % 2 == 1) {
-            buf.len += 1;
-            @memcpy(&buf[buf.len - 1], try zh.getZeroHash(i));
+        if (chunks.len % 2 == 1) {
+            chunks.len += 1;
+            @memcpy(&chunks[chunks.len - 1], try zh.getZeroHash(@intCast(i)));
         }
 
-        const buf_out = buf[0 .. buf.len / 2];
-        try sha256Hash(buf, buf_out);
+        const buf_out = chunks[0 .. chunks.len / 2];
+        try sha256Hash(chunks, buf_out);
 
-        buf = buf_out;
+        chunks = buf_out;
     }
 
-    @memcpy(out, &buf[0]);
+    @memcpy(out, &chunks[0]);
 }
 
 /// Given maxChunkCount return the chunkDepth
@@ -74,7 +66,7 @@ test "merkleize" {
     };
 
     inline for (test_cases) |tc| {
-        const chunk_count = if (tc.chunk_count % 2 == 1 and tc.chunk_count != 1) tc.chunk_count + 1 else tc.chunk_count;
+        const chunk_count = if (tc.chunk_count % 2 == 1) tc.chunk_count + 1 else tc.chunk_count;
         const chunk_depth = maxChunksToDepth(tc.chunk_count);
 
         const expected = tc.expected;
@@ -87,7 +79,7 @@ test "merkleize" {
         }
 
         var output: [32]u8 = undefined;
-        try merkleize(&chunks, chunk_depth, &output);
+        try merkleize(@ptrCast(&chunks), chunk_depth, &output);
         const hex = try rootToHex(&output);
         try std.testing.expectEqualSlices(u8, expected, &hex);
     }

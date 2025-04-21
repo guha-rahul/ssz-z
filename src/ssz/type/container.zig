@@ -63,7 +63,7 @@ pub fn FixedContainerType(comptime ST: type) type {
             inline for (fields, 0..) |field, i| {
                 try field.type.hashTreeRoot(&@field(value, field.name), &chunks[i]);
             }
-            try merkleize(&chunks, chunk_depth, out);
+            try merkleize(@ptrCast(&chunks), chunk_depth, out);
         }
 
         pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
@@ -228,7 +228,7 @@ pub fn VariableContainerType(comptime ST: type) type {
                     try field.type.hashTreeRoot(allocator, &@field(value, field.name), &chunks[i]);
                 }
             }
-            try merkleize(&chunks, chunk_depth, out);
+            try merkleize(@ptrCast(&chunks), chunk_depth, out);
         }
 
         pub fn serializedSize(value: *const Type) usize {

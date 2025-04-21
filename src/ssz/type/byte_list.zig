@@ -45,7 +45,7 @@ pub fn ByteListType(comptime _limit: comptime_int) type {
 
             _ = serializeIntoBytes(value, @ptrCast(chunks));
 
-            try merkleize(chunks, chunk_depth, out);
+            try merkleize(@ptrCast(chunks), chunk_depth, out);
             mixInLength(value.items.len, out);
         }
 

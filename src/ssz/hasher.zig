@@ -77,7 +77,7 @@ pub fn Hasher(comptime ST: type) type {
                                 try Hasher(ST.Element).hash(&scratch.children.?[0], &element, &scratch.chunks.items[i]);
                             }
                         }
-                        try h.merkleize(scratch.chunks.items, ST.chunk_depth, out);
+                        try h.merkleize(@ptrCast(scratch.chunks.items), ST.chunk_depth, out);
                         if (ST.Element.kind == .bool) {
                             h.mixInLength(value.bit_len, out);
                         } else {
@@ -93,7 +93,7 @@ pub fn Hasher(comptime ST: type) type {
                                 try Hasher(ST.Element).hash(&scratch.children.?[0], &element, &scratch.chunks.items[i]);
                             }
                         }
-                        try h.merkleize(scratch.chunks.items, ST.chunk_depth, out);
+                        try h.merkleize(@ptrCast(scratch.chunks.items), ST.chunk_depth, out);
                     },
                     .container => {
                         @memset(scratch.chunks.items, [_]u8{0} ** 32);
@@ -101,7 +101,7 @@ pub fn Hasher(comptime ST: type) type {
                             const field_value = @field(value, field.name);
                             try Hasher(field.type).hash(&scratch.children.?[i], &field_value, &scratch.chunks.items[i]);
                         }
-                        try h.merkleize(scratch.chunks.items, ST.chunk_depth, out);
+                        try h.merkleize(@ptrCast(scratch.chunks.items), ST.chunk_depth, out);
                     },
                     else => unreachable,
                 }

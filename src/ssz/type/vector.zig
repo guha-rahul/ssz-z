@@ -35,7 +35,7 @@ pub fn FixedVectorType(comptime ST: type, comptime _length: comptime_int) type {
                     try Element.hashTreeRoot(&element, &chunks[i]);
                 }
             }
-            try merkleize(&chunks, chunk_depth, out);
+            try merkleize(@ptrCast(&chunks), chunk_depth, out);
         }
 
         pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
@@ -120,7 +120,7 @@ pub fn VariableVectorType(comptime ST: type, comptime _length: comptime_int) typ
             for (value, 0..) |element, i| {
                 try Element.hashTreeRoot(allocator, &element, &chunks[i]);
             }
-            try merkleize(&chunks, chunk_depth, out);
+            try merkleize(@ptrCast(&chunks), chunk_depth, out);
         }
 
         pub fn serializedSize(value: *const Type) usize {

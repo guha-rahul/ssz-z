@@ -149,7 +149,7 @@ pub fn BitListType(comptime _limit: comptime_int) type {
             @memset(chunks, [_]u8{0} ** 32);
             @memcpy(@as([]u8, @ptrCast(chunks))[0..value.data.items.len], value.data.items);
 
-            try merkleize(chunks, chunk_depth, out);
+            try merkleize(@ptrCast(chunks), chunk_depth, out);
             mixInLength(value.bit_len, out);
         }
 

@@ -51,7 +51,7 @@ pub fn FixedListType(comptime ST: type, comptime _limit: comptime_int) type {
                     try Element.hashTreeRoot(&element, &chunks[i]);
                 }
             }
-            try merkleize(chunks, chunk_depth, out);
+            try merkleize(@ptrCast(chunks), chunk_depth, out);
             mixInLength(value.items.len, out);
         }
 
@@ -168,7 +168,7 @@ pub fn VariableListType(comptime ST: type, comptime _limit: comptime_int) type {
             for (value.items, 0..) |element, i| {
                 try Element.hashTreeRoot(allocator, &element, &chunks[i]);
             }
-            try merkleize(chunks, chunk_depth, out);
+            try merkleize(@ptrCast(chunks), chunk_depth, out);
             mixInLength(value.items.len, out);
         }
 

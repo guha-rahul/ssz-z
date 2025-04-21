@@ -1,7 +1,7 @@
 const std = @import("std");
 const digest64Into = @import("sha256.zig").digest64Into;
 
-pub fn ZeroHash(max_depth: usize) type {
+pub fn ZeroHash(max_depth: u8) type {
     comptime {
         if (max_depth == 0) {
             @compileError("max_depth must be non-zero");
@@ -13,7 +13,7 @@ pub fn ZeroHash(max_depth: usize) type {
 
         pub fn init() @This() {
             // It seems that the default sha2 implementation does a lot of comptime execution
-            @setEvalBranchQuota(max_depth * 10000);
+            @setEvalBranchQuota(@as(usize, max_depth) * 10000);
 
             var zh: @This() = undefined;
             for (0..max_depth) |i| {
@@ -30,7 +30,7 @@ pub fn ZeroHash(max_depth: usize) type {
             return zh;
         }
 
-        pub fn get(self: *const @This(), depth: usize) !*const [32]u8 {
+        pub fn get(self: *const @This(), depth: u8) !*const [32]u8 {
             if (depth >= max_depth) {
                 return error.OutOfBounds;
             }
@@ -56,7 +56,7 @@ else
     default_max_depth;
 
 pub const zero_hash = ZeroHash(zero_hash_max_depth).init();
-pub fn getZeroHash(depth: usize) !*const [32]u8 {
+pub fn getZeroHash(depth: u8) !*const [32]u8 {
     return zero_hash.get(depth);
 }
 
