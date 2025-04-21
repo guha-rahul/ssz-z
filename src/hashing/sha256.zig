@@ -1,6 +1,7 @@
 const std = @import("std");
 const HashError = @import("hash_fn.zig").HashError;
 const HashFn = @import("hash_fn.zig").HashFn;
+const build_options = @import("build_options");
 
 const Sha256 = std.crypto.hash.sha2.Sha256;
 
@@ -15,7 +16,16 @@ comptime {
     std.debug.assert(@TypeOf(&sha256Hash) == HashFn);
 }
 
-pub const sha256Hash = hashtreeSha256Hash;
+// Allow overriding hash implementation via `build.zig`
+pub const disable_hashtree: bool = if (@hasDecl(build_options, "disable_hashtree"))
+    if (@typeInfo(@TypeOf(build_options.zero_hash_max_depth)) == .optional)
+        build_options.disable_hashtree orelse false
+    else
+        build_options.disable_hashtree
+else
+    false;
+
+pub const sha256Hash = if (disable_hashtree) stdSha256Hash else hashtreeSha256Hash;
 
 pub fn stdSha256Hash(in: []const [32]u8, out: [][32]u8) HashError!void {
     if (in.len % 2 != 0) {

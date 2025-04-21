@@ -35,6 +35,9 @@
   },
   "options_modules": {
     "build_options": {
+      "disable_hashtree": {
+        "type": "bool"
+      },
       "zero_hash_max_depth": {
         "type": "u8"
       },

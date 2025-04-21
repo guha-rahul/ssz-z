@@ -17,6 +17,8 @@ pub fn build(b: *std.Build) void {
     const write_files_codegen = b.addWriteFiles();
 
     const options_build_options = b.addOptions();
+    const option_disable_hashtree = b.option(bool, "disable_hashtree", "");
+    options_build_options.addOption(?bool, "disable_hashtree", option_disable_hashtree);
     const option_zero_hash_max_depth = b.option(u8, "zero_hash_max_depth", "");
     options_build_options.addOption(?u8, "zero_hash_max_depth", option_zero_hash_max_depth);
     const option_preset = b.option([]const u8, "preset", "") orelse "mainnet";
