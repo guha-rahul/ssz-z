@@ -18,6 +18,10 @@
             .url = "git+https://github.com/chainsafe/hashtree-z#197bd98ad7d72c29183ebea2a4f336b0e5c92da1",
             .hash = "hashtree-0.1.0-sBOovg-4DACHiKlYzW9D41IoKertGxYgP5fEqm-O3CsN",
         },
+        .zbench = .{
+            .url = "git+https://github.com/hendriknielaender/zBench#d8c7dd485306b88b757d52005614ebcb0a336942",
+            .hash = "zbench-0.10.0-YTdc714iAQDO4lTHMnIljYHPZ5v_sNTsw75vAmO1pyT-",
+        },
     },
     .paths = .{ "build.zig", "build.zig.zon", "src" },
 }

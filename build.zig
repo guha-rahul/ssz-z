@@ -12,11 +12,13 @@ pub fn build(b: *std.Build) void {
 
     const dep_hashtree = b.dependency("hashtree", .{});
 
+    const dep_zbench = b.dependency("zbench", .{});
+
     const write_files_codegen = b.addWriteFiles();
 
     const options_build_options = b.addOptions();
-    const option_zero_hash_max_depth = b.option(usize, "zero_hash_max_depth", "");
-    options_build_options.addOption(?usize, "zero_hash_max_depth", option_zero_hash_max_depth);
+    const option_zero_hash_max_depth = b.option(u8, "zero_hash_max_depth", "");
+    options_build_options.addOption(?u8, "zero_hash_max_depth", option_zero_hash_max_depth);
     const option_preset = b.option([]const u8, "preset", "") orelse "mainnet";
     options_build_options.addOption([]const u8, "preset", option_preset);
     const options_module_build_options = options_build_options.createModule();
@@ -152,6 +154,28 @@ pub fn build(b: *std.Build) void {
     if (b.args) |args| run_exe_write_static_spec_tests.addArgs(args);
     const tls_run_exe_write_static_spec_tests = b.step("run:write_static_spec_tests", "Run the write_static_spec_tests executable");
     tls_run_exe_write_static_spec_tests.dependOn(&run_exe_write_static_spec_tests.step);
+
+    const module_bench_state = b.createModule(.{
+        .root_source_file = b.path("bench/state.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    b.modules.put(b.dupe("bench_state"), module_bench_state) catch @panic("OOM");
+
+    const exe_bench_state = b.addExecutable(.{
+        .name = "bench_state",
+        .root_module = module_bench_state,
+    });
+
+    const install_exe_bench_state = b.addInstallArtifact(exe_bench_state, .{});
+    const tls_install_exe_bench_state = b.step("build-exe:bench_state", "Install the bench_state executable");
+    tls_install_exe_bench_state.dependOn(&install_exe_bench_state.step);
+    b.getInstallStep().dependOn(&install_exe_bench_state.step);
+
+    const run_exe_bench_state = b.addRunArtifact(exe_bench_state);
+    if (b.args) |args| run_exe_bench_state.addArgs(args);
+    const tls_run_exe_bench_state = b.step("run:bench_state", "Run the bench_state executable");
+    tls_run_exe_bench_state.dependOn(&run_exe_bench_state.step);
 
     const module_types = b.createModule(.{
         .root_source_file = write_files_codegen.getDirectory().path(b, "types"),
@@ -298,6 +322,20 @@ pub fn build(b: *std.Build) void {
     tls_run_test_write_static_spec_tests.dependOn(&run_test_write_static_spec_tests.step);
     tls_run_test.dependOn(&run_test_write_static_spec_tests.step);
 
+    const test_bench_state = b.addTest(.{
+        .name = "bench_state",
+        .root_module = module_bench_state,
+        .filters = &[_][]const u8{  },
+    });
+    const install_test_bench_state = b.addInstallArtifact(test_bench_state, .{});
+    const tls_install_test_bench_state = b.step("build-test:bench_state", "Install the bench_state test");
+    tls_install_test_bench_state.dependOn(&install_test_bench_state.step);
+
+    const run_test_bench_state = b.addRunArtifact(test_bench_state);
+    const tls_run_test_bench_state = b.step("test:bench_state", "Run the bench_state test");
+    tls_run_test_bench_state.dependOn(&run_test_bench_state.step);
+    tls_run_test.dependOn(&run_test_bench_state.step);
+
     const test_types = b.addTest(.{
         .name = "types",
         .root_module = module_types,
@@ -420,6 +458,10 @@ pub fn build(b: *std.Build) void {
     module_write_generic_spec_tests.addImport("spec_test_options", options_module_spec_test_options);
 
     module_write_static_spec_tests.addImport("spec_test_options", options_module_spec_test_options);
+
+    module_bench_state.addImport("consensus_types", module_consensus_types);
+    module_bench_state.addImport("ssz", module_ssz);
+    module_bench_state.addImport("zbench", dep_zbench.module("zbench"));
 
     module_int.addImport("hex", module_hex);
     module_int.addImport("ssz", module_ssz);
