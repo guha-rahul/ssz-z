@@ -62,7 +62,7 @@ const ValidateState = struct {
     bytes: []const u8,
     pub fn run(self: ValidateState, allocator: std.mem.Allocator) void {
         _ = allocator;
-        BeaconState.validate(self.bytes) catch unreachable;
+        BeaconState.serialized.validate(self.bytes) catch unreachable;
     }
 };
 

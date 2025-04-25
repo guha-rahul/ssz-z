@@ -107,17 +107,17 @@ pub fn FixedListType(comptime ST: type, comptime _limit: comptime_int) type {
             return error.invalidLength;
         }
 
-        pub fn validate(data: []const u8) !void {
-            const len = try std.math.divExact(usize, data.len, Element.fixed_size);
-            if (len > limit) {
-                return error.gtLimit;
-            }
-            for (0..len) |i| {
-                try Element.validate(data[i * Element.fixed_size .. (i + 1) * Element.fixed_size]);
-            }
-        }
-
         pub const serialized = struct {
+            pub fn validate(data: []const u8) !void {
+                const len = try std.math.divExact(usize, data.len, Element.fixed_size);
+                if (len > limit) {
+                    return error.gtLimit;
+                }
+                for (0..len) |i| {
+                    try Element.serialized.validate(data[i * Element.fixed_size .. (i + 1) * Element.fixed_size]);
+                }
+            }
+
             pub fn length(data: []const u8) !usize {
                 const len = try std.math.divExact(usize, data.len, Element.fixed_size);
                 if (len > limit) {
@@ -256,24 +256,24 @@ pub fn VariableListType(comptime ST: type, comptime _limit: comptime_int) type {
             return offsets;
         }
 
-        pub fn validate(data: []const u8) !void {
-            var iterator = OffsetIterator(Self).init(data);
-            if (data.len == 0) return;
-            const first_offset = try iterator.next();
-            const len = first_offset / 4;
-
-            var curr_offset = first_offset;
-            var prev_offset = first_offset;
-            while (iterator.pos < len) {
-                prev_offset = curr_offset;
-                curr_offset = try iterator.next();
-
-                try Element.validate(data[prev_offset..curr_offset]);
-            }
-            try Element.validate(data[curr_offset..data.len]);
-        }
-
         pub const serialized = struct {
+            pub fn validate(data: []const u8) !void {
+                var iterator = OffsetIterator(Self).init(data);
+                if (data.len == 0) return;
+                const first_offset = try iterator.next();
+                const len = first_offset / 4;
+
+                var curr_offset = first_offset;
+                var prev_offset = first_offset;
+                while (iterator.pos < len) {
+                    prev_offset = curr_offset;
+                    curr_offset = try iterator.next();
+
+                    try Element.serialized.validate(data[prev_offset..curr_offset]);
+                }
+                try Element.serialized.validate(data[curr_offset..data.len]);
+            }
+
             pub fn length(data: []const u8) !usize {
                 if (data.len == 0) {
                     return 0;

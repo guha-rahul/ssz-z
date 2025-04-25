@@ -46,13 +46,13 @@ pub fn ByteVectorType(comptime _length: comptime_int) type {
             @memcpy(out, data[0..fixed_size]);
         }
 
-        pub fn validate(data: []const u8) !void {
-            if (data.len != fixed_size) {
-                return error.invalidLength;
-            }
-        }
-
         pub const serialized = struct {
+            pub fn validate(data: []const u8) !void {
+                if (data.len != fixed_size) {
+                    return error.invalidLength;
+                }
+            }
+
             pub fn hashTreeRoot(data: []const u8, out: *[32]u8) !void {
                 var chunks = [_][32]u8{[_]u8{0} ** 32} ** ((chunk_count + 1) / 2 * 2);
                 @memcpy(@as([]u8, @ptrCast(&chunks))[0..fixed_size], data);

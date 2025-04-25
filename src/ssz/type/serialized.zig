@@ -18,8 +18,10 @@ fn FixedSerialized(comptime ST: type) type {
 
         const Self = @This();
 
-        pub fn init(data: []u8) Self {
-            try ST.validate(data);
+        pub const SszType = ST;
+
+        pub fn init(data: []u8) !Self {
+            try ST.serialized.validate(data);
             return Self{ .data = data };
         }
 
@@ -32,7 +34,7 @@ fn FixedSerialized(comptime ST: type) type {
         pub fn seekTo(self: Self, comptime path_str: []const u8) Serialized(PathType(ST, path_str)) {
             const ChildST = PathType(ST, path_str);
             const offset = getOffset(path_str);
-            return Serialized(ChildST).init(self.data[offset .. offset + ChildST.fixed_size]);
+            return Serialized(ChildST){ .data = self.data[offset .. offset + ChildST.fixed_size] };
         }
     };
 }

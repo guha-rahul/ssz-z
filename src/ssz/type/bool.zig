@@ -32,17 +32,17 @@ pub fn BoolType() type {
             }
         }
 
-        pub fn validate(data: []const u8) !void {
-            if (data.len != 1) {
-                return error.InvalidSize;
-            }
-            switch (data[0]) {
-                0, 1 => {},
-                else => return error.invalidBoolean,
-            }
-        }
-
         pub const serialized = struct {
+            pub fn validate(data: []const u8) !void {
+                if (data.len != 1) {
+                    return error.InvalidSize;
+                }
+                switch (data[0]) {
+                    0, 1 => {},
+                    else => return error.invalidBoolean,
+                }
+            }
+
             pub fn hashTreeRoot(data: []const u8, out: *[32]u8) !void {
                 @memset(out, 0);
                 @memcpy(out[0..fixed_size], data);

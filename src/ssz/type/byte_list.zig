@@ -58,13 +58,13 @@ pub fn ByteListType(comptime _limit: comptime_int) type {
             return value.items.len;
         }
 
-        pub fn validate(data: []const u8) !void {
-            if (data.len > limit) {
-                return error.gtLimit;
-            }
-        }
-
         pub const serialized = struct {
+            pub fn validate(data: []const u8) !void {
+                if (data.len > limit) {
+                    return error.gtLimit;
+                }
+            }
+
             pub fn length(data: []const u8) !usize {
                 if (data.len > limit) {
                     return error.gtLimit;

@@ -37,13 +37,13 @@ pub fn UintType(comptime bits: comptime_int) type {
             out.* = std.mem.readInt(Type, data[0..bytes], .little);
         }
 
-        pub fn validate(data: []const u8) !void {
-            if (data.len != fixed_size) {
-                return error.InvalidSize;
-            }
-        }
-
         pub const serialized = struct {
+            pub fn validate(data: []const u8) !void {
+                if (data.len != fixed_size) {
+                    return error.InvalidSize;
+                }
+            }
+
             pub fn hashTreeRoot(data: []const u8, out: *[32]u8) !void {
                 @memset(out, 0);
                 @memcpy(out[0..fixed_size], data);

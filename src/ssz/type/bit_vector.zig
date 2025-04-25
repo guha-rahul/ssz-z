@@ -102,23 +102,23 @@ pub fn BitVectorType(comptime _length: comptime_int) type {
         }
 
         pub fn deserializeFromBytes(data: []const u8, out: *Type) !void {
-            try validate(data);
+            try serialized.validate(data);
 
             @memcpy(&out.data, data[0..fixed_size]);
         }
 
-        pub fn validate(data: []const u8) !void {
-            if (data.len != fixed_size) {
-                return error.invalidLength;
-            }
-
-            // ensure trailing zeros for non-byte-aligned lengths
-            if (length % 8 != 0 and @clz(data[fixed_size - 1]) < 8 - length % 8) {
-                return error.trailingData;
-            }
-        }
-
         pub const serialized = struct {
+            pub fn validate(data: []const u8) !void {
+                if (data.len != fixed_size) {
+                    return error.invalidLength;
+                }
+
+                // ensure trailing zeros for non-byte-aligned lengths
+                if (length % 8 != 0 and @clz(data[fixed_size - 1]) < 8 - length % 8) {
+                    return error.trailingData;
+                }
+            }
+
             pub fn hashTreeRoot(data: []const u8, out: *[32]u8) !void {
                 var chunks = [_][32]u8{[_]u8{0} ** 32} ** ((chunk_count + 1) / 2 * 2);
                 @memcpy(@as([]u8, @ptrCast(&chunks))[0..fixed_size], data);

@@ -86,18 +86,18 @@ pub fn FixedContainerType(comptime ST: type) type {
             }
         }
 
-        pub fn validate(data: []const u8) !void {
-            if (data.len != fixed_size) {
-                return error.InvalidSize;
-            }
-            var i: usize = 0;
-            inline for (fields) |field| {
-                try field.type.validate(data[i .. i + field.type.fixed_size]);
-                i += field.type.fixed_size;
-            }
-        }
-
         pub const serialized = struct {
+            pub fn validate(data: []const u8) !void {
+                if (data.len != fixed_size) {
+                    return error.InvalidSize;
+                }
+                var i: usize = 0;
+                inline for (fields) |field| {
+                    try field.type.serialized.validate(data[i .. i + field.type.fixed_size]);
+                    i += field.type.fixed_size;
+                }
+            }
+
             pub fn hashTreeRoot(data: []const u8, out: *[32]u8) !void {
                 var chunks = [_][32]u8{[_]u8{0} ** 32} ** ((chunk_count + 1) / 2 * 2);
                 var i: usize = 0;
@@ -359,20 +359,20 @@ pub fn VariableContainerType(comptime ST: type) type {
             offsets[variable_index] = @intCast(data.len);
         }
 
-        pub fn validate(data: []const u8) !void {
-            if (data.len > max_size or data.len < min_size) {
-                return error.InvalidSize;
-            }
-
-            const ranges = try readFieldRanges(data);
-            inline for (fields, 0..) |field, i| {
-                const start = ranges[i][0];
-                const end = ranges[i][1];
-                try field.type.validate(data[start..end]);
-            }
-        }
-
         pub const serialized = struct {
+            pub fn validate(data: []const u8) !void {
+                if (data.len > max_size or data.len < min_size) {
+                    return error.InvalidSize;
+                }
+
+                const ranges = try readFieldRanges(data);
+                inline for (fields, 0..) |field, i| {
+                    const start = ranges[i][0];
+                    const end = ranges[i][1];
+                    try field.type.serialized.validate(data[start..end]);
+                }
+            }
+
             pub fn hashTreeRoot(allocator: std.mem.Allocator, data: []const u8, out: *[32]u8) !void {
                 var chunks = [_][32]u8{[_]u8{0} ** 32} ** ((chunk_count + 1) / 2 * 2);
                 const ranges = try readFieldRanges(data);

@@ -149,7 +149,7 @@ pub fn validTestCase(comptime ST: type, gpa: Allocator, path: std.fs.Dir, meta_f
 
     // test deserialization
 
-    try ST.validate(serialized_expected);
+    try ST.serialized.validate(serialized_expected);
 
     var value_actual = try allocator.create(ST.Type);
     value_actual.* = ST.default_value;
@@ -212,7 +212,7 @@ pub fn invalidTestCase(comptime ST: type, gpa: Allocator, path: std.fs.Dir) !voi
 
 // Wrap validate with a single error type
 fn validate(comptime ST: type, serialized: []const u8) !void {
-    return ST.validate(serialized) catch error.InvalidSSZ;
+    return ST.serialized.validate(serialized) catch error.InvalidSSZ;
 }
 
 // Wrap deserializeFromBytes with a single error type

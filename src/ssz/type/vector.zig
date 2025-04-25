@@ -59,16 +59,16 @@ pub fn FixedVectorType(comptime ST: type, comptime _length: comptime_int) type {
             }
         }
 
-        pub fn validate(data: []const u8) !void {
-            if (data.len != fixed_size) {
-                return error.invalidSize;
-            }
-            for (0..length) |i| {
-                try Element.validate(data[i * Element.fixed_size .. (i + 1) * Element.fixed_size]);
-            }
-        }
-
         pub const serialized = struct {
+            pub fn validate(data: []const u8) !void {
+                if (data.len != fixed_size) {
+                    return error.invalidSize;
+                }
+                for (0..length) |i| {
+                    try Element.serialized.validate(data[i * Element.fixed_size .. (i + 1) * Element.fixed_size]);
+                }
+            }
+
             pub fn hashTreeRoot(data: []const u8, out: *[32]u8) !void {
                 var chunks = [_][32]u8{[_]u8{0} ** 32} ** ((chunk_count + 1) / 2 * 2);
                 if (comptime isBasicType(Element)) {
@@ -181,18 +181,18 @@ pub fn VariableVectorType(comptime ST: type, comptime _length: comptime_int) typ
             return offsets;
         }
 
-        pub fn validate(data: []const u8) !void {
-            if (data.len > max_size or data.len < min_size) {
-                return error.InvalidSize;
-            }
-
-            const offsets = try readVariableOffsets(data);
-            for (0..length) |i| {
-                try Element.validate(data[offsets[i]..offsets[i + 1]]);
-            }
-        }
-
         pub const serialized = struct {
+            pub fn validate(data: []const u8) !void {
+                if (data.len > max_size or data.len < min_size) {
+                    return error.InvalidSize;
+                }
+
+                const offsets = try readVariableOffsets(data);
+                for (0..length) |i| {
+                    try Element.serialized.validate(data[offsets[i]..offsets[i + 1]]);
+                }
+            }
+
             pub fn hashTreeRoot(allocator: std.mem.Allocator, data: []const u8, out: *[32]u8) !void {
                 var chunks = [_][32]u8{[_]u8{0} ** 32} ** ((chunk_count + 1) / 2 * 2);
                 const offsets = try readVariableOffsets(data);
