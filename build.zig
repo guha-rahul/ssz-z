@@ -157,6 +157,50 @@ pub fn build(b: *std.Build) void {
     const tls_run_exe_write_static_spec_tests = b.step("run:write_static_spec_tests", "Run the write_static_spec_tests executable");
     tls_run_exe_write_static_spec_tests.dependOn(&run_exe_write_static_spec_tests.step);
 
+    const module_bench_attestation = b.createModule(.{
+        .root_source_file = b.path("bench/attestation.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    b.modules.put(b.dupe("bench_attestation"), module_bench_attestation) catch @panic("OOM");
+
+    const exe_bench_attestation = b.addExecutable(.{
+        .name = "bench_attestation",
+        .root_module = module_bench_attestation,
+    });
+
+    const install_exe_bench_attestation = b.addInstallArtifact(exe_bench_attestation, .{});
+    const tls_install_exe_bench_attestation = b.step("build-exe:bench_attestation", "Install the bench_attestation executable");
+    tls_install_exe_bench_attestation.dependOn(&install_exe_bench_attestation.step);
+    b.getInstallStep().dependOn(&install_exe_bench_attestation.step);
+
+    const run_exe_bench_attestation = b.addRunArtifact(exe_bench_attestation);
+    if (b.args) |args| run_exe_bench_attestation.addArgs(args);
+    const tls_run_exe_bench_attestation = b.step("run:bench_attestation", "Run the bench_attestation executable");
+    tls_run_exe_bench_attestation.dependOn(&run_exe_bench_attestation.step);
+
+    const module_bench_block = b.createModule(.{
+        .root_source_file = b.path("bench/block.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    b.modules.put(b.dupe("bench_block"), module_bench_block) catch @panic("OOM");
+
+    const exe_bench_block = b.addExecutable(.{
+        .name = "bench_block",
+        .root_module = module_bench_block,
+    });
+
+    const install_exe_bench_block = b.addInstallArtifact(exe_bench_block, .{});
+    const tls_install_exe_bench_block = b.step("build-exe:bench_block", "Install the bench_block executable");
+    tls_install_exe_bench_block.dependOn(&install_exe_bench_block.step);
+    b.getInstallStep().dependOn(&install_exe_bench_block.step);
+
+    const run_exe_bench_block = b.addRunArtifact(exe_bench_block);
+    if (b.args) |args| run_exe_bench_block.addArgs(args);
+    const tls_run_exe_bench_block = b.step("run:bench_block", "Run the bench_block executable");
+    tls_run_exe_bench_block.dependOn(&run_exe_bench_block.step);
+
     const module_bench_state = b.createModule(.{
         .root_source_file = b.path("bench/state.zig"),
         .target = target,
@@ -324,6 +368,34 @@ pub fn build(b: *std.Build) void {
     tls_run_test_write_static_spec_tests.dependOn(&run_test_write_static_spec_tests.step);
     tls_run_test.dependOn(&run_test_write_static_spec_tests.step);
 
+    const test_bench_attestation = b.addTest(.{
+        .name = "bench_attestation",
+        .root_module = module_bench_attestation,
+        .filters = &[_][]const u8{  },
+    });
+    const install_test_bench_attestation = b.addInstallArtifact(test_bench_attestation, .{});
+    const tls_install_test_bench_attestation = b.step("build-test:bench_attestation", "Install the bench_attestation test");
+    tls_install_test_bench_attestation.dependOn(&install_test_bench_attestation.step);
+
+    const run_test_bench_attestation = b.addRunArtifact(test_bench_attestation);
+    const tls_run_test_bench_attestation = b.step("test:bench_attestation", "Run the bench_attestation test");
+    tls_run_test_bench_attestation.dependOn(&run_test_bench_attestation.step);
+    tls_run_test.dependOn(&run_test_bench_attestation.step);
+
+    const test_bench_block = b.addTest(.{
+        .name = "bench_block",
+        .root_module = module_bench_block,
+        .filters = &[_][]const u8{  },
+    });
+    const install_test_bench_block = b.addInstallArtifact(test_bench_block, .{});
+    const tls_install_test_bench_block = b.step("build-test:bench_block", "Install the bench_block test");
+    tls_install_test_bench_block.dependOn(&install_test_bench_block.step);
+
+    const run_test_bench_block = b.addRunArtifact(test_bench_block);
+    const tls_run_test_bench_block = b.step("test:bench_block", "Run the bench_block test");
+    tls_run_test_bench_block.dependOn(&run_test_bench_block.step);
+    tls_run_test.dependOn(&run_test_bench_block.step);
+
     const test_bench_state = b.addTest(.{
         .name = "bench_state",
         .root_module = module_bench_state,
@@ -439,6 +511,14 @@ pub fn build(b: *std.Build) void {
     module_write_generic_spec_tests.addImport("spec_test_options", options_module_spec_test_options);
 
     module_write_static_spec_tests.addImport("spec_test_options", options_module_spec_test_options);
+
+    module_bench_attestation.addImport("consensus_types", module_consensus_types);
+    module_bench_attestation.addImport("ssz", module_ssz);
+    module_bench_attestation.addImport("zbench", dep_zbench.module("zbench"));
+
+    module_bench_block.addImport("consensus_types", module_consensus_types);
+    module_bench_block.addImport("ssz", module_ssz);
+    module_bench_block.addImport("zbench", dep_zbench.module("zbench"));
 
     module_bench_state.addImport("consensus_types", module_consensus_types);
     module_bench_state.addImport("ssz", module_ssz);
