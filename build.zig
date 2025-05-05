@@ -14,8 +14,6 @@ pub fn build(b: *std.Build) void {
 
     const dep_zbench = b.dependency("zbench", .{});
 
-    const write_files_codegen = b.addWriteFiles();
-
     const options_build_options = b.addOptions();
     const option_disable_hashtree = b.option(bool, "disable_hashtree", "");
     options_build_options.addOption(?bool, "disable_hashtree", option_disable_hashtree);
@@ -68,28 +66,6 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
     b.modules.put(b.dupe("consensus_types"), module_consensus_types) catch @panic("OOM");
-
-    const module_types_codegen = b.createModule(.{
-        .root_source_file = b.path("test/lodestar_types/root.zig"),
-        .target = target,
-        .optimize = optimize,
-    });
-    b.modules.put(b.dupe("types_codegen"), module_types_codegen) catch @panic("OOM");
-
-    const exe_types_codegen = b.addExecutable(.{
-        .name = "types_codegen",
-        .root_module = module_types_codegen,
-    });
-
-    const install_exe_types_codegen = b.addInstallArtifact(exe_types_codegen, .{});
-    const tls_install_exe_types_codegen = b.step("build-exe:types_codegen", "Install the types_codegen executable");
-    tls_install_exe_types_codegen.dependOn(&install_exe_types_codegen.step);
-    b.getInstallStep().dependOn(&install_exe_types_codegen.step);
-
-    const run_exe_types_codegen = b.addRunArtifact(exe_types_codegen);
-    if (b.args) |args| run_exe_types_codegen.addArgs(args);
-    const tls_run_exe_types_codegen = b.step("run:types_codegen", "Run the types_codegen executable");
-    tls_run_exe_types_codegen.dependOn(&run_exe_types_codegen.step);
 
     const module_download_spec_tests = b.createModule(.{
         .root_source_file = b.path("test/spec/download_spec_tests.zig"),
@@ -224,7 +200,7 @@ pub fn build(b: *std.Build) void {
     tls_run_exe_bench_state.dependOn(&run_exe_bench_state.step);
 
     const module_types = b.createModule(.{
-        .root_source_file = write_files_codegen.getDirectory().path(b, "types"),
+        .root_source_file = b.path("codegen:types"),
         .target = target,
         .optimize = optimize,
     });
@@ -311,20 +287,6 @@ pub fn build(b: *std.Build) void {
     const tls_run_test_consensus_types = b.step("test:consensus_types", "Run the consensus_types test");
     tls_run_test_consensus_types.dependOn(&run_test_consensus_types.step);
     tls_run_test.dependOn(&run_test_consensus_types.step);
-
-    const test_types_codegen = b.addTest(.{
-        .name = "types_codegen",
-        .root_module = module_types_codegen,
-        .filters = &[_][]const u8{  },
-    });
-    const install_test_types_codegen = b.addInstallArtifact(test_types_codegen, .{});
-    const tls_install_test_types_codegen = b.step("build-test:types_codegen", "Install the types_codegen test");
-    tls_install_test_types_codegen.dependOn(&install_test_types_codegen.step);
-
-    const run_test_types_codegen = b.addRunArtifact(test_types_codegen);
-    const tls_run_test_types_codegen = b.step("test:types_codegen", "Run the types_codegen test");
-    tls_run_test_types_codegen.dependOn(&run_test_types_codegen.step);
-    tls_run_test.dependOn(&run_test_types_codegen.step);
 
     const test_download_spec_tests = b.addTest(.{
         .name = "download_spec_tests",
@@ -487,8 +449,6 @@ pub fn build(b: *std.Build) void {
     tls_run_test_static_spec_tests.dependOn(&run_test_static_spec_tests.step);
     tls_run_test.dependOn(&run_test_static_spec_tests.step);
 
-    _ = write_files_codegen.addCopyFile(run_exe_types_codegen.captureStdOut(), "types");
-
     module_hashing.addImport("build_options", options_module_build_options);
     module_hashing.addImport("hex", module_hex);
     module_hashing.addImport("hashtree", dep_hashtree.module("hashtree"));
@@ -503,8 +463,6 @@ pub fn build(b: *std.Build) void {
 
     module_consensus_types.addImport("build_options", options_module_build_options);
     module_consensus_types.addImport("ssz", module_ssz);
-
-    module_types_codegen.addImport("ssz", module_ssz);
 
     module_download_spec_tests.addImport("spec_test_options", options_module_spec_test_options);
 
