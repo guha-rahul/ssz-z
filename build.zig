@@ -26,7 +26,7 @@ pub fn build(b: *std.Build) void {
     const options_spec_test_options = b.addOptions();
     const option_spec_test_url = b.option([]const u8, "spec_test_url", "") orelse "https://github.com/ethereum/consensus-spec-tests";
     options_spec_test_options.addOption([]const u8, "spec_test_url", option_spec_test_url);
-    const option_spec_test_version = b.option([]const u8, "spec_test_version", "") orelse "v1.5.0-beta.2";
+    const option_spec_test_version = b.option([]const u8, "spec_test_version", "") orelse "v1.5.0";
     options_spec_test_options.addOption([]const u8, "spec_test_version", option_spec_test_version);
     const option_spec_test_out_dir = b.option([]const u8, "spec_test_out_dir", "") orelse "test/spec/spec_tests";
     options_spec_test_options.addOption([]const u8, "spec_test_out_dir", option_spec_test_out_dir);
@@ -198,6 +198,50 @@ pub fn build(b: *std.Build) void {
     if (b.args) |args| run_exe_bench_state.addArgs(args);
     const tls_run_exe_bench_state = b.step("run:bench_state", "Run the bench_state executable");
     tls_run_exe_bench_state.dependOn(&run_exe_bench_state.step);
+
+    const module_bench_gindex = b.createModule(.{
+        .root_source_file = b.path("src/persistent_merkle_tree/gindex_bench.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    b.modules.put(b.dupe("bench_gindex"), module_bench_gindex) catch @panic("OOM");
+
+    const exe_bench_gindex = b.addExecutable(.{
+        .name = "bench_gindex",
+        .root_module = module_bench_gindex,
+    });
+
+    const install_exe_bench_gindex = b.addInstallArtifact(exe_bench_gindex, .{});
+    const tls_install_exe_bench_gindex = b.step("build-exe:bench_gindex", "Install the bench_gindex executable");
+    tls_install_exe_bench_gindex.dependOn(&install_exe_bench_gindex.step);
+    b.getInstallStep().dependOn(&install_exe_bench_gindex.step);
+
+    const run_exe_bench_gindex = b.addRunArtifact(exe_bench_gindex);
+    if (b.args) |args| run_exe_bench_gindex.addArgs(args);
+    const tls_run_exe_bench_gindex = b.step("run:bench_gindex", "Run the bench_gindex executable");
+    tls_run_exe_bench_gindex.dependOn(&run_exe_bench_gindex.step);
+
+    const module_bench_node = b.createModule(.{
+        .root_source_file = b.path("src/persistent_merkle_tree/node_bench.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    b.modules.put(b.dupe("bench_node"), module_bench_node) catch @panic("OOM");
+
+    const exe_bench_node = b.addExecutable(.{
+        .name = "bench_node",
+        .root_module = module_bench_node,
+    });
+
+    const install_exe_bench_node = b.addInstallArtifact(exe_bench_node, .{});
+    const tls_install_exe_bench_node = b.step("build-exe:bench_node", "Install the bench_node executable");
+    tls_install_exe_bench_node.dependOn(&install_exe_bench_node.step);
+    b.getInstallStep().dependOn(&install_exe_bench_node.step);
+
+    const run_exe_bench_node = b.addRunArtifact(exe_bench_node);
+    if (b.args) |args| run_exe_bench_node.addArgs(args);
+    const tls_run_exe_bench_node = b.step("run:bench_node", "Run the bench_node executable");
+    tls_run_exe_bench_node.dependOn(&run_exe_bench_node.step);
 
     const module_types = b.createModule(.{
         .root_source_file = b.path("codegen:types"),
@@ -372,6 +416,34 @@ pub fn build(b: *std.Build) void {
     tls_run_test_bench_state.dependOn(&run_test_bench_state.step);
     tls_run_test.dependOn(&run_test_bench_state.step);
 
+    const test_bench_gindex = b.addTest(.{
+        .name = "bench_gindex",
+        .root_module = module_bench_gindex,
+        .filters = &[_][]const u8{  },
+    });
+    const install_test_bench_gindex = b.addInstallArtifact(test_bench_gindex, .{});
+    const tls_install_test_bench_gindex = b.step("build-test:bench_gindex", "Install the bench_gindex test");
+    tls_install_test_bench_gindex.dependOn(&install_test_bench_gindex.step);
+
+    const run_test_bench_gindex = b.addRunArtifact(test_bench_gindex);
+    const tls_run_test_bench_gindex = b.step("test:bench_gindex", "Run the bench_gindex test");
+    tls_run_test_bench_gindex.dependOn(&run_test_bench_gindex.step);
+    tls_run_test.dependOn(&run_test_bench_gindex.step);
+
+    const test_bench_node = b.addTest(.{
+        .name = "bench_node",
+        .root_module = module_bench_node,
+        .filters = &[_][]const u8{  },
+    });
+    const install_test_bench_node = b.addInstallArtifact(test_bench_node, .{});
+    const tls_install_test_bench_node = b.step("build-test:bench_node", "Install the bench_node test");
+    tls_install_test_bench_node.dependOn(&install_test_bench_node.step);
+
+    const run_test_bench_node = b.addRunArtifact(test_bench_node);
+    const tls_run_test_bench_node = b.step("test:bench_node", "Run the bench_node test");
+    tls_run_test_bench_node.dependOn(&run_test_bench_node.step);
+    tls_run_test.dependOn(&run_test_bench_node.step);
+
     const test_types = b.addTest(.{
         .name = "types",
         .root_module = module_types,
@@ -481,6 +553,12 @@ pub fn build(b: *std.Build) void {
     module_bench_state.addImport("consensus_types", module_consensus_types);
     module_bench_state.addImport("ssz", module_ssz);
     module_bench_state.addImport("zbench", dep_zbench.module("zbench"));
+
+    module_bench_gindex.addImport("hashing", module_hashing);
+    module_bench_gindex.addImport("zbench", dep_zbench.module("zbench"));
+
+    module_bench_node.addImport("hashing", module_hashing);
+    module_bench_node.addImport("zbench", dep_zbench.module("zbench"));
 
     module_int.addImport("hex", module_hex);
     module_int.addImport("ssz", module_ssz);

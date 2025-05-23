@@ -47,7 +47,7 @@ const build_options = @import("build_options");
 const default_max_depth = 64;
 
 // Allow overriding via `build.zig`
-pub const zero_hash_max_depth: usize = if (@hasDecl(build_options, "zero_hash_max_depth"))
+pub const zero_hash_max_depth: u8 = if (@hasDecl(build_options, "zero_hash_max_depth"))
     if (@typeInfo(@TypeOf(build_options.zero_hash_max_depth)) == .optional)
         build_options.zero_hash_max_depth orelse default_max_depth
     else
