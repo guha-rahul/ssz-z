@@ -1,24 +1,24 @@
 const std = @import("std");
-const build_options = @import("build_options");
+const hashtree = @import("hashtree");
 
-const Sha256 = std.crypto.hash.sha2.Sha256;
+/// Hash a slice of 32-byte arrays into a slice of 32-byte outputs.
+///
+/// This function will error if `in.len != 2 * out.len`.
+pub const hash = hashtree.hash;
 
-pub fn digest64Into(obj1: *const [32]u8, obj2: *const [32]u8, out: *[32]u8) void {
-    var h = Sha256.init(.{});
-    h.update(obj1);
-    h.update(obj2);
-    h.final(out);
+/// Hash a single pair of 32-byte arrays into a 32-byte output.
+pub fn hashOne(out: *[32]u8, left: *const [32]u8, right: *const [32]u8) void {
+    var in = [_][32]u8{ left.*, right.* };
+    hashtree.hash(@ptrCast(out), &in) catch unreachable;
 }
 
-pub const sha256Hash = @import("hashtree").hash;
-
-test "digest64Into works correctly" {
+test "hashOne works correctly" {
     const obj1: [32]u8 = [_]u8{1} ** 32;
     const obj2: [32]u8 = [_]u8{2} ** 32;
     var hash_result: [32]u8 = undefined;
 
     // Call the function and ensure it works without error
-    digest64Into(&obj1, &obj2, &hash_result);
+    hashOne(&hash_result, &obj1, &obj2);
 
     // Print the hash for manual inspection (optional)
     // std.debug.print("Hash value: {any}\n", .{hash_result});
@@ -26,19 +26,14 @@ test "digest64Into works correctly" {
     // try std.testing.expect(mem.eql(u8, &hash_result, &expected_hash));
 }
 
-test "hashInto" {
+test hashOne {
     const in = [_][32]u8{[_]u8{1} ** 32} ** 4;
     var out: [2][32]u8 = undefined;
-    try sha256Hash(&out, &in);
+    try hash(&out, &in);
     // std.debug.print("@@@ out: {any}\n", .{out});
     var out2: [32]u8 = undefined;
-    digest64Into(&in[0], &in[2], &out2);
+    hashOne(&out2, &in[0], &in[2]);
     // std.debug.print("@@@ out2: {any}\n", .{out2});
     try std.testing.expectEqualSlices(u8, &out2, &out[0]);
     try std.testing.expectEqualSlices(u8, &out2, &out[1]);
 }
-
-// test {
-//     for (0..50) |i|
-//         std.debug.print("({})={}\n", .{ i, (@sizeOf(usize) * 8) - @clz(i) });
-// }

@@ -1,10 +1,8 @@
 const std = @import("std");
 
-const zero_node_max_depth = @import("hashing").zero_hash_max_depth;
-
-const GindexUint = std.meta.Int(.unsigned, @intCast(zero_node_max_depth));
-pub const Depth = std.math.Log2Int(GindexUint);
-pub const max_depth = std.math.maxInt(Depth);
+const GindexUint = @import("hashing").GindexUint;
+const Depth = @import("hashing").Depth;
+const max_depth = @import("hashing").max_depth;
 
 pub const Gindex = enum(GindexUint) {
     _,

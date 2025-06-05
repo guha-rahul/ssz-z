@@ -112,13 +112,19 @@
         },
         .bench_gindex = .{
             .root_module = .{
-                .root_source_file = "src/persistent_merkle_tree/gindex_bench.zig",
-                .imports = .{ .hashing, .zbench },
+                .root_source_file = "bench/gindex.zig",
+                .imports = .{ .hashing, .persistent_merkle_tree, .zbench },
             },
         },
         .bench_node = .{
             .root_module = .{
                 .root_source_file = "src/persistent_merkle_tree/node_bench.zig",
+                .imports = .{ .hashing, .zbench },
+            },
+        },
+        .bench_hashing = .{
+            .root_module = .{
+                .root_source_file = "bench/hashing.zig",
                 .imports = .{ .hashing, .zbench },
             },
         },

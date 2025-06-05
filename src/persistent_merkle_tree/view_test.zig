@@ -1,8 +1,8 @@
 const std = @import("std");
 
+const Gindex = @import("gindex.zig").Gindex;
 const View = @import("View.zig");
 const Node = @import("Node.zig");
-const Gindex = @import("gindex.zig").Gindex;
 
 test "View" {
     const allocator = std.testing.allocator;

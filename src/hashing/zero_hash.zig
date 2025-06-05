@@ -1,5 +1,15 @@
 const std = @import("std");
-const digest64Into = @import("sha256.zig").digest64Into;
+
+const Depth = @import("depth.zig").Depth;
+const max_depth_ = @import("depth.zig").max_depth;
+
+/// This non-extern implementation is required to compute the zero hashes at comptime.
+fn hashOne(out: *[32]u8, obj1: *const [32]u8, obj2: *const [32]u8) void {
+    var h = std.crypto.hash.sha2.Sha256.init(.{});
+    h.update(obj1);
+    h.update(obj2);
+    h.final(out);
+}
 
 pub fn ZeroHash(max_depth: u8) type {
     comptime {
@@ -20,10 +30,10 @@ pub fn ZeroHash(max_depth: u8) type {
                 if (i == 0) {
                     zh.hashes[i] = [_]u8{0} ** 32;
                 } else {
-                    digest64Into(
-                        &(zh.hashes[i - 1]),
-                        &(zh.hashes[i - 1]),
+                    hashOne(
                         &zh.hashes[i],
+                        &(zh.hashes[i - 1]),
+                        &(zh.hashes[i - 1]),
                     );
                 }
             }
@@ -40,24 +50,10 @@ pub fn ZeroHash(max_depth: u8) type {
     };
 }
 
-const build_options = @import("build_options");
+pub const zero_hash = ZeroHash(max_depth_).init();
 
-// this helps avoid heap memory allocation in setNodesAtDepth() below
-// VALIDATOR_REGISTRY_LIMIT is only 2**40 (= 1,099,511,627,776)
-const default_max_depth = 64;
-
-// Allow overriding via `build.zig`
-pub const zero_hash_max_depth: u8 = if (@hasDecl(build_options, "zero_hash_max_depth"))
-    if (@typeInfo(@TypeOf(build_options.zero_hash_max_depth)) == .optional)
-        build_options.zero_hash_max_depth orelse default_max_depth
-    else
-        build_options.zero_hash_max_depth
-else
-    default_max_depth;
-
-pub const zero_hash = ZeroHash(zero_hash_max_depth).init();
-pub fn getZeroHash(depth: u8) !*const [32]u8 {
-    return zero_hash.get(depth);
+pub fn getZeroHash(depth: Depth) *const [32]u8 {
+    return zero_hash.get(depth) catch unreachable;
 }
 
 test "ZeroHash" {

@@ -2,12 +2,11 @@
 const std = @import("std");
 const Allocator = std.mem.Allocator;
 
-const digest64Into = @import("hashing").digest64Into;
+const hashOne = @import("hashing").hashOne;
 const getZeroHash = @import("hashing").getZeroHash;
-
-const max_depth = @import("gindex.zig").max_depth;
+const max_depth = @import("hashing").max_depth;
+const Depth = @import("hashing").Depth;
 const Gindex = @import("gindex.zig").Gindex;
-const Depth = @import("gindex.zig").Depth;
 
 hash: [32]u8,
 left: Id,
@@ -148,7 +147,7 @@ pub const Pool = struct {
         // Populate zero hashes (at index 0 to zero_hash_max_depth - 1)
         for (0..max_depth) |i| {
             pool.nodes.set(@intCast(i), Node{
-                .hash = (getZeroHash(@intCast(i)) catch return Error.InvalidNode).*,
+                .hash = getZeroHash(@intCast(i)).*,
                 .left = if (i == 0) undefined else @enumFromInt(i - 1),
                 .right = if (i == 0) undefined else @enumFromInt(i - 1),
                 .state = .zero,
@@ -388,7 +387,7 @@ pub const Id = enum(u32) {
         if (state.isBranchLazy()) {
             const left = pool.nodes.items(.left)[@intFromEnum(node_id)].getRoot(pool);
             const right = pool.nodes.items(.right)[@intFromEnum(node_id)].getRoot(pool);
-            digest64Into(left, right, hash);
+            hashOne(hash, left, right);
             state.setBranchComputed();
         }
         return hash;

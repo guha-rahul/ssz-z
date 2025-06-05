@@ -1,7 +1,8 @@
 const std = @import("std");
 
+const max_depth = @import("hashing").max_depth;
+
 const Node = @import("Node.zig");
-const max_depth = @import("gindex.zig").max_depth;
 const Gindex = @import("gindex.zig").Gindex;
 
 test "Node.State" {

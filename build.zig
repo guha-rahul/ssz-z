@@ -205,7 +205,7 @@ pub fn build(b: *std.Build) void {
     tls_run_exe_bench_state.dependOn(&run_exe_bench_state.step);
 
     const module_bench_gindex = b.createModule(.{
-        .root_source_file = b.path("src/persistent_merkle_tree/gindex_bench.zig"),
+        .root_source_file = b.path("bench/gindex.zig"),
         .target = target,
         .optimize = optimize,
     });
@@ -247,6 +247,28 @@ pub fn build(b: *std.Build) void {
     if (b.args) |args| run_exe_bench_node.addArgs(args);
     const tls_run_exe_bench_node = b.step("run:bench_node", "Run the bench_node executable");
     tls_run_exe_bench_node.dependOn(&run_exe_bench_node.step);
+
+    const module_bench_hashing = b.createModule(.{
+        .root_source_file = b.path("bench/hashing.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    b.modules.put(b.dupe("bench_hashing"), module_bench_hashing) catch @panic("OOM");
+
+    const exe_bench_hashing = b.addExecutable(.{
+        .name = "bench_hashing",
+        .root_module = module_bench_hashing,
+    });
+
+    const install_exe_bench_hashing = b.addInstallArtifact(exe_bench_hashing, .{});
+    const tls_install_exe_bench_hashing = b.step("build-exe:bench_hashing", "Install the bench_hashing executable");
+    tls_install_exe_bench_hashing.dependOn(&install_exe_bench_hashing.step);
+    b.getInstallStep().dependOn(&install_exe_bench_hashing.step);
+
+    const run_exe_bench_hashing = b.addRunArtifact(exe_bench_hashing);
+    if (b.args) |args| run_exe_bench_hashing.addArgs(args);
+    const tls_run_exe_bench_hashing = b.step("run:bench_hashing", "Run the bench_hashing executable");
+    tls_run_exe_bench_hashing.dependOn(&run_exe_bench_hashing.step);
 
     const module_write_bun_ffi = b.createModule(.{
         .root_source_file = b.path("src/bun_ffi/write_types.zig"),
@@ -487,6 +509,20 @@ pub fn build(b: *std.Build) void {
     tls_run_test_bench_node.dependOn(&run_test_bench_node.step);
     tls_run_test.dependOn(&run_test_bench_node.step);
 
+    const test_bench_hashing = b.addTest(.{
+        .name = "bench_hashing",
+        .root_module = module_bench_hashing,
+        .filters = &[_][]const u8{  },
+    });
+    const install_test_bench_hashing = b.addInstallArtifact(test_bench_hashing, .{});
+    const tls_install_test_bench_hashing = b.step("build-test:bench_hashing", "Install the bench_hashing test");
+    tls_install_test_bench_hashing.dependOn(&install_test_bench_hashing.step);
+
+    const run_test_bench_hashing = b.addRunArtifact(test_bench_hashing);
+    const tls_run_test_bench_hashing = b.step("test:bench_hashing", "Run the bench_hashing test");
+    tls_run_test_bench_hashing.dependOn(&run_test_bench_hashing.step);
+    tls_run_test.dependOn(&run_test_bench_hashing.step);
+
     const test_write_bun_ffi = b.addTest(.{
         .name = "write_bun_ffi",
         .root_module = module_write_bun_ffi,
@@ -618,10 +654,14 @@ pub fn build(b: *std.Build) void {
     module_bench_state.addImport("zbench", dep_zbench.module("zbench"));
 
     module_bench_gindex.addImport("hashing", module_hashing);
+    module_bench_gindex.addImport("persistent_merkle_tree", module_persistent_merkle_tree);
     module_bench_gindex.addImport("zbench", dep_zbench.module("zbench"));
 
     module_bench_node.addImport("hashing", module_hashing);
     module_bench_node.addImport("zbench", dep_zbench.module("zbench"));
+
+    module_bench_hashing.addImport("hashing", module_hashing);
+    module_bench_hashing.addImport("zbench", dep_zbench.module("zbench"));
 
     module_write_bun_ffi.addImport("build_options", options_module_build_options);
     module_write_bun_ffi.addImport("persistent_merkle_tree", module_persistent_merkle_tree);
