@@ -1,7 +1,5 @@
 const std = @import("std");
 const zh = @import("zero_hash.zig");
-const HashError = @import("hash_fn.zig").HashError;
-const HashFn = @import("hash_fn.zig").HashFn;
 const sha256Hash = @import("sha256.zig").sha256Hash;
 const digest64Into = @import("sha256.zig").digest64Into;
 
@@ -20,7 +18,7 @@ pub fn merkleize(chunk_pairs: [][2][32]u8, chunk_depth: u8, out: *[32]u8) !void 
         }
 
         const buf_out = chunks[0 .. chunks.len / 2];
-        try sha256Hash(chunks, buf_out);
+        try sha256Hash(buf_out, chunks);
 
         chunks = buf_out;
     }

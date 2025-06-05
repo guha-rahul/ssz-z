@@ -1,6 +1,4 @@
 const std = @import("std");
-const HashError = @import("hash_fn.zig").HashError;
-const HashFn = @import("hash_fn.zig").HashFn;
 const build_options = @import("build_options");
 
 const Sha256 = std.crypto.hash.sha2.Sha256;
@@ -12,47 +10,7 @@ pub fn digest64Into(obj1: *const [32]u8, obj2: *const [32]u8, out: *[32]u8) void
     h.final(out);
 }
 
-comptime {
-    std.debug.assert(@TypeOf(&sha256Hash) == HashFn);
-}
-
-// Allow overriding hash implementation via `build.zig`
-pub const disable_hashtree: bool = if (@hasDecl(build_options, "disable_hashtree"))
-    if (@typeInfo(@TypeOf(build_options.zero_hash_max_depth)) == .optional)
-        build_options.disable_hashtree orelse false
-    else
-        build_options.disable_hashtree
-else
-    false;
-
-pub const sha256Hash = if (disable_hashtree) stdSha256Hash else hashtreeSha256Hash;
-
-pub fn stdSha256Hash(in: []const [32]u8, out: [][32]u8) HashError!void {
-    if (in.len % 2 != 0) {
-        return error.InvalidInput;
-    }
-
-    if (in.len != 2 * out.len) {
-        return error.InvalidInput;
-    }
-
-    for (0..in.len / 2) |i| {
-        // calling digest64Into is slow so call Sha256.hash() directly
-        Sha256.hash(@ptrCast(in[i * 2 .. i * 2 + 2]), &out[i], .{});
-    }
-}
-
-pub fn hashtreeSha256Hash(in: []const [32]u8, out: [][32]u8) HashError!void {
-    if (in.len % 2 != 0) {
-        return error.InvalidInput;
-    }
-
-    if (in.len != 2 * out.len) {
-        return error.InvalidInput;
-    }
-
-    @import("hashtree").hash(out, in);
-}
+pub const sha256Hash = @import("hashtree").hash;
 
 test "digest64Into works correctly" {
     const obj1: [32]u8 = [_]u8{1} ** 32;
@@ -71,7 +29,7 @@ test "digest64Into works correctly" {
 test "hashInto" {
     const in = [_][32]u8{[_]u8{1} ** 32} ** 4;
     var out: [2][32]u8 = undefined;
-    try sha256Hash(&in, &out);
+    try sha256Hash(&out, &in);
     // std.debug.print("@@@ out: {any}\n", .{out});
     var out2: [32]u8 = undefined;
     digest64Into(&in[0], &in[2], &out2);

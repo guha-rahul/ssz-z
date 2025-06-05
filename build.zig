@@ -15,8 +15,6 @@ pub fn build(b: *std.Build) void {
     const dep_zbench = b.dependency("zbench", .{});
 
     const options_build_options = b.addOptions();
-    const option_disable_hashtree = b.option(bool, "disable_hashtree", "");
-    options_build_options.addOption(?bool, "disable_hashtree", option_disable_hashtree);
     const option_zero_hash_max_depth = b.option(u8, "zero_hash_max_depth", "");
     options_build_options.addOption(?u8, "zero_hash_max_depth", option_zero_hash_max_depth);
     const option_preset = b.option([]const u8, "preset", "") orelse "mainnet";
@@ -54,7 +52,7 @@ pub fn build(b: *std.Build) void {
     b.modules.put(b.dupe("persistent_merkle_tree"), module_persistent_merkle_tree) catch @panic("OOM");
 
     const module_ssz = b.createModule(.{
-        .root_source_file = b.path("src/ssz/root.zig"),
+        .root_source_file = b.path("src/ssz/view_du.zig"),
         .target = target,
         .optimize = optimize,
     });
@@ -66,6 +64,13 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
     b.modules.put(b.dupe("consensus_types"), module_consensus_types) catch @panic("OOM");
+
+    const module_bun_ffi = b.createModule(.{
+        .root_source_file = b.path("src/bun_ffi/root.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    b.modules.put(b.dupe("bun_ffi"), module_bun_ffi) catch @panic("OOM");
 
     const module_download_spec_tests = b.createModule(.{
         .root_source_file = b.path("test/spec/download_spec_tests.zig"),
@@ -243,6 +248,28 @@ pub fn build(b: *std.Build) void {
     const tls_run_exe_bench_node = b.step("run:bench_node", "Run the bench_node executable");
     tls_run_exe_bench_node.dependOn(&run_exe_bench_node.step);
 
+    const module_write_bun_ffi = b.createModule(.{
+        .root_source_file = b.path("src/bun_ffi/write_types.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    b.modules.put(b.dupe("write_bun_ffi"), module_write_bun_ffi) catch @panic("OOM");
+
+    const exe_write_bun_ffi = b.addExecutable(.{
+        .name = "write_bun_ffi",
+        .root_module = module_write_bun_ffi,
+    });
+
+    const install_exe_write_bun_ffi = b.addInstallArtifact(exe_write_bun_ffi, .{});
+    const tls_install_exe_write_bun_ffi = b.step("build-exe:write_bun_ffi", "Install the write_bun_ffi executable");
+    tls_install_exe_write_bun_ffi.dependOn(&install_exe_write_bun_ffi.step);
+    b.getInstallStep().dependOn(&install_exe_write_bun_ffi.step);
+
+    const run_exe_write_bun_ffi = b.addRunArtifact(exe_write_bun_ffi);
+    if (b.args) |args| run_exe_write_bun_ffi.addArgs(args);
+    const tls_run_exe_write_bun_ffi = b.step("run:write_bun_ffi", "Run the write_bun_ffi executable");
+    tls_run_exe_write_bun_ffi.dependOn(&run_exe_write_bun_ffi.step);
+
     const module_types = b.createModule(.{
         .root_source_file = b.path("codegen:types"),
         .target = target,
@@ -255,7 +282,9 @@ pub fn build(b: *std.Build) void {
         .root_module = module_types,
     });
 
-    const install_lib_types = b.addInstallArtifact(lib_types, .{});
+    const install_lib_types = b.addInstallArtifact(lib_types, .{
+    });
+
     const tls_install_lib_types = b.step("build-lib:types", "Install the types library");
     tls_install_lib_types.dependOn(&install_lib_types.step);
     b.getInstallStep().dependOn(&install_lib_types.step);
@@ -331,6 +360,20 @@ pub fn build(b: *std.Build) void {
     const tls_run_test_consensus_types = b.step("test:consensus_types", "Run the consensus_types test");
     tls_run_test_consensus_types.dependOn(&run_test_consensus_types.step);
     tls_run_test.dependOn(&run_test_consensus_types.step);
+
+    const test_bun_ffi = b.addTest(.{
+        .name = "bun_ffi",
+        .root_module = module_bun_ffi,
+        .filters = &[_][]const u8{  },
+    });
+    const install_test_bun_ffi = b.addInstallArtifact(test_bun_ffi, .{});
+    const tls_install_test_bun_ffi = b.step("build-test:bun_ffi", "Install the bun_ffi test");
+    tls_install_test_bun_ffi.dependOn(&install_test_bun_ffi.step);
+
+    const run_test_bun_ffi = b.addRunArtifact(test_bun_ffi);
+    const tls_run_test_bun_ffi = b.step("test:bun_ffi", "Run the bun_ffi test");
+    tls_run_test_bun_ffi.dependOn(&run_test_bun_ffi.step);
+    tls_run_test.dependOn(&run_test_bun_ffi.step);
 
     const test_download_spec_tests = b.addTest(.{
         .name = "download_spec_tests",
@@ -444,6 +487,20 @@ pub fn build(b: *std.Build) void {
     tls_run_test_bench_node.dependOn(&run_test_bench_node.step);
     tls_run_test.dependOn(&run_test_bench_node.step);
 
+    const test_write_bun_ffi = b.addTest(.{
+        .name = "write_bun_ffi",
+        .root_module = module_write_bun_ffi,
+        .filters = &[_][]const u8{  },
+    });
+    const install_test_write_bun_ffi = b.addInstallArtifact(test_write_bun_ffi, .{});
+    const tls_install_test_write_bun_ffi = b.step("build-test:write_bun_ffi", "Install the write_bun_ffi test");
+    tls_install_test_write_bun_ffi.dependOn(&install_test_write_bun_ffi.step);
+
+    const run_test_write_bun_ffi = b.addRunArtifact(test_write_bun_ffi);
+    const tls_run_test_write_bun_ffi = b.step("test:write_bun_ffi", "Run the write_bun_ffi test");
+    tls_run_test_write_bun_ffi.dependOn(&run_test_write_bun_ffi.step);
+    tls_run_test.dependOn(&run_test_write_bun_ffi.step);
+
     const test_types = b.addTest(.{
         .name = "types",
         .root_module = module_types,
@@ -532,9 +589,15 @@ pub fn build(b: *std.Build) void {
     module_ssz.addImport("build_options", options_module_build_options);
     module_ssz.addImport("hex", module_hex);
     module_ssz.addImport("hashing", module_hashing);
+    module_ssz.addImport("persistent_merkle_tree", module_persistent_merkle_tree);
 
     module_consensus_types.addImport("build_options", options_module_build_options);
     module_consensus_types.addImport("ssz", module_ssz);
+
+    module_bun_ffi.addImport("build_options", options_module_build_options);
+    module_bun_ffi.addImport("persistent_merkle_tree", module_persistent_merkle_tree);
+    module_bun_ffi.addImport("ssz", module_ssz);
+    module_bun_ffi.addImport("consensus_types", module_consensus_types);
 
     module_download_spec_tests.addImport("spec_test_options", options_module_spec_test_options);
 
@@ -559,6 +622,11 @@ pub fn build(b: *std.Build) void {
 
     module_bench_node.addImport("hashing", module_hashing);
     module_bench_node.addImport("zbench", dep_zbench.module("zbench"));
+
+    module_write_bun_ffi.addImport("build_options", options_module_build_options);
+    module_write_bun_ffi.addImport("persistent_merkle_tree", module_persistent_merkle_tree);
+    module_write_bun_ffi.addImport("ssz", module_ssz);
+    module_write_bun_ffi.addImport("consensus_types", module_consensus_types);
 
     module_int.addImport("hex", module_hex);
     module_int.addImport("ssz", module_ssz);
