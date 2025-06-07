@@ -6,6 +6,7 @@ const hexByteLen = @import("hex").hexByteLen;
 const merkleize = @import("hashing").merkleize;
 const mixInLength = @import("hashing").mixInLength;
 const maxChunksToDepth = @import("hashing").maxChunksToDepth;
+const Node = @import("persistent_merkle_tree").Node;
 
 pub fn isByteListType(ST: type) bool {
     return ST.kind == .list and ST.Element.kind == .uint and ST.Element.fixed_size == 1 and ST == ByteListType(ST.limit);
@@ -83,6 +84,49 @@ pub fn ByteListType(comptime _limit: comptime_int) type {
 
                 try merkleize(@ptrCast(chunks), chunk_depth, out);
                 mixInLength(len, out);
+            }
+        };
+
+        pub const tree = struct {
+            pub fn length(node: Node.Id, pool: *Node.Pool) !usize {
+                const right = try node.getRight(pool);
+                const hash = try right.getRoot(pool);
+                return std.mem.readInt(usize, hash[0..8], .little);
+            }
+
+            pub fn toValue(allocator: std.mem.Allocator, node: Node.Id, pool: *Node.Pool, out: *Type) !void {
+                const len = try length(node, pool);
+                const chunk_count = (len + 31) / 32;
+                const nodes = try allocator.alloc(Node.Id, chunk_count);
+                defer allocator.free(nodes);
+                try node.getNodesAtDepth(pool, chunk_depth, 0, &nodes);
+
+                try out.resize(allocator, len);
+                for (0..chunk_count - 1) |i| {
+                    const child_node = nodes[i];
+                    const hash = try child_node.getRoot(pool);
+                    const start = i * 32;
+                    const end = start + 32;
+                    @memcpy(&out.items[start..end], hash);
+                }
+                @memcpy(&out.items[(chunk_count - 1) * 32 ..][0 .. out.items.len & 31], nodes[chunk_count - 1][0 .. out.items.len & 31]);
+            }
+
+            pub fn fromValue(allocator: std.mem.Allocator, pool: *Node.Pool, value: Type) !Node.Id {
+                const chunk_count = chunkCount(&value);
+                const nodes = try allocator.alloc(Node.Id, chunk_count);
+                for (0..chunk_count - 1) |i| {
+                    const start = i * 32;
+                    const end = start + 32;
+                    const chunk = value.items[start..end];
+                    nodes[i] = try pool.createLeaf(&chunk, false);
+                }
+                nodes[chunk_count - 1] = try pool.createLeaf(&value.items[(chunk_count - 1) * 32 ..][0 .. value.items.len & 31], false);
+                return try pool.createBranch(
+                    try Node.fillWithContents(pool, nodes[0..chunk_count], chunk_depth, false),
+                    try pool.createLeafFromUint(value.items.len, false),
+                    false,
+                );
             }
         };
 

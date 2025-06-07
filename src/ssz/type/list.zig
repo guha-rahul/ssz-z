@@ -6,6 +6,7 @@ const OffsetIterator = @import("offsets.zig").OffsetIterator;
 const merkleize = @import("hashing").merkleize;
 const mixInLength = @import("hashing").mixInLength;
 const maxChunksToDepth = @import("hashing").maxChunksToDepth;
+const Node = @import("persistent_merkle_tree").Node;
 
 pub fn FixedListType(comptime ST: type, comptime _limit: comptime_int) type {
     comptime {
@@ -150,6 +151,47 @@ pub fn FixedListType(comptime ST: type, comptime _limit: comptime_int) type {
                 }
                 try merkleize(@ptrCast(chunks), chunk_depth, out);
                 mixInLength(len, out);
+            }
+        };
+
+        pub const tree = struct {
+            pub fn length(node: Node.Id, pool: *Node.Pool) !usize {
+                const right = try node.getRight(pool);
+                const hash = try right.getRoot(pool);
+                return std.mem.readInt(usize, hash[0..8], .little);
+            }
+
+            pub fn toValue(allocator: std.mem.Allocator, node: Node.Id, pool: *Node.Pool, out: *Type) !void {
+                const len = try length(node, pool);
+                const chunk_count = if (comptime isBasicType(Element))
+                    (Element.fixed_size * len + 31) / 32
+                else
+                    len;
+
+                const nodes = try allocator.alloc(Node.Id, chunk_count);
+                defer allocator.free(nodes);
+
+                try node.getNodesAtDepth(pool, chunk_depth + 1, 0, &nodes);
+
+                try out.resize(allocator, len);
+                if (comptime isBasicType(Element)) {
+                    // tightly packed list
+                    for (0..len) |i| {
+                        try Element.tree.toValuePacked(
+                            nodes[i / Element.fixed_size],
+                            pool,
+                            &out.items[i],
+                        );
+                    }
+                } else {
+                    for (0..len) |i| {
+                        try Element.tree.toValue(
+                            nodes[i],
+                            pool,
+                            &out.items[i],
+                        );
+                    }
+                }
             }
         };
     };

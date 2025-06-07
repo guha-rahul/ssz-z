@@ -5,6 +5,8 @@ const hexToBytes = @import("hex").hexToBytes;
 const hexByteLen = @import("hex").hexByteLen;
 const merkleize = @import("hashing").merkleize;
 const maxChunksToDepth = @import("hashing").maxChunksToDepth;
+const Depth = @import("hashing").Depth;
+const Node = @import("persistent_merkle_tree").Node;
 
 pub fn isByteVectorType(ST: type) bool {
     return ST.kind == .vector and ST.Element.kind == .uint and ST.Element.fixed_size == 1 and ST == ByteVectorType(ST.length);
@@ -23,7 +25,7 @@ pub fn ByteVectorType(comptime _length: comptime_int) type {
         pub const Type: type = [length]Element.Type;
         pub const fixed_size: usize = Element.fixed_size * length;
         pub const chunk_count: usize = std.math.divCeil(usize, fixed_size, 32) catch unreachable;
-        pub const chunk_depth: u8 = maxChunksToDepth(chunk_count);
+        pub const chunk_depth: Depth = maxChunksToDepth(chunk_count);
 
         pub const default_value: Type = [_]Element.Type{Element.default_value} ** length;
 
@@ -57,6 +59,33 @@ pub fn ByteVectorType(comptime _length: comptime_int) type {
                 var chunks = [_][32]u8{[_]u8{0} ** 32} ** ((chunk_count + 1) / 2 * 2);
                 @memcpy(@as([]u8, @ptrCast(&chunks))[0..fixed_size], data);
                 try merkleize(@ptrCast(&chunks), chunk_depth, out);
+            }
+        };
+
+        pub const tree = struct {
+            pub fn toValue(node: Node.Id, pool: *Node.Pool, out: *Type) !void {
+                var nodes: [chunk_count]Node.Id = undefined;
+                try node.getNodesAtDepth(pool, chunk_depth, 0, &nodes);
+                for (0..chunk_count - 1) |i| {
+                    const child_node = nodes[i];
+                    const hash = try child_node.getRoot(pool);
+                    const start = i * 32;
+                    const end = start + 32;
+                    @memcpy(&out[start..end], hash);
+                }
+                @memcpy(&out[(chunk_count) - 1 * 32 ..][0 .. fixed_size & 31], nodes[chunk_count - 1][0 .. fixed_size & 31]);
+            }
+
+            pub fn fromValue(pool: *Node.Pool, value: Type) !Node.Id {
+                var nodes: [chunk_count]Node.Id = undefined;
+                for (0..chunk_count - 1) |i| {
+                    const start = i * 32;
+                    const end = start + 32;
+                    const chunk = value[start..end];
+                    nodes[i] = try pool.createLeaf(&chunk, false);
+                }
+                nodes[chunk_count - 1] = try pool.createLeaf(&value[(chunk_count - 1) * 32 ..][0 .. fixed_size & 31], false);
+                return try Node.fillWithContents(pool, nodes, chunk_depth, false);
             }
         };
 
