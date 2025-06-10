@@ -1,4 +1,4 @@
-name: Zig Build and Test
+name: CI
 
 on:
   push:
@@ -9,32 +9,60 @@ on:
       - main
 
 jobs:
-  zig-build-test:
+  unit-tests:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Install Zig
+      - name: Setup Zig
         uses: mlugg/setup-zig@v1
-        with:
-          version: "0.13.0" # Set the required Zig version
 
-      - name: persistent-merkle-tree - build and unit test
-        working-directory: packages/persistent-merkle-tree
+      - name: Unit tests
         run: |
-          zig build test:unit
-
-      - name: ssz - build and unit test
-        working-directory: packages/ssz
-        run: |
-          zig build test:unit
-      - name: ssz - lodestar test
-        working-directory: packages/ssz
-        run: |
-          zig build test:lodestar
-      - name: ssz - build and integration test
-        working-directory: packages/ssz
-        run: |
+          zig build test:hashing
+          zig build test:persistent_merkle_tree
+          zig build test:ssz
           zig build test:int
+
+  spec-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Zig
+        uses: mlugg/setup-zig@v1
+
+      - name: Cache spec tests
+        id: spec-tests
+        uses: actions/cache@v4
+        with:
+          path: test/spec/spec_tests
+          key: ${{ hashFiles('test/spec/version.txt') }}
+
+      - name: Download spec tests
+        run: |
+          zig build run:download_spec_tests
+      
+      - name: Write generic spec tests
+        run: |
+          zig build run:write_generic_spec_tests
+
+      - name: Write static spec tests
+        run: |
+          zig build run:write_static_spec_tests
+      
+      - name: Run generic spec tests
+        run: |
+          zig build test:generic_spec_tests
+      
+      - name: Run minimal static spec tests
+        run: |
+          zig build test:static_spec_tests -Dpreset=minimal
+      
+      - name: Run mainnet static spec tests
+        run: |
+          zig build test:static_spec_tests -Dpreset=mainnet
