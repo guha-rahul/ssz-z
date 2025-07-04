@@ -138,15 +138,15 @@ pub fn FixedVectorType(comptime ST: type, comptime _length: comptime_int) type {
         };
 
         pub fn serializeIntoJson(allocator: std.mem.Allocator, writer: anytype, in: *const Type) !void {
-            writer.begingArray();
+            try writer.beginArray();
             for (in) |element| {
                 if (comptime isBasicType(element)) {
-                    Element.serializeIntoJson(writer, &element);
+                    try Element.serializeIntoJson(writer, &element);
                 } else {
-                    Element.serializeIntoJson(allocator, writer, &element);
+                    try Element.serializeIntoJson(allocator, writer, &element);
                 }
             }
-            writer.endArray();
+            try writer.endArray();
         }
 
         pub fn deserializeFromJson(source: *std.json.Scanner, out: *Type) !void {
@@ -294,15 +294,15 @@ pub fn VariableVectorType(comptime ST: type, comptime _length: comptime_int) typ
         };
 
         pub fn serializeIntoJson(allocator: std.mem.Allocator, writer: anytype, in: *const Type) !void {
-            writer.begingArray();
+            try writer.beginArray();
             for (in) |element| {
                 if (comptime isBasicType(element)) {
-                    Element.serializeIntoJson(writer, &element);
+                    try Element.serializeIntoJson(writer, &element);
                 } else {
-                    Element.serializeIntoJson(allocator, writer, &element);
+                    try Element.serializeIntoJson(allocator, writer, &element);
                 }
             }
-            writer.endArray();
+            try writer.endArray();
         }
 
         pub fn deserializeFromJson(allocator: std.mem.Allocator, source: *std.json.Scanner, out: *Type) !void {

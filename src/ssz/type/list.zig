@@ -85,15 +85,15 @@ pub fn FixedListType(comptime ST: type, comptime _limit: comptime_int) type {
         }
 
         pub fn serializeIntoJson(allocator: std.mem.Allocator, writer: anytype, in: *const Type) !void {
-            writer.begingArray();
+            try writer.beginArray();
             for (in.items) |element| {
                 if (comptime isBasicType(element)) {
-                    Element.serializeIntoJson(writer, &element);
+                    try Element.serializeIntoJson(writer, &element);
                 } else {
-                    Element.serializeIntoJson(allocator, writer, &element);
+                    try Element.serializeIntoJson(allocator, writer, &element);
                 }
             }
-            writer.endArray();
+            try writer.endArray();
         }
 
         pub fn deserializeFromJson(allocator: std.mem.Allocator, source: *std.json.Scanner, out: *Type) !void {
@@ -329,15 +329,15 @@ pub fn VariableListType(comptime ST: type, comptime _limit: comptime_int) type {
         }
 
         pub fn serializeIntoJson(allocator: std.mem.Allocator, writer: anytype, in: *const Type) !void {
-            writer.begingArray();
+            try writer.beginArray();
             for (in.items) |element| {
                 if (comptime isBasicType(element)) {
-                    Element.serializeIntoJson(writer, &element);
+                    try Element.serializeIntoJson(writer, &element);
                 } else {
-                    Element.serializeIntoJson(allocator, writer, &element);
+                    try Element.serializeIntoJson(allocator, writer, &element);
                 }
             }
-            writer.endArray();
+            try writer.endArray();
         }
 
         pub fn deserializeFromBytes(allocator: std.mem.Allocator, data: []const u8, out: *Type) !void {
