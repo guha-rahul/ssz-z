@@ -3,6 +3,8 @@ const TypeKind = @import("type_kind.zig").TypeKind;
 const UintType = @import("uint.zig").UintType;
 const hexToBytes = @import("hex").hexToBytes;
 const byteLenFromHex = @import("hex").byteLenFromHex;
+const hexLenFromBytes = @import("hex").hexLenFromBytes;
+const bytesToHex = @import("hex").bytesToHex;
 const merkleize = @import("hashing").merkleize;
 const mixInLength = @import("hashing").mixInLength;
 const maxChunksToDepth = @import("hashing").maxChunksToDepth;
@@ -162,6 +164,14 @@ pub fn ByteListType(comptime _limit: comptime_int) type {
 
             try out.resize(allocator, data.len);
             @memcpy(out.items, data);
+        }
+
+        pub fn serializeIntoJson(allocator: std.mem.Allocator, writer: anytype, in: *const Type) !void {
+            const byte_str = try allocator.alloc(u8, hexLenFromBytes(in));
+            defer allocator.free(byte_str);
+
+            _ = try bytesToHex(byte_str, in);
+            try writer.print("\"{s}\"", .{byte_str});
         }
 
         pub fn deserializeFromJson(allocator: std.mem.Allocator, source: *std.json.Scanner, out: *Type) !void {
