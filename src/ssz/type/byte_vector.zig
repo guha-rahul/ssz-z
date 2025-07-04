@@ -2,7 +2,7 @@ const std = @import("std");
 const TypeKind = @import("type_kind.zig").TypeKind;
 const UintType = @import("uint.zig").UintType;
 const hexToBytes = @import("hex").hexToBytes;
-const hexByteLen = @import("hex").hexByteLen;
+const byteLenFromHex = @import("hex").byteLenFromHex;
 const merkleize = @import("hashing").merkleize;
 const maxChunksToDepth = @import("hashing").maxChunksToDepth;
 const Depth = @import("hashing").Depth;
@@ -107,7 +107,7 @@ pub fn ByteVectorType(comptime _length: comptime_int) type {
                 else => return error.InvalidJson,
             };
 
-            if (hexByteLen(hex_bytes) != length) {
+            if (byteLenFromHex(hex_bytes) != length) {
                 return error.InvalidJson;
             }
             _ = try hexToBytes(out, hex_bytes);

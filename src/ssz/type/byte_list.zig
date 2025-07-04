@@ -2,7 +2,7 @@ const std = @import("std");
 const TypeKind = @import("type_kind.zig").TypeKind;
 const UintType = @import("uint.zig").UintType;
 const hexToBytes = @import("hex").hexToBytes;
-const hexByteLen = @import("hex").hexByteLen;
+const byteLenFromHex = @import("hex").byteLenFromHex;
 const merkleize = @import("hashing").merkleize;
 const mixInLength = @import("hashing").mixInLength;
 const maxChunksToDepth = @import("hashing").maxChunksToDepth;
@@ -170,7 +170,7 @@ pub fn ByteListType(comptime _limit: comptime_int) type {
                 else => return error.InvalidJson,
             };
 
-            const hex_bytes_len = hexByteLen(hex_bytes);
+            const hex_bytes_len = byteLenFromHex(hex_bytes);
             if (hex_bytes_len > limit) {
                 return error.InvalidJson;
             }
