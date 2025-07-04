@@ -167,10 +167,10 @@ pub fn ByteListType(comptime _limit: comptime_int) type {
         }
 
         pub fn serializeIntoJson(allocator: std.mem.Allocator, writer: anytype, in: *const Type) !void {
-            const byte_str = try allocator.alloc(u8, hexLenFromBytes(in));
+            const byte_str = try allocator.alloc(u8, hexLenFromBytes(in.*.items));
             defer allocator.free(byte_str);
 
-            _ = try bytesToHex(byte_str, in);
+            _ = try bytesToHex(byte_str, in.*.items);
             try writer.print("\"{s}\"", .{byte_str});
         }
 

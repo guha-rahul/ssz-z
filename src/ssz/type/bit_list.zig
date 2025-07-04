@@ -355,7 +355,7 @@ pub fn BitListType(comptime _limit: comptime_int) type {
         };
 
         pub fn serializeIntoJson(allocator: std.mem.Allocator, writer: anytype, in: *const Type) !void {
-            const bytes = try allocator.alloc(u8, @TypeOf(in.*).serializedSize(&in));
+            const bytes = try allocator.alloc(u8, serializedSize(in));
             defer allocator.free(bytes);
             _ = serializeIntoBytes(in, bytes);
 

@@ -140,7 +140,7 @@ pub fn FixedVectorType(comptime ST: type, comptime _length: comptime_int) type {
         pub fn serializeIntoJson(allocator: std.mem.Allocator, writer: anytype, in: *const Type) !void {
             try writer.beginArray();
             for (in) |element| {
-                if (comptime isBasicType(element)) {
+                if (comptime isBasicType(Element)) {
                     try Element.serializeIntoJson(writer, &element);
                 } else {
                     try Element.serializeIntoJson(allocator, writer, &element);
@@ -296,7 +296,7 @@ pub fn VariableVectorType(comptime ST: type, comptime _length: comptime_int) typ
         pub fn serializeIntoJson(allocator: std.mem.Allocator, writer: anytype, in: *const Type) !void {
             try writer.beginArray();
             for (in) |element| {
-                if (comptime isBasicType(element)) {
+                if (comptime isBasicType(Element)) {
                     try Element.serializeIntoJson(writer, &element);
                 } else {
                     try Element.serializeIntoJson(allocator, writer, &element);
