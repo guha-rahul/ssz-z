@@ -1,6 +1,7 @@
 const std = @import("std");
 const hexToBytes = @import("hex").hexToBytes;
 const isFixedType = @import("ssz").isFixedType;
+const isBasicType = @import("ssz").isBasicType;
 
 pub const TypeTestCase = struct {
     id: []const u8,
@@ -55,6 +56,7 @@ pub fn typeTest(comptime ST: type) type {
                     try ST.serializeIntoJson(allocator, &write_stream, &json_value);
                 }
 
+                try std.testing.expectEqualSlices(u8, tc.json, output_json.items);
             } else {
                 // deserialize
                 var value = ST.default_value;
