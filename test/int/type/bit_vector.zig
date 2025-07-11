@@ -70,7 +70,7 @@ test "BitVectorType equals" {
     var b = BitVector.Type.empty;
     var c = BitVector.Type.empty;
 
-    // Set some bits in a and b (same pattern)
+    
     try a.set(0, true);
     try a.set(5, true);
     try a.set(15, true);
@@ -79,12 +79,11 @@ test "BitVectorType equals" {
     try b.set(5, true);
     try b.set(15, true);
 
-    // Set different bits in c
     try c.set(0, true);
     try c.set(5, true);
-    try c.set(14, true); // Different from a and b
+    try c.set(14, true); 
 
-    // Test equality
+
     try std.testing.expect(BitVector.equals(&a, &b));
     try std.testing.expect(!BitVector.equals(&a, &c));
 }
