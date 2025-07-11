@@ -46,7 +46,7 @@ test "FixedListType equals" {
 
     try a.appendSlice(allocator, &[_]u8{ 1, 2, 3 });
     try b.appendSlice(allocator, &[_]u8{ 1, 2, 3 });
-    try c.appendSlice(allocator, &[_]u8{ 1, 2 }); // Different length
+    try c.appendSlice(allocator, &[_]u8{ 1, 2 }); 
 
     try std.testing.expect(List.equals(&a, &b));
     try std.testing.expect(!List.equals(&a, &c));
