@@ -65,13 +65,6 @@ pub fn build(b: *std.Build) void {
     });
     b.modules.put(b.dupe("consensus_types"), module_consensus_types) catch @panic("OOM");
 
-    const module_bun_ffi = b.createModule(.{
-        .root_source_file = b.path("src/bun_ffi/root.zig"),
-        .target = target,
-        .optimize = optimize,
-    });
-    b.modules.put(b.dupe("bun_ffi"), module_bun_ffi) catch @panic("OOM");
-
     const module_download_spec_tests = b.createModule(.{
         .root_source_file = b.path("test/spec/download_spec_tests.zig"),
         .target = target,
@@ -351,20 +344,6 @@ pub fn build(b: *std.Build) void {
     tls_run_test_consensus_types.dependOn(&run_test_consensus_types.step);
     tls_run_test.dependOn(&run_test_consensus_types.step);
 
-    const test_bun_ffi = b.addTest(.{
-        .name = "bun_ffi",
-        .root_module = module_bun_ffi,
-        .filters = &[_][]const u8{},
-    });
-    const install_test_bun_ffi = b.addInstallArtifact(test_bun_ffi, .{});
-    const tls_install_test_bun_ffi = b.step("build-test:bun_ffi", "Install the bun_ffi test");
-    tls_install_test_bun_ffi.dependOn(&install_test_bun_ffi.step);
-
-    const run_test_bun_ffi = b.addRunArtifact(test_bun_ffi);
-    const tls_run_test_bun_ffi = b.step("test:bun_ffi", "Run the bun_ffi test");
-    tls_run_test_bun_ffi.dependOn(&run_test_bun_ffi.step);
-    tls_run_test.dependOn(&run_test_bun_ffi.step);
-
     const test_download_spec_tests = b.addTest(.{
         .name = "download_spec_tests",
         .root_module = module_download_spec_tests,
@@ -569,11 +548,6 @@ pub fn build(b: *std.Build) void {
 
     module_consensus_types.addImport("build_options", options_module_build_options);
     module_consensus_types.addImport("ssz", module_ssz);
-
-    module_bun_ffi.addImport("build_options", options_module_build_options);
-    module_bun_ffi.addImport("persistent_merkle_tree", module_persistent_merkle_tree);
-    module_bun_ffi.addImport("ssz", module_ssz);
-    module_bun_ffi.addImport("consensus_types", module_consensus_types);
 
     module_download_spec_tests.addImport("spec_test_options", options_module_spec_test_options);
 
