@@ -189,7 +189,7 @@ pub fn BitVectorType(comptime _length: comptime_int) type {
 test "BitVectorType - sanity" {
     const length = 44;
     const Bits = BitVectorType(length);
-    var b: Bits.Type = Bits.Type.init();
+    var b: Bits.Type = Bits.default_value;
     try b.set(0, true);
     try b.set(length - 1, true);
 
@@ -202,9 +202,4 @@ test "BitVectorType - sanity" {
     var b_buf: [Bits.fixed_size]u8 = undefined;
     _ = Bits.serializeIntoBytes(&b, &b_buf);
     try Bits.deserializeFromBytes(&b_buf, &b);
-}
-
-test {
-    std.debug.print("float {d}\n", .{3.14159565});
-    std.debug.print("int {d}\n", .{3});
 }
