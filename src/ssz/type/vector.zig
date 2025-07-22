@@ -28,12 +28,7 @@ pub fn FixedVectorType(comptime ST: type, comptime _length: comptime_int) type {
         pub const default_value: Type = [_]Element.Type{Element.default_value} ** length;
 
         pub fn equals(a: *const Type, b: *const Type) bool {
-            for (a, b) |a_elem, b_elem| {
-                if (!Element.equals(&a_elem, &b_elem)) {
-                    return false;
-                }
-            }
-            return true;
+            return std.mem.eql(u8, std.mem.asBytes(a), std.mem.asBytes(b));
         }
 
         pub fn hashTreeRoot(value: *const Type, out: *[32]u8) !void {
