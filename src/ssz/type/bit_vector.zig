@@ -3,6 +3,8 @@ const merkleize = @import("hashing").merkleize;
 const TypeKind = @import("type_kind.zig").TypeKind;
 const BoolType = @import("bool.zig").BoolType;
 const hexToBytes = @import("hex").hexToBytes;
+const hexLenFromBytes = @import("hex").hexLenFromBytes;
+const bytesToHex = @import("hex").bytesToHex;
 const maxChunksToDepth = @import("hashing").maxChunksToDepth;
 const Node = @import("persistent_merkle_tree").Node;
 
@@ -177,6 +179,14 @@ pub fn BitVectorType(comptime _length: comptime_int) type {
             }
         };
 
+        pub fn serializeIntoJson(writer: anytype, in: *const Type) !void {
+            const bytes = in.*.data;
+            var byte_str: [2 + 2 * byte_length]u8 = undefined;
+
+            _ = try bytesToHex(&byte_str, &bytes);
+            try writer.print("\"{s}\"", .{byte_str});
+        }
+
         pub fn deserializeFromJson(source: *std.json.Scanner, out: *Type) !void {
             const hex_bytes = switch (try source.next()) {
                 .string => |v| v,
@@ -187,7 +197,7 @@ pub fn BitVectorType(comptime _length: comptime_int) type {
                 return error.invalidLength;
             }
             // ensure trailing zeros for non-byte-aligned lengths
-            if (length % 8 != 0 and @clz(out.data[fixed_size - 1]) >= @clz(@as(u8, length / 8))) {
+            if (length % 8 != 0 and @clz(out.data[fixed_size - 1]) < 8 - length % 8) {
                 return error.trailingData;
             }
         }
@@ -197,7 +207,7 @@ pub fn BitVectorType(comptime _length: comptime_int) type {
 test "BitVectorType - sanity" {
     const length = 44;
     const Bits = BitVectorType(length);
-    var b: Bits.Type = Bits.Type.init();
+    var b: Bits.Type = Bits.default_value;
     try b.set(0, true);
     try b.set(length - 1, true);
 
@@ -210,9 +220,4 @@ test "BitVectorType - sanity" {
     var b_buf: [Bits.fixed_size]u8 = undefined;
     _ = Bits.serializeIntoBytes(&b, &b_buf);
     try Bits.deserializeFromBytes(&b_buf, &b);
-}
-
-test {
-    std.debug.print("float {d}\n", .{3.14159565});
-    std.debug.print("int {d}\n", .{3});
 }

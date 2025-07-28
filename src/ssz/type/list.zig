@@ -96,6 +96,14 @@ pub fn FixedListType(comptime ST: type, comptime _limit: comptime_int) type {
             }
         }
 
+        pub fn serializeIntoJson(_: std.mem.Allocator, writer: anytype, in: *const Type) !void {
+            try writer.beginArray();
+            for (in.items) |element| {
+                try Element.serializeIntoJson(writer, &element);
+            }
+            try writer.endArray();
+        }
+
         pub fn deserializeFromJson(allocator: std.mem.Allocator, source: *std.json.Scanner, out: *Type) !void {
             // start array token "["
             switch (try source.next()) {
@@ -112,8 +120,8 @@ pub fn FixedListType(comptime ST: type, comptime _limit: comptime_int) type {
                     else => {},
                 }
 
-                try out.ensureUnusedCapacity(allocator, 1);
-                out.expandToCapacity();
+                _ = try out.addOne(allocator);
+                out.items[i] = Element.default_value;
                 try Element.deserializeFromJson(source, &out.items[i]);
             }
             return error.invalidLength;
@@ -340,6 +348,14 @@ pub fn VariableListType(comptime ST: type, comptime _limit: comptime_int) type {
             return variable_index;
         }
 
+        pub fn serializeIntoJson(allocator: std.mem.Allocator, writer: anytype, in: *const Type) !void {
+            try writer.beginArray();
+            for (in.items) |element| {
+                try Element.serializeIntoJson(allocator, writer, &element);
+            }
+            try writer.endArray();
+        }
+
         pub fn deserializeFromBytes(allocator: std.mem.Allocator, data: []const u8, out: *Type) !void {
             const offsets = try readVariableOffsets(allocator, data);
             defer allocator.free(offsets);
@@ -494,8 +510,8 @@ pub fn VariableListType(comptime ST: type, comptime _limit: comptime_int) type {
                     else => {},
                 }
 
-                try out.ensureUnusedCapacity(allocator, 1);
-                out.expandToCapacity();
+                _ = try out.addOne(allocator);
+                out.items[i] = Element.default_value;
                 try Element.deserializeFromJson(allocator, source, &out.items[i]);
             }
             return error.invalidLength;
@@ -512,7 +528,7 @@ test "ListType - sanity" {
     // create a fixed list type and instance and round-trip serialize
     const Bytes = FixedListType(UintType(8), 32);
 
-    var b: Bytes.Type = try Bytes.init(allocator);
+    var b: Bytes.Type = Bytes.default_value;
     defer b.deinit(allocator);
     try b.append(allocator, 5);
 
@@ -524,13 +540,14 @@ test "ListType - sanity" {
 
     // create a variable list type and instance and round-trip serialize
     const BytesBytes = VariableListType(Bytes, 32);
-    var b2: BytesBytes.Type = try BytesBytes.init(allocator);
-    defer b2.deinit(allocator);
-    try b2.append(allocator, b);
+    var bb: BytesBytes.Type = BytesBytes.default_value;
+    defer bb.deinit(allocator);
+    const b2: Bytes.Type = Bytes.default_value;
+    try bb.append(allocator, b2);
 
-    const b2_buf = try allocator.alloc(u8, BytesBytes.serializedSize(&b2));
-    defer allocator.free(b2_buf);
+    const bb_buf = try allocator.alloc(u8, BytesBytes.serializedSize(&bb));
+    defer allocator.free(bb_buf);
 
-    _ = BytesBytes.serializeIntoBytes(&b2, b2_buf);
-    try BytesBytes.deserializeFromBytes(allocator, b2_buf, &b2);
+    _ = BytesBytes.serializeIntoBytes(&bb, bb_buf);
+    try BytesBytes.deserializeFromBytes(allocator, bb_buf, &bb);
 }

@@ -2,7 +2,9 @@ const std = @import("std");
 const TypeKind = @import("type_kind.zig").TypeKind;
 const BoolType = @import("bool.zig").BoolType;
 const hexToBytes = @import("hex").hexToBytes;
-const hexByteLen = @import("hex").hexByteLen;
+const bytesToHex = @import("hex").bytesToHex;
+const byteLenFromHex = @import("hex").byteLenFromHex;
+const hexLenFromBytes = @import("hex").hexLenFromBytes;
 const merkleize = @import("hashing").merkleize;
 const mixInLength = @import("hashing").mixInLength;
 const maxChunksToDepth = @import("hashing").maxChunksToDepth;
@@ -56,8 +58,8 @@ pub fn BitList(comptime limit: comptime_int) type {
             }
 
             const byte_idx = bit_index / 8;
-            const offset_in_byte = bit_index % 8;
-            const mask = 1 << offset_in_byte;
+            const offset_in_byte: u3 = @intCast(bit_index % 8);
+            const mask = @as(u8, 1) << offset_in_byte;
             return (self.data.items[byte_idx] & mask) == mask;
         }
 
@@ -360,12 +362,24 @@ pub fn BitListType(comptime _limit: comptime_int) type {
             }
         };
 
+        pub fn serializeIntoJson(allocator: std.mem.Allocator, writer: anytype, in: *const Type) !void {
+            const bytes = try allocator.alloc(u8, serializedSize(in));
+            defer allocator.free(bytes);
+            _ = serializeIntoBytes(in, bytes);
+
+            const byte_str = try allocator.alloc(u8, hexLenFromBytes(bytes));
+            defer allocator.free(byte_str);
+
+            _ = try bytesToHex(byte_str, bytes);
+            try writer.print("\"{s}\"", .{byte_str});
+        }
+
         pub fn deserializeFromJson(allocator: std.mem.Allocator, source: *std.json.Scanner, out: *Type) !void {
             const hex_bytes = switch (try source.next()) {
                 .string => |v| v,
                 else => return error.InvalidJson,
             };
-            const bytes = try allocator.alloc(u8, hexByteLen(hex_bytes));
+            const bytes = try allocator.alloc(u8, byteLenFromHex(hex_bytes));
             errdefer allocator.free(bytes);
             defer allocator.free(bytes);
             const written = try hexToBytes(bytes, hex_bytes);
@@ -390,4 +404,6 @@ test "BitListType - sanity" {
 
     _ = Bits.serializeIntoBytes(&b, b_buf);
     try Bits.deserializeFromBytes(allocator, b_buf, &b);
+
+    try std.testing.expect(try b.get(0) == false);
 }

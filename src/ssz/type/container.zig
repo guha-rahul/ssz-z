@@ -85,8 +85,8 @@ pub fn FixedContainerType(comptime ST: type) type {
         pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
             var i: usize = 0;
             inline for (fields) |field| {
-                const field_value = @field(value, field.name);
-                i += field.type.serializeIntoBytes(&field_value, out[i..]);
+                const field_value_ptr = &@field(value, field.name);
+                i += field.type.serializeIntoBytes(field_value_ptr, out[i..]);
             }
             return i;
         }
@@ -147,8 +147,8 @@ pub fn FixedContainerType(comptime ST: type) type {
             pub fn serializeIntoBytes(value: Node.Id, pool: *Node.Pool, out: []u8) !usize {
                 var i: usize = 0;
                 inline for (fields) |field| {
-                    const field_value = @field(value, field.name);
-                    i += try field.type.tree.serializeIntoBytes(field_value, pool, out[i..]);
+                    const field_value_ptr = &@field(value, field.name);
+                    i += try field.type.tree.serializeIntoBytes(field_value_ptr, pool, out[i..]);
                 }
                 return i;
             }
@@ -164,6 +164,16 @@ pub fn FixedContainerType(comptime ST: type) type {
                 }
             }
         };
+
+        pub fn serializeIntoJson(writer: anytype, in: *const Type) !void {
+            try writer.beginObject();
+            inline for (fields) |field| {
+                const field_value_ptr = &@field(in, field.name);
+                try writer.objectField(field.name);
+                try field.type.serializeIntoJson(writer, field_value_ptr);
+            }
+            try writer.endObject();
+        }
 
         pub fn deserializeFromJson(source: *std.json.Scanner, out: *Type) !void {
             // start object token "{"
@@ -518,6 +528,20 @@ pub fn VariableContainerType(comptime ST: type) type {
                 return try Node.fillWithContents(pool, &nodes, chunk_depth, false);
             }
         };
+
+        pub fn serializeIntoJson(allocator: std.mem.Allocator, writer: anytype, in: *const Type) !void {
+            try writer.beginObject();
+            inline for (fields) |field| {
+                const field_value_ptr = &@field(in, field.name);
+                try writer.objectField(field.name);
+                if (comptime isFixedType(field.type)) {
+                    try field.type.serializeIntoJson(writer, field_value_ptr);
+                } else {
+                    try field.type.serializeIntoJson(allocator, writer, field_value_ptr);
+                }
+            }
+            try writer.endObject();
+        }
 
         pub fn deserializeFromJson(allocator: std.mem.Allocator, source: *std.json.Scanner, out: *Type) !void {
             // start object token "{"
