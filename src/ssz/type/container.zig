@@ -66,7 +66,12 @@ pub fn FixedContainerType(comptime ST: type) type {
         };
 
         pub fn equals(a: *const Type, b: *const Type) bool {
-            return std.mem.eql(u8, std.mem.asBytes(a), std.mem.asBytes(b));
+            inline for (fields) |field| {
+                if (!field.type.equals(&@field(a, field.name), &@field(b, field.name))) {
+                    return false;
+                }
+            }
+            return true;
         }
 
         pub fn hashTreeRoot(value: *const Type, out: *[32]u8) !void {
