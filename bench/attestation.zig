@@ -101,6 +101,14 @@ const HashAttestationSerialized = struct {
     }
 };
 
+const EqualsAttestation = struct {
+    a: *Attestation.Type,
+    b: *Attestation.Type,
+    pub fn run(self: EqualsAttestation, _: std.mem.Allocator) void {
+        _ = Attestation.equals(self.a, self.b);
+    }
+};
+
 pub fn main() !void {
     const allocator = std.heap.page_allocator;
     const stdout = std.io.getStdOut().writer();
@@ -145,6 +153,9 @@ pub fn main() !void {
 
     const hash_attestation_serialized = HashAttestationSerialized{ .bytes = attestation_bytes };
     try bench.addParam("hash attestation serialized", &hash_attestation_serialized, .{});
+
+    const equals_attestation = EqualsAttestation{ .a = attestation, .b = attestation };
+    try bench.addParam("equals attestation", &equals_attestation, .{});
 
     try bench.run(stdout);
 }
