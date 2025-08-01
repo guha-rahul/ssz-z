@@ -31,6 +31,12 @@ pub fn BitVector(comptime _length: comptime_int) type {
             return bv;
         }
 
+        pub fn toBoolArray(self: *const @This(), out: *[length]bool) void {
+            for (0..length) |i| {
+                out[i] = self.get(i) catch unreachable;
+            }
+        }
+
         pub fn get(self: *const @This(), bit_index: usize) !bool {
             if (bit_index >= length) {
                 return error.OutOfRange;
@@ -212,6 +218,7 @@ test "BitVectorType - sanity" {
     try b.set(length - 1, true);
 
     try std.testing.expectEqual(true, try b.get(0));
+
     for (1..length - 1) |i| {
         try std.testing.expectEqual(false, try b.get(i));
     }
@@ -220,4 +227,15 @@ test "BitVectorType - sanity" {
     var b_buf: [Bits.fixed_size]u8 = undefined;
     _ = Bits.serializeIntoBytes(&b, &b_buf);
     try Bits.deserializeFromBytes(&b_buf, &b);
+}
+
+test "BitVectorType - sanity with bools" {
+    const Bits = BitVectorType(4);
+    const expected_bools = [_]bool{ true, false, true, true };
+    var b: Bits.Type = try Bits.Type.fromBoolArray(expected_bools);
+
+    var actual_bools: [Bits.length]bool = undefined;
+    b.toBoolArray(&actual_bools);
+
+    try std.testing.expectEqualSlices(bool, &expected_bools, &actual_bools);
 }

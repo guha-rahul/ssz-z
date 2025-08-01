@@ -48,6 +48,15 @@ pub fn BitList(comptime limit: comptime_int) type {
             return bl;
         }
 
+        pub fn toBoolSlice(self: *const @This(), out: *[]bool) !void {
+            if (out.len != self.bit_len) {
+                return error.InvalidSize;
+            }
+            for (0..self.bit_len) |i| {
+                out.*[i] = self.get(i) catch unreachable;
+            }
+        }
+
         pub fn deinit(self: *@This(), allocator: std.mem.Allocator) void {
             self.data.deinit(allocator);
         }
@@ -406,4 +415,18 @@ test "BitListType - sanity" {
     try Bits.deserializeFromBytes(allocator, b_buf, &b);
 
     try std.testing.expect(try b.get(0) == false);
+}
+
+test "BitListType - sanity with bools" {
+    const allocator = std.testing.allocator;
+    const Bits = BitListType(8);
+    const expected_bools = [_]bool{ true, false, true, true };
+    var b: Bits.Type = try Bits.Type.fromBoolSlice(allocator, &expected_bools);
+    defer b.deinit(allocator);
+
+    var actual_bools = try allocator.alloc(bool, expected_bools.len);
+    defer allocator.free(actual_bools);
+    try b.toBoolSlice(&actual_bools);
+
+    try std.testing.expectEqualSlices(bool, &expected_bools, actual_bools);
 }
