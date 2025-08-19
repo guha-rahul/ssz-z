@@ -78,6 +78,32 @@ pub fn BitVector(comptime _length: comptime_int) type {
                 }
             }
         }
+
+        /// Allocates and returns an `ArrayList` of indices where the bit at the index of `self` is set to `true`.
+        ///
+        /// Caller must call `deinit` on the returned list
+        pub fn intersectValues(
+            self: *const @This(),
+            comptime T: type,
+            allocator: std.mem.Allocator,
+            values: *const [length]T,
+        ) !std.ArrayList(T) {
+            var indices = try std.ArrayList(T).initCapacity(allocator, byte_len * 8);
+
+            for (0..byte_len) |i_byte| {
+                var b = self.data[i_byte];
+                // Kernighan's algorithm to count the set bits instead of going through 0..8 for every byte
+                while (b != 0) {
+                    const lsb: usize = @as(u8, @ctz(b)); // Get the index of least significant bit
+                    const bit_index = i_byte * 8 + lsb;
+                    indices.appendAssumeCapacity(values[bit_index]);
+                    // The `b - 1` flips the bits starting from `lsb` index
+                    // And `&` will reset the last bit at `lsb` index
+                    b &= b - 1;
+                }
+            }
+            return indices;
+        }
     };
 }
 
@@ -238,4 +264,30 @@ test "BitVectorType - sanity with bools" {
     b.toBoolArray(&actual_bools);
 
     try std.testing.expectEqualSlices(bool, &expected_bools, &actual_bools);
+}
+
+test "BitVectorType - intersectValues" {
+    const TestCase = struct { expected: []const u8, bit_len: usize };
+    const test_cases = [_]TestCase{
+        .{ .expected = &[_]u8{}, .bit_len = 16 },
+        .{ .expected = &[_]u8{3}, .bit_len = 16 },
+        .{ .expected = &[_]u8{ 0, 5, 6, 10, 14 }, .bit_len = 16 },
+        .{ .expected = &[_]u8{ 0, 5, 6, 10, 14 }, .bit_len = 15 },
+    };
+
+    const allocator = std.testing.allocator;
+    const Bits = BitVectorType(16);
+
+    for (test_cases) |tc| {
+        var b: Bits.Type = Bits.default_value;
+
+        for (tc.expected) |i| try b.set(i, true);
+
+        var values: [16]u8 = undefined;
+        for (0..tc.bit_len) |i| values[i] = @intCast(i);
+
+        var actual = try b.intersectValues(u8, allocator, &values);
+        defer actual.deinit();
+        try std.testing.expectEqualSlices(u8, tc.expected, actual.items);
+    }
 }
