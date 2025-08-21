@@ -1,4 +1,6 @@
 const std = @import("std");
+const expectEqualRootsAlloc = @import("test_utils.zig").expectEqualRootsAlloc;
+const expectEqualSerializedAlloc = @import("test_utils.zig").expectEqualSerializedAlloc;
 const TypeKind = @import("type_kind.zig").TypeKind;
 const BoolType = @import("bool.zig").BoolType;
 const hexToBytes = @import("hex").hexToBytes;
@@ -212,6 +214,14 @@ pub fn BitListType(comptime _limit: comptime_int) type {
 
             try merkleize(@ptrCast(chunks), chunk_depth, out);
             mixInLength(value.bit_len, out);
+        }
+
+        /// Clones the underlying `ArrayList` in `data`.
+        ///
+        /// Caller owns the memory.
+        pub fn clone(allocator: std.mem.Allocator, value: *const Type, out: *Type) !void {
+            out.data = try value.data.clone(allocator);
+            out.bit_len = value.bit_len;
         }
 
         pub fn serializedSize(value: *const Type) usize {
@@ -500,4 +510,22 @@ test "BitListType - intersectValues" {
         defer actual.deinit();
         try std.testing.expectEqualSlices(u8, tc.expected, actual.items);
     }
+}
+
+test "clone" {
+    const allocator = std.testing.allocator;
+
+    const Bits = BitListType(40);
+    var b: Bits.Type = try Bits.Type.fromBitLen(allocator, 30);
+    defer b.deinit(allocator);
+
+    var cloned: Bits.Type = undefined;
+    try Bits.clone(allocator, &b, &cloned);
+    defer cloned.deinit(allocator);
+
+    try std.testing.expect(&b != &cloned);
+    try std.testing.expect(b.bit_len == cloned.bit_len);
+    try std.testing.expect(std.mem.eql(u8, b.data.items, cloned.data.items));
+    try expectEqualRootsAlloc(Bits, allocator, b, cloned);
+    try expectEqualSerializedAlloc(Bits, allocator, b, cloned);
 }
