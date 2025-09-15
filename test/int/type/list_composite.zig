@@ -59,6 +59,7 @@ test "ListCompositeType of Container" {
 }
 
 test "VariableListType of FixedList" {
+    // refer to https://github.com/ChainSafe/ssz/blob/7f5580c2ea69f9307300ddb6010a8bc7ce2fc471/packages/ssz/test/unit/byType/listComposite/valid.test.ts#L59
     const test_cases = [_]TestCase{
         TestCase{
             .id = "empty",
