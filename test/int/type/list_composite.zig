@@ -74,7 +74,7 @@ test "VariableListType of FixedList" {
             .json =
             \\[["1","2"],["3","4"]]
             ,
-            .rootHex = "0x0000000000000000000000000000000000000000000000000000000000000000",
+            .rootHex = "0x58140d48f9c24545c1e3a50f1ebcca85fd40433c9859c0ac34342fc8e0a800b8",
         },
         TestCase{
             .id = "2 empty values",
