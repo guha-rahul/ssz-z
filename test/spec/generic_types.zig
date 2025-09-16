@@ -85,6 +85,13 @@ pub const bitlist_8 = ssz.BitListType(8);
 pub const bitlist_16 = ssz.BitListType(16);
 pub const bitlist_31 = ssz.BitListType(31);
 pub const bitlist_32 = ssz.BitListType(32);
+pub const bitlist_33 = ssz.BitListType(33);
+pub const bitlist_511 = ssz.BitListType(511);
+pub const bitlist_6 = ssz.BitListType(6);
+pub const bitlist_7 = ssz.BitListType(7);
+pub const bitlist_9 = ssz.BitListType(9);
+pub const bitlist_15 = ssz.BitListType(15);
+pub const bitlist_17 = ssz.BitListType(17);
 pub const bitlist_512 = ssz.BitListType(512);
 pub const bitlist_513 = ssz.BitListType(513);
 pub const bitlist_no = ssz.BitListType(513);
@@ -102,6 +109,12 @@ pub const bitvec_31 = ssz.BitVectorType(31);
 pub const bitvec_32 = ssz.BitVectorType(32);
 pub const bitvec_512 = ssz.BitVectorType(512);
 pub const bitvec_513 = ssz.BitVectorType(513);
+pub const bitvec_6 = ssz.BitVectorType(6);
+pub const bitvec_7 = ssz.BitVectorType(7);
+pub const bitvec_15 = ssz.BitVectorType(15);
+pub const bitvec_17 = ssz.BitVectorType(17);
+pub const bitvec_33 = ssz.BitVectorType(33);
+pub const bitvec_511 = ssz.BitVectorType(511);
 
 // boolean
 pub const boolean = ssz.BoolType();
@@ -141,6 +154,32 @@ pub const BitsStruct = ssz.VariableContainerType(struct {
     E: ssz.BitVectorType(8),
 });
 
+// progressive test container used by spec tests
+const U16 = ssz.UintType(16);
+const U64 = ssz.UintType(64);
+const PairU16 = ssz.FixedContainerType(struct { A: U16, B: U16 });
+pub const ProgressiveTestStruct = ssz.VariableContainerType(struct {
+    A: ssz.ProgressiveByteListType(8192),
+    B: ssz.ProgressiveListType(U64, 4096),
+    C: ssz.ProgressiveListType(PairU16, 4096),
+});
+
+// progressive bits container used by generic container tests
+pub const ProgressiveBitsStruct = ssz.VariableContainerType(struct {
+    A: ssz.ByteListType(2048),
+    B: ssz.ByteListType(2048),
+    C: ssz.ByteListType(2048),
+    D: ssz.ByteListType(2048),
+    E: ssz.ByteListType(2048),
+    F: ssz.ByteListType(2048),
+    G: ssz.ByteListType(4096),
+    H: ssz.ByteListType(4096),
+    I: ssz.ByteListType(4096),
+    J: ssz.ByteListType(4096),
+    K: ssz.ByteListType(4096),
+    L: ssz.ByteListType(4096),
+});
+
 // uints
 pub const uint_8 = ssz.UintType(8);
 pub const uint_16 = ssz.UintType(16);
@@ -157,3 +196,11 @@ pub const proglist_uint32 = ssz.ProgressiveListType(uint_32, 1024);
 pub const proglist_uint64 = ssz.ProgressiveListType(uint_64, 1024);
 pub const proglist_uint128 = ssz.ProgressiveListType(uint_128, 1024);
 pub const proglist_uint256 = ssz.ProgressiveListType(uint_256, 1024);
+
+// progressive bitlist (single type used across many cases)
+pub const progbitlist_zero = ssz.ProgressiveBitListType(2048);
+pub const progbitlist_nil = ssz.ProgressiveBitListType(2048);
+pub const progbitlist_lengthy = ssz.ProgressiveBitListType(2048);
+pub const progbitlist_max = ssz.ProgressiveBitListType(2048);
+pub const progbitlist_random = ssz.ProgressiveBitListType(2048);
+pub const progbitlist_no = ssz.ProgressiveBitListType(2048);

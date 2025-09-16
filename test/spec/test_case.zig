@@ -57,6 +57,14 @@ pub fn parseYaml(comptime ST: type, allocator: Allocator, y: yaml.Yaml, out: *ST
             try out.resize(allocator, bytes.len);
             @memcpy(out.items, bytes);
             return;
+        } else if (comptime @hasField(ST.Type, "bit_len")) {
+            // ProgressiveBitListType: YAML is hex-encoded bytes with termination bit
+            const hex_bytes = try y.parse(allocator, []u8);
+            const bytes_buf = try allocator.alloc(u8, (hex_bytes.len - 2) / 2);
+            const bytes = try hex.hexToBytes(bytes_buf, hex_bytes);
+            out.* = ST.default_value;
+            try ST.deserializeFromBytes(allocator, bytes, out);
+            return;
         } else if (comptime ssz.isBasicType(ST.Element)) {
             const items = try y.parse(allocator, []ST.Element.Type);
             out.* = ST.Type.empty;

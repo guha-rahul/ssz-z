@@ -20,6 +20,10 @@ pub fn Hasher(comptime ST: type) type {
                         return try HasherData.initCapacity(allocator, hasher_size, children);
                     }
                 },
+                .progressive_list => {
+                    // Progressive lists compute roots from serialized form; no prealloc needed
+                    return try HasherData.initCapacity(allocator, 0, null);
+                },
                 .container => {
                     const hasher_size = if (ST.chunk_count % 2 == 1) ST.chunk_count + 1 else ST.chunk_count;
                     var children = try allocator.alloc(HasherData, ST.fields.len);
