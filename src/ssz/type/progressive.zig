@@ -39,7 +39,6 @@ fn merkleizeProgressiveImpl(
         @memset(tmp, zero);
 
         @memcpy(tmp[0..take], chunks[0..take]);
-        // merkleize expects [][2][32]u8 (pairs). Reinterpret the tmp leaf array.
         const pairs_len = even_len / 2;
         const pairs: [][2][32]u8 = @as([*][2][32]u8, @ptrCast(tmp.ptr))[0..pairs_len];
         try merkleize(pairs, depth, &right);
@@ -55,8 +54,7 @@ fn merkleizeProgressiveImpl(
     hash(&left, &right, out);
 }
 
-/// Streamed progressive merkleization over a virtual leaf set.
-/// get_leaf(ctx, i, out) must write a 32-byte leaf for index i in [0, total_leaves).
+/// Optional streamed variant. Keep or add later as needed.
 pub fn merkleizeByLeafFn(
     allocator: std.mem.Allocator,
     total_leaves: usize,
@@ -83,7 +81,6 @@ fn merkleizeByLeafFnImpl(
 
     const take = @min(num_leaves, remaining);
 
-    // Build right branch 'b' by merkleizing the first 'take' leaves at fixed depth.
     var b: [32]u8 = undefined;
     if (take == 0) {
         @memset(&b, 0);
@@ -104,7 +101,6 @@ fn merkleizeByLeafFnImpl(
         try merkleize(pairs2, depth, &b);
     }
 
-    // Left branch 'a' recurses over the tail with capacity x4.
     var a: [32]u8 = undefined;
     if (remaining > take) {
         try merkleizeByLeafFnImpl(allocator, base + take, remaining - take, num_leaves * 4, get_leaf, ctx, &a);
@@ -112,5 +108,5 @@ fn merkleizeByLeafFnImpl(
         @memset(&a, 0);
     }
 
-    hashOne(out, &a, &b);
+    hash(&a, &b, out);
 }

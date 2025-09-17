@@ -6,6 +6,8 @@ const isFixedType = @import("type_kind.zig").isFixedType;
 const hashing = @import("hashing");
 const mixInLength = hashing.mixInLength;
 const maxChunksToDepth = hashing.maxChunksToDepth;
+const hashOne = hashing.hashOne;
+const merkleize = hashing.merkleize;
 
 const progressive = @import("progressive.zig");
 const Node = @import("persistent_merkle_tree").Node;
@@ -30,7 +32,7 @@ pub fn ProgressiveListType(comptime Elem: type, comptime limit: comptime_int) ty
         pub const default_value: Type = Type.empty;
 
         pub fn deinit(a: std.mem.Allocator, v: *Type) void {
-            if (!isBasicType(Element)) {
+            if (comptime !isBasicType(Element)) {
                 for (v.items) |*e| Element.deinit(a, e);
             }
             v.deinit(a);
@@ -152,13 +154,44 @@ pub fn ProgressiveListType(comptime Elem: type, comptime limit: comptime_int) ty
             }
         }
 
-        /// Value path hashing delegates to the serialized path for consistency
+        /// Value path hashing uses progressive merkleization, matching serialized hashing rule
         pub fn hashTreeRoot(a: std.mem.Allocator, v: *const Type, out: *[32]u8) !void {
-            const total = serializedSize(v);
-            const buf = try a.alloc(u8, total);
-            defer a.free(buf);
-            _ = serializeIntoBytes(v, buf);
-            try serialized.hashTreeRoot(a, buf, out);
+            if (comptime isBasicType(Element)) {
+                const total = serializedSize(v);
+                const chunk_count = (total + 31) / 32;
+                var buf = try a.alloc(u8, total);
+                defer a.free(buf);
+                _ = serializeIntoBytes(v, buf);
+
+                var leaves = try a.alloc([32]u8, chunk_count);
+                defer a.free(leaves);
+                @memset(leaves, [_]u8{0} ** 32);
+                var i: usize = 0;
+                while (i < chunk_count) : (i += 1) {
+                    const start = i * 32;
+                    const remaining = total - start;
+                    const to_copy = @min(remaining, 32);
+                    if (to_copy > 0) @memcpy(leaves[i][0..to_copy], buf[start .. start + to_copy]);
+                }
+                try progressive.merkleizeChunks(a, leaves, out);
+                mixInLength(v.items.len, out);
+            } else {
+                const chunk_count = v.items.len;
+                var leaves = try a.alloc([32]u8, chunk_count);
+                defer a.free(leaves);
+                @memset(leaves, [_]u8{0} ** 32);
+                if (comptime isFixedType(Element)) {
+                    for (v.items, 0..) |e, i| {
+                        try Element.hashTreeRoot(&e, &leaves[i]);
+                    }
+                } else {
+                    for (v.items, 0..) |e, i| {
+                        try Element.hashTreeRoot(a, &e, &leaves[i]);
+                    }
+                }
+                try progressive.merkleizeChunks(a, leaves, out);
+                mixInLength(v.items.len, out);
+            }
         }
 
         pub const serialized = struct {
@@ -180,61 +213,62 @@ pub fn ProgressiveListType(comptime Elem: type, comptime limit: comptime_int) ty
                 } else {
                     if (data.len == 0) return 0;
                     const VL = @import("list.zig").VariableListType(Element, limit);
-                    var it = @import("serialized.zig").OffsetIterator(VL).init(data);
+                    var it = @import("offsets.zig").OffsetIterator(VL).init(data);
                     return try it.firstOffset() / 4;
                 }
             }
 
             pub fn hashTreeRoot(a: std.mem.Allocator, data: []const u8, out: *[32]u8) !void {
                 const len = try length(data);
-                if (len == 0) {
-                    @memset(out, 0);
-                    mixInLength(0, out);
-                    return;
-                }
 
-                const leaf_count: usize = if (comptime isBasicType(Element))
-                    (data.len + 31) / 32
-                else
-                    len;
-
-                var offs_opt: ?[]usize = null;
-                defer if (offs_opt) |o| a.free(o);
-                if (comptime (!isBasicType(Element) and !isFixedType(Element))) {
-                    const VL = @import("list.zig").VariableListType(Element, limit);
-                    offs_opt = try VL.readVariableOffsets(a, data);
-                }
-
-                const Ctx = struct { allocator: std.mem.Allocator, data: []const u8, offs: ?[]usize };
-                var ctx = Ctx{ .allocator = a, .data = data, .offs = offs_opt };
-
-                const getLeaf = struct {
-                    fn f(pctx: ?*anyopaque, index: usize, leaf_out: *[32]u8) !void {
-                        const c: *Ctx = @ptrCast(@alignCast(pctx.?));
-                        if (comptime isBasicType(Element)) {
-                            const start = index * 32;
-                            const end = @min(start + 32, c.data.len);
-                            @memset(leaf_out, 0);
-                            if (start < end) @memcpy(leaf_out[0 .. end - start], c.data[start..end]);
-                            return;
-                        }
-                        if (comptime isFixedType(Element)) {
-                            const sz = Element.fixed_size;
-                            const off = index * sz;
-                            var tmp: [32]u8 = undefined;
-                            try Element.serialized.hashTreeRoot(c.data[off .. off + sz], &tmp);
-                            @memcpy(leaf_out, &tmp);
-                            return;
-                        }
-                        const offs = c.offs.?;
-                        var tmp: [32]u8 = undefined;
-                        try Element.serialized.hashTreeRoot(c.allocator, c.data[offs[index]..offs[index + 1]], &tmp);
-                        @memcpy(leaf_out, &tmp);
+                if (comptime isBasicType(Element)) {
+                    const chunk_count = (data.len + 31) / 32;
+                    const chunks = try a.alloc([32]u8, chunk_count);
+                    defer a.free(chunks);
+                    @memset(chunks, [_]u8{0} ** 32);
+                    if (data.len > 0) {
+                        const bytes: []u8 = std.mem.sliceAsBytes(chunks);
+                        @memcpy(bytes[0..data.len], data);
                     }
-                }.f;
+                    try progressive.merkleizeChunks(a, chunks, out);
+                    mixInLength(len, out);
+                } else {
+                    const leaf_count: usize = len;
 
-                try progressive.merkleizeByLeafFn(a, leaf_count, getLeaf, &ctx, out);
-                mixInLength(len, out);
+                    var offs_opt: ?[]u32 = null;
+                    defer if (offs_opt) |o| a.free(o);
+                    if (comptime (!isFixedType(Element))) {
+                        const VL = @import("list.zig").VariableListType(Element, limit);
+                        offs_opt = try VL.readVariableOffsets(a, data);
+                    }
+
+                    const Ctx = struct { allocator: std.mem.Allocator, data: []const u8, offs: ?[]u32 };
+                    var ctx = Ctx{ .allocator = a, .data = data, .offs = offs_opt };
+
+                    const getLeaf = struct {
+                        fn f(pctx: ?*anyopaque, index: usize, leaf_out: *[32]u8) !void {
+                            const c: *Ctx = @ptrCast(@alignCast(pctx.?));
+                            if (comptime isFixedType(Element)) {
+                                const sz = Element.fixed_size;
+                                const off = index * sz;
+                                var tmp: [32]u8 = undefined;
+                                try Element.serialized.hashTreeRoot(c.data[off .. off + sz], &tmp);
+                                @memcpy(leaf_out, &tmp);
+                                return;
+                            }
+                            const offs = c.offs.?;
+                            var tmp: [32]u8 = undefined;
+                            try Element.serialized.hashTreeRoot(c.allocator, c.data[offs[index]..offs[index + 1]], &tmp);
+                            @memcpy(leaf_out, &tmp);
+                        }
+                    }.f;
+
+                    var contents2: [32]u8 = undefined;
+                    try progressive.merkleizeByLeafFn(a, leaf_count, getLeaf, &ctx, &contents2);
+                    var len_leaf2: [32]u8 = [_]u8{0} ** 32;
+                    std.mem.writeInt(u256, &len_leaf2, len, .little);
+                    hashOne(out, &contents2, &len_leaf2);
+                }
             }
         };
 

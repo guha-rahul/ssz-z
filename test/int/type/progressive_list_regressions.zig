@@ -1,0 +1,171 @@
+const std = @import("std");
+const ssz = @import("ssz");
+
+fn writeRepeatedBytes(buf: []u8, one: []const u8) void {
+    const sz = one.len;
+    var i: usize = 0;
+    while (i < buf.len) : (i += sz) {
+        std.mem.copyForwards(u8, buf[i .. i + sz], one);
+    }
+}
+
+fn leBytesU(n: anytype, comptime byte_len: usize) [byte_len]u8 {
+    // Use a wide accumulator to allow shifting by 8 even when byte_len == 1
+    var out: [byte_len]u8 = .{0} ** byte_len;
+    var x: u256 = @intCast(n);
+    var i: usize = 0;
+    while (i < byte_len) : (i += 1) {
+        out[i] = @as(u8, @intCast(x & 0xFF));
+        x >>= 8;
+    }
+    return out;
+}
+
+fn makeUintType(comptime bits: u16) type {
+    return ssz.types.ProgressiveListType(ssz.types.UintType(bits), 4096);
+}
+
+fn hashProgListSerialized(comptime bits: u16, allocator: std.mem.Allocator, count: usize, elem_le: []const u8) ![32]u8 {
+    const T = makeUintType(bits);
+    const elem_size = elem_le.len;
+    const total = elem_size * count;
+    const buf = try allocator.alloc(u8, total);
+    defer allocator.free(buf);
+    writeRepeatedBytes(buf, elem_le);
+
+    var out: [32]u8 = undefined;
+    try T.serialized.hashTreeRoot(allocator, buf, &out);
+    return out;
+}
+
+fn hashProgListBoolSerialized(allocator: std.mem.Allocator, count: usize, bit: u8) ![32]u8 {
+    const T = ssz.types.ProgressiveListType(ssz.types.BoolType(), 4096);
+    const buf = try allocator.alloc(u8, count);
+    defer allocator.free(buf);
+    @memset(buf, if (bit == 0) 0x00 else 0x01);
+
+    var out: [32]u8 = undefined;
+    try T.serialized.hashTreeRoot(allocator, buf, &out);
+    return out;
+}
+
+// --- Tests generated from failing cases in generic_spec_tests log ---
+
+test "PL[u8] zeros len=21 (proglist_uint8_zero_21)" {
+    const A = std.heap.page_allocator;
+    const expected = [_]u8{
+        0x8D, 0x52, 0xD5, 0x9D, 0x26, 0xCE, 0x3D, 0x28, 0xA7, 0x42, 0x77, 0x79, 0x70, 0x63, 0x33, 0x0E,
+        0xB8, 0x05, 0x9D, 0xCF, 0x06, 0x3A, 0x68, 0x38, 0x92, 0x93, 0x49, 0x85, 0x3D, 0x41, 0x65, 0x48,
+    };
+    const zeros = leBytesU(0, 1);
+    const got = try hashProgListSerialized(8, A, 21, &zeros);
+    try std.testing.expectEqualSlices(u8, expected[0..], got[0..]);
+}
+
+test "PL[u16] max len=341 (proglist_uint16_max_341)" {
+    const A = std.heap.page_allocator;
+    const expected = [_]u8{
+        0x69, 0x39, 0x64, 0x40, 0x7D, 0x3C, 0x4E, 0x6F, 0x64, 0x2A, 0xD8, 0x24, 0x0A, 0x7B, 0x7E, 0x25,
+        0x33, 0x0B, 0x04, 0x05, 0xAE, 0x14, 0x7E, 0x97, 0x86, 0x9F, 0x13, 0xFD, 0xF5, 0xD6, 0x2B, 0xAA,
+    };
+    const max = leBytesU(@as(u16, 0xFFFF), 2);
+    const got = try hashProgListSerialized(16, A, 341, &max);
+    try std.testing.expectEqualSlices(u8, expected[0..], got[0..]);
+}
+
+test "PL[u32] max len=1365 (proglist_uint32_max_1365)" {
+    const A = std.heap.page_allocator;
+    const expected = [_]u8{
+        0x2F, 0xDB, 0x09, 0x21, 0xE7, 0x71, 0x80, 0x17, 0xA5, 0x38, 0xA9, 0x83, 0x99, 0x03, 0x3F, 0x07,
+        0x66, 0xFE, 0xD0, 0xA1, 0x19, 0xA2, 0xF1, 0xC3, 0xDC, 0xFC, 0x78, 0x2D, 0xD6, 0x47, 0x4A, 0xFB,
+    };
+    const max = leBytesU(@as(u32, 0xFFFF_FFFF), 4);
+    const got = try hashProgListSerialized(32, A, 1365, &max);
+    try std.testing.expectEqualSlices(u8, expected[0..], got[0..]);
+}
+
+test "PL[u256] max len=8 (proglist_uint256_max_8)" {
+    const A = std.heap.page_allocator;
+    const expected = [_]u8{
+        0xBC, 0x66, 0x30, 0x63, 0x71, 0x87, 0x7B, 0x6B, 0xA5, 0x9E, 0x2E, 0x5C, 0xAA, 0x7F, 0xEB, 0xB4,
+        0x04, 0xF8, 0xDF, 0xE2, 0x58, 0xD5, 0x86, 0x5D, 0xEA, 0x04, 0xCA, 0x2A, 0x1C, 0x63, 0x11, 0x1C,
+    };
+    const max = [_]u8{0xFF} ** 32;
+    const got = try hashProgListSerialized(256, A, 8, &max);
+    try std.testing.expectEqualSlices(u8, expected[0..], got[0..]);
+}
+
+test "PL[bool] false len=4 (proglist_bool_zero_4)" {
+    const A = std.heap.page_allocator;
+    const expected = [_]u8{
+        0x3E, 0x4F, 0x51, 0xF6, 0x35, 0xCB, 0x15, 0x24, 0x2A, 0x9E, 0xBC, 0x81, 0xE9, 0x1F, 0x52, 0x91,
+        0x3D, 0x90, 0xA5, 0x2A, 0xF4, 0x11, 0xF3, 0x2E, 0x63, 0x6E, 0xFE, 0x12, 0x8B, 0xB2, 0x54, 0x54,
+    };
+    const got = try hashProgListBoolSerialized(A, 4, 0);
+    try std.testing.expectEqualSlices(u8, expected[0..], got[0..]);
+}
+
+test "PL[u16] max len=5 (proglist_uint16_max_5)" {
+    const A = std.heap.page_allocator;
+    const expected = [_]u8{
+        0x30, 0x22, 0x0E, 0xF7, 0x8A, 0xFD, 0x33, 0x56, 0x1D, 0x35, 0x0D, 0x72, 0xBC, 0x99, 0x63, 0xC7,
+        0x25, 0x28, 0x4F, 0x08, 0x22, 0x67, 0x44, 0x6B, 0xA5, 0x88, 0xCE, 0x25, 0x1F, 0xB5, 0xCB, 0xC4,
+    };
+    const max = leBytesU(@as(u16, 0xFFFF), 2);
+    const got = try hashProgListSerialized(16, A, 5, &max);
+    try std.testing.expectEqualSlices(u8, expected[0..], got[0..]);
+}
+
+test "PL[u256] max len=1 (proglist_uint256_max_1)" {
+    const A = std.heap.page_allocator;
+    const expected = [_]u8{
+        0x5D, 0x77, 0xD6, 0x22, 0x63, 0x50, 0x75, 0x04, 0x22, 0x0D, 0xDD, 0x0D, 0x48, 0x36, 0xF3, 0x96,
+        0x65, 0x46, 0x52, 0x6E, 0x00, 0x40, 0x40, 0x59, 0x83, 0xB7, 0x50, 0xB8, 0x98, 0x3B, 0x8F, 0xE3,
+    };
+    const max = [_]u8{0xFF} ** 32;
+    const got = try hashProgListSerialized(256, A, 1, &max);
+    try std.testing.expectEqualSlices(u8, expected[0..], got[0..]);
+}
+
+test "PL[u16] max len=2 (proglist_uint16_max_2)" {
+    const A = std.heap.page_allocator;
+    const expected = [_]u8{
+        0x57, 0xA7, 0x55, 0xCA, 0xAD, 0x5B, 0x5F, 0xC0, 0x62, 0x65, 0x7F, 0x56, 0x52, 0x87, 0x1B, 0xFE,
+        0xD4, 0xF2, 0x9B, 0x9D, 0x72, 0x25, 0x78, 0x1F, 0x91, 0x8F, 0x43, 0x1E, 0x31, 0xEC, 0x54, 0x6A,
+    };
+    const max = leBytesU(@as(u16, 0xFFFF), 2);
+    const got = try hashProgListSerialized(16, A, 2, &max);
+    try std.testing.expectEqualSlices(u8, expected[0..], got[0..]);
+}
+
+test "PL[u128] zeros len=21 (proglist_uint128_zero_21)" {
+    const A = std.heap.page_allocator;
+    const expected = [_]u8{
+        0xF4, 0xF0, 0xD9, 0x5D, 0xC6, 0xEC, 0xA7, 0x1B, 0xA8, 0xB1, 0x93, 0xCA, 0x7F, 0x3A, 0x13, 0x9D,
+        0x27, 0xDE, 0x32, 0x1B, 0x1C, 0x31, 0xD9, 0x3A, 0x2B, 0x61, 0x92, 0x73, 0x9A, 0x66, 0xEB, 0xD7,
+    };
+    const zeros = leBytesU(@as(u128, 0), 16);
+    const got = try hashProgListSerialized(128, A, 21, &zeros);
+    try std.testing.expectEqualSlices(u8, expected[0..], got[0..]);
+}
+
+test "PL[u8] zeros len=86 (proglist_uint8_zero_86)" {
+    const A = std.heap.page_allocator;
+    const expected = [_]u8{
+        0x07, 0x17, 0x57, 0x47, 0x9B, 0x22, 0x43, 0x6A, 0xA2, 0x2E, 0xD2, 0xC0, 0xDB, 0x50, 0x27, 0x62,
+        0xD7, 0xD9, 0xEE, 0x8B, 0x40, 0x59, 0xCB, 0x51, 0x52, 0xEA, 0x91, 0x99, 0xFF, 0xA4, 0xB8, 0x0B,
+    };
+    const zeros = leBytesU(0, 1);
+    const got = try hashProgListSerialized(8, A, 86, &zeros);
+    try std.testing.expectEqualSlices(u8, expected[0..], got[0..]);
+}
+
+test "PL[bool] false len=3 (proglist_bool_zero_3)" {
+    const A = std.heap.page_allocator;
+    const expected = [_]u8{
+        0x3E, 0x4F, 0x51, 0xF6, 0x35, 0xCB, 0x15, 0x24, 0x2A, 0x9E, 0xBC, 0x81, 0xE9, 0x1F, 0x52, 0x91,
+        0x3D, 0x90, 0xA5, 0x2A, 0xF4, 0x11, 0xF3, 0x2E, 0x63, 0x6E, 0xFE, 0x12, 0x8B, 0xB2, 0x54, 0x54,
+    };
+    const got = try hashProgListBoolSerialized(A, 3, 0);
+    try std.testing.expectEqualSlices(u8, expected[0..], got[0..]);
+}

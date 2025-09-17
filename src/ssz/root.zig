@@ -2,6 +2,8 @@ const std = @import("std");
 const testing = std.testing;
 
 pub const types = @import("type/root.zig");
+// Re-export hashing so tests and callers can use ssz.hashing helpers
+pub const hashing = @import("hashing");
 
 pub const TypeKind = types.TypeKind;
 pub const isBasicType = types.isBasicType;
