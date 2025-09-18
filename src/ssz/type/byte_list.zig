@@ -1,8 +1,12 @@
 const std = @import("std");
+const expectEqualRootsAlloc = @import("test_utils.zig").expectEqualRootsAlloc;
+const expectEqualSerializedAlloc = @import("test_utils.zig").expectEqualSerializedAlloc;
 const TypeKind = @import("type_kind.zig").TypeKind;
 const UintType = @import("uint.zig").UintType;
 const hexToBytes = @import("hex").hexToBytes;
-const hexByteLen = @import("hex").hexByteLen;
+const byteLenFromHex = @import("hex").byteLenFromHex;
+const hexLenFromBytes = @import("hex").hexLenFromBytes;
+const bytesToHex = @import("hex").bytesToHex;
 const merkleize = @import("hashing").merkleize;
 const mixInLength = @import("hashing").mixInLength;
 const maxChunksToDepth = @import("hashing").maxChunksToDepth;
@@ -30,6 +34,10 @@ pub fn ByteListType(comptime _limit: comptime_int) type {
 
         pub const default_value: Type = Type.empty;
 
+        pub fn equals(a: *const Type, b: *const Type) bool {
+            return std.mem.eql(u8, a.items, b.items);
+        }
+
         pub fn deinit(allocator: std.mem.Allocator, value: *Type) void {
             value.deinit(allocator);
         }
@@ -48,6 +56,13 @@ pub fn ByteListType(comptime _limit: comptime_int) type {
 
             try merkleize(chunks, chunk_depth, out);
             mixInLength(value.items.len, out);
+        }
+
+        /// Clones the underlying `ArrayList`.
+        ///
+        /// Caller owns the memory.
+        pub fn clone(allocator: std.mem.Allocator, value: *const Type, out: *Type) !void {
+            out.* = try value.clone(allocator);
         }
 
         pub fn serializedSize(value: *const Type) usize {
@@ -164,13 +179,21 @@ pub fn ByteListType(comptime _limit: comptime_int) type {
             @memcpy(out.items, data);
         }
 
+        pub fn serializeIntoJson(allocator: std.mem.Allocator, writer: anytype, in: *const Type) !void {
+            const byte_str = try allocator.alloc(u8, hexLenFromBytes(in.*.items));
+            defer allocator.free(byte_str);
+
+            _ = try bytesToHex(byte_str, in.*.items);
+            try writer.print("\"{s}\"", .{byte_str});
+        }
+
         pub fn deserializeFromJson(allocator: std.mem.Allocator, source: *std.json.Scanner, out: *Type) !void {
             const hex_bytes = switch (try source.next()) {
                 .string => |v| v,
                 else => return error.InvalidJson,
             };
 
-            const hex_bytes_len = hexByteLen(hex_bytes);
+            const hex_bytes_len = byteLenFromHex(hex_bytes);
             if (hex_bytes_len > limit) {
                 return error.InvalidJson;
             }
@@ -179,4 +202,21 @@ pub fn ByteListType(comptime _limit: comptime_int) type {
             _ = try hexToBytes(out.items, hex_bytes);
         }
     };
+}
+test "clone" {
+    const allocator = std.testing.allocator;
+
+    const length = 44;
+    const Bits = ByteListType(length);
+    var b = Bits.default_value;
+    defer b.deinit(allocator);
+    try b.append(allocator, 5);
+
+    var cloned: Bits.Type = undefined;
+    defer cloned.deinit(allocator);
+    try Bits.clone(allocator, &b, &cloned);
+    try std.testing.expect(&b != &cloned);
+    try std.testing.expect(std.mem.eql(u8, b.items, cloned.items));
+    try expectEqualRootsAlloc(Bits, allocator, b, cloned);
+    try expectEqualSerializedAlloc(Bits, allocator, b, cloned);
 }

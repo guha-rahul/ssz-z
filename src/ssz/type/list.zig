@@ -1,4 +1,6 @@
 const std = @import("std");
+const expectEqualRootsAlloc = @import("test_utils.zig").expectEqualRootsAlloc;
+const expectEqualSerializedAlloc = @import("test_utils.zig").expectEqualSerializedAlloc;
 const TypeKind = @import("type_kind.zig").TypeKind;
 const isBasicType = @import("type_kind.zig").isBasicType;
 const isFixedType = @import("type_kind.zig").isFixedType;
@@ -29,6 +31,18 @@ pub fn FixedListType(comptime ST: type, comptime _limit: comptime_int) type {
 
         pub const default_value: Type = Type.empty;
 
+        pub fn equals(a: *const Type, b: *const Type) bool {
+            if (a.items.len != b.items.len) {
+                return false;
+            }
+            for (a.items, b.items) |a_elem, b_elem| {
+                if (!Element.equals(&a_elem, &b_elem)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         pub fn deinit(allocator: std.mem.Allocator, value: *Type) void {
             value.deinit(allocator);
         }
@@ -54,6 +68,17 @@ pub fn FixedListType(comptime ST: type, comptime _limit: comptime_int) type {
             }
             try merkleize(chunks, chunk_depth, out);
             mixInLength(value.items.len, out);
+        }
+
+        /// Clones the underlying `ArrayList`.
+        ///
+        /// Caller owns the memory.
+        pub fn clone(allocator: std.mem.Allocator, value: *const Type, out: *Type) !void {
+            try out.resize(allocator, value.items.len);
+
+            for (value.items, 0..) |v, i| {
+                try Element.clone(&v, &out.items[i]);
+            }
         }
 
         pub fn serializedSize(value: *const Type) usize {
@@ -84,6 +109,14 @@ pub fn FixedListType(comptime ST: type, comptime _limit: comptime_int) type {
             }
         }
 
+        pub fn serializeIntoJson(_: std.mem.Allocator, writer: anytype, in: *const Type) !void {
+            try writer.beginArray();
+            for (in.items) |element| {
+                try Element.serializeIntoJson(writer, &element);
+            }
+            try writer.endArray();
+        }
+
         pub fn deserializeFromJson(allocator: std.mem.Allocator, source: *std.json.Scanner, out: *Type) !void {
             // start array token "["
             switch (try source.next()) {
@@ -100,8 +133,8 @@ pub fn FixedListType(comptime ST: type, comptime _limit: comptime_int) type {
                     else => {},
                 }
 
-                try out.ensureUnusedCapacity(allocator, 1);
-                out.expandToCapacity();
+                _ = try out.addOne(allocator);
+                out.items[i] = Element.default_value;
                 try Element.deserializeFromJson(source, &out.items[i]);
             }
             return error.invalidLength;
@@ -271,11 +304,32 @@ pub fn VariableListType(comptime ST: type, comptime _limit: comptime_int) type {
 
         pub const default_value: Type = Type.empty;
 
+        pub fn equals(a: *const Type, b: *const Type) bool {
+            if (a.items.len != b.items.len) {
+                return false;
+            }
+            for (a.items, b.items) |a_elem, b_elem| {
+                if (!Element.equals(&a_elem, &b_elem)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         pub fn deinit(allocator: std.mem.Allocator, value: *Type) void {
-            for (value.items) |element| {
+            for (value.items) |*element| {
                 Element.deinit(allocator, element);
             }
             value.deinit(allocator);
+        }
+
+        /// Clones the underlying `ArrayList`.
+        ///
+        /// Caller owns the memory.
+        pub fn clone(allocator: std.mem.Allocator, value: *const Type, out: *Type) !void {
+            try out.resize(allocator, value.items.len);
+            for (0..value.items.len) |i|
+                try Element.clone(allocator, &value.items[i], &out.items[i]);
         }
 
         pub fn chunkCount(value: *const Type) usize {
@@ -314,6 +368,14 @@ pub fn VariableListType(comptime ST: type, comptime _limit: comptime_int) type {
                 variable_index += Element.serializeIntoBytes(&element, out[variable_index..]);
             }
             return variable_index;
+        }
+
+        pub fn serializeIntoJson(allocator: std.mem.Allocator, writer: anytype, in: *const Type) !void {
+            try writer.beginArray();
+            for (in.items) |element| {
+                try Element.serializeIntoJson(allocator, writer, &element);
+            }
+            try writer.endArray();
         }
 
         pub fn deserializeFromBytes(allocator: std.mem.Allocator, data: []const u8, out: *Type) !void {
@@ -470,8 +532,8 @@ pub fn VariableListType(comptime ST: type, comptime _limit: comptime_int) type {
                     else => {},
                 }
 
-                try out.ensureUnusedCapacity(allocator, 1);
-                out.expandToCapacity();
+                _ = try out.addOne(allocator);
+                out.items[i] = Element.default_value;
                 try Element.deserializeFromJson(allocator, source, &out.items[i]);
             }
             return error.invalidLength;
@@ -488,7 +550,7 @@ test "ListType - sanity" {
     // create a fixed list type and instance and round-trip serialize
     const Bytes = FixedListType(UintType(8), 32);
 
-    var b: Bytes.Type = try Bytes.init(allocator);
+    var b: Bytes.Type = Bytes.default_value;
     defer b.deinit(allocator);
     try b.append(allocator, 5);
 
@@ -500,13 +562,43 @@ test "ListType - sanity" {
 
     // create a variable list type and instance and round-trip serialize
     const BytesBytes = VariableListType(Bytes, 32);
-    var b2: BytesBytes.Type = try BytesBytes.init(allocator);
-    defer b2.deinit(allocator);
-    try b2.append(allocator, b);
+    var bb: BytesBytes.Type = BytesBytes.default_value;
+    defer bb.deinit(allocator);
+    const b2: Bytes.Type = Bytes.default_value;
+    try bb.append(allocator, b2);
 
-    const b2_buf = try allocator.alloc(u8, BytesBytes.serializedSize(&b2));
-    defer allocator.free(b2_buf);
+    const bb_buf = try allocator.alloc(u8, BytesBytes.serializedSize(&bb));
+    defer allocator.free(bb_buf);
 
-    _ = BytesBytes.serializeIntoBytes(&b2, b2_buf);
-    try BytesBytes.deserializeFromBytes(allocator, b2_buf, &b2);
+    _ = BytesBytes.serializeIntoBytes(&bb, bb_buf);
+    try BytesBytes.deserializeFromBytes(allocator, bb_buf, &bb);
+}
+
+test "clone" {
+    const allocator = std.testing.allocator;
+    const BytesFixed = FixedListType(UintType(8), 32);
+    const BytesVariable = VariableListType(BytesFixed, 32);
+
+    var b: BytesFixed.Type = BytesFixed.default_value;
+    defer b.deinit(allocator);
+    try b.append(allocator, 5);
+    var cloned: BytesFixed.Type = BytesFixed.default_value;
+    try BytesFixed.clone(allocator, &b, &cloned);
+    defer cloned.deinit(allocator);
+    try std.testing.expect(&b != &cloned);
+    try std.testing.expect(std.mem.eql(u8, b.items[0..], cloned.items[0..]));
+    try expectEqualRootsAlloc(BytesFixed, allocator, b, cloned);
+    try expectEqualSerializedAlloc(BytesFixed, allocator, b, cloned);
+
+    var bv: BytesVariable.Type = BytesVariable.default_value;
+    defer bv.deinit(allocator);
+    const bb: BytesFixed.Type = BytesFixed.default_value;
+    try bv.append(allocator, bb);
+    var cloned_v: BytesVariable.Type = BytesVariable.default_value;
+    try BytesVariable.clone(allocator, &bv, &cloned_v);
+    defer cloned_v.deinit(allocator);
+    try std.testing.expect(&bv != &cloned_v);
+    try expectEqualRootsAlloc(BytesVariable, allocator, bv, cloned_v);
+    try expectEqualSerializedAlloc(BytesVariable, allocator, bv, cloned_v);
+    // TODO(bing): Equals test
 }

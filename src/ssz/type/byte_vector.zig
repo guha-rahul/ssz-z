@@ -1,8 +1,12 @@
 const std = @import("std");
+const expectEqualRoots = @import("test_utils.zig").expectEqualRoots;
+const expectEqualSerialized = @import("test_utils.zig").expectEqualSerialized;
 const TypeKind = @import("type_kind.zig").TypeKind;
 const UintType = @import("uint.zig").UintType;
 const hexToBytes = @import("hex").hexToBytes;
-const hexByteLen = @import("hex").hexByteLen;
+const byteLenFromHex = @import("hex").byteLenFromHex;
+const hexLenFromBytes = @import("hex").hexLenFromBytes;
+const bytesToHex = @import("hex").bytesToHex;
 const merkleize = @import("hashing").merkleize;
 const maxChunksToDepth = @import("hashing").maxChunksToDepth;
 const Depth = @import("hashing").Depth;
@@ -29,10 +33,18 @@ pub fn ByteVectorType(comptime _length: comptime_int) type {
 
         pub const default_value: Type = [_]Element.Type{Element.default_value} ** length;
 
+        pub fn equals(a: *const Type, b: *const Type) bool {
+            return std.mem.eql(u8, a, b);
+        }
+
         pub fn hashTreeRoot(value: *const Type, out: *[32]u8) !void {
             var chunks = [_][32]u8{[_]u8{0} ** 32} ** chunk_count;
             _ = serializeIntoBytes(value, @ptrCast(&chunks));
             try merkleize(&chunks, chunk_depth, out);
+        }
+
+        pub fn clone(value: *const Type, out: *Type) !void {
+            out.* = value.*;
         }
 
         pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
@@ -101,16 +113,36 @@ pub fn ByteVectorType(comptime _length: comptime_int) type {
             }
         };
 
+        pub fn serializeIntoJson(writer: anytype, in: *const Type) !void {
+            var byte_str: [2 + 2 * fixed_size]u8 = undefined;
+
+            _ = try bytesToHex(&byte_str, in);
+            try writer.print("\"{s}\"", .{byte_str});
+        }
+
         pub fn deserializeFromJson(source: *std.json.Scanner, out: *Type) !void {
             const hex_bytes = switch (try source.next()) {
                 .string => |v| v,
                 else => return error.InvalidJson,
             };
 
-            if (hexByteLen(hex_bytes) != length) {
+            if (byteLenFromHex(hex_bytes) != length) {
                 return error.InvalidJson;
             }
             _ = try hexToBytes(out, hex_bytes);
         }
     };
+}
+
+test "clone" {
+    const length = 44;
+    const Bytes = ByteVectorType(length);
+
+    var b = [_]u8{1} ** length;
+    var cloned: [44]u8 = undefined;
+    try Bytes.clone(&b, &cloned);
+    try std.testing.expect(&b != &cloned);
+    try std.testing.expect(std.mem.eql(u8, b[0..], cloned[0..]));
+    try expectEqualRoots(Bytes, b, cloned);
+    try expectEqualSerialized(Bytes, b, cloned);
 }

@@ -1,4 +1,6 @@
 const std = @import("std");
+const expectEqualRootsAlloc = @import("test_utils.zig").expectEqualRootsAlloc;
+const expectEqualSerializedAlloc = @import("test_utils.zig").expectEqualSerializedAlloc;
 const TypeKind = @import("type_kind.zig").TypeKind;
 
 const isFixedType = @import("type_kind.zig").isFixedType;
@@ -65,6 +67,22 @@ pub fn FixedContainerType(comptime ST: type) type {
             break :blk out;
         };
 
+        pub fn equals(a: *const Type, b: *const Type) bool {
+            inline for (fields) |field| {
+                if (!field.type.equals(&@field(a, field.name), &@field(b, field.name))) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// Creates a new `FixedContainerType` and clones all underlying fields in the container.
+        ///
+        /// Caller owns the memory.
+        pub fn clone(value: *const Type, out: *Type) !void {
+            out.* = value.*;
+        }
+
         pub fn hashTreeRoot(value: *const Type, out: *[32]u8) !void {
             var chunks = [_][32]u8{[_]u8{0} ** 32} ** chunk_count;
             inline for (fields, 0..) |field, i| {
@@ -76,8 +94,8 @@ pub fn FixedContainerType(comptime ST: type) type {
         pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
             var i: usize = 0;
             inline for (fields) |field| {
-                const field_value = @field(value, field.name);
-                i += field.type.serializeIntoBytes(&field_value, out[i..]);
+                const field_value_ptr = &@field(value, field.name);
+                i += field.type.serializeIntoBytes(field_value_ptr, out[i..]);
             }
             return i;
         }
@@ -138,8 +156,8 @@ pub fn FixedContainerType(comptime ST: type) type {
             pub fn serializeIntoBytes(value: Node.Id, pool: *Node.Pool, out: []u8) !usize {
                 var i: usize = 0;
                 inline for (fields) |field| {
-                    const field_value = @field(value, field.name);
-                    i += try field.type.tree.serializeIntoBytes(field_value, pool, out[i..]);
+                    const field_value_ptr = &@field(value, field.name);
+                    i += try field.type.tree.serializeIntoBytes(field_value_ptr, pool, out[i..]);
                 }
                 return i;
             }
@@ -155,6 +173,16 @@ pub fn FixedContainerType(comptime ST: type) type {
                 }
             }
         };
+
+        pub fn serializeIntoJson(writer: anytype, in: *const Type) !void {
+            try writer.beginObject();
+            inline for (fields) |field| {
+                const field_value_ptr = &@field(in, field.name);
+                try writer.objectField(field.name);
+                try field.type.serializeIntoJson(writer, field_value_ptr);
+            }
+            try writer.endObject();
+        }
 
         pub fn deserializeFromJson(source: *std.json.Scanner, out: *Type) !void {
             // start object token "{"
@@ -188,6 +216,16 @@ pub fn FixedContainerType(comptime ST: type) type {
             inline for (fields, 0..) |field, i| {
                 if (std.mem.eql(u8, name, field.name)) {
                     return i;
+                }
+            } else {
+                @compileError("field does not exist");
+            }
+        }
+
+        pub fn getFieldType(comptime name: []const u8) type {
+            inline for (fields) |field| {
+                if (std.mem.eql(u8, name, field.name)) {
+                    return field.type;
                 }
             } else {
                 @compileError("field does not exist");
@@ -275,6 +313,15 @@ pub fn VariableContainerType(comptime ST: type) type {
             break :blk out;
         };
 
+        pub fn equals(a: *const Type, b: *const Type) bool {
+            inline for (fields) |field| {
+                if (!field.type.equals(&@field(a, field.name), &@field(b, field.name))) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         pub fn deinit(allocator: std.mem.Allocator, value: *Type) void {
             inline for (fields) |field| {
                 if (!comptime isFixedType(field.type)) {
@@ -293,6 +340,24 @@ pub fn VariableContainerType(comptime ST: type) type {
                 }
             }
             try merkleize(&chunks, chunk_depth, out);
+        }
+
+        /// Creates a new `VariableContainerType` and clones all underlying fields in the container.
+        ///
+        /// Caller owns the memory.
+        pub fn clone(
+            allocator: std.mem.Allocator,
+            value: *const Type,
+            out: *Type,
+        ) !void {
+            inline for (fields) |field| {
+                if (comptime isFixedType(field.type)) {
+                    try field.type.clone(&@field(value, field.name), &@field(out, field.name));
+                } else {
+                    @field(out, field.name) = field.type.default_value;
+                    try field.type.clone(allocator, &@field(value, field.name), &@field(out, field.name));
+                }
+            }
         }
 
         pub fn serializedSize(value: *const Type) usize {
@@ -352,6 +417,16 @@ pub fn VariableContainerType(comptime ST: type) type {
             inline for (fields, 0..) |field, i| {
                 if (std.mem.eql(u8, name, field.name)) {
                     return i;
+                }
+            } else {
+                @compileError("field does not exist");
+            }
+        }
+
+        pub fn getFieldType(comptime name: []const u8) type {
+            inline for (fields) |field| {
+                if (std.mem.eql(u8, name, field.name)) {
+                    return field.type;
                 }
             } else {
                 @compileError("field does not exist");
@@ -481,6 +556,20 @@ pub fn VariableContainerType(comptime ST: type) type {
             }
         };
 
+        pub fn serializeIntoJson(allocator: std.mem.Allocator, writer: anytype, in: *const Type) !void {
+            try writer.beginObject();
+            inline for (fields) |field| {
+                const field_value_ptr = &@field(in, field.name);
+                try writer.objectField(field.name);
+                if (comptime isFixedType(field.type)) {
+                    try field.type.serializeIntoJson(writer, field_value_ptr);
+                } else {
+                    try field.type.serializeIntoJson(allocator, writer, field_value_ptr);
+                }
+            }
+            try writer.endObject();
+        }
+
         pub fn deserializeFromJson(allocator: std.mem.Allocator, source: *std.json.Scanner, out: *Type) !void {
             // start object token "{"
             switch (try source.next()) {
@@ -560,4 +649,33 @@ test "ContainerType - sanity" {
     defer allocator.free(f_buf);
     _ = Foo.serializeIntoBytes(&f, f_buf);
     try Foo.deserializeFromBytes(allocator, f_buf, &f);
+}
+
+test "clone" {
+    const allocator = std.testing.allocator;
+    const Checkpoint = FixedContainerType(struct {
+        slot: UintType(8),
+        root: ByteVectorType(32),
+    });
+
+    var c: Checkpoint.Type = Checkpoint.default_value;
+
+    var cloned: Checkpoint.Type = undefined;
+    try Checkpoint.clone(&c, &cloned);
+    try std.testing.expect(&cloned != &c);
+    const Foo = VariableContainerType(struct {
+        a: FixedListType(UintType(8), 32),
+        b: FixedListType(UintType(8), 32),
+        c: FixedListType(UintType(8), 32),
+    });
+    var f = Foo.default_value;
+    defer Foo.deinit(allocator, &f);
+    var cloned_f: Foo.Type = undefined;
+    try Foo.clone(allocator, &f, &cloned_f);
+    defer Foo.deinit(allocator, &cloned_f);
+    try std.testing.expect(&cloned_f != &f);
+
+    try expectEqualRootsAlloc(Foo, allocator, f, cloned_f);
+    try expectEqualSerializedAlloc(Foo, allocator, f, cloned_f);
+    // TODO(bing): test equals when ready
 }

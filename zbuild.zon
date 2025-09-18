@@ -16,7 +16,7 @@
             .url = "git+https://github.com/chainsafe/zig-yaml#e0e5962579e990a66c21424416c7ac092b20b772",
         },
         .hashtree = .{
-            .url = "git+https://github.com/chainsafe/hashtree-z#146a3f42993c2ae904158942e513b40db92cd8de",
+            .url = "git+https://github.com/ChainSafe/hashtree-z#6b96e3f0c7c1cc935bd9cfe1cfcbce84ed5a396a",
         },
         .zbench = .{
             .url = "git+https://github.com/hendriknielaender/zBench#d8c7dd485306b88b757d52005614ebcb0a336942",
@@ -68,10 +68,11 @@
             .root_source_file = "src/consensus_types/root.zig",
             .imports = .{ .build_options, .ssz },
         },
-        .bun_ffi = .{
-            .root_source_file = "src/bun_ffi/root.zig",
-            .imports = .{ .build_options, .persistent_merkle_tree, .ssz, .consensus_types },
-        },
+        //TODO(bing): reintroduce when bun-ffi generation is fixed
+        //.bun_ffi = .{
+        //    .root_source_file = "src/bun_ffi/root.zig",
+        //    .imports = .{ .build_options, .persistent_merkle_tree, .ssz, .consensus_types },
+        //},
     },
     .executables = .{
         .download_spec_tests = .{
@@ -128,6 +129,7 @@
                 .imports = .{ .hashing, .zbench },
             },
         },
+        //TODO(bing): reintroduce when bun-ffi generation is fixed
         // .write_bun_ffi = .{
         //     .root_module = .{
         //         .root_source_file = "src/bun_ffi/write_types.zig",
@@ -135,18 +137,12 @@
         //     },
         // },
     },
-    .libraries = .{
-        .types = .{
-            .root_module = .{
-                .root_source_file = "codegen:types",
-            },
-        },
-    },
+    .libraries = .{},
     .tests = .{
         .int = .{
             .root_module = .{
                 .root_source_file = "test/int/root.zig",
-                .imports = .{ .hex, .ssz },
+                .imports = .{ .hex, .ssz, .persistent_merkle_tree },
             },
             .filters = .{},
         },

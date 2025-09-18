@@ -1,4 +1,8 @@
 const std = @import("std");
+const expectEqualRoots = @import("test_utils.zig").expectEqualRoots;
+const expectEqualRootsAlloc = @import("test_utils.zig").expectEqualRootsAlloc;
+const expectEqualSerializedAlloc = @import("test_utils.zig").expectEqualSerializedAlloc;
+const expectEqualSerialized = @import("test_utils.zig").expectEqualSerialized;
 const TypeKind = @import("type_kind.zig").TypeKind;
 const isBasicType = @import("type_kind.zig").isBasicType;
 const isFixedType = @import("type_kind.zig").isFixedType;
@@ -27,6 +31,15 @@ pub fn FixedVectorType(comptime ST: type, comptime _length: comptime_int) type {
 
         pub const default_value: Type = [_]Element.Type{Element.default_value} ** length;
 
+        pub fn equals(a: *const Type, b: *const Type) bool {
+            for (a, b) |a_elem, b_elem| {
+                if (!Element.equals(&a_elem, &b_elem)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         pub fn hashTreeRoot(value: *const Type, out: *[32]u8) !void {
             var chunks = [_][32]u8{[_]u8{0} ** 32} ** chunk_count;
             if (comptime isBasicType(Element)) {
@@ -37,6 +50,10 @@ pub fn FixedVectorType(comptime ST: type, comptime _length: comptime_int) type {
                 }
             }
             try merkleize(&chunks, chunk_depth, out);
+        }
+
+        pub fn clone(value: *const Type, out: *Type) !void {
+            out.* = value.*;
         }
 
         pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
@@ -137,6 +154,14 @@ pub fn FixedVectorType(comptime ST: type, comptime _length: comptime_int) type {
             }
         };
 
+        pub fn serializeIntoJson(writer: anytype, in: *const Type) !void {
+            try writer.beginArray();
+            for (in) |element| {
+                try Element.serializeIntoJson(writer, &element);
+            }
+            try writer.endArray();
+        }
+
         pub fn deserializeFromJson(source: *std.json.Scanner, out: *Type) !void {
             // start array token "["
             switch (try source.next()) {
@@ -178,9 +203,18 @@ pub fn VariableVectorType(comptime ST: type, comptime _length: comptime_int) typ
 
         pub const default_value: Type = [_]Element.Type{Element.default_value} ** length;
 
+        pub fn equals(a: *const Type, b: *const Type) bool {
+            for (a, b) |a_elem, b_elem| {
+                if (!Element.equals(&a_elem, &b_elem)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         pub fn deinit(allocator: std.mem.Allocator, value: *Type) void {
-            for (value) |element| {
-                Element.deinit(allocator, element);
+            for (0..length) |i| {
+                Element.deinit(allocator, &value[i]);
             }
         }
 
@@ -190,6 +224,10 @@ pub fn VariableVectorType(comptime ST: type, comptime _length: comptime_int) typ
                 try Element.hashTreeRoot(allocator, &element, &chunks[i]);
             }
             try merkleize(&chunks, chunk_depth, out);
+        }
+
+        pub fn clone(allocator: std.mem.Allocator, value: *const Type, out: *Type) !void {
+            for (0..length) |i| try Element.clone(allocator, &value[i], &out[i]);
         }
 
         pub fn serializedSize(value: *const Type) usize {
@@ -281,6 +319,14 @@ pub fn VariableVectorType(comptime ST: type, comptime _length: comptime_int) typ
             }
         };
 
+        pub fn serializeIntoJson(allocator: std.mem.Allocator, writer: anytype, in: *const Type) !void {
+            try writer.beginArray();
+            for (in) |element| {
+                try Element.serializeIntoJson(allocator, writer, &element);
+            }
+            try writer.endArray();
+        }
+
         pub fn deserializeFromJson(allocator: std.mem.Allocator, source: *std.json.Scanner, out: *Type) !void {
             // start array token "["
             switch (try source.next()) {
@@ -303,6 +349,7 @@ pub fn VariableVectorType(comptime ST: type, comptime _length: comptime_int) typ
 
 const UintType = @import("uint.zig").UintType;
 const BoolType = @import("bool.zig").BoolType;
+const BitListType = @import("bit_list.zig").BitListType;
 
 test "vector - sanity" {
     // create a fixed vector type and instance and round-trip serialize
@@ -312,4 +359,31 @@ test "vector - sanity" {
     var b0_buf: [Bytes32.fixed_size]u8 = undefined;
     _ = Bytes32.serializeIntoBytes(&b0, &b0_buf);
     try Bytes32.deserializeFromBytes(&b0_buf, &b0);
+}
+
+test "clone" {
+    const allocator = std.testing.allocator;
+    const BoolVectorFixed = FixedVectorType(BoolType(), 8);
+    var bvf: BoolVectorFixed.Type = BoolVectorFixed.default_value;
+
+    var cloned: BoolVectorFixed.Type = undefined;
+    try BoolVectorFixed.clone(&bvf, &cloned);
+    try expectEqualRoots(BoolVectorFixed, bvf, cloned);
+    try expectEqualSerialized(BoolVectorFixed, bvf, cloned);
+
+    try std.testing.expect(&bvf != &cloned);
+    try std.testing.expect(std.mem.eql(bool, bvf[0..], cloned[0..]));
+
+    const limit = 16;
+    const BitList = BitListType(limit);
+    const bl = BitList.default_value;
+    const BoolVectorVariable = VariableVectorType(BitList, 8);
+    var bvv: BoolVectorVariable.Type = BoolVectorVariable.default_value;
+    bvv[0] = bl;
+
+    var cloned_v: BoolVectorVariable.Type = undefined;
+    try BoolVectorVariable.clone(allocator, &bvv, &cloned_v);
+    try std.testing.expect(&bvv != &cloned_v);
+    try expectEqualRootsAlloc(BoolVectorVariable, allocator, bvv, cloned_v);
+    try expectEqualSerializedAlloc(BoolVectorVariable, allocator, bvv, cloned_v);
 }

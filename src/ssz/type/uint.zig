@@ -1,5 +1,7 @@
 const std = @import("std");
 const TypeKind = @import("type_kind.zig").TypeKind;
+const expectEqualRoots = @import("test_utils.zig").expectEqualRoots;
+const expectEqualSerialized = @import("test_utils.zig").expectEqualSerialized;
 const Node = @import("persistent_merkle_tree").Node;
 
 pub fn UintType(comptime bits: comptime_int) type {
@@ -20,9 +22,17 @@ pub fn UintType(comptime bits: comptime_int) type {
 
         pub const default_value: Type = 0;
 
+        pub fn equals(a: *const Type, b: *const Type) bool {
+            return a.* == b.*;
+        }
+
         pub fn hashTreeRoot(value: *const Type, out: *[32]u8) !void {
             @memset(out, 0);
             std.mem.writeInt(Type, out[0..fixed_size], value.*, .little);
+        }
+
+        pub fn clone(value: *const Type, out: *Type) !void {
+            out.* = value.*;
         }
 
         pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
@@ -78,6 +88,10 @@ pub fn UintType(comptime bits: comptime_int) type {
             }
         };
 
+        pub fn serializeIntoJson(writer: anytype, in: *const Type) !void {
+            try writer.print("\"{d}\"", .{in.*});
+        }
+
         pub fn deserializeFromJson(scanner: *std.json.Scanner, out: *Type) !void {
             try switch (try scanner.next()) {
                 .string => |v| {
@@ -97,11 +111,23 @@ test "UintType - sanity" {
     _ = Uint8.serializeIntoBytes(&u, &u_buf);
     try Uint8.deserializeFromBytes(&u_buf, &u);
 
+    // Deserialize "255" into u;
+    const input_json = "\"255\"";
     const allocator = std.testing.allocator;
-    var json = std.json.Scanner.initCompleteInput(
-        allocator,
-        "\"255\"",
-    );
+    var json = std.json.Scanner.initCompleteInput(allocator, input_json);
     defer json.deinit();
     try Uint8.deserializeFromJson(&json, &u);
+
+    // Serialize u into "255"
+    var output_json = std.ArrayList(u8).init(allocator);
+    defer output_json.deinit();
+    var write_stream = std.json.writeStream(output_json.writer(), .{});
+    defer write_stream.deinit();
+    try Uint8.serializeIntoJson(&write_stream, &u);
+    var cloned: Uint8.Type = undefined;
+    try Uint8.clone(&u, &cloned);
+    try expectEqualRoots(Uint8, u, cloned);
+    try expectEqualSerialized(Uint8, u, cloned);
+
+    try std.testing.expectEqualSlices(u8, input_json, output_json.items);
 }

@@ -1,8 +1,12 @@
 const std = @import("std");
+const expectEqualRootsAlloc = @import("test_utils.zig").expectEqualRootsAlloc;
+const expectEqualSerializedAlloc = @import("test_utils.zig").expectEqualSerializedAlloc;
 const TypeKind = @import("type_kind.zig").TypeKind;
 const BoolType = @import("bool.zig").BoolType;
 const hexToBytes = @import("hex").hexToBytes;
-const hexByteLen = @import("hex").hexByteLen;
+const bytesToHex = @import("hex").bytesToHex;
+const byteLenFromHex = @import("hex").byteLenFromHex;
+const hexLenFromBytes = @import("hex").hexLenFromBytes;
 const merkleize = @import("hashing").merkleize;
 const mixInLength = @import("hashing").mixInLength;
 const maxChunksToDepth = @import("hashing").maxChunksToDepth;
@@ -17,6 +21,10 @@ pub fn BitList(comptime limit: comptime_int) type {
             .data = std.ArrayListUnmanaged(u8).empty,
             .bit_len = 0,
         };
+
+        pub fn equals(self: *const @This(), other: *const @This()) bool {
+            return self.bit_len == other.bit_len and std.mem.eql(u8, self.data.items, other.data.items);
+        }
 
         pub fn fromBitLen(allocator: std.mem.Allocator, bit_len: usize) !@This() {
             if (bit_len > limit) {
@@ -42,6 +50,49 @@ pub fn BitList(comptime limit: comptime_int) type {
             return bl;
         }
 
+        pub fn toBoolSlice(self: *const @This(), out: *[]bool) !void {
+            if (out.len != self.bit_len) {
+                return error.InvalidSize;
+            }
+            for (0..self.bit_len) |i| {
+                out.*[i] = self.get(i) catch unreachable;
+            }
+        }
+
+        pub fn getTrueBitIndexes(self: *const @This(), out: []usize) !usize {
+            if (out.len < self.bit_len) {
+                return error.InvalidSize;
+            }
+
+            const full_byte_len = self.bit_len / 8;
+            const remainder_bits = self.bit_len % 8;
+            var true_bit_count: usize = 0;
+
+            for (0..full_byte_len) |i_byte| {
+                var b = self.data.items[i_byte];
+                while (b != 0) {
+                    const lsb: u8 = @ctz(b);
+                    const bit_index = i_byte * 8 + lsb;
+                    out[true_bit_count] = bit_index;
+                    true_bit_count += 1;
+                    b &= b - 1;
+                }
+            }
+            if (remainder_bits <= 0) return true_bit_count;
+            const tail_mask: u8 = (@as(u8, 1) << @intCast(remainder_bits)) - 1;
+            var b = self.data.items[full_byte_len] & tail_mask;
+
+            while (b != 0) {
+                const lsb: u8 = @ctz(b);
+                const bit_index = full_byte_len * 8 + lsb;
+                out[true_bit_count] = bit_index;
+                true_bit_count += 1;
+                b &= b - 1;
+            }
+
+            return true_bit_count;
+        }
+
         pub fn deinit(self: *@This(), allocator: std.mem.Allocator) void {
             self.data.deinit(allocator);
         }
@@ -52,8 +103,8 @@ pub fn BitList(comptime limit: comptime_int) type {
             }
 
             const byte_idx = bit_index / 8;
-            const offset_in_byte = bit_index % 8;
-            const mask = 1 << offset_in_byte;
+            const offset_in_byte: u3 = @intCast(bit_index % 8);
+            const mask = @as(u8, 1) << offset_in_byte;
             return (self.data.items[byte_idx] & mask) == mask;
         }
 
@@ -109,6 +160,48 @@ pub fn BitList(comptime limit: comptime_int) type {
                 }
             }
         }
+
+        /// Allocates and returns an `ArrayList` of indices where the bit at the index of `self` is set to `true`.
+        ///
+        /// Caller must call `deinit` on the returned list
+        pub fn intersectValues(
+            self: *const @This(),
+            comptime T: type,
+            allocator: std.mem.Allocator,
+            values: []const T,
+        ) !std.ArrayList(T) {
+            if (values.len != self.bit_len) return error.InvalidSize;
+
+            var indices = try std.ArrayList(T).initCapacity(allocator, self.bit_len);
+            const full_byte_len = self.bit_len / 8;
+            const remainder_bits = self.bit_len % 8;
+            for (0..full_byte_len) |i_byte| {
+                var b = self.data.items[i_byte];
+                // Kernighan's algorithm to count the set bits instead of going through 0..8 for every byte
+                while (b != 0) {
+                    const lsb: u8 = @ctz(b); // Get the index of least significant bit
+                    const bit_index = i_byte * 8 + lsb;
+                    indices.appendAssumeCapacity(values[bit_index]);
+                    // The `b - 1` flips the bits starting from `lsb` index
+                    // And `&` will reset the last bit at `lsb` index
+                    b &= b - 1;
+                }
+            }
+            if (remainder_bits <= 0) return indices;
+            const tail_mask: u8 = (@as(u8, 1) << @intCast(remainder_bits)) - 1;
+            var b = self.data.items[full_byte_len] & tail_mask;
+            // Kernighan's algorithm to count the set bits instead of going through 0..8 for every byte
+            while (b != 0) {
+                const lsb: u8 = @ctz(b); // Get the index of least significant bit
+                const bit_index = full_byte_len * 8 + lsb;
+                indices.appendAssumeCapacity(values[bit_index]);
+                // The `b - 1` flips the bits starting from `lab` index
+                // And `&` will reset the last bit at `lsb` index
+                b &= b - 1;
+            }
+
+            return indices;
+        }
     };
 }
 
@@ -134,6 +227,10 @@ pub fn BitListType(comptime _limit: comptime_int) type {
 
         pub const default_value: Type = Type.empty;
 
+        pub fn equals(a: *const Type, b: *const Type) bool {
+            return a.equals(b);
+        }
+
         pub fn deinit(allocator: std.mem.Allocator, value: *Type) void {
             value.data.deinit(allocator);
         }
@@ -151,6 +248,14 @@ pub fn BitListType(comptime _limit: comptime_int) type {
 
             try merkleize(chunks, chunk_depth, out);
             mixInLength(value.bit_len, out);
+        }
+
+        /// Clones the underlying `ArrayList` in `data`.
+        ///
+        /// Caller owns the memory.
+        pub fn clone(allocator: std.mem.Allocator, value: *const Type, out: *Type) !void {
+            out.data = try value.data.clone(allocator);
+            out.bit_len = value.bit_len;
         }
 
         pub fn serializedSize(value: *const Type) usize {
@@ -352,12 +457,24 @@ pub fn BitListType(comptime _limit: comptime_int) type {
             }
         };
 
+        pub fn serializeIntoJson(allocator: std.mem.Allocator, writer: anytype, in: *const Type) !void {
+            const bytes = try allocator.alloc(u8, serializedSize(in));
+            defer allocator.free(bytes);
+            _ = serializeIntoBytes(in, bytes);
+
+            const byte_str = try allocator.alloc(u8, hexLenFromBytes(bytes));
+            defer allocator.free(byte_str);
+
+            _ = try bytesToHex(byte_str, bytes);
+            try writer.print("\"{s}\"", .{byte_str});
+        }
+
         pub fn deserializeFromJson(allocator: std.mem.Allocator, source: *std.json.Scanner, out: *Type) !void {
             const hex_bytes = switch (try source.next()) {
                 .string => |v| v,
                 else => return error.InvalidJson,
             };
-            const bytes = try allocator.alloc(u8, hexByteLen(hex_bytes));
+            const bytes = try allocator.alloc(u8, byteLenFromHex(hex_bytes));
             errdefer allocator.free(bytes);
             defer allocator.free(bytes);
             const written = try hexToBytes(bytes, hex_bytes);
@@ -382,4 +499,73 @@ test "BitListType - sanity" {
 
     _ = Bits.serializeIntoBytes(&b, b_buf);
     try Bits.deserializeFromBytes(allocator, b_buf, &b);
+
+    try std.testing.expect(try b.get(0) == false);
+}
+
+test "BitListType - sanity with bools" {
+    const allocator = std.testing.allocator;
+    const Bits = BitListType(16);
+    const expected_bools = [_]bool{ true, false, true, true, false, true, false, true, true, false, true, true };
+    const expected_true_bit_indexes = [_]usize{ 0, 2, 3, 5, 7, 8, 10, 11 };
+    var b: Bits.Type = try Bits.Type.fromBoolSlice(allocator, &expected_bools);
+    defer b.deinit(allocator);
+
+    var actual_bools = try allocator.alloc(bool, expected_bools.len);
+    defer allocator.free(actual_bools);
+    try b.toBoolSlice(&actual_bools);
+
+    try std.testing.expectEqualSlices(bool, &expected_bools, actual_bools);
+    try std.testing.expect(try b.get(0) == true);
+
+    var true_bit_indexes: [Bits.limit]usize = undefined;
+    const true_bit_count = try b.getTrueBitIndexes(true_bit_indexes[0..]);
+
+    try std.testing.expectEqualSlices(usize, &expected_true_bit_indexes, true_bit_indexes[0..true_bit_count]);
+}
+
+test "BitListType - intersectValues" {
+    const TestCase = struct { expected: []const u8, bit_len: usize };
+    const test_cases = [_]TestCase{
+        .{ .expected = &[_]u8{}, .bit_len = 16 },
+        .{ .expected = &[_]u8{3}, .bit_len = 16 },
+        .{ .expected = &[_]u8{ 0, 5, 6, 10, 14 }, .bit_len = 16 },
+        .{ .expected = &[_]u8{ 0, 5, 6, 10, 14 }, .bit_len = 15 },
+    };
+
+    const allocator = std.testing.allocator;
+    const Bits = BitListType(16);
+
+    for (test_cases) |tc| {
+        var b: Bits.Type = try Bits.Type.fromBitLen(allocator, tc.bit_len);
+        defer b.deinit(allocator);
+
+        for (tc.expected) |i| try b.setAssumeCapacity(i, true);
+
+        var values = try std.ArrayList(u8).initCapacity(allocator, tc.bit_len);
+        defer values.deinit();
+        for (0..tc.bit_len) |i| values.appendAssumeCapacity(@intCast(i));
+
+        var actual = try b.intersectValues(u8, allocator, values.items);
+        defer actual.deinit();
+        try std.testing.expectEqualSlices(u8, tc.expected, actual.items);
+    }
+}
+
+test "clone" {
+    const allocator = std.testing.allocator;
+
+    const Bits = BitListType(40);
+    var b: Bits.Type = try Bits.Type.fromBitLen(allocator, 30);
+    defer b.deinit(allocator);
+
+    var cloned: Bits.Type = undefined;
+    try Bits.clone(allocator, &b, &cloned);
+    defer cloned.deinit(allocator);
+
+    try std.testing.expect(&b != &cloned);
+    try std.testing.expect(b.bit_len == cloned.bit_len);
+    try std.testing.expect(std.mem.eql(u8, b.data.items, cloned.data.items));
+    try expectEqualRootsAlloc(Bits, allocator, b, cloned);
+    try expectEqualSerializedAlloc(Bits, allocator, b, cloned);
 }
