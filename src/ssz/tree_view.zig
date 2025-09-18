@@ -3,19 +3,7 @@ const Depth = @import("hashing").Depth;
 const Node = @import("persistent_merkle_tree").Node;
 const Gindex = @import("persistent_merkle_tree").Gindex;
 const isBasicType = @import("type/type_kind.zig").isBasicType;
-const isBasicType = @import("type/type_kind.zig").isBasicType;
 const progressive = @import("type/progressive.zig");
-
-pub fn TreeView(comptime ST: type) type {
-    comptime {
-        if (isBasicType(ST)) {
-            @compileError("TreeView cannot be used with basic types");
-        }
-    }
-    return struct {
-        allocator: std.mem.Allocator,
-        pool: *Node.Pool,
-        data: Data,
 
 pub const Data = struct {
     root: Node.Id,
@@ -166,7 +154,7 @@ pub fn TreeView(comptime ST: type) type {
                 const child_data = try self.getChildData(child_gindex);
 
                 // TODO only update changed if the subview is mutable
-                self.data.changed.put(child_gindex, void);
+                try self.data.changed.put(child_gindex, {});
 
                 return TreeView(ST.Element){
                     .allocator = self.allocator,
@@ -190,9 +178,9 @@ pub fn TreeView(comptime ST: type) type {
                     progressive.chunkGindex(child_chunk_index)
                 else
                     Gindex.fromDepth(ST.chunk_depth, child_chunk_index);
-                try self.data.changed.put(child_gindex, void);
+                try self.data.changed.put(child_gindex, {});
                 const child_node = try self.getChildNode(child_gindex);
-                try self.data.children_nodes.put(
+                const opt_old_node = try self.data.children_nodes.fetchPut(
                     child_gindex,
                     try ST.Element.tree.fromValuePacked(
                         child_node,
@@ -201,14 +189,22 @@ pub fn TreeView(comptime ST: type) type {
                         &value,
                     ),
                 );
+                if (opt_old_node) |old_node_entry| {
+                    self.pool.unref(old_node_entry.value);
+                }
             } else {
-                try self.data.children_data.put(
+                const child_gindex = if (ST.kind == .progressive_list)
+                    progressive.chunkGindex(index)
+                else
+                    Gindex.fromDepth(ST.chunk_depth, index);
+                try self.data.changed.put(child_gindex, {});
+                const opt_old_data = try self.data.children_data.fetchPut(
                     child_gindex,
                     value.data,
                 );
-                if (opt_old_data) |old_data_value| {
-                    var data: *Data = @constCast(&old_data_value.value);
-                    data.deinit(self.pool);
+                if (opt_old_data) |old_data_entry| {
+                    var old_data: *Data = @constCast(&old_data_entry.value);
+                    old_data.deinit(self.pool);
                 }
             }
         }

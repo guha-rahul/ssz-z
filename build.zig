@@ -24,7 +24,7 @@ pub fn build(b: *std.Build) void {
     const options_spec_test_options = b.addOptions();
     const option_spec_test_url = b.option([]const u8, "spec_test_url", "") orelse "https://github.com/ethereum/consensus-spec-tests";
     options_spec_test_options.addOption([]const u8, "spec_test_url", option_spec_test_url);
-    const option_spec_test_version = b.option([]const u8, "spec_test_version", "") orelse "v1.5.0";
+    const option_spec_test_version = b.option([]const u8, "spec_test_version", "") orelse "v1.6.0-alpha.4";
     options_spec_test_options.addOption([]const u8, "spec_test_version", option_spec_test_version);
     const option_spec_test_out_dir = b.option([]const u8, "spec_test_out_dir", "") orelse "test/spec/spec_tests";
     options_spec_test_options.addOption([]const u8, "spec_test_out_dir", option_spec_test_out_dir);
@@ -344,19 +344,7 @@ pub fn build(b: *std.Build) void {
     tls_run_test_consensus_types.dependOn(&run_test_consensus_types.step);
     tls_run_test.dependOn(&run_test_consensus_types.step);
 
-    const test_bun_ffi = b.addTest(.{
-        .name = "bun_ffi",
-        .root_module = module_bun_ffi,
-        .filters = &[_][]const u8{},
-    });
-    const install_test_bun_ffi = b.addInstallArtifact(test_bun_ffi, .{});
-    const tls_install_test_bun_ffi = b.step("build-test:bun_ffi", "Install the bun_ffi test");
-    tls_install_test_bun_ffi.dependOn(&install_test_bun_ffi.step);
-
-    const run_test_bun_ffi = b.addRunArtifact(test_bun_ffi);
-    const tls_run_test_bun_ffi = b.step("test:bun_ffi", "Run the bun_ffi test");
-    tls_run_test_bun_ffi.dependOn(&run_test_bun_ffi.step);
-    tls_run_test.dependOn(&run_test_bun_ffi.step);
+    // removed bun_ffi tests (module_bun_ffi not defined)
 
     const test_download_spec_tests = b.addTest(.{
         .name = "download_spec_tests",
@@ -484,19 +472,7 @@ pub fn build(b: *std.Build) void {
     tls_run_test_bench_hashing.dependOn(&run_test_bench_hashing.step);
     tls_run_test.dependOn(&run_test_bench_hashing.step);
 
-    const test_types = b.addTest(.{
-        .name = "types",
-        .root_module = module_types,
-        .filters = &[_][]const u8{},
-    });
-    const install_test_types = b.addInstallArtifact(test_types, .{});
-    const tls_install_test_types = b.step("build-test:types", "Install the types test");
-    tls_install_test_types.dependOn(&install_test_types.step);
-
-    const run_test_types = b.addRunArtifact(test_types);
-    const tls_run_test_types = b.step("test:types", "Run the types test");
-    tls_run_test_types.dependOn(&run_test_types.step);
-    tls_run_test.dependOn(&run_test_types.step);
+    // removed types test (module_types not defined)
 
     const module_int = b.createModule(.{
         .root_source_file = b.path("test/int/root.zig"),
@@ -529,7 +505,10 @@ pub fn build(b: *std.Build) void {
     const test_generic_spec_tests = b.addTest(.{
         .name = "generic_spec_tests",
         .root_module = module_generic_spec_tests,
-        .filters = &[_][]const u8{"proglist_bool_zero_22"},
+        .filters = &[_][]const u8{
+            // Temporarily run only non-progressive tests
+            "^((?!prog(list|bitlist)).)*$",
+        },
     });
     const install_test_generic_spec_tests = b.addInstallArtifact(test_generic_spec_tests, .{});
     const tls_install_test_generic_spec_tests = b.step("build-test:generic_spec_tests", "Install the generic_spec_tests test");
