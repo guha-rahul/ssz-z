@@ -9,15 +9,19 @@ const Depth = @import("hashing").Depth;
 const Node = @import("persistent_merkle_tree").Node;
 const progressive = @import("progressive.zig");
 
-pub fn FixedProgressiveListType(comptime ST: type) type {
+pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int) type {
     comptime {
         if (!isFixedType(ST)) {
             @compileError("ST must be fixed type");
+        }
+        if (_limit <= 0) {
+            @compileError("limit must be greater than 0");
         }
     }
     return struct {
         pub const kind = TypeKind.progressive_list;
         pub const Element: type = ST;
+        pub const limit: usize = _limit;
         pub const Type: type = std.ArrayListUnmanaged(Element.Type);
         pub const min_size: usize = 0;
         pub const fixed_size: usize = 0;
@@ -119,13 +123,20 @@ pub fn FixedProgressiveListType(comptime ST: type) type {
         pub const serialized = struct {
             pub fn validate(data: []const u8) !void {
                 const len = std.math.divExact(usize, data.len, Element.fixed_size) catch return error.InvalidSSZ;
+                if (len > limit) {
+                    return error.gtLimit;
+                }
                 for (0..len) |i| {
                     try Element.serialized.validate(data[i * Element.fixed_size .. (i + 1) * Element.fixed_size]);
                 }
             }
 
             pub fn length(data: []const u8) !usize {
-                return std.math.divExact(usize, data.len, Element.fixed_size) catch return error.InvalidSSZ;
+                const len = std.math.divExact(usize, data.len, Element.fixed_size) catch return error.InvalidSSZ;
+                if (len > limit) {
+                    return error.gtLimit;
+                }
+                return len;
             }
 
             pub fn hashTreeRoot(allocator: std.mem.Allocator, data: []const u8, out: *[32]u8) !void {
@@ -252,23 +263,27 @@ pub fn FixedProgressiveListType(comptime ST: type) type {
     };
 }
 
-pub fn VariableProgressiveListType(comptime ST: type) type {
+pub fn VariableProgressiveListType(comptime ST: type, comptime _limit: comptime_int) type {
     comptime {
         if (isFixedType(ST)) {
             @compileError("ST must not be fixed type");
+        }
+        if (_limit <= 0) {
+            @compileError("limit must be greater than 0");
         }
     }
     return struct {
         const Self = @This();
         pub const kind = TypeKind.progressive_list;
         pub const Element: type = ST;
+        pub const limit: usize = _limit;
         pub const Type: type = std.ArrayListUnmanaged(Element.Type);
         pub const min_size: usize = 0;
 
         pub const default_value: Type = Type.empty;
 
         pub fn deinit(allocator: std.mem.Allocator, value: *Type) void {
-            for (value.items) |element| {
+            for (value.items) |*element| {
                 Element.deinit(allocator, element);
             }
             value.deinit(allocator);
@@ -368,6 +383,10 @@ pub fn VariableProgressiveListType(comptime ST: type) type {
                 const first_offset = try iterator.next();
                 const len = first_offset / 4;
 
+                if (len > limit) {
+                    return error.gtLimit;
+                }
+
                 var curr_offset = first_offset;
                 var prev_offset = first_offset;
                 while (iterator.pos < len) {
@@ -385,6 +404,9 @@ pub fn VariableProgressiveListType(comptime ST: type) type {
                 }
                 var iterator = OffsetIterator(Self).init(data);
                 const len = try iterator.firstOffset() / 4;
+                if (len > limit) {
+                    return error.gtLimit;
+                }
                 return len;
             }
 
@@ -500,7 +522,7 @@ test "ListType - sanity" {
     const allocator = std.testing.allocator;
 
     // create a fixed list type and instance and round-trip serialize
-    const Bytes = FixedProgressiveListType(UintType(8));
+    const Bytes = FixedProgressiveListType(UintType(8), 1024);
 
     var b: Bytes.Type = Bytes.Type.empty;
     defer b.deinit(allocator);
@@ -513,7 +535,7 @@ test "ListType - sanity" {
     try Bytes.deserializeFromBytes(allocator, b_buf, &b);
 
     // create a variable list type and instance and round-trip serialize
-    const BytesBytes = VariableProgressiveListType(Bytes);
+    const BytesBytes = VariableProgressiveListType(Bytes, 1024);
     var b2: BytesBytes.Type = BytesBytes.Type.empty;
     defer BytesBytes.deinit(allocator, &b2);
     try b2.append(allocator, b);
@@ -526,7 +548,7 @@ test "ListType - sanity" {
 }
 
 test "ProgressiveList validation should fail for invalid size" {
-    const Uint64List = FixedProgressiveListType(UintType(64));
+    const Uint64List = FixedProgressiveListType(UintType(64), 1024);
 
     // Test data that's not divisible by 8 (uint64 size)
     const invalid_data = [_]u8{ 1, 2, 3, 4, 5, 6, 7 }; // 7 bytes, not divisible by 8
@@ -543,4 +565,25 @@ test "ProgressiveList validation should fail for invalid size" {
     // Test what SHOULD be the invalid case
     const should_be_invalid = [_]u8{0xff} ** 177; // 22*8+1 bytes, not divisible by 8
     try std.testing.expectError(error.InvalidSSZ, Uint64List.serialized.validate(&should_be_invalid));
+
+    // Test limit validation
+    const SmallUint64List = FixedProgressiveListType(UintType(64), 10);
+    const too_many_elements = [_]u8{0xff} ** (11 * 8); // 11 elements, exceeds limit of 10
+    try std.testing.expectError(error.gtLimit, SmallUint64List.serialized.validate(&too_many_elements));
+
+    // Debug test - check a "one byte more" case like the failing tests
+    const Uint32List = FixedProgressiveListType(UintType(32), 1024);
+    const one_byte_more = [_]u8{0xff} ** 5; // 5 bytes, not divisible by 4
+    std.debug.print("Testing one_byte_more case...\n", .{});
+    try std.testing.expectError(error.InvalidSSZ, Uint32List.serialized.validate(&one_byte_more));
+
+    // Debug test - check the exact failing test case
+    const test_case_failing = [_]u8{0} ** 56; // 56 bytes = 14 uint32s, should be valid
+    std.debug.print("Testing exact failing case (56 bytes)...\n", .{});
+    try Uint32List.serialized.validate(&test_case_failing); // This should pass
+
+    // What about exactly one byte more than the test case?
+    const test_case_failing_plus_one = [_]u8{0} ** 57; // 57 bytes, not divisible by 4
+    std.debug.print("Testing exact failing case + 1 byte (57 bytes)...\n", .{});
+    try std.testing.expectError(error.InvalidSSZ, Uint32List.serialized.validate(&test_case_failing_plus_one));
 }
