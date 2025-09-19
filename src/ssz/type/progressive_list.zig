@@ -8,25 +8,19 @@ const maxChunksToDepth = @import("hashing").maxChunksToDepth;
 const Depth = @import("hashing").Depth;
 const Node = @import("persistent_merkle_tree").Node;
 const progressive = @import("progressive.zig");
-// dynamic tag limits are not used in this variant
 
-pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int) type {
+pub fn FixedProgressiveListType(comptime ST: type) type {
     comptime {
         if (!isFixedType(ST)) {
             @compileError("ST must be fixed type");
-        }
-        if (_limit <= 0) {
-            @compileError("limit must be greater than 0");
         }
     }
     return struct {
         pub const kind = TypeKind.progressive_list;
         pub const Element: type = ST;
-        pub const limit: usize = _limit;
         pub const Type: type = std.ArrayListUnmanaged(Element.Type);
         pub const min_size: usize = 0;
-        pub const max_size: usize = Element.fixed_size * limit;
-        pub const fixed_size: usize = Element.fixed_size * limit;
+        pub const fixed_size: usize = 0;
 
         pub const default_value: Type = Type.empty;
 
@@ -79,10 +73,7 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
         }
 
         pub fn deserializeFromBytes(allocator: std.mem.Allocator, data: []const u8, out: *Type) !void {
-            const len = try std.math.divExact(usize, data.len, Element.fixed_size);
-            if (len > limit) {
-                return error.InvalidSize;
-            }
+            const len = std.math.divExact(usize, data.len, Element.fixed_size) catch return error.InvalidSSZ;
             try out.resize(allocator, len);
             @memset(out.items[0..len], Element.default_value);
             for (0..len) |i| {
@@ -108,8 +99,8 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
                 else => return error.InvalidJson,
             }
 
-            var i: usize = 0;
-            while (true) : (i += 1) {
+            var count: usize = 0;
+            while (true) : (count += 1) {
                 switch (try source.peekNextTokenType()) {
                     .array_end => {
                         _ = try source.next();
@@ -120,28 +111,21 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
 
                 // grow by one and deserialize element
                 try out.append(allocator, Element.default_value);
-                try Element.deserializeFromJson(source, &out.items[i]);
+                try Element.deserializeFromJson(source, &out.items[count]);
             }
             return error.invalidLength;
         }
 
         pub const serialized = struct {
             pub fn validate(data: []const u8) !void {
-                const len = try std.math.divExact(usize, data.len, Element.fixed_size);
-                if (len > limit) {
-                    return error.InvalidSize;
-                }
+                const len = std.math.divExact(usize, data.len, Element.fixed_size) catch return error.InvalidSSZ;
                 for (0..len) |i| {
                     try Element.serialized.validate(data[i * Element.fixed_size .. (i + 1) * Element.fixed_size]);
                 }
             }
 
             pub fn length(data: []const u8) !usize {
-                const len = try std.math.divExact(usize, data.len, Element.fixed_size);
-                if (len > limit) {
-                    return error.InvalidSize;
-                }
-                return len;
+                return std.math.divExact(usize, data.len, Element.fixed_size) catch return error.InvalidSSZ;
             }
 
             pub fn hashTreeRoot(allocator: std.mem.Allocator, data: []const u8, out: *[32]u8) !void {
@@ -268,20 +252,18 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
     };
 }
 
-pub fn VariableProgressiveListType(comptime ST: type, comptime _limit: comptime_int) type {
+pub fn VariableProgressiveListType(comptime ST: type) type {
     comptime {
         if (isFixedType(ST)) {
             @compileError("ST must not be fixed type");
         }
     }
-    _ = _limit; // unused in this variant
     return struct {
         const Self = @This();
         pub const kind = TypeKind.progressive_list;
         pub const Element: type = ST;
         pub const Type: type = std.ArrayListUnmanaged(Element.Type);
         pub const min_size: usize = 0;
-        // no explicit limit in this variant
 
         pub const default_value: Type = Type.empty;
 
@@ -395,13 +377,6 @@ pub fn VariableProgressiveListType(comptime ST: type, comptime _limit: comptime_
                     try Element.serialized.validate(data[prev_offset..curr_offset]);
                 }
                 try Element.serialized.validate(data[curr_offset..data.len]);
-
-                // For fixed-size elements, ensure the last element ends exactly at data.len
-                if (comptime isBasicType(Element)) {
-                    if (curr_offset + Element.fixed_size != data.len) {
-                        return error.InvalidSize;
-                    }
-                }
             }
 
             pub fn length(data: []const u8) !usize {
@@ -525,9 +500,9 @@ test "ListType - sanity" {
     const allocator = std.testing.allocator;
 
     // create a fixed list type and instance and round-trip serialize
-    const Bytes = FixedProgressiveListType(UintType(8), 32);
+    const Bytes = FixedProgressiveListType(UintType(8));
 
-    var b: Bytes.Type = try Bytes.init(allocator);
+    var b: Bytes.Type = Bytes.Type.empty;
     defer b.deinit(allocator);
     try b.append(allocator, 5);
 
@@ -538,9 +513,9 @@ test "ListType - sanity" {
     try Bytes.deserializeFromBytes(allocator, b_buf, &b);
 
     // create a variable list type and instance and round-trip serialize
-    const BytesBytes = VariableProgressiveListType(Bytes, 32);
-    var b2: BytesBytes.Type = try BytesBytes.init(allocator);
-    defer b2.deinit(allocator);
+    const BytesBytes = VariableProgressiveListType(Bytes);
+    var b2: BytesBytes.Type = BytesBytes.Type.empty;
+    defer BytesBytes.deinit(allocator, &b2);
     try b2.append(allocator, b);
 
     const b2_buf = try allocator.alloc(u8, BytesBytes.serializedSize(&b2));
@@ -548,4 +523,24 @@ test "ListType - sanity" {
 
     _ = BytesBytes.serializeIntoBytes(&b2, b2_buf);
     try BytesBytes.deserializeFromBytes(allocator, b2_buf, &b2);
+}
+
+test "ProgressiveList validation should fail for invalid size" {
+    const Uint64List = FixedProgressiveListType(UintType(64));
+
+    // Test data that's not divisible by 8 (uint64 size)
+    const invalid_data = [_]u8{ 1, 2, 3, 4, 5, 6, 7 }; // 7 bytes, not divisible by 8
+    try std.testing.expectError(error.InvalidSSZ, Uint64List.serialized.validate(&invalid_data));
+
+    // Test valid data (should pass)
+    const valid_data = [_]u8{0} ** 8; // 1 element, should be valid
+    try Uint64List.serialized.validate(&valid_data);
+
+    // Test the specific failing case from the tests
+    const test_case_data = [_]u8{0xff} ** 112; // 14 elements, should be valid
+    try Uint64List.serialized.validate(&test_case_data);
+
+    // Test what SHOULD be the invalid case
+    const should_be_invalid = [_]u8{0xff} ** 177; // 22*8+1 bytes, not divisible by 8
+    try std.testing.expectError(error.InvalidSSZ, Uint64List.serialized.validate(&should_be_invalid));
 }
