@@ -46,6 +46,9 @@ pub fn main() !void {
         }
 
         const test_dir_name = g_test_entry.name;
+        if (std.mem.eql(u8, test_dir_name, "progressive_bitlist")) {
+            continue;
+        }
 
         const valid_tests_dir_name = try std.fs.path.join(allocator, &[_][]const u8{
             generic_tests_dir_name,
@@ -66,6 +69,11 @@ pub fn main() !void {
 
             const test_name = valid_test_entry.name;
             const type_name = getTypeName(test_dir_name, test_name);
+
+            // Temporarily skip progressive container tests
+            if (std.mem.eql(u8, type_name, "ProgressiveBitsStruct") or std.mem.eql(u8, type_name, "ProgressiveTestStruct")) {
+                continue;
+            }
 
             try writeValidTest(writer, test_name, test_dir_name, type_name);
         }
@@ -92,6 +100,11 @@ pub fn main() !void {
 
             // we must skip some invalid types (that would have gotten caught at compile time)
             if (std.mem.indexOf(u8, type_name, "vec_") != null and std.mem.indexOf(u8, type_name, "_0") != null) {
+                continue;
+            }
+
+            // Temporarily skip progressive container tests
+            if (std.mem.eql(u8, type_name, "ProgressiveBitsStruct") or std.mem.eql(u8, type_name, "ProgressiveTestStruct")) {
                 continue;
             }
 

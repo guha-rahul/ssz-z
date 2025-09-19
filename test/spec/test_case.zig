@@ -23,9 +23,8 @@ pub fn parseYaml(comptime ST: type, allocator: Allocator, y: yaml.Yaml, out: *ST
         // we need to find the padding bit to find the bit_len, and then remove it
         // do this manually, otherwise we're testing the deserialization codepath against itself
         const last_byte = data[data.len - 1];
-
-        const last_byte_clz = @clz(last_byte);
-        const last_1_index: u3 = @intCast(7 - last_byte_clz);
+        if (last_byte == 0) return error.InvalidSSZ;
+        const last_1_index: u3 = @intCast(7 - @clz(last_byte));
         const bit_len = (data.len - 1) * 8 + last_1_index;
         data[data.len - 1] ^= @as(u8, 1) << last_1_index;
 

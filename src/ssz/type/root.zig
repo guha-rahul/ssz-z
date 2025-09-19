@@ -22,15 +22,14 @@ pub const isByteVectorType = @import("byte_vector.zig").isByteVectorType;
 pub const FixedListType = @import("list.zig").FixedListType;
 pub const VariableListType = @import("list.zig").VariableListType;
 
+pub const FixedProgressiveListType = @import("progressive_list.zig").FixedProgressiveListType;
+pub const VariableProgressiveListType = @import("progressive_list.zig").VariableProgressiveListType;
+
 pub const FixedVectorType = @import("vector.zig").FixedVectorType;
 pub const VariableVectorType = @import("vector.zig").VariableVectorType;
 
 pub const FixedContainerType = @import("container.zig").FixedContainerType;
 pub const VariableContainerType = @import("container.zig").VariableContainerType;
-
-pub const ProgressiveListType = @import("progressive_list.zig").ProgressiveListType;
-pub const ProgressiveByteListType = @import("progressive_list.zig").ProgressiveByteListType;
-pub const ProgressiveBitListType = @import("progressive_list.zig").ProgressiveBitListType;
 
 test {
     _ = @import("bool.zig");
