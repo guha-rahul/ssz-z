@@ -93,6 +93,25 @@ pub fn BitList(comptime limit: comptime_int) type {
             return true_bit_count;
         }
 
+        pub fn getSingleTrueBit(self: *const @This()) ?usize {
+            var found_index: ?usize = null;
+
+            for (self.data.items, 0..) |byte, i_byte| {
+                var b = byte;
+                while (b != 0) {
+                    if (found_index != null) {
+                        return null; // more than one true bit found
+                    }
+                    const lsb: usize = @as(u8, @ctz(b));
+                    const bit_index = i_byte * 8 + lsb;
+                    found_index = bit_index;
+
+                    b &= b - 1;
+                }
+            }
+            return found_index;
+        }
+
         pub fn deinit(self: *@This(), allocator: std.mem.Allocator) void {
             self.data.deinit(allocator);
         }
@@ -522,6 +541,12 @@ test "BitListType - sanity with bools" {
     const true_bit_count = try b.getTrueBitIndexes(true_bit_indexes[0..]);
 
     try std.testing.expectEqualSlices(usize, &expected_true_bit_indexes, true_bit_indexes[0..true_bit_count]);
+
+    const expected_single_bool = [_]bool{ false, false, false, false, false, true, false, false, false, false, false, false };
+    var b_single_bool: Bits.Type = try Bits.Type.fromBoolSlice(allocator, &expected_single_bool);
+    defer b_single_bool.deinit(allocator);
+
+    try std.testing.expectEqual(b_single_bool.getSingleTrueBit(), 5);
 }
 
 test "BitListType - intersectValues" {
