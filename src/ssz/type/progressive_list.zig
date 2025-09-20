@@ -8,14 +8,15 @@ const maxChunksToDepth = @import("hashing").maxChunksToDepth;
 const Depth = @import("hashing").Depth;
 const Node = @import("persistent_merkle_tree").Node;
 const progressive = @import("progressive.zig");
+const testing = std.testing;
 
 pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int) type {
     comptime {
         if (!isFixedType(ST)) {
             @compileError("ST must be fixed type");
         }
-        if (_limit <= 0) {
-            @compileError("limit must be greater than 0");
+        if (_limit < 0) {
+            @compileError("limit must be non-negative");
         }
     }
     return struct {
@@ -54,6 +55,9 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
 
             if (comptime isBasicType(Element)) {
                 _ = serializeIntoBytes(value, @ptrCast(chunks));
+                if (chunks.len > 0) {
+                    std.debug.print("[PGL value] first_leaf={s}\n", .{std.fmt.fmtSliceHexLower(chunks[0][0..])});
+                }
             } else {
                 for (value.items, 0..) |element, i| {
                     try Element.hashTreeRoot(&element, &chunks[i]);
@@ -61,7 +65,9 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
             }
 
             try progressive.merkleizeChunks(allocator, chunks, out);
+            std.debug.print("[PGL value] contents={s} len={d}\n", .{ std.fmt.fmtSliceHexLower(out.*[0..]), value.items.len });
             mixInLength(value.items.len, out);
+            std.debug.print("[PGL value] root={s}\n", .{std.fmt.fmtSliceHexLower(out.*[0..])});
         }
 
         pub fn serializedSize(value: *const Type) usize {
@@ -77,7 +83,9 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
         }
 
         pub fn deserializeFromBytes(allocator: std.mem.Allocator, data: []const u8, out: *Type) !void {
-            const len = std.math.divExact(usize, data.len, Element.fixed_size) catch return error.InvalidSSZ;
+            // Validate first to ensure exact multiple and within limit
+            try serialized.validate(data);
+            const len = try serialized.length(data);
             try out.resize(allocator, len);
             @memset(out.items[0..len], Element.default_value);
             for (0..len) |i| {
@@ -114,6 +122,7 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
                 }
 
                 // grow by one and deserialize element
+                if (count + 1 > limit) return error.gtLimit;
                 try out.append(allocator, Element.default_value);
                 try Element.deserializeFromJson(source, &out.items[count]);
             }
@@ -122,9 +131,20 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
 
         pub const serialized = struct {
             pub fn validate(data: []const u8) !void {
-                const len = std.math.divExact(usize, data.len, Element.fixed_size) catch return error.InvalidSSZ;
+                std.debug.print("[PGL fixed.validate] fs={d} limit={d} data.len={d}\n", .{ Element.fixed_size, limit, data.len });
+                if (data.len % Element.fixed_size != 0) {
+                    std.debug.print("[PGL fixed.validate] non-multiple: rem={d}\n", .{data.len % Element.fixed_size});
+                    return error.InvalidSSZ;
+                }
+                if (limit == 0) {
+                    if (data.len == 0) return; // only empty is valid
+                    return error.InvalidSSZ;
+                }
+                const len = data.len / Element.fixed_size;
+                std.debug.print("[PGL fixed.validate] len={d}\n", .{len});
                 if (len > limit) {
-                    return error.gtLimit;
+                    std.debug.print("[PGL fixed.validate] over-limit len={d} > limit={d}\n", .{ len, limit });
+                    return error.InvalidSSZ;
                 }
                 for (0..len) |i| {
                     try Element.serialized.validate(data[i * Element.fixed_size .. (i + 1) * Element.fixed_size]);
@@ -132,9 +152,20 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
             }
 
             pub fn length(data: []const u8) !usize {
-                const len = std.math.divExact(usize, data.len, Element.fixed_size) catch return error.InvalidSSZ;
+                std.debug.print("[PGL fixed.length] fs={d} limit={d} data.len={d}\n", .{ Element.fixed_size, limit, data.len });
+                if (data.len % Element.fixed_size != 0) {
+                    std.debug.print("[PGL fixed.length] non-multiple: rem={d}\n", .{data.len % Element.fixed_size});
+                    return error.InvalidSSZ;
+                }
+                if (limit == 0) {
+                    if (data.len == 0) return 0; // only empty is valid
+                    return error.InvalidSSZ;
+                }
+                const len = data.len / Element.fixed_size;
+                std.debug.print("[PGL fixed.length] len={d}\n", .{len});
                 if (len > limit) {
-                    return error.gtLimit;
+                    std.debug.print("[PGL fixed.length] over-limit len={d} > limit={d}\n", .{ len, limit });
+                    return error.InvalidSSZ;
                 }
                 return len;
             }
@@ -153,6 +184,9 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
 
                 if (comptime isBasicType(Element)) {
                     @memcpy(@as([]u8, @ptrCast(chunks))[0..data.len], data);
+                    if (chunks.len > 0) {
+                        std.debug.print("[PGL ser] first_leaf={s}\n", .{std.fmt.fmtSliceHexLower(chunks[0][0..])});
+                    }
                 } else {
                     for (0..len) |i| {
                         try Element.serialized.hashTreeRoot(
@@ -163,7 +197,9 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
                 }
 
                 try progressive.merkleizeChunks(allocator, chunks, out);
+                std.debug.print("[PGL ser] contents={s} len={d}\n", .{ std.fmt.fmtSliceHexLower(out.*[0..]), len });
                 mixInLength(len, out);
+                std.debug.print("[PGL ser] root={s}\n", .{std.fmt.fmtSliceHexLower(out.*[0..])});
             }
         };
 
@@ -171,7 +207,8 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
             pub fn length(node: Node.Id, pool: *Node.Pool) !usize {
                 const right = try node.getRight(pool);
                 const hash = right.getRoot(pool);
-                return std.mem.readInt(usize, hash[0..8], .little);
+                const v: u64 = std.mem.readInt(u64, hash[0..8], .little);
+                return @intCast(v);
             }
 
             pub fn toValue(allocator: std.mem.Allocator, node: Node.Id, pool: *Node.Pool, out: *Type) !void {
@@ -195,11 +232,14 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
 
                 if (comptime isBasicType(Element)) {
                     // tightly packed list
+                    const items_per_chunk = 32 / Element.fixed_size;
                     for (0..len) |i| {
+                        const chunk_index = i / items_per_chunk;
+                        const index_in_chunk = i % items_per_chunk;
                         try Element.tree.toValuePacked(
-                            nodes[i * Element.fixed_size / 32],
+                            nodes[chunk_index],
                             pool,
-                            i,
+                            index_in_chunk,
                             &out.items[i],
                         );
                     }
@@ -268,8 +308,8 @@ pub fn VariableProgressiveListType(comptime ST: type, comptime _limit: comptime_
         if (isFixedType(ST)) {
             @compileError("ST must not be fixed type");
         }
-        if (_limit <= 0) {
-            @compileError("limit must be greater than 0");
+        if (_limit < 0) {
+            @compileError("limit must be non-negative");
         }
     }
     return struct {
@@ -344,6 +384,8 @@ pub fn VariableProgressiveListType(comptime ST: type, comptime _limit: comptime_
         }
 
         pub fn deserializeFromBytes(allocator: std.mem.Allocator, data: []const u8, out: *Type) !void {
+            // Validate first
+            try serialized.validate(data);
             const offsets = try readVariableOffsets(allocator, data);
             defer allocator.free(offsets);
 
@@ -362,7 +404,10 @@ pub fn VariableProgressiveListType(comptime ST: type, comptime _limit: comptime_
 
         pub fn readVariableOffsets(allocator: std.mem.Allocator, data: []const u8) ![]u32 {
             var iterator = OffsetIterator(Self).init(data);
-            const first_offset = if (data.len == 0) 0 else try iterator.next();
+            const first_offset = if (data.len == 0) 0 else blk: {
+                if (data.len < 4) return error.InvalidSSZ;
+                break :blk try iterator.next();
+            };
             const len = first_offset / 4;
 
             const offsets = try allocator.alloc(u32, len + 1);
@@ -380,6 +425,8 @@ pub fn VariableProgressiveListType(comptime ST: type, comptime _limit: comptime_
             pub fn validate(data: []const u8) !void {
                 var iterator = OffsetIterator(Self).init(data);
                 if (data.len == 0) return;
+                if (limit == 0) return error.InvalidSSZ;
+                if (data.len < 4) return error.InvalidSSZ;
                 const first_offset = try iterator.next();
                 const len = first_offset / 4;
 
@@ -402,8 +449,12 @@ pub fn VariableProgressiveListType(comptime ST: type, comptime _limit: comptime_
                 if (data.len == 0) {
                     return 0;
                 }
+                if (limit == 0) return error.InvalidSSZ;
+                if (data.len < 4) return error.InvalidSSZ;
                 var iterator = OffsetIterator(Self).init(data);
-                const len = try iterator.firstOffset() / 4;
+                const first_offset = try iterator.firstOffset();
+                if (first_offset > data.len) return error.InvalidSSZ;
+                const len = first_offset / 4;
                 if (len > limit) {
                     return error.gtLimit;
                 }
@@ -411,6 +462,7 @@ pub fn VariableProgressiveListType(comptime ST: type, comptime _limit: comptime_
             }
 
             pub fn hashTreeRoot(allocator: std.mem.Allocator, data: []const u8, out: *[32]u8) !void {
+                try validate(data);
                 const len = try length(data);
                 const chunk_count = len;
 
@@ -437,7 +489,8 @@ pub fn VariableProgressiveListType(comptime ST: type, comptime _limit: comptime_
             pub fn length(node: Node.Id, pool: *Node.Pool) !usize {
                 const right = try node.getRight(pool);
                 const hash = right.getRoot(pool);
-                return std.mem.readInt(usize, hash[0..8], .little);
+                const v: u64 = std.mem.readInt(u64, hash[0..8], .little);
+                return @intCast(v);
             }
 
             pub fn toValue(allocator: std.mem.Allocator, node: Node.Id, pool: *Node.Pool, out: *Type) !void {
@@ -470,7 +523,7 @@ pub fn VariableProgressiveListType(comptime ST: type, comptime _limit: comptime_
                 const chunk_count = len;
                 if (chunk_count == 0) {
                     return try pool.createBranch(
-                        @enumFromInt(1),
+                        @enumFromInt(0),
                         @enumFromInt(0),
                         false,
                     );
@@ -515,7 +568,7 @@ pub fn VariableProgressiveListType(comptime ST: type, comptime _limit: comptime_
     };
 }
 
-const UintType = @import("uint.zig").UintType;
+const UintTypePL = @import("uint.zig").UintType;
 const BoolType = @import("bool.zig").BoolType;
 
 test "ListType - sanity" {
@@ -569,7 +622,8 @@ test "ProgressiveList validation should fail for invalid size" {
     // Test limit validation
     const SmallUint64List = FixedProgressiveListType(UintType(64), 10);
     const too_many_elements = [_]u8{0xff} ** (11 * 8); // 11 elements, exceeds limit of 10
-    try std.testing.expectError(error.gtLimit, SmallUint64List.serialized.validate(&too_many_elements));
+
+    try std.testing.expectError(error.InvalidSSZ, SmallUint64List.serialized.validate(&too_many_elements));
 
     // Debug test - check a "one byte more" case like the failing tests
     const Uint32List = FixedProgressiveListType(UintType(32), 1024);
@@ -586,4 +640,115 @@ test "ProgressiveList validation should fail for invalid size" {
     const test_case_failing_plus_one = [_]u8{0} ** 57; // 57 bytes, not divisible by 4
     std.debug.print("Testing exact failing case + 1 byte (57 bytes)...\n", .{});
     try std.testing.expectError(error.InvalidSSZ, Uint32List.serialized.validate(&test_case_failing_plus_one));
+}
+
+test "FixedProgressiveList zero limit: only empty is valid" {
+    const allocator = std.testing.allocator;
+    const U32Zero = FixedProgressiveListType(UintType(32), 0);
+
+    // validate empty
+    try U32Zero.serialized.validate(&[_]u8{});
+    try std.testing.expectEqual(@as(usize, 0), try U32Zero.serialized.length(&[_]u8{}));
+
+    // any non-empty buffer is invalid
+    try std.testing.expectError(error.InvalidSSZ, U32Zero.serialized.validate(&[_]u8{ 0, 0, 0, 0 }));
+    try std.testing.expectError(error.InvalidSSZ, U32Zero.serialized.length(&[_]u8{ 0, 0, 0, 0 }));
+
+    // deserialize respects validate first
+    var out: U32Zero.Type = U32Zero.Type.empty;
+    defer out.deinit(allocator);
+    try U32Zero.deserializeFromBytes(allocator, &[_]u8{}, &out);
+    try std.testing.expectEqual(@as(usize, 0), out.items.len);
+    try std.testing.expectError(error.InvalidSSZ, U32Zero.deserializeFromBytes(allocator, &[_]u8{ 0, 0, 0, 0 }, &out));
+}
+
+test "VariableProgressiveList zero limit: only empty is valid" {
+    const allocator = std.testing.allocator;
+    // Element type is a variable-sized ProgressiveList from earlier test
+    const Bytes = FixedProgressiveListType(UintType(8), 1024);
+    const VarZero = VariableProgressiveListType(Bytes, 0);
+
+    // validate empty
+    try VarZero.serialized.validate(&[_]u8{});
+    try std.testing.expectEqual(@as(usize, 0), try VarZero.serialized.length(&[_]u8{}));
+
+    // any non-empty buffer is invalid (no header allowed when limit==0)
+    try std.testing.expectError(error.InvalidSSZ, VarZero.serialized.validate(&[_]u8{ 0, 0, 0, 0 }));
+    try std.testing.expectError(error.InvalidSSZ, VarZero.serialized.length(&[_]u8{ 0, 0, 0, 0 }));
+
+    // deserialize respects validate first
+    var out: VarZero.Type = VarZero.Type.empty;
+    defer VarZero.deinit(allocator, &out);
+    try VarZero.deserializeFromBytes(allocator, &[_]u8{}, &out);
+    try std.testing.expectEqual(@as(usize, 0), out.items.len);
+    try std.testing.expectError(error.InvalidSSZ, VarZero.deserializeFromBytes(allocator, &[_]u8{ 0, 0, 0, 0 }, &out));
+}
+
+// =====================
+// Additional ProgressiveList tests
+// =====================
+const UintType = @import("uint.zig").UintType;
+
+// helper to compute root through value path
+fn root_value_u16(gpa: std.mem.Allocator, n: usize) ![32]u8 {
+    const L = FixedProgressiveListType(UintTypePL(16), 2048);
+    var v: L.Type = L.Type.empty;
+    defer v.deinit(gpa);
+    try v.resize(gpa, n);
+    var i: usize = 0;
+    while (i < n) : (i += 1) {
+        v.items[i] = @as(u16, @intCast(i));
+    }
+    var out: [32]u8 = undefined;
+    try L.hashTreeRoot(gpa, &v, &out);
+    return out;
+}
+
+// helper to compute root through serialized path
+fn root_ser_u16(gpa: std.mem.Allocator, n: usize) ![32]u8 {
+    const L = FixedProgressiveListType(UintTypePL(16), 2048);
+    var buf = try gpa.alloc(u8, n * 2);
+    defer gpa.free(buf);
+    var i: usize = 0;
+    while (i < n) : (i += 1) {
+        std.mem.writeInt(u16, buf[i * 2 ..][0..2], @as(u16, @intCast(i)), .little);
+    }
+    var out: [32]u8 = undefined;
+    try L.serialized.hashTreeRoot(gpa, buf, &out);
+    return out;
+}
+
+test "ProgressiveList u16 roots: value vs serialized vs contents for boundary sizes" {
+    const gpa = testing.allocator;
+    const sizes = [_]usize{ 0, 1, 2, 3, 4, 5, 16, 17, 32, 33, 56, 64, 65, 85 };
+
+    for (sizes) |n| {
+        const rv = try root_value_u16(gpa, n);
+        const rs = try root_ser_u16(gpa, n);
+
+        // build the chunks and call contents merkleizer directly
+        const chunk_count = (n * 2 + 31) / 32;
+        var leaves = try gpa.alloc([32]u8, chunk_count);
+        defer gpa.free(leaves);
+        @memset(leaves, [_]u8{0} ** 32);
+        {
+            var j: usize = 0;
+            while (j < n) : (j += 1) {
+                const chunk_i = (j * 2) / 32;
+                const off = (j * 2) % 32;
+                std.mem.writeInt(u16, leaves[chunk_i][off .. off + 2], @as(u16, @intCast(j)), .little);
+            }
+        }
+        var rc: [32]u8 = undefined;
+        try progressive.merkleizeChunks(gpa, leaves, &rc);
+
+        if (!(std.mem.eql(u8, &rv, &rs) and std.mem.eql(u8, &rv, &rc))) {
+            std.debug.print("[DBG list u16 n={d}] value={s}\n", .{ n, std.fmt.fmtSliceHexLower(rv[0..]) });
+            std.debug.print("[DBG list u16 n={d}] serial={s}\n", .{ n, std.fmt.fmtSliceHexLower(rs[0..]) });
+            std.debug.print("[DBG list u16 n={d}] conts ={s}\n", .{ n, std.fmt.fmtSliceHexLower(rc[0..]) });
+        }
+
+        try testing.expect(std.mem.eql(u8, &rv, &rs));
+        try testing.expect(std.mem.eql(u8, &rv, &rc));
+    }
 }

@@ -312,6 +312,22 @@ pub fn invalidTestCase(comptime ST: type, gpa: Allocator, path: std.fs.Dir) !voi
 
     // test deserialization
 
+    // Debug: log ST and payload info
+    const is_prog = comptime (ST.kind == .progressive_list);
+    var el_fixed: usize = 0;
+    var lim: usize = 0;
+    if (comptime is_prog) {
+        if (comptime ssz.isFixedType(ST.Element)) {
+            el_fixed = ST.Element.fixed_size;
+        } else {
+            el_fixed = 0;
+        }
+        lim = ST.limit;
+    }
+    std.debug.print("[invalidCase] kind={s} prog={any} el_fs={d} limit={d} data.len={d}\n", .{
+        @tagName(ST.kind), is_prog, el_fixed, lim, serialized_expected.len,
+    });
+
     try std.testing.expectError(error.InvalidSSZ, validate(ST, serialized_expected));
 
     var value_actual = ST.default_value;
