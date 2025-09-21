@@ -89,10 +89,7 @@ pub fn main() !void {
 
         const invalid_tests_dir = try std.fs.cwd().openDir(invalid_tests_dir_name, .{ .iterate = true });
         var invalid_tests_dir_it = invalid_tests_dir.iterate();
-        // Temporary: skip invalid cases for basic_progressive_list until validator aligns to spec fixtures
-        if (std.mem.eql(u8, test_dir_name, "basic_progressive_list")) {
-            continue;
-        }
+
         while (try invalid_tests_dir_it.next()) |invalid_test_entry| {
             switch (invalid_test_entry.kind) {
                 .directory => {},
@@ -103,10 +100,7 @@ pub fn main() !void {
 
             const test_name = invalid_test_entry.name;
             const type_name = getTypeName(test_dir_name, test_name);
-            // Temporary: skip ambiguous 'one_byte_more' cases for basic_progressive_list
-            if (std.mem.eql(u8, test_dir_name, "basic_progressive_list") and std.mem.endsWith(u8, test_name, "one_byte_more")) {
-                continue;
-            }
+
             // Skip progressive container variants
             if (std.mem.eql(u8, type_name, "ProgressiveBitsStruct") or std.mem.eql(u8, type_name, "ProgressiveTestStruct")) {
                 continue;
