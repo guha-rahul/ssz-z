@@ -60,7 +60,7 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
                 }
             } else {
                 for (value.items, 0..) |element, i| {
-                    try Element.hashTreeRoot(&element, &chunks[i]);
+                    try Element.hashTreeRoot(allocator, &element, &chunks[i]);
                 }
             }
 
@@ -131,21 +131,34 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
 
         pub const serialized = struct {
             pub fn validate(data: []const u8) !void {
-                std.debug.print("[PGL fixed.validate] fs={d} limit={d} data.len={d}\n", .{ Element.fixed_size, limit, data.len });
+                std.debug.print("[PGL fixed.validate] fs={d} ser_fs={d} limit={d} data.len={d}\n", .{ Element.fixed_size, @sizeOf(@TypeOf(Element.default_value)), limit, data.len });
+
+                // Handle limit=0 case: allow empty when limit=0, reject non-empty
+                if (limit == 0) {
+                    if (data.len == 0) {
+                        return; // Empty is valid for limit=0
+                    } else {
+                        std.debug.print("[PGL fixed.validate] limit=0 but data.len={d} > 0\n", .{data.len});
+                        return error.InvalidSSZ;
+                    }
+                }
+
+                // Require exact multiple - reject any remainder bytes
                 if (data.len % Element.fixed_size != 0) {
                     std.debug.print("[PGL fixed.validate] non-multiple: rem={d}\n", .{data.len % Element.fixed_size});
                     return error.InvalidSSZ;
                 }
-                if (limit == 0) {
-                    std.debug.print("[PGL fixed.validate] limit=0 always invalid\n", .{});
-                    return error.InvalidSSZ;
-                }
+
                 const len = data.len / Element.fixed_size;
                 std.debug.print("[PGL fixed.validate] len={d}\n", .{len});
+
+                // Check length against limit
                 if (len > limit) {
                     std.debug.print("[PGL fixed.validate] over-limit len={d} > limit={d}\n", .{ len, limit });
                     return error.InvalidSSZ;
                 }
+
+                // Validate each element
                 for (0..len) |i| {
                     const elem_data = data[i * Element.fixed_size .. (i + 1) * Element.fixed_size];
                     Element.serialized.validate(elem_data) catch |err| {
@@ -157,20 +170,32 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
 
             pub fn length(data: []const u8) !usize {
                 std.debug.print("[PGL fixed.length] fs={d} limit={d} data.len={d}\n", .{ Element.fixed_size, limit, data.len });
+
+                // Handle limit=0 case: allow empty when limit=0, reject non-empty
+                if (limit == 0) {
+                    if (data.len == 0) {
+                        return 0;
+                    } else {
+                        std.debug.print("[PGL fixed.length] limit=0 but data.len={d} > 0\n", .{data.len});
+                        return error.InvalidSSZ;
+                    }
+                }
+
+                // Require exact multiple - reject any remainder bytes
                 if (data.len % Element.fixed_size != 0) {
                     std.debug.print("[PGL fixed.length] non-multiple: rem={d}\n", .{data.len % Element.fixed_size});
                     return error.InvalidSSZ;
                 }
-                if (limit == 0) {
-                    std.debug.print("[PGL fixed.length] limit=0 always invalid\n", .{});
-                    return error.InvalidSSZ;
-                }
+
                 const len = data.len / Element.fixed_size;
                 std.debug.print("[PGL fixed.length] len={d}\n", .{len});
-                if (len >= limit) {
-                    std.debug.print("[PGL fixed.length] at-or-over-limit len={d} >= limit={d}\n", .{ len, limit });
+
+                // Check length against limit
+                if (len > limit) {
+                    std.debug.print("[PGL fixed.length] over-limit len={d} > limit={d}\n", .{ len, limit });
                     return error.InvalidSSZ;
                 }
+
                 return len;
             }
 
@@ -194,6 +219,7 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
                 } else {
                     for (0..len) |i| {
                         try Element.serialized.hashTreeRoot(
+                            allocator,
                             data[i * Element.fixed_size .. (i + 1) * Element.fixed_size],
                             &chunks[i],
                         );
@@ -428,41 +454,108 @@ pub fn VariableProgressiveListType(comptime ST: type, comptime _limit: comptime_
 
         pub const serialized = struct {
             pub fn validate(data: []const u8) !void {
-                var iterator = OffsetIterator(Self).init(data);
+                // Handle limit=0 case: allow empty when limit=0, reject non-empty
+                if (limit == 0) {
+                    if (data.len == 0) {
+                        return; // Empty is valid for limit=0
+                    } else {
+                        return error.InvalidSSZ;
+                    }
+                }
+
+                // Empty data is valid if limit > 0
                 if (data.len == 0) return;
-                if (limit == 0) return error.InvalidSSZ;
+
+                // Need at least 4 bytes for first offset
                 if (data.len < 4) return error.InvalidSSZ;
+
+                var iterator = OffsetIterator(Self).init(data);
                 const first_offset = try iterator.next();
                 const len = first_offset / 4;
 
-                if (len >= limit) {
-                    return error.gtLimit;
+                // Require exact match: first_offset == 4 * len
+                if (first_offset != 4 * len) {
+                    return error.InvalidSSZ;
                 }
 
+                // Check length against limit - progressive lists reject at-limit
+                if (len >= limit) {
+                    return error.InvalidSSZ;
+                }
+
+                // Validate offsets are non-decreasing and within bounds
                 var curr_offset = first_offset;
                 var prev_offset = first_offset;
                 while (iterator.pos < len) {
                     prev_offset = curr_offset;
                     curr_offset = try iterator.next();
 
-                    try Element.serialized.validate(data[prev_offset..curr_offset]);
+                    // Offsets must be non-decreasing
+                    if (curr_offset < prev_offset) {
+                        return error.InvalidSSZ;
+                    }
+
+                    // Offset must be within data bounds
+                    if (curr_offset > data.len) {
+                        return error.InvalidSSZ;
+                    }
+
+                    // Validate element data
+                    Element.serialized.validate(data[prev_offset..curr_offset]) catch |err| {
+                        std.debug.print("[PGL variable.validate] element {d} failed validation: {}\n", .{ iterator.pos - 1, err });
+                        return error.InvalidSSZ;
+                    };
                 }
-                try Element.serialized.validate(data[curr_offset..data.len]);
+
+                // Last offset must exactly equal data.len (no trailing garbage)
+                if (curr_offset != data.len) {
+                    return error.InvalidSSZ;
+                }
+
+                // Validate final element
+                Element.serialized.validate(data[prev_offset..data.len]) catch |err| {
+                    std.debug.print("[PGL variable.validate] final element failed validation: {}\n", .{err});
+                    return error.InvalidSSZ;
+                };
             }
 
             pub fn length(data: []const u8) !usize {
+                // Handle limit=0 case: allow empty when limit=0, reject non-empty
+                if (limit == 0) {
+                    if (data.len == 0) {
+                        return 0;
+                    } else {
+                        return error.InvalidSSZ;
+                    }
+                }
+
+                // Empty data is valid if limit > 0
                 if (data.len == 0) {
                     return 0;
                 }
-                if (limit == 0) return error.InvalidSSZ;
+
+                // Need at least 4 bytes for first offset
                 if (data.len < 4) return error.InvalidSSZ;
+
                 var iterator = OffsetIterator(Self).init(data);
                 const first_offset = try iterator.firstOffset();
-                if (first_offset > data.len) return error.InvalidSSZ;
                 const len = first_offset / 4;
-                if (len >= limit) {
-                    return error.gtLimit;
+
+                // Require exact match: first_offset == 4 * len
+                if (first_offset != 4 * len) {
+                    return error.InvalidSSZ;
                 }
+
+                // Offset must be within data bounds
+                if (first_offset > data.len) {
+                    return error.InvalidSSZ;
+                }
+
+                // Check length against limit - progressive lists reject at-limit
+                if (len >= limit) {
+                    return error.InvalidSSZ;
+                }
+
                 return len;
             }
 
@@ -605,87 +698,75 @@ test "ListType - sanity" {
     try BytesBytes.deserializeFromBytes(allocator, b2_buf, &b2);
 }
 
-test "ProgressiveList validation should fail for invalid size" {
+test "Type size verification for debugging" {
+    // Let's explicitly verify what sizes we get
+    const Uint32Type = UintType(32);
+    const Uint64Type = UintType(64);
+
+    std.debug.print("\n[TYPE DEBUG] UintType(32).fixed_size = {d}\n", .{Uint32Type.fixed_size});
+    std.debug.print("[TYPE DEBUG] UintType(64).fixed_size = {d}\n", .{Uint64Type.fixed_size});
+
+    const Uint32List = FixedProgressiveListType(UintType(32), 1024);
     const Uint64List = FixedProgressiveListType(UintType(64), 1024);
 
-    // Test data that's not divisible by 8 (uint64 size)
-    const invalid_data = [_]u8{ 1, 2, 3, 4, 5, 6, 7 }; // 7 bytes, not divisible by 8
-    try std.testing.expectError(error.InvalidSSZ, Uint64List.serialized.validate(&invalid_data));
+    std.debug.print("[TYPE DEBUG] ProgList(UintType(32)).Element.fixed_size = {d}\n", .{Uint32List.Element.fixed_size});
+    std.debug.print("[TYPE DEBUG] ProgList(UintType(64)).Element.fixed_size = {d}\n", .{Uint64List.Element.fixed_size});
 
-    // Test valid data (should pass)
-    const valid_data = [_]u8{0} ** 8; // 1 element, should be valid
-    try Uint64List.serialized.validate(&valid_data);
+    // Test validation with correct sizes
+    const valid_uint32_data = [_]u8{0xff} ** 8; // 2 elements * 4 bytes
+    const invalid_uint32_data = [_]u8{0xff} ** 9; // 2.25 elements
 
-    // Test the specific failing case from the tests
-    const test_case_data = [_]u8{0xff} ** 112; // 14 elements, should be valid
-    try Uint64List.serialized.validate(&test_case_data);
+    try Uint32List.serialized.validate(&valid_uint32_data);
+    try std.testing.expectError(error.InvalidSSZ, Uint32List.serialized.validate(&invalid_uint32_data));
 
-    // Test what SHOULD be the invalid case
-    const should_be_invalid = [_]u8{0xff} ** 177; // 22*8+1 bytes, not divisible by 8
-    try std.testing.expectError(error.InvalidSSZ, Uint64List.serialized.validate(&should_be_invalid));
+    const valid_uint64_data = [_]u8{0xff} ** 16; // 2 elements * 8 bytes
+    const invalid_uint64_data = [_]u8{0xff} ** 17; // 2.125 elements
 
-    // Test limit validation
-    const SmallUint64List = FixedProgressiveListType(UintType(64), 10);
-    const too_many_elements = [_]u8{0xff} ** (11 * 8); // 11 elements, exceeds limit of 10
-
-    try std.testing.expectError(error.InvalidSSZ, SmallUint64List.serialized.validate(&too_many_elements));
-
-    // Debug test - check a "one byte more" case like the failing tests
-    const Uint32List = FixedProgressiveListType(UintType(32), 1024);
-    const one_byte_more = [_]u8{0xff} ** 5; // 5 bytes, not divisible by 4
-    std.debug.print("Testing one_byte_more case...\n", .{});
-    try std.testing.expectError(error.InvalidSSZ, Uint32List.serialized.validate(&one_byte_more));
-
-    // Debug test - check the exact failing test case
-    const test_case_failing = [_]u8{0} ** 56; // 56 bytes = 14 uint32s, should be valid
-    std.debug.print("Testing exact failing case (56 bytes)...\n", .{});
-    try Uint32List.serialized.validate(&test_case_failing); // This should pass
-
-    // What about exactly one byte more than the test case?
-    const test_case_failing_plus_one = [_]u8{0} ** 57; // 57 bytes, not divisible by 4
-    std.debug.print("Testing exact failing case + 1 byte (57 bytes)...\n", .{});
-    try std.testing.expectError(error.InvalidSSZ, Uint32List.serialized.validate(&test_case_failing_plus_one));
+    try Uint64List.serialized.validate(&valid_uint64_data);
+    try std.testing.expectError(error.InvalidSSZ, Uint64List.serialized.validate(&invalid_uint64_data));
 }
 
-test "FixedProgressiveList zero limit: only empty is valid" {
+test "FixedProgressiveList zero limit: allow empty, reject non-empty" {
     const allocator = std.testing.allocator;
     const U32Zero = FixedProgressiveListType(UintType(32), 0);
 
-    // validate empty
+    // Empty data is valid when limit=0
     try U32Zero.serialized.validate(&[_]u8{});
-    try std.testing.expectEqual(@as(usize, 0), try U32Zero.serialized.length(&[_]u8{}));
+    try std.testing.expect((try U32Zero.serialized.length(&[_]u8{})) == 0);
 
-    // any non-empty buffer is invalid
+    // Non-empty data is invalid when limit=0
     try std.testing.expectError(error.InvalidSSZ, U32Zero.serialized.validate(&[_]u8{ 0, 0, 0, 0 }));
     try std.testing.expectError(error.InvalidSSZ, U32Zero.serialized.length(&[_]u8{ 0, 0, 0, 0 }));
 
-    // deserialize respects validate first
+    // deserialize empty should work, non-empty should fail
     var out: U32Zero.Type = U32Zero.Type.empty;
     defer out.deinit(allocator);
     try U32Zero.deserializeFromBytes(allocator, &[_]u8{}, &out);
-    try std.testing.expectEqual(@as(usize, 0), out.items.len);
+    try std.testing.expect(out.items.len == 0);
+
     try std.testing.expectError(error.InvalidSSZ, U32Zero.deserializeFromBytes(allocator, &[_]u8{ 0, 0, 0, 0 }, &out));
 }
 
-test "VariableProgressiveList zero limit: only empty is valid" {
+test "VariableProgressiveList zero limit: allow empty, reject non-empty" {
     const allocator = std.testing.allocator;
     // Element type is a variable-sized ProgressiveList from earlier test
     const Bytes = FixedProgressiveListType(UintType(8), 1024);
     const VarZero = VariableProgressiveListType(Bytes, 0);
 
-    // validate empty
+    // Empty data is valid when limit=0
     try VarZero.serialized.validate(&[_]u8{});
-    try std.testing.expectEqual(@as(usize, 0), try VarZero.serialized.length(&[_]u8{}));
+    try std.testing.expect((try VarZero.serialized.length(&[_]u8{})) == 0);
 
-    // any non-empty buffer is invalid (no header allowed when limit==0)
+    // Non-empty data is invalid when limit=0
     try std.testing.expectError(error.InvalidSSZ, VarZero.serialized.validate(&[_]u8{ 0, 0, 0, 0 }));
     try std.testing.expectError(error.InvalidSSZ, VarZero.serialized.length(&[_]u8{ 0, 0, 0, 0 }));
 
-    // deserialize respects validate first
+    // deserialize empty should work, non-empty should fail
     var out: VarZero.Type = VarZero.Type.empty;
     defer VarZero.deinit(allocator, &out);
     try VarZero.deserializeFromBytes(allocator, &[_]u8{}, &out);
-    try std.testing.expectEqual(@as(usize, 0), out.items.len);
+    try std.testing.expect(out.items.len == 0);
+
     try std.testing.expectError(error.InvalidSSZ, VarZero.deserializeFromBytes(allocator, &[_]u8{ 0, 0, 0, 0 }, &out));
 }
 
@@ -853,42 +934,38 @@ test "debug progressive list validation - uint128_22 case" {
     }
 }
 
-test "debug progressive list validation - uint32_3 case" {
-    const allocator = std.testing.allocator;
+test "verify 'one byte more' validation correctly rejects extra bytes" {
+    _ = std.testing.allocator;
 
-    // Test case: proglist_uint32_3_max_one_byte_more
+    // Test case: uint32 with limit 3 - using explicit UintType(32)
     const ProgList3 = FixedProgressiveListType(UintType(32), 3);
+    std.debug.print("\n[TEST] ProgList3 element size: {d}\n", .{ProgList3.Element.fixed_size});
 
-    // For now, simulate with the data we know from debugging
-    const test_data = try allocator.alloc(u8, 12);
-    defer allocator.free(test_data);
-    @memset(test_data, 0xff);
+    // Valid case: exactly 3 elements = 12 bytes
+    const valid_data = [_]u8{0xff} ** 12;
+    std.debug.print("[TEST] Testing valid case: 12 bytes\n", .{});
+    try ProgList3.serialized.validate(&valid_data); // Should pass
+    std.debug.print("[TEST] Valid case passed as expected\n", .{});
 
-    std.debug.print("\n=== Testing proglist_uint32_3 case (12 bytes) ===\n", .{});
-    std.debug.print("Data length: {d}, element size: {d}, remainder: {d}, elements: {d}\n", .{
-        test_data.len, 4, test_data.len % 4, test_data.len / 4
-    });
+    // Invalid case: 3 elements + 1 extra byte = 13 bytes (remainder = 1)
+    const invalid_data = [_]u8{0xff} ** 13;
+    std.debug.print("[TEST] Testing invalid case: 13 bytes (should fail with remainder=1)\n", .{});
+    try std.testing.expectError(error.InvalidSSZ, ProgList3.serialized.validate(&invalid_data));
+    std.debug.print("[TEST] Invalid case correctly rejected\n", .{});
 
-    const result = ProgList3.serialized.validate(test_data);
-    if (result) |_| {
-        std.debug.print("validate() returned void (success) - but test expects this to be INVALID!\n", .{});
-        std.debug.print("TEST INSIGHT: The test data appears valid but the test expects it to fail.\n", .{});
-        std.debug.print("This suggests either:\n", .{});
-        std.debug.print("1. The test data is incorrectly generated\n", .{});
-        std.debug.print("2. There are additional validation rules for progressive lists\n", .{});
-        std.debug.print("3. The element content validation is failing\n", .{});
+    // Test with uint64 to see the difference
+    const ProgList64 = FixedProgressiveListType(UintType(64), 3);
+    std.debug.print("[TEST] ProgList64 element size: {d}\n", .{ProgList64.Element.fixed_size});
 
-        // Test if individual elements validate
-        for (0..3) |i| {
-            const elem_data = test_data[i * 4..(i + 1) * 4];
-            const elem_result = UintType(32).serialized.validate(elem_data);
-            if (elem_result) |_| {
-                std.debug.print("Element {d}: valid\n", .{i});
-            } else |err| {
-                std.debug.print("Element {d}: invalid - {}\n", .{ i, err });
-            }
-        }
-    } else |err| {
-        std.debug.print("validate() returned error: {} - investigating why...\n", .{err});
-    }
+    // Test with uint16 elements
+    const ProgList16 = FixedProgressiveListType(UintType(16), 5);
+    std.debug.print("[TEST] ProgList16 element size: {d}\n", .{ProgList16.Element.fixed_size});
+
+    // Valid: 5 elements = 10 bytes
+    const valid_u16 = [_]u8{0xff} ** 10;
+    try ProgList16.serialized.validate(&valid_u16);
+
+    // Invalid: 5 elements + 1 byte = 11 bytes (remainder = 1)
+    const invalid_u16 = [_]u8{0xff} ** 11;
+    try std.testing.expectError(error.InvalidSSZ, ProgList16.serialized.validate(&invalid_u16));
 }

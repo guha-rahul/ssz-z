@@ -253,7 +253,10 @@ fn binaryDepthForNodes(capacity: usize) Depth {
 // =====================
 
 fn debugTreeStructure(pool: *Node.Pool, node: Node.Id, depth: usize, prefix: []const u8) void {
-    const indent = "  " ** depth;
+    var indent_buf: [64]u8 = undefined;
+    const indent_len = @min(depth * 2, indent_buf.len);
+    @memset(indent_buf[0..indent_len], ' ');
+    const indent = indent_buf[0..indent_len];
     const hash = node.getRoot(pool);
     std.debug.print("{s}{s}node: {s}\n", .{ indent, prefix, std.fmt.fmtSliceHexLower(hash[0..8]) });
 
@@ -315,7 +318,7 @@ test "debug tree vs direct hash - uint16 max case" {
     std.debug.print("Tree root: {s}\n", .{std.fmt.fmtSliceHexLower(tree_root_hash[0..])});
 
     // Debug tree structure
-    std.debug.print("\nTree structure:\n");
+    std.debug.print("\nTree structure:\n", .{});
     debugTreeStructure(&pool, tree_root, 0, "ROOT:");
 
     // Compare
