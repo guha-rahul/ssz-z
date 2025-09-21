@@ -142,6 +142,7 @@ pub fn FixedListType(comptime ST: type, comptime _limit: comptime_int) type {
 
         pub const serialized = struct {
             pub fn validate(data: []const u8) !void {
+                std.debug.print("[FIXED_LIST validate] fixed=true fs={d} limit={d} data.len={d}\n", .{ Element.fixed_size, limit, data.len });
                 const len = try std.math.divExact(usize, data.len, Element.fixed_size);
                 if (len > limit) {
                     return error.gtLimit;

@@ -162,28 +162,28 @@ pub const BitsStruct = ssz.VariableContainerType(struct {
     E: ssz.BitVectorType(8),
 });
 
-// Progressive container variants used by tests
-pub const ProgressiveBitsStruct = ssz.VariableContainerType(struct {
-    A: ssz.BitListType(1025),
-    B: ssz.BitVectorType(8),
-    C: ssz.FixedProgressiveListType(ssz.UintType(8), 2048),
-    D: ssz.ByteVectorType(33),
-    E: ssz.UintType(64),
-    F: ssz.UintType(8),
-    G: ssz.FixedProgressiveListType(ssz.UintType(8), 4096),
-    H: ssz.FixedProgressiveListType(ssz.UintType(8), 128),
-    I: ssz.FixedProgressiveListType(ssz.UintType(8), 8192),
-    J: ssz.FixedProgressiveListType(ssz.UintType(8), 1024),
-    K: ssz.UintType(8),
-    L: ssz.UintType(8),
-});
+// // Progressive container variants used by tests
+// pub const ProgressiveBitsStruct = ssz.VariableContainerType(struct {
+//     A: ssz.BitListType(1025),
+//     B: ssz.BitVectorType(8),
+//     C: ssz.FixedProgressiveListType(ssz.UintType(8), 2048),
+//     D: ssz.ByteVectorType(33),
+//     E: ssz.UintType(64),
+//     F: ssz.UintType(8),
+//     G: ssz.FixedProgressiveListType(ssz.UintType(8), 4096),
+//     H: ssz.FixedProgressiveListType(ssz.UintType(8), 128),
+//     I: ssz.FixedProgressiveListType(ssz.UintType(8), 8192),
+//     J: ssz.FixedProgressiveListType(ssz.UintType(8), 1024),
+//     K: ssz.UintType(8),
+//     L: ssz.UintType(8),
+// });
 
-pub const ProgressiveTestStruct = ssz.VariableContainerType(struct {
-    A: ssz.FixedProgressiveListType(ssz.UintType(8), 512),
-    B: ssz.FixedProgressiveListType(ssz.UintType(16), 256),
-    C: ssz.FixedProgressiveListType(ssz.FixedContainerType(struct { A: ssz.UintType(64), B: ssz.UintType(64) }), 512),
-    D: ssz.VariableProgressiveListType(ssz.VariableContainerType(struct { A: ssz.UintType(256), B: ssz.FixedProgressiveListType(ssz.UintType(8), 256) }), 64),
-});
+// pub const ProgressiveTestStruct = ssz.VariableContainerType(struct {
+//     A: ssz.FixedProgressiveListType(ssz.UintType(8), 512),
+//     B: ssz.FixedProgressiveListType(ssz.UintType(16), 256),
+//     C: ssz.FixedProgressiveListType(ssz.FixedContainerType(struct { A: ssz.UintType(64), B: ssz.UintType(64) }), 512),
+//     D: ssz.VariableProgressiveListType(ssz.VariableContainerType(struct { A: ssz.UintType(256), B: ssz.FixedProgressiveListType(ssz.UintType(8), 256) }), 64),
+// });
 
 // uints
 pub const uint_8 = ssz.UintType(8);
@@ -193,131 +193,133 @@ pub const uint_64 = ssz.UintType(64);
 pub const uint_128 = ssz.UintType(128);
 pub const uint_256 = ssz.UintType(256);
 
-// basic progressive lists
+// basic progressive lists - using direct UintType calls for exact element sizes
 
-pub const proglist_bool_0 = ssz.FixedProgressiveListType(boolean, 0);
-pub const proglist_bool_1 = ssz.FixedProgressiveListType(boolean, 1);
-pub const proglist_bool_1365 = ssz.FixedProgressiveListType(boolean, 1365);
-pub const proglist_bool_1366 = ssz.FixedProgressiveListType(boolean, 1366);
-pub const proglist_bool_2 = ssz.FixedProgressiveListType(boolean, 2);
-pub const proglist_bool_20 = ssz.FixedProgressiveListType(boolean, 20);
-pub const proglist_bool_21 = ssz.FixedProgressiveListType(boolean, 21);
-pub const proglist_bool_22 = ssz.FixedProgressiveListType(boolean, 22);
-pub const proglist_bool_3 = ssz.FixedProgressiveListType(boolean, 3);
-pub const proglist_bool_341 = ssz.FixedProgressiveListType(boolean, 341);
-pub const proglist_bool_342 = ssz.FixedProgressiveListType(boolean, 342);
-pub const proglist_bool_4 = ssz.FixedProgressiveListType(boolean, 4);
-pub const proglist_bool_5 = ssz.FixedProgressiveListType(boolean, 5);
-pub const proglist_bool_8 = ssz.FixedProgressiveListType(boolean, 8);
-pub const proglist_bool_85 = ssz.FixedProgressiveListType(boolean, 85);
-pub const proglist_bool_86 = ssz.FixedProgressiveListType(boolean, 86);
-pub const proglist_bool_max = ssz.FixedProgressiveListType(boolean, 1024);
-pub const proglist_bool_zero = ssz.FixedProgressiveListType(boolean, 0);
-pub const proglist_uint128_0 = ssz.FixedProgressiveListType(uint_128, 0);
-pub const proglist_uint128_1 = ssz.FixedProgressiveListType(uint_128, 1);
-pub const proglist_uint128_1365 = ssz.FixedProgressiveListType(uint_128, 1365);
-pub const proglist_uint128_1366 = ssz.FixedProgressiveListType(uint_128, 1366);
-pub const proglist_uint128_2 = ssz.FixedProgressiveListType(uint_128, 2);
-pub const proglist_uint128_20 = ssz.FixedProgressiveListType(uint_128, 20);
-pub const proglist_uint128_21 = ssz.FixedProgressiveListType(uint_128, 21);
-pub const proglist_uint128_22 = ssz.FixedProgressiveListType(uint_128, 22);
-pub const proglist_uint128_3 = ssz.FixedProgressiveListType(uint_128, 3);
-pub const proglist_uint128_341 = ssz.FixedProgressiveListType(uint_128, 341);
-pub const proglist_uint128_342 = ssz.FixedProgressiveListType(uint_128, 342);
-pub const proglist_uint128_4 = ssz.FixedProgressiveListType(uint_128, 4);
-pub const proglist_uint128_5 = ssz.FixedProgressiveListType(uint_128, 5);
-pub const proglist_uint128_8 = ssz.FixedProgressiveListType(uint_128, 8);
-pub const proglist_uint128_85 = ssz.FixedProgressiveListType(uint_128, 85);
-pub const proglist_uint128_86 = ssz.FixedProgressiveListType(uint_128, 86);
-pub const proglist_uint128_max = ssz.FixedProgressiveListType(uint_128, 1024);
-pub const proglist_uint128_random = ssz.FixedProgressiveListType(uint_128, 1024);
-pub const proglist_uint128_zero = ssz.FixedProgressiveListType(uint_128, 0);
-pub const proglist_uint16_0 = ssz.FixedProgressiveListType(uint_16, 0);
-pub const proglist_uint16_1 = ssz.FixedProgressiveListType(uint_16, 1);
-pub const proglist_uint16_1365 = ssz.FixedProgressiveListType(uint_16, 1365);
-pub const proglist_uint16_1366 = ssz.FixedProgressiveListType(uint_16, 1366);
-pub const proglist_uint16_2 = ssz.FixedProgressiveListType(uint_16, 2);
-pub const proglist_uint16_20 = ssz.FixedProgressiveListType(uint_16, 20);
-pub const proglist_uint16_21 = ssz.FixedProgressiveListType(uint_16, 21);
-pub const proglist_uint16_22 = ssz.FixedProgressiveListType(uint_16, 22);
-pub const proglist_uint16_3 = ssz.FixedProgressiveListType(uint_16, 3);
-pub const proglist_uint16_341 = ssz.FixedProgressiveListType(uint_16, 341);
-pub const proglist_uint16_342 = ssz.FixedProgressiveListType(uint_16, 342);
-pub const proglist_uint16_4 = ssz.FixedProgressiveListType(uint_16, 4);
-pub const proglist_uint16_5 = ssz.FixedProgressiveListType(uint_16, 5);
-pub const proglist_uint16_8 = ssz.FixedProgressiveListType(uint_16, 8);
-pub const proglist_uint16_85 = ssz.FixedProgressiveListType(uint_16, 85);
-pub const proglist_uint16_86 = ssz.FixedProgressiveListType(uint_16, 86);
-pub const proglist_uint16_max = ssz.FixedProgressiveListType(uint_16, 1024);
-pub const proglist_uint16_random = ssz.FixedProgressiveListType(uint_16, 1024);
-pub const proglist_uint16_zero = ssz.FixedProgressiveListType(uint_16, 0);
-pub const proglist_uint256_0 = ssz.FixedProgressiveListType(uint_256, 0);
-pub const proglist_uint256_1 = ssz.FixedProgressiveListType(uint_256, 1);
-pub const proglist_uint256_1365 = ssz.FixedProgressiveListType(uint_256, 1365);
-pub const proglist_uint256_1366 = ssz.FixedProgressiveListType(uint_256, 1366);
-pub const proglist_uint256_2 = ssz.FixedProgressiveListType(uint_256, 2);
-pub const proglist_uint256_20 = ssz.FixedProgressiveListType(uint_256, 20);
-pub const proglist_uint256_21 = ssz.FixedProgressiveListType(uint_256, 21);
-pub const proglist_uint256_22 = ssz.FixedProgressiveListType(uint_256, 22);
-pub const proglist_uint256_3 = ssz.FixedProgressiveListType(uint_256, 3);
-pub const proglist_uint256_341 = ssz.FixedProgressiveListType(uint_256, 341);
-pub const proglist_uint256_342 = ssz.FixedProgressiveListType(uint_256, 342);
-pub const proglist_uint256_4 = ssz.FixedProgressiveListType(uint_256, 4);
-pub const proglist_uint256_5 = ssz.FixedProgressiveListType(uint_256, 5);
-pub const proglist_uint256_8 = ssz.FixedProgressiveListType(uint_256, 8);
-pub const proglist_uint256_85 = ssz.FixedProgressiveListType(uint_256, 85);
-pub const proglist_uint256_86 = ssz.FixedProgressiveListType(uint_256, 86);
-pub const proglist_uint256_max = ssz.FixedProgressiveListType(uint_256, 1024);
-pub const proglist_uint256_random = ssz.FixedProgressiveListType(uint_256, 1024);
-pub const proglist_uint256_zero = ssz.FixedProgressiveListType(uint_256, 0);
-pub const proglist_uint32_0 = ssz.FixedProgressiveListType(uint_32, 0);
-pub const proglist_uint32_1 = ssz.FixedProgressiveListType(uint_32, 1);
-pub const proglist_uint32_1365 = ssz.FixedProgressiveListType(uint_32, 1365);
-pub const proglist_uint32_1366 = ssz.FixedProgressiveListType(uint_32, 1366);
-pub const proglist_uint32_2 = ssz.FixedProgressiveListType(uint_32, 2);
-pub const proglist_uint32_20 = ssz.FixedProgressiveListType(uint_32, 20);
-pub const proglist_uint32_21 = ssz.FixedProgressiveListType(uint_32, 21);
-pub const proglist_uint32_22 = ssz.FixedProgressiveListType(uint_32, 22);
-pub const proglist_uint32_3 = ssz.FixedProgressiveListType(uint_32, 3);
-pub const proglist_uint32_341 = ssz.FixedProgressiveListType(uint_32, 341);
-pub const proglist_uint32_342 = ssz.FixedProgressiveListType(uint_32, 342);
-pub const proglist_uint32_4 = ssz.FixedProgressiveListType(uint_32, 4);
-pub const proglist_uint32_5 = ssz.FixedProgressiveListType(uint_32, 5);
-pub const proglist_uint32_8 = ssz.FixedProgressiveListType(uint_32, 8);
-pub const proglist_uint32_85 = ssz.FixedProgressiveListType(uint_32, 85);
-pub const proglist_uint32_86 = ssz.FixedProgressiveListType(uint_32, 86);
-pub const proglist_uint32_max = ssz.FixedProgressiveListType(uint_32, 1024);
-pub const proglist_uint32_random = ssz.FixedProgressiveListType(uint_32, 1024);
-pub const proglist_uint32_zero = ssz.FixedProgressiveListType(uint_32, 0);
-pub const proglist_uint64_0 = ssz.FixedProgressiveListType(uint_64, 0);
-pub const proglist_uint64_1 = ssz.FixedProgressiveListType(uint_64, 1);
-pub const proglist_uint64_1365 = ssz.FixedProgressiveListType(uint_64, 1365);
-pub const proglist_uint64_1366 = ssz.FixedProgressiveListType(uint_64, 1366);
-pub const proglist_uint64_2 = ssz.FixedProgressiveListType(uint_64, 2);
-pub const proglist_uint64_20 = ssz.FixedProgressiveListType(uint_64, 20);
-pub const proglist_uint64_21 = ssz.FixedProgressiveListType(uint_64, 21);
-pub const proglist_uint64_22 = ssz.FixedProgressiveListType(uint_64, 22);
-pub const proglist_uint64_3 = ssz.FixedProgressiveListType(uint_64, 3);
-pub const proglist_uint64_341 = ssz.FixedProgressiveListType(uint_64, 341);
-pub const proglist_uint64_342 = ssz.FixedProgressiveListType(uint_64, 342);
-pub const proglist_uint64_4 = ssz.FixedProgressiveListType(uint_64, 4);
-pub const proglist_uint64_5 = ssz.FixedProgressiveListType(uint_64, 5);
-pub const proglist_uint64_8 = ssz.FixedProgressiveListType(uint_64, 8);
-pub const proglist_uint64_85 = ssz.FixedProgressiveListType(uint_64, 85);
-pub const proglist_uint64_86 = ssz.FixedProgressiveListType(uint_64, 86);
-pub const proglist_uint64_max = ssz.FixedProgressiveListType(uint_64, 1024);
-pub const proglist_uint64_random = ssz.FixedProgressiveListType(uint_64, 1024);
-pub const proglist_uint64_zero = ssz.FixedProgressiveListType(uint_64, 0);
-pub const proglist_uint8_max = ssz.FixedProgressiveListType(uint_8, 1024);
-pub const proglist_uint8_random = ssz.FixedProgressiveListType(uint_8, 1024);
-pub const proglist_uint8_zero = ssz.FixedProgressiveListType(uint_8, 0);
-pub const proglist_bool = ssz.FixedProgressiveListType(boolean, 1024);
-pub const proglist_uint8 = ssz.FixedProgressiveListType(uint_8, 1024);
-pub const proglist_uint16 = ssz.FixedProgressiveListType(uint_16, 1024);
-pub const proglist_uint32 = ssz.FixedProgressiveListType(uint_32, 1024);
-pub const proglist_uint64 = ssz.FixedProgressiveListType(uint_64, 1024);
-pub const proglist_uint128 = ssz.FixedProgressiveListType(uint_128, 1024);
-pub const proglist_uint256 = ssz.FixedProgressiveListType(uint_256, 1024);
+pub const proglist_bool_0 = ssz.FixedProgressiveListType(ssz.BoolType(), 0);
+pub const proglist_bool_1 = ssz.FixedProgressiveListType(ssz.BoolType(), 1);
+pub const proglist_bool_1365 = ssz.FixedProgressiveListType(ssz.BoolType(), 1365);
+pub const proglist_bool_1366 = ssz.FixedProgressiveListType(ssz.BoolType(), 1366);
+pub const proglist_bool_2 = ssz.FixedProgressiveListType(ssz.BoolType(), 2);
+pub const proglist_bool_20 = ssz.FixedProgressiveListType(ssz.BoolType(), 20);
+pub const proglist_bool_21 = ssz.FixedProgressiveListType(ssz.BoolType(), 21);
+pub const proglist_bool_22 = ssz.FixedProgressiveListType(ssz.BoolType(), 22);
+pub const proglist_bool_3 = ssz.FixedProgressiveListType(ssz.BoolType(), 3);
+pub const proglist_bool_341 = ssz.FixedProgressiveListType(ssz.BoolType(), 341);
+pub const proglist_bool_342 = ssz.FixedProgressiveListType(ssz.BoolType(), 342);
+pub const proglist_bool_4 = ssz.FixedProgressiveListType(ssz.BoolType(), 4);
+pub const proglist_bool_5 = ssz.FixedProgressiveListType(ssz.BoolType(), 5);
+pub const proglist_bool_8 = ssz.FixedProgressiveListType(ssz.BoolType(), 8);
+pub const proglist_bool_85 = ssz.FixedProgressiveListType(ssz.BoolType(), 85);
+pub const proglist_bool_86 = ssz.FixedProgressiveListType(ssz.BoolType(), 86);
+pub const proglist_bool_max = ssz.FixedProgressiveListType(ssz.BoolType(), 1024);
+pub const proglist_bool_zero = ssz.FixedProgressiveListType(ssz.BoolType(), 1024);
+pub const proglist_uint128_0 = ssz.FixedProgressiveListType(ssz.UintType(128), 0);
+pub const proglist_uint128_1 = ssz.FixedProgressiveListType(ssz.UintType(128), 1);
+pub const proglist_uint128_1365 = ssz.FixedProgressiveListType(ssz.UintType(128), 1365);
+pub const proglist_uint128_1366 = ssz.FixedProgressiveListType(ssz.UintType(128), 1366);
+pub const proglist_uint128_2 = ssz.FixedProgressiveListType(ssz.UintType(128), 2);
+pub const proglist_uint128_20 = ssz.FixedProgressiveListType(ssz.UintType(128), 20);
+pub const proglist_uint128_21 = ssz.FixedProgressiveListType(ssz.UintType(128), 21);
+pub const proglist_uint128_22 = ssz.FixedProgressiveListType(ssz.UintType(128), 22);
+pub const proglist_uint128_3 = ssz.FixedProgressiveListType(ssz.UintType(128), 3);
+pub const proglist_uint128_341 = ssz.FixedProgressiveListType(ssz.UintType(128), 341);
+pub const proglist_uint128_342 = ssz.FixedProgressiveListType(ssz.UintType(128), 342);
+pub const proglist_uint128_4 = ssz.FixedProgressiveListType(ssz.UintType(128), 4);
+pub const proglist_uint128_5 = ssz.FixedProgressiveListType(ssz.UintType(128), 5);
+pub const proglist_uint128_8 = ssz.FixedProgressiveListType(ssz.UintType(128), 8);
+pub const proglist_uint128_85 = ssz.FixedProgressiveListType(ssz.UintType(128), 85);
+pub const proglist_uint128_86 = ssz.FixedProgressiveListType(ssz.UintType(128), 86);
+pub const proglist_uint128_max = ssz.FixedProgressiveListType(ssz.UintType(128), 1024);
+pub const proglist_uint128_random = ssz.FixedProgressiveListType(ssz.UintType(128), 1024);
+pub const proglist_uint128_zero = ssz.FixedProgressiveListType(ssz.UintType(128), 1024);
+pub const proglist_uint16_0 = ssz.FixedProgressiveListType(ssz.UintType(16), 0);
+pub const proglist_uint16_1 = ssz.FixedProgressiveListType(ssz.UintType(16), 1);
+pub const proglist_uint16_1365 = ssz.FixedProgressiveListType(ssz.UintType(16), 1365);
+pub const proglist_uint16_1366 = ssz.FixedProgressiveListType(ssz.UintType(16), 1366);
+pub const proglist_uint16_2 = ssz.FixedProgressiveListType(ssz.UintType(16), 2);
+pub const proglist_uint16_20 = ssz.FixedProgressiveListType(ssz.UintType(16), 20);
+pub const proglist_uint16_21 = ssz.FixedProgressiveListType(ssz.UintType(16), 21);
+pub const proglist_uint16_22 = ssz.FixedProgressiveListType(ssz.UintType(16), 22);
+pub const proglist_uint16_3 = ssz.FixedProgressiveListType(ssz.UintType(16), 3);
+pub const proglist_uint16_341 = ssz.FixedProgressiveListType(ssz.UintType(16), 341);
+pub const proglist_uint16_342 = ssz.FixedProgressiveListType(ssz.UintType(16), 342);
+pub const proglist_uint16_4 = ssz.FixedProgressiveListType(ssz.UintType(16), 4);
+pub const proglist_uint16_5 = ssz.FixedProgressiveListType(ssz.UintType(16), 5);
+pub const proglist_uint16_8 = ssz.FixedProgressiveListType(ssz.UintType(16), 8);
+pub const proglist_uint16_85 = ssz.FixedProgressiveListType(ssz.UintType(16), 85);
+pub const proglist_uint16_86 = ssz.FixedProgressiveListType(ssz.UintType(16), 86);
+pub const proglist_uint16_max = ssz.FixedProgressiveListType(ssz.UintType(16), 1024);
+pub const proglist_uint16_random = ssz.FixedProgressiveListType(ssz.UintType(16), 1024);
+pub const proglist_uint16_zero = ssz.FixedProgressiveListType(ssz.UintType(16), 1024);
+pub const proglist_uint256_0 = ssz.FixedProgressiveListType(ssz.UintType(256), 0);
+pub const proglist_uint256_1 = ssz.FixedProgressiveListType(ssz.UintType(256), 1);
+pub const proglist_uint256_1365 = ssz.FixedProgressiveListType(ssz.UintType(256), 1365);
+pub const proglist_uint256_1366 = ssz.FixedProgressiveListType(ssz.UintType(256), 1366);
+pub const proglist_uint256_2 = ssz.FixedProgressiveListType(ssz.UintType(256), 2);
+pub const proglist_uint256_20 = ssz.FixedProgressiveListType(ssz.UintType(256), 20);
+pub const proglist_uint256_21 = ssz.FixedProgressiveListType(ssz.UintType(256), 21);
+pub const proglist_uint256_22 = ssz.FixedProgressiveListType(ssz.UintType(256), 22);
+pub const proglist_uint256_3 = ssz.FixedProgressiveListType(ssz.UintType(256), 3);
+pub const proglist_uint256_341 = ssz.FixedProgressiveListType(ssz.UintType(256), 341);
+pub const proglist_uint256_342 = ssz.FixedProgressiveListType(ssz.UintType(256), 342);
+pub const proglist_uint256_4 = ssz.FixedProgressiveListType(ssz.UintType(256), 4);
+pub const proglist_uint256_5 = ssz.FixedProgressiveListType(ssz.UintType(256), 5);
+pub const proglist_uint256_8 = ssz.FixedProgressiveListType(ssz.UintType(256), 8);
+pub const proglist_uint256_85 = ssz.FixedProgressiveListType(ssz.UintType(256), 85);
+pub const proglist_uint256_86 = ssz.FixedProgressiveListType(ssz.UintType(256), 86);
+pub const proglist_uint256_max = ssz.FixedProgressiveListType(ssz.UintType(256), 1024);
+pub const proglist_uint256_random = ssz.FixedProgressiveListType(ssz.UintType(256), 1024);
+pub const proglist_uint256_zero = ssz.FixedProgressiveListType(ssz.UintType(256), 1024);
+pub const proglist_uint32_0 = ssz.FixedProgressiveListType(ssz.UintType(32), 0);
+pub const proglist_uint32_1 = ssz.FixedProgressiveListType(ssz.UintType(32), 1);
+pub const proglist_uint32_1365 = ssz.FixedProgressiveListType(ssz.UintType(32), 1365);
+pub const proglist_uint32_1366 = ssz.FixedProgressiveListType(ssz.UintType(32), 1366);
+pub const proglist_uint32_2 = ssz.FixedProgressiveListType(ssz.UintType(32), 2);
+pub const proglist_uint32_20 = ssz.FixedProgressiveListType(ssz.UintType(32), 20);
+pub const proglist_uint32_21 = ssz.FixedProgressiveListType(ssz.UintType(32), 21);
+pub const proglist_uint32_22 = ssz.FixedProgressiveListType(ssz.UintType(32), 22);
+pub const proglist_uint32_3 = ssz.FixedProgressiveListType(ssz.UintType(32), 3);
+pub const proglist_uint32_341 = ssz.FixedProgressiveListType(ssz.UintType(32), 341);
+pub const proglist_uint32_342 = ssz.FixedProgressiveListType(ssz.UintType(32), 342);
+pub const proglist_uint32_4 = ssz.FixedProgressiveListType(ssz.UintType(32), 4);
+pub const proglist_uint32_5 = ssz.FixedProgressiveListType(ssz.UintType(32), 5);
+pub const proglist_uint32_8 = ssz.FixedProgressiveListType(ssz.UintType(32), 8);
+pub const proglist_uint32_85 = ssz.FixedProgressiveListType(ssz.UintType(32), 85);
+pub const proglist_uint32_86 = ssz.FixedProgressiveListType(ssz.UintType(32), 86);
+pub const proglist_uint32_max = ssz.FixedProgressiveListType(ssz.UintType(32), 1024);
+pub const proglist_uint32_random = ssz.FixedProgressiveListType(ssz.UintType(32), 1024);
+pub const proglist_uint32_zero = ssz.FixedProgressiveListType(ssz.UintType(32), 1024);
+pub const proglist_uint64_0 = ssz.FixedProgressiveListType(ssz.UintType(64), 0);
+pub const proglist_uint64_1 = ssz.FixedProgressiveListType(ssz.UintType(64), 1);
+pub const proglist_uint64_1365 = ssz.FixedProgressiveListType(ssz.UintType(64), 1365);
+pub const proglist_uint64_1366 = ssz.FixedProgressiveListType(ssz.UintType(64), 1366);
+pub const proglist_uint64_2 = ssz.FixedProgressiveListType(ssz.UintType(64), 2);
+pub const proglist_uint64_20 = ssz.FixedProgressiveListType(ssz.UintType(64), 20);
+pub const proglist_uint64_21 = ssz.FixedProgressiveListType(ssz.UintType(64), 21);
+pub const proglist_uint64_22 = ssz.FixedProgressiveListType(ssz.UintType(64), 22);
+pub const proglist_uint64_3 = ssz.FixedProgressiveListType(ssz.UintType(64), 3);
+pub const proglist_uint64_341 = ssz.FixedProgressiveListType(ssz.UintType(64), 341);
+pub const proglist_uint64_342 = ssz.FixedProgressiveListType(ssz.UintType(64), 342);
+pub const proglist_uint64_4 = ssz.FixedProgressiveListType(ssz.UintType(64), 4);
+pub const proglist_uint64_5 = ssz.FixedProgressiveListType(ssz.UintType(64), 5);
+pub const proglist_uint64_8 = ssz.FixedProgressiveListType(ssz.UintType(64), 8);
+pub const proglist_uint64_85 = ssz.FixedProgressiveListType(ssz.UintType(64), 85);
+pub const proglist_uint64_86 = ssz.FixedProgressiveListType(ssz.UintType(64), 86);
+pub const proglist_uint64_max = ssz.FixedProgressiveListType(ssz.UintType(64), 1024);
+pub const proglist_uint64_random = ssz.FixedProgressiveListType(ssz.UintType(64), 1024);
+pub const proglist_uint64_zero = ssz.FixedProgressiveListType(ssz.UintType(64), 1024);
+pub const proglist_uint8_max = ssz.FixedProgressiveListType(ssz.UintType(8), 1024);
+pub const proglist_uint8_random = ssz.FixedProgressiveListType(ssz.UintType(8), 1024);
+pub const proglist_uint8_zero = ssz.FixedProgressiveListType(ssz.UintType(8), 1024);
+pub const proglist_bool = ssz.FixedProgressiveListType(ssz.BoolType(), 1024);
+pub const proglist_uint8 = ssz.FixedProgressiveListType(ssz.UintType(8), 1024);
+pub const proglist_uint16 = ssz.FixedProgressiveListType(ssz.UintType(16), 1024);
+pub const proglist_uint32 = ssz.FixedProgressiveListType(ssz.UintType(32), 1024);
+
+
+pub const proglist_uint64 = ssz.FixedProgressiveListType(ssz.UintType(64), 1024);
+pub const proglist_uint128 = ssz.FixedProgressiveListType(ssz.UintType(128), 1024);
+pub const proglist_uint256 = ssz.FixedProgressiveListType(ssz.UintType(256), 1024);
 // progressive_bitlist
 pub const progbitlist_zero = ssz.BitListType(1025);
 pub const progbitlist_nil = ssz.BitListType(1025);

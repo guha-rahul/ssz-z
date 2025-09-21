@@ -54,7 +54,8 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
             @memset(chunks, [_]u8{0} ** 32);
 
             if (comptime isBasicType(Element)) {
-                _ = serializeIntoBytes(value, @ptrCast(chunks));
+                const chunk_bytes = std.mem.sliceAsBytes(chunks);
+                _ = serializeIntoBytes(value, chunk_bytes);
                 if (chunks.len > 0) {
                     std.debug.print("[PGL value] first_leaf={s}\n", .{std.fmt.fmtSliceHexLower(chunks[0][0..])});
                 }
@@ -131,7 +132,7 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
 
         pub const serialized = struct {
             pub fn validate(data: []const u8) !void {
-                std.debug.print("[PGL fixed.validate] fs={d} ser_fs={d} limit={d} data.len={d}\n", .{ Element.fixed_size, @sizeOf(@TypeOf(Element.default_value)), limit, data.len });
+                std.debug.print("[PGL fixed.validate] prog=true fs={d} limit={d} data.len={d}\n", .{ Element.fixed_size, limit, data.len });
 
                 // Handle limit=0 case: allow empty when limit=0, reject non-empty
                 if (limit == 0) {
@@ -212,7 +213,8 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
                 @memset(chunks, [_]u8{0} ** 32);
 
                 if (comptime isBasicType(Element)) {
-                    @memcpy(@as([]u8, @ptrCast(chunks))[0..data.len], data);
+                    const chunk_bytes = std.mem.sliceAsBytes(chunks);
+                    @memcpy(chunk_bytes[0..data.len], data);
                     if (chunks.len > 0) {
                         std.debug.print("[PGL ser] first_leaf={s}\n", .{std.fmt.fmtSliceHexLower(chunks[0][0..])});
                     }
@@ -258,7 +260,8 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
                 const nodes = try allocator.alloc(Node.Id, chunk_count);
                 defer allocator.free(nodes);
 
-                try progressive.getNodes(pool, try node.getLeft(pool), nodes);
+                const chunk_depth = maxChunksToDepth(chunk_count);
+                try (try node.getLeft(pool)).getNodesAtDepth(pool, chunk_depth, 0, nodes);
 
                 if (comptime isBasicType(Element)) {
                     // tightly packed list
@@ -287,14 +290,6 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
             pub fn fromValue(allocator: std.mem.Allocator, pool: *Node.Pool, value: *const Type) !Node.Id {
                 const len = value.items.len;
                 const chunk_count = chunkCount(value);
-                if (chunk_count == 0) {
-                    return try pool.createBranch(
-                        @enumFromInt(0),
-                        @enumFromInt(0),
-                        false,
-                    );
-                }
-
                 const nodes = try allocator.alloc(Node.Id, chunk_count);
                 defer allocator.free(nodes);
                 if (comptime isBasicType(Element)) {
@@ -317,16 +312,23 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
                         next += to_write;
 
                         nodes[i] = try pool.createLeaf(&leaf_buf, false);
+                        if (i == 0 and chunk_count > 0) {
+                            std.debug.print("[PGL tree] first_leaf={s}\n", .{std.fmt.fmtSliceHexLower(&leaf_buf)});
+                        }
                     }
                 } else {
                     for (0..chunk_count) |i| {
                         nodes[i] = try Element.tree.fromValue(pool, &value.items[i]);
                     }
                 }
-                const contents_node = try progressive.fillWithContents(pool, nodes, false);
+                const chunk_depth = maxChunksToDepth(chunk_count);
+                const contents_node = try Node.fillWithContents(pool, nodes, chunk_depth, false);
+                const contents_root = contents_node.getRoot(pool);
+                std.debug.print("[PGL tree] contents={s} len={d}\n", .{ std.fmt.fmtSliceHexLower(contents_root), len });
                 const length_node = try pool.createLeafFromUint(len, false);
                 const result = try pool.createBranch(contents_node, length_node, false);
-
+                const final_root = result.getRoot(pool);
+                std.debug.print("[PGL tree] root={s}\n", .{std.fmt.fmtSliceHexLower(final_root)});
 
                 return result;
             }
@@ -602,7 +604,8 @@ pub fn VariableProgressiveListType(comptime ST: type, comptime _limit: comptime_
                 const nodes = try allocator.alloc(Node.Id, chunk_count);
                 defer allocator.free(nodes);
 
-                try progressive.getNodes(pool, try node.getLeft(pool), nodes);
+                const chunk_depth = maxChunksToDepth(chunk_count);
+                try (try node.getLeft(pool)).getNodesAtDepth(pool, chunk_depth, 0, nodes);
 
                 try out.resize(allocator, len);
                 @memset(out.items, Element.default_value);
@@ -619,21 +622,14 @@ pub fn VariableProgressiveListType(comptime ST: type, comptime _limit: comptime_
             pub fn fromValue(allocator: std.mem.Allocator, pool: *Node.Pool, value: *const Type) !Node.Id {
                 const len = value.items.len;
                 const chunk_count = len;
-                if (chunk_count == 0) {
-                    return try pool.createBranch(
-                        @enumFromInt(0),
-                        @enumFromInt(0),
-                        false,
-                    );
-                }
-
                 const nodes = try allocator.alloc(Node.Id, chunk_count);
                 defer allocator.free(nodes);
                 for (0..chunk_count) |i| {
                     nodes[i] = try Element.tree.fromValue(allocator, pool, &value.items[i]);
                 }
+                const chunk_depth = maxChunksToDepth(chunk_count);
                 return try pool.createBranch(
-                    try progressive.fillWithContents(pool, nodes, false),
+                    try Node.fillWithContents(pool, nodes, chunk_depth, false),
                     try pool.createLeafFromUint(len, false),
                     false,
                 );
@@ -822,7 +818,7 @@ test "ProgressiveList u16 roots: value vs serialized vs contents for boundary si
             while (j < n) : (j += 1) {
                 const chunk_i = (j * 2) / 32;
                 const off = (j * 2) % 32;
-                std.mem.writeInt(u16, @as(*[2]u8, @ptrCast(leaves[chunk_i][off..off + 2])), @as(u16, @intCast(j)), .little);
+                std.mem.writeInt(u16, @as(*[2]u8, @ptrCast(leaves[chunk_i][off .. off + 2])), @as(u16, @intCast(j)), .little);
             }
         }
         var rc: [32]u8 = undefined;
@@ -852,9 +848,7 @@ test "debug progressive list validation - uint32 cases" {
     @memset(one_byte_more, 0xff);
 
     std.debug.print("\n=== Testing proglist_uint32_20 one_byte_more case ===\n", .{});
-    std.debug.print("Data length: {d}, element size: {d}, remainder: {d}\n", .{
-        one_byte_more.len, 4, one_byte_more.len % 4
-    });
+    std.debug.print("Data length: {d}, element size: {d}, remainder: {d}\n", .{ one_byte_more.len, 4, one_byte_more.len % 4 });
 
     // This should return error.InvalidSSZ because 85 % 4 = 1 (not divisible)
     const result = ProgList20.serialized.validate(one_byte_more);
@@ -872,9 +866,7 @@ test "debug progressive list validation - uint32 cases" {
     @memset(valid_case, 0xff);
 
     std.debug.print("\n=== Testing valid case (80 bytes) ===\n", .{});
-    std.debug.print("Data length: {d}, element size: {d}, remainder: {d}\n", .{
-        valid_case.len, 4, valid_case.len % 4
-    });
+    std.debug.print("Data length: {d}, element size: {d}, remainder: {d}\n", .{ valid_case.len, 4, valid_case.len % 4 });
 
     try ProgList20.serialized.validate(valid_case); // Should succeed
     std.debug.print("GOOD: valid case passed\n", .{});
@@ -894,9 +886,7 @@ test "debug progressive list validation - uint32_342 case" {
     @memset(test_data, 0xff);
 
     std.debug.print("\n=== Testing proglist_uint32_342 case (900 bytes) ===\n", .{});
-    std.debug.print("Data length: {d}, element size: {d}, remainder: {d}, elements: {d}\n", .{
-        test_data.len, 4, test_data.len % 4, test_data.len / 4
-    });
+    std.debug.print("Data length: {d}, element size: {d}, remainder: {d}, elements: {d}\n", .{ test_data.len, 4, test_data.len % 4, test_data.len / 4 });
 
     const result = ProgList342.serialized.validate(test_data);
     if (result) |_| {
@@ -921,9 +911,7 @@ test "debug progressive list validation - uint128_22 case" {
     @memset(test_data, 0);
 
     std.debug.print("\n=== Testing proglist_uint128_22 case (224 bytes) ===\n", .{});
-    std.debug.print("Data length: {d}, element size: {d}, remainder: {d}, elements: {d}\n", .{
-        test_data.len, 16, test_data.len % 16, test_data.len / 16
-    });
+    std.debug.print("Data length: {d}, element size: {d}, remainder: {d}, elements: {d}\n", .{ test_data.len, 16, test_data.len % 16, test_data.len / 16 });
 
     const result = ProgList22.serialized.validate(test_data);
     if (result) |_| {
