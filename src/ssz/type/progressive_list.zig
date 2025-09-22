@@ -2,81 +2,113 @@ const std = @import("std");
 const TypeKind = @import("type_kind.zig").TypeKind;
 const isBasicType = @import("type_kind.zig").isBasicType;
 const isFixedType = @import("type_kind.zig").isFixedType;
-
-const hashing = @import("hashing");
-const mixInLength = hashing.mixInLength;
-
+const OffsetIterator = @import("offsets.zig").OffsetIterator;
+const mixInLength = @import("hashing").mixInLength;
+const maxChunksToDepth = @import("hashing").maxChunksToDepth;
+const Depth = @import("hashing").Depth;
+const Node = @import("persistent_merkle_tree").Node;
 const progressive = @import("progressive.zig");
 
-pub fn ProgressiveListType(comptime Element: type, comptime limit: comptime_int) type {
+pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int) type {
     comptime {
-        if (limit <= 0) @compileError("limit must be > 0");
+        if (!isFixedType(ST)) {
+            @compileError("ST must be fixed type");
+        }
+        if (_limit < 0) {
+            @compileError("limit must be greater than or equal to 0");
+        }
     }
     return struct {
         pub const kind = TypeKind.progressive_list;
-
-        // In-memory representation
-        pub const Type = std.ArrayListUnmanaged(Element.Type);
+        pub const Element: type = ST;
+        pub const limit: usize = _limit;
+        pub const Type: type = std.ArrayListUnmanaged(Element.Type);
+        pub const min_size: usize = 0;
+        pub const max_size: usize = Element.fixed_size * limit;
 
         pub const default_value: Type = Type.empty;
 
-        pub fn deinit(a: std.mem.Allocator, v: *Type) void {
-            if (!comptime isBasicType(Element)) {
-                for (v.items) |*e| Element.deinit(a, e);
-            }
-            v.deinit(a);
-        }
-
         pub fn equals(a: *const Type, b: *const Type) bool {
             if (a.items.len != b.items.len) return false;
-            for (a.items, b.items) |ae, be| {
-                if (!Element.equals(&ae, &be)) return false;
+            for (a.items, b.items) |a_elem, b_elem| {
+                if (!Element.equals(&a_elem, &b_elem)) return false;
             }
             return true;
         }
 
-        pub fn serializedSize(v: *const Type) usize {
-            if (comptime isFixedType(Element)) {
-                return v.items.len * Element.fixed_size;
-            } else {
-                var size: usize = v.items.len * 4;
-                for (v.items) |e| size += Element.serializedSize(&e);
-                return size;
-            }
+        pub fn deinit(allocator: std.mem.Allocator, value: *Type) void {
+            value.deinit(allocator);
         }
 
-        pub fn serializeIntoBytes(v: *const Type, out: []u8) usize {
-            if (comptime isFixedType(Element)) {
-                var w: usize = 0;
-                for (v.items) |e| w += Element.serializeIntoBytes(&e, out[w..]);
-                return w;
+        pub fn chunkCount(value: *const Type) usize {
+            if (comptime isBasicType(Element)) {
+                return (Element.fixed_size * value.items.len + 31) / 32;
+            } else return value.items.len;
+        }
+
+        pub fn hashTreeRoot(allocator: std.mem.Allocator, value: *const Type, out: *[32]u8) !void {
+            const chunks = try allocator.alloc([32]u8, chunkCount(value));
+            defer allocator.free(chunks);
+
+            @memset(chunks, [_]u8{0} ** 32);
+
+            if (comptime isBasicType(Element)) {
+                _ = serializeIntoBytes(value, @ptrCast(chunks));
             } else {
-                var var_idx: usize = v.items.len * 4;
-                for (v.items, 0..) |e, i| {
-                    std.mem.writeInt(u32, out[i * 4 ..][0..4], @intCast(var_idx), .little);
-                    var_idx += Element.serializeIntoBytes(&e, out[var_idx..]);
+                for (value.items, 0..) |element, i| {
+                    try Element.hashTreeRoot(&element, &chunks[i]);
                 }
-                return var_idx;
+            }
+
+            try progressive.merkleizeChunks(allocator, chunks, out);
+            mixInLength(value.items.len, out);
+        }
+
+        pub fn serializedSize(value: *const Type) usize {
+            return value.items.len * Element.fixed_size;
+        }
+
+        pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
+            var i: usize = 0;
+            for (value.items) |element| {
+                i += Element.serializeIntoBytes(&element, out[i..]);
+            }
+            return i;
+        }
+
+        pub fn deserializeFromBytes(allocator: std.mem.Allocator, data: []const u8, out: *Type) !void {
+            const len = try std.math.divExact(usize, data.len, Element.fixed_size);
+            if (len > limit) {
+                return error.gtLimit;
+            }
+            try out.resize(allocator, len);
+            @memset(out.items[0..len], Element.default_value);
+            for (0..len) |i| {
+                try Element.deserializeFromBytes(
+                    data[i * Element.fixed_size .. (i + 1) * Element.fixed_size],
+                    &out.items[i],
+                );
             }
         }
 
-        pub fn serializeIntoJson(allocator: std.mem.Allocator, writer: anytype, in: *const Type) !void {
-            _ = allocator;
+        pub fn serializeIntoJson(_: std.mem.Allocator, writer: anytype, in: *const Type) !void {
+            // Element is fixed type here
             try writer.beginArray();
-            for (in.items) |e| {
-                try Element.serializeIntoJson(writer, &e);
+            for (in.items) |element| {
+                try Element.serializeIntoJson(writer, &element);
             }
             try writer.endArray();
         }
 
         pub fn deserializeFromJson(allocator: std.mem.Allocator, source: *std.json.Scanner, out: *Type) !void {
+            // start array token "["
             switch (try source.next()) {
                 .array_begin => {},
                 else => return error.InvalidJson,
             }
 
             var i: usize = 0;
-            while (i <= limit) : (i += 1) {
+            while (true) : (i += 1) {
                 switch (try source.peekNextTokenType()) {
                     .array_end => {
                         _ = try source.next();
@@ -85,243 +117,425 @@ pub fn ProgressiveListType(comptime Element: type, comptime limit: comptime_int)
                     else => {},
                 }
 
-                _ = try out.addOne(allocator);
-                out.items[i] = Element.default_value;
+                try out.ensureUnusedCapacity(allocator, 1);
+                out.expandToCapacity();
                 try Element.deserializeFromJson(source, &out.items[i]);
             }
             return error.invalidLength;
         }
 
-        pub fn deserializeFromBytes(
-            allocator: std.mem.Allocator,
-            data: []const u8,
-            out: *Type,
-        ) !void {
-            if (comptime isFixedType(Element)) {
-                if (data.len % Element.fixed_size != 0) return error.InvalidSize;
-                const n = data.len / Element.fixed_size;
-                if (n > limit) return error.gtLimit;
-
-                try out.resize(allocator, n);
-                @memset(out.items[0..n], Element.default_value);
-
-                var i: usize = 0;
-                while (i < n) : (i += 1) {
-                    try Element.deserializeFromBytes(
-                        data[i * Element.fixed_size .. (i + 1) * Element.fixed_size],
-                        &out.items[i],
-                    );
-                }
-            } else {
-                const VL = @import("list.zig").VariableListType(Element, limit);
-                const offs = try VL.readVariableOffsets(allocator, data);
-                defer allocator.free(offs);
-
-                const n = offs.len - 1;
-                if (n > limit) return error.gtLimit;
-
-                try out.resize(allocator, n);
-                @memset(out.items[0..n], Element.default_value);
-
-                var i: usize = 0;
-                while (i < n) : (i += 1) {
-                    try Element.deserializeFromBytes(
-                        allocator,
-                        data[offs[i]..offs[i + 1]],
-                        &out.items[i],
-                    );
-                }
-            }
-        }
-
-        /// Value path hashing delegates to the serialized path for consistency
-        pub fn hashTreeRoot(a: std.mem.Allocator, v: *const Type, out: *[32]u8) !void {
-            const total = serializedSize(v);
-            const buf = try a.alloc(u8, total);
-            defer a.free(buf);
-            _ = serializeIntoBytes(v, buf);
-            try serialized.hashTreeRoot(a, buf, out);
-        }
-
         pub const serialized = struct {
             pub fn validate(data: []const u8) !void {
-                if (comptime isFixedType(Element)) {
-                    if (data.len % Element.fixed_size != 0) return error.InvalidSize;
-                } else {
-                    // Rely on VariableListType iterator validation for offsets
-                    const VL = @import("list.zig").VariableListType(Element, limit);
-                    const it = @import("offsets.zig").OffsetIterator(VL).init(data);
-                    _ = try it.firstOffset();
+                const len = try std.math.divExact(usize, data.len, Element.fixed_size);
+                if (len > limit) {
+                    return error.gtLimit;
+                }
+                for (0..len) |i| {
+                    try Element.serialized.validate(data[i * Element.fixed_size .. (i + 1) * Element.fixed_size]);
                 }
             }
 
             pub fn length(data: []const u8) !usize {
-                if (comptime isFixedType(Element)) {
-                    if (data.len % Element.fixed_size != 0) return error.InvalidSize;
-                    return data.len / Element.fixed_size;
-                } else {
-                    if (data.len == 0) return 0;
-                    const VL = @import("list.zig").VariableListType(Element, limit);
-                    var it = @import("serialized.zig").OffsetIterator(VL).init(data);
-                    return try it.firstOffset() / 4;
+                const len = try std.math.divExact(usize, data.len, Element.fixed_size);
+                if (len > limit) {
+                    return error.gtLimit;
                 }
+                return len;
             }
 
-            pub fn hashTreeRoot(a: std.mem.Allocator, data: []const u8, out: *[32]u8) !void {
+            pub fn hashTreeRoot(allocator: std.mem.Allocator, data: []const u8, out: *[32]u8) !void {
                 const len = try length(data);
-                if (len == 0) {
-                    @memset(out, 0);
-                    mixInLength(0, out);
-                    return;
-                }
 
-                const leaf_count: usize = if (comptime isBasicType(Element))
-                    (data.len + 31) / 32
+                const chunk_count = if (comptime isBasicType(Element))
+                    (Element.fixed_size * len + 31) / 32
                 else
                     len;
+                const chunks = try allocator.alloc([32]u8, chunk_count);
+                defer allocator.free(chunks);
 
-                var offs_opt: ?[]usize = null;
-                defer if (offs_opt) |o| a.free(o);
-                if (comptime (!isBasicType(Element) and !isFixedType(Element))) {
-                    const VL = @import("list.zig").VariableListType(Element, limit);
-                    offs_opt = try VL.readVariableOffsets(a, data);
+                @memset(chunks, [_]u8{0} ** 32);
+
+                if (comptime isBasicType(Element)) {
+                    @memcpy(@as([]u8, @ptrCast(chunks))[0..data.len], data);
+                } else {
+                    for (0..len) |i| {
+                        try Element.serialized.hashTreeRoot(
+                            data[i * Element.fixed_size .. (i + 1) * Element.fixed_size],
+                            &chunks[i],
+                        );
+                    }
                 }
 
-                const Ctx = struct { allocator: std.mem.Allocator, data: []const u8, offs: ?[]usize };
-                var ctx = Ctx{ .allocator = a, .data = data, .offs = offs_opt };
-
-                const getLeaf = struct {
-                    fn f(pctx: ?*anyopaque, index: usize, leaf_out: *[32]u8) !void {
-                        const c: *Ctx = @ptrCast(@alignCast(pctx.?));
-                        if (comptime isBasicType(Element)) {
-                            const start = index * 32;
-                            const end = @min(start + 32, c.data.len);
-                            @memset(leaf_out, 0);
-                            if (start < end) @memcpy(leaf_out[0 .. end - start], c.data[start..end]);
-                            return;
-                        }
-                        if (comptime isFixedType(Element)) {
-                            const sz = Element.fixed_size;
-                            const off = index * sz;
-                            var tmp: [32]u8 = undefined;
-                            try Element.serialized.hashTreeRoot(c.allocator, c.data[off .. off + sz], &tmp);
-                            @memcpy(leaf_out, &tmp);
-                            return;
-                        }
-                        const offs = c.offs.?;
-                        var tmp: [32]u8 = undefined;
-                        try Element.serialized.hashTreeRoot(c.allocator, c.data[offs[index]..offs[index + 1]], &tmp);
-                        @memcpy(leaf_out, &tmp);
-                    }
-                }.f;
-
-                try progressive.merkleizeByLeafFn(a, leaf_count, getLeaf, &ctx, out);
+                try progressive.merkleizeChunks(allocator, chunks, out);
                 mixInLength(len, out);
             }
         };
+
+        pub const tree = struct {
+            pub fn length(node: Node.Id, pool: *Node.Pool) !usize {
+                const right = try node.getRight(pool);
+                const hash = right.getRoot(pool);
+                return std.mem.readInt(usize, hash[0..8], .little);
+            }
+
+            pub fn toValue(allocator: std.mem.Allocator, node: Node.Id, pool: *Node.Pool, out: *Type) !void {
+                const len = try length(node, pool);
+                const chunk_count = if (comptime isBasicType(Element))
+                    (Element.fixed_size * len + 31) / 32
+                else
+                    len;
+
+                if (chunk_count == 0) {
+                    try out.resize(allocator, 0);
+                    return;
+                }
+                try out.resize(allocator, len);
+                @memset(out.items, Element.default_value);
+
+                const nodes = try allocator.alloc(Node.Id, chunk_count);
+                defer allocator.free(nodes);
+
+                try progressive.getNodes(pool, try node.getLeft(pool), nodes);
+
+                if (comptime isBasicType(Element)) {
+                    // tightly packed list
+                    for (0..len) |i| {
+                        try Element.tree.toValuePacked(
+                            nodes[i * Element.fixed_size / 32],
+                            pool,
+                            i,
+                            &out.items[i],
+                        );
+                    }
+                } else {
+                    for (0..len) |i| {
+                        try Element.tree.toValue(
+                            nodes[i],
+                            pool,
+                            &out.items[i],
+                        );
+                    }
+                }
+            }
+
+            pub fn fromValue(allocator: std.mem.Allocator, pool: *Node.Pool, value: *const Type) !Node.Id {
+                const len = value.items.len;
+                const chunk_count = chunkCount(value);
+                if (chunk_count == 0) {
+                    return try pool.createBranch(
+                        @enumFromInt(0),
+                        @enumFromInt(0),
+                        false,
+                    );
+                }
+
+                const nodes = try allocator.alloc(Node.Id, chunk_count);
+                defer allocator.free(nodes);
+                if (comptime isBasicType(Element)) {
+                    const items_per_chunk = 32 / Element.fixed_size;
+                    var next: usize = 0; // index in value.items
+
+                    for (0..chunk_count) |i| {
+                        var leaf_buf = [_]u8{0} ** 32;
+
+                        // how many items still remain to be packed into this chunk?
+                        const remaining = len - next;
+                        const to_write = @min(remaining, items_per_chunk);
+
+                        // serialise exactly to_write elements into the 32‑byte buffer
+                        for (0..to_write) |j| {
+                            const dst_off = j * Element.fixed_size;
+                            const dst_slice = leaf_buf[dst_off .. dst_off + Element.fixed_size];
+                            _ = Element.serializeIntoBytes(&value.items[next + j], dst_slice);
+                        }
+                        next += to_write;
+
+                        nodes[i] = try pool.createLeaf(&leaf_buf, false);
+                    }
+                } else {
+                    for (0..chunk_count) |i| {
+                        nodes[i] = try Element.tree.fromValue(pool, &value.items[i]);
+                    }
+                }
+                return try pool.createBranch(
+                    try progressive.fillWithContents(pool, nodes, false),
+                    try pool.createLeafFromUint(len, false),
+                    false,
+                );
+            }
+        };
     };
 }
 
-// Convenience wrappers
-pub fn ProgressiveByteListType(comptime limit: comptime_int) type {
-    const U8 = @import("uint.zig").UintType(8);
-    return ProgressiveListType(U8, limit);
-}
-
-// Progressive bitlist packs bits plus a termination bit and mixes in bit length
-pub fn ProgressiveBitListType(comptime limit: comptime_int) type {
+pub fn VariableProgressiveListType(comptime ST: type) type {
+    comptime {
+        if (isFixedType(ST)) {
+            @compileError("ST must not be fixed type");
+        }
+    }
     return struct {
+        const Self = @This();
         pub const kind = TypeKind.progressive_list;
-        pub const Type = struct {
-            data: std.ArrayListUnmanaged(u8),
-            bit_len: usize,
+        pub const Element: type = ST;
+        pub const Type: type = std.ArrayListUnmanaged(Element.Type);
+        pub const min_size: usize = 0;
 
-            pub fn deinit(self: *Type, a: std.mem.Allocator) void {
-                self.data.deinit(a);
-            }
-        };
+        pub const default_value: Type = Type.empty;
 
-        pub const default_value: Type = .{ .data = .{}, .bit_len = 0 };
-
-        pub fn deinit(a: std.mem.Allocator, v: *Type) void {
-            v.data.deinit(a);
-        }
         pub fn equals(a: *const Type, b: *const Type) bool {
-            return a.bit_len == b.bit_len and std.mem.eql(u8, a.data.items, b.data.items);
+            if (a.items.len != b.items.len) return false;
+            for (a.items, b.items) |a_elem, b_elem| {
+                if (!Element.equals(&a_elem, &b_elem)) return false;
+            }
+            return true;
         }
 
-        fn encBytes(bit_len: usize) usize {
-            return (bit_len + 1 + 7) / 8;
+        pub fn deinit(allocator: std.mem.Allocator, value: *Type) void {
+            for (value.items) |element| {
+                Element.deinit(allocator, element);
+            }
+            value.deinit(allocator);
         }
 
-        pub fn hashTreeRoot(a: std.mem.Allocator, v: *const Type, out: *[32]u8) !void {
-            const n = encBytes(v.bit_len);
-            const chunk_len = ((n + 31) / 32 + 1) / 2 * 2;
-            const chunks = try a.alloc([32]u8, chunk_len);
-            defer a.free(chunks);
-            const zero = [_]u8{0} ** 32;
-            @memset(chunks, zero);
+        pub fn chunkCount(value: *const Type) usize {
+            return value.items.len;
+        }
 
-            const bytes: []u8 = @as([]u8, @ptrCast(chunks));
-            @memcpy(bytes[0..v.data.items.len], v.data.items);
+        pub fn hashTreeRoot(allocator: std.mem.Allocator, value: *const Type, out: *[32]u8) !void {
+            const chunks = try allocator.alloc([32]u8, chunkCount(value));
+            defer allocator.free(chunks);
 
-            const ti = v.bit_len;
-            const bi = ti % 8;
-            const by = ti / 8;
-            const chunk_index = by / 32;
-            const byte_within = by % 32;
-            chunks[chunk_index][byte_within] |= @as(u8, 1) << @intCast(bi);
+            @memset(chunks, [_]u8{0} ** 32);
 
-            try progressive.merkleizeChunks(a, chunks, out);
-            mixInLength(v.bit_len, out);
+            for (value.items, 0..) |element, i| {
+                try Element.hashTreeRoot(allocator, &element, &chunks[i]);
+            }
+            try progressive.merkleizeChunks(allocator, chunks, out);
+            mixInLength(value.items.len, out);
+        }
+
+        pub fn serializedSize(value: *const Type) usize {
+            // offsets size
+            var size: usize = value.items.len * 4;
+            // element sizes
+            for (value.items) |element| {
+                size += Element.serializedSize(&element);
+            }
+            return size;
+        }
+
+        pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
+            var variable_index = value.items.len * 4;
+            for (value.items, 0..) |element, i| {
+                // write offset
+                std.mem.writeInt(u32, out[i * 4 ..][0..4], @intCast(variable_index), .little);
+                // write element data
+                variable_index += Element.serializeIntoBytes(&element, out[variable_index..]);
+            }
+            return variable_index;
+        }
+
+        pub fn deserializeFromBytes(allocator: std.mem.Allocator, data: []const u8, out: *Type) !void {
+            const offsets = try readVariableOffsets(allocator, data);
+            defer allocator.free(offsets);
+
+            const len = offsets.len - 1;
+
+            try out.resize(allocator, len);
+            @memset(out.items[0..len], Element.default_value);
+            for (0..len) |i| {
+                try Element.deserializeFromBytes(
+                    allocator,
+                    data[offsets[i]..offsets[i + 1]],
+                    &out.items[i],
+                );
+            }
+        }
+
+        pub fn readVariableOffsets(allocator: std.mem.Allocator, data: []const u8) ![]u32 {
+            var iterator = OffsetIterator(Self).init(data);
+            const first_offset = if (data.len == 0) 0 else try iterator.next();
+            const len = first_offset / 4;
+
+            const offsets = try allocator.alloc(u32, len + 1);
+
+            offsets[0] = first_offset;
+            while (iterator.pos < len) {
+                offsets[iterator.pos] = try iterator.next();
+            }
+            offsets[len] = @intCast(data.len);
+
+            return offsets;
         }
 
         pub const serialized = struct {
             pub fn validate(data: []const u8) !void {
-                if (data.len == 0) return error.InvalidSize;
-                var any_set = false;
-                inline for (0..8) |i| {
-                    if (((data[data.len - 1] >> @intCast(i)) & 1) == 1) {
-                        any_set = true;
-                    }
+                var iterator = OffsetIterator(Self).init(data);
+                if (data.len == 0) return;
+                const first_offset = try iterator.next();
+                const len = first_offset / 4;
+
+                var curr_offset = first_offset;
+                var prev_offset = first_offset;
+                while (iterator.pos < len) {
+                    prev_offset = curr_offset;
+                    curr_offset = try iterator.next();
+
+                    try Element.serialized.validate(data[prev_offset..curr_offset]);
                 }
-                if (!any_set) return error.MissingTerminationBit;
+                try Element.serialized.validate(data[curr_offset..data.len]);
             }
+
             pub fn length(data: []const u8) !usize {
-                if (data.len == 0) return error.InvalidSize;
-                var pos: u3 = 0;
-                inline for (0..8) |i| {
-                    if (((data[data.len - 1] >> @intCast(i)) & 1) == 1) {
-                        pos = @intCast(i);
-                    }
+                if (data.len == 0) {
+                    return 0;
                 }
-                return (data.len - 1) * 8 + pos;
+                var iterator = OffsetIterator(Self).init(data);
+                return try iterator.firstOffset() / 4;
             }
-            pub fn hashTreeRoot(a: std.mem.Allocator, data: []const u8, out: *[32]u8) !void {
-                const bit_len = try length(data);
-                const n = encBytes(bit_len);
-                const chunk_len = ((n + 31) / 32 + 1) / 2 * 2;
-                const chunks = try a.alloc([32]u8, chunk_len);
-                defer a.free(chunks);
-                const zero = [_]u8{0} ** 32;
-                @memset(chunks, zero);
 
-                const bytes: []u8 = @as([]u8, @ptrCast(chunks));
-                @memcpy(bytes[0..n], data[0..n]);
-                // Set termination bit in the packed bytes copy to ensure correct root
-                const ti = bit_len;
-                const bi = ti % 8;
-                const by = ti / 8;
-                const chunk_index = by / 32;
-                const byte_within = by % 32;
-                chunks[chunk_index][byte_within] |= @as(u8, 1) << @intCast(bi);
+            pub fn hashTreeRoot(allocator: std.mem.Allocator, data: []const u8, out: *[32]u8) !void {
+                const len = try length(data);
+                const chunk_count = len;
 
-                try progressive.merkleizeChunks(a, chunks, out);
-                mixInLength(bit_len, out);
+                const chunks = try allocator.alloc([32]u8, chunk_count);
+                defer allocator.free(chunks);
+                @memset(chunks, [_]u8{0} ** 32);
+
+                const offsets = try readVariableOffsets(allocator, data);
+                defer allocator.free(offsets);
+
+                for (0..len) |i| {
+                    try Element.serialized.hashTreeRoot(
+                        allocator,
+                        data[offsets[i]..offsets[i + 1]],
+                        &chunks[i],
+                    );
+                }
+                try progressive.merkleizeChunks(allocator, chunks, out);
+                mixInLength(len, out);
             }
         };
 
-        // Keep the limit in the type to avoid unused parameter warning
-        pub const limit_value: usize = limit;
+        pub const tree = struct {
+            pub fn length(node: Node.Id, pool: *Node.Pool) !usize {
+                const right = try node.getRight(pool);
+                const hash = right.getRoot(pool);
+                return std.mem.readInt(usize, hash[0..8], .little);
+            }
+
+            pub fn toValue(allocator: std.mem.Allocator, node: Node.Id, pool: *Node.Pool, out: *Type) !void {
+                const len = try length(node, pool);
+                const chunk_count = len;
+                if (chunk_count == 0) {
+                    try out.resize(allocator, 0);
+                    return;
+                }
+
+                const nodes = try allocator.alloc(Node.Id, chunk_count);
+                defer allocator.free(nodes);
+
+                try progressive.getNodes(pool, try node.getLeft(pool), nodes);
+
+                try out.resize(allocator, len);
+                @memset(out.items, Element.default_value);
+                for (0..len) |i| {
+                    try Element.tree.toValue(
+                        allocator,
+                        nodes[i],
+                        pool,
+                        &out.items[i],
+                    );
+                }
+            }
+
+            pub fn fromValue(allocator: std.mem.Allocator, pool: *Node.Pool, value: *const Type) !Node.Id {
+                const len = value.items.len;
+                const chunk_count = len;
+                if (chunk_count == 0) {
+                    return try pool.createBranch(
+                        @enumFromInt(1),
+                        @enumFromInt(0),
+                        false,
+                    );
+                }
+
+                const nodes = try allocator.alloc(Node.Id, chunk_count);
+                defer allocator.free(nodes);
+                for (0..chunk_count) |i| {
+                    nodes[i] = try Element.tree.fromValue(allocator, pool, &value.items[i]);
+                }
+                return try pool.createBranch(
+                    try progressive.fillWithContents(pool, nodes, false),
+                    try pool.createLeafFromUint(len, false),
+                    false,
+                );
+            }
+        };
+
+        pub fn serializeIntoJson(allocator: std.mem.Allocator, writer: anytype, in: *const Type) !void {
+            try writer.beginArray();
+            for (in.items) |element| {
+                try Element.serializeIntoJson(allocator, writer, &element);
+            }
+            try writer.endArray();
+        }
+
+        pub fn deserializeFromJson(allocator: std.mem.Allocator, source: *std.json.Scanner, out: *Type) !void {
+            // start array token "["
+            switch (try source.next()) {
+                .array_begin => {},
+                else => return error.InvalidJson,
+            }
+
+            var i: usize = 0;
+            while (true) : (i += 1) {
+                switch (try source.peekNextTokenType()) {
+                    .array_end => {
+                        _ = try source.next();
+                        return;
+                    },
+                    else => {},
+                }
+
+                try out.ensureUnusedCapacity(allocator, 1);
+                out.expandToCapacity();
+                try Element.deserializeFromJson(allocator, source, &out.items[i]);
+            }
+            return error.invalidLength;
+        }
     };
+}
+
+const UintType = @import("uint.zig").UintType;
+const BoolType = @import("bool.zig").BoolType;
+
+test "ListType - sanity" {
+    const allocator = std.testing.allocator;
+
+    // create a fixed list type and instance and round-trip serialize
+    const Bytes = FixedProgressiveListType(UintType(8), 32);
+
+    var b: Bytes.Type = Bytes.default_value;
+    defer b.deinit(allocator);
+    try b.append(allocator, 5);
+
+    const b_buf = try allocator.alloc(u8, Bytes.serializedSize(&b));
+    defer allocator.free(b_buf);
+
+    _ = Bytes.serializeIntoBytes(&b, b_buf);
+    try Bytes.deserializeFromBytes(allocator, b_buf, &b);
+
+    // create a variable list type and instance and round-trip serialize
+    const BytesBytes = VariableProgressiveListType(Bytes);
+    var b2: BytesBytes.Type = BytesBytes.default_value;
+    defer b2.deinit(allocator);
+    const b_elem: Bytes.Type = Bytes.default_value;
+    try b2.append(allocator, b_elem);
+
+    const b2_buf = try allocator.alloc(u8, BytesBytes.serializedSize(&b2));
+    defer allocator.free(b2_buf);
+
+    _ = BytesBytes.serializeIntoBytes(&b2, b2_buf);
+    try BytesBytes.deserializeFromBytes(allocator, b2_buf, &b2);
 }

@@ -1,116 +1,126 @@
 const std = @import("std");
-const hashing = @import("hashing");
+const merkleize = @import("hashing").merkleize;
+const mixInAux = @import("hashing").mixInAux;
+const hashOne = @import("hashing").hashOne;
+const Depth = @import("hashing").Depth;
+const Node = @import("persistent_merkle_tree").Node;
+const Gindex = @import("persistent_merkle_tree").Gindex;
 
-const merkleize = hashing.merkleize;
-const maxChunksToDepth = hashing.maxChunksToDepth;
-const hashOne = hashing.hashOne;
+const base_count = 1;
+const scaling_factor = 4;
 
-inline fn hash(a: *const [32]u8, b: *const [32]u8, out: *[32]u8) void {
-    hashOne(out, a, b);
-}
-
-pub fn merkleizeChunks(allocator: std.mem.Allocator, chunks: []const [32]u8, out: *[32]u8) !void {
-    try merkleizeProgressiveImpl(allocator, chunks, 1, out);
-}
-
-fn merkleizeProgressiveImpl(
-    allocator: std.mem.Allocator,
-    chunks: []const [32]u8,
-    num_leaves: usize,
-    out: *[32]u8,
-) !void {
-    if (chunks.len == 0) {
-        @memset(out, 0);
-        return;
+// Given a chunk index, return the gindex based on the progressive merklization scheme defined by https://eips.ethereum.org/EIPS/eip-7916
+pub fn chunkGindex(chunk_i: usize) Gindex {
+    const subtree_i = subtreeIndex(chunk_i);
+    var i = subtree_i;
+    var gindex: Gindex.Uint = 1;
+    var subtree_starting_index = 0;
+    // navigate down to the successor root at chunk_i
+    // also track the starting index at that level's subtree
+    while (i > 0) {
+        i -= 1;
+        gindex *= 2;
+        subtree_starting_index += subtreeLength(i);
     }
 
-    const take = @min(num_leaves, chunks.len);
+    // navigate to that level's subtree
+    gindex += 1;
 
-    var right: [32]u8 = undefined;
-    if (take == 0) {
-        @memset(&right, 0);
-    } else {
-        const depth = maxChunksToDepth(num_leaves);
-        const even_len = (take + 1) / 2 * 2;
+    // navigate to the subtree starting leaf
+    gindex *= try std.math.powi(usize, 2, subtreeDepth(subtree_i));
 
-        var tmp = try allocator.alloc([32]u8, even_len);
-        defer allocator.free(tmp);
-        const zero = [_]u8{0} ** 32;
-        @memset(tmp, zero);
-
-        @memcpy(tmp[0..take], chunks[0..take]);
-        // merkleize expects [][2][32]u8 (pairs). Reinterpret the tmp leaf array.
-        const pairs_len = even_len / 2;
-        const pairs: [][2][32]u8 = @as([*][2][32]u8, @ptrCast(tmp.ptr))[0..pairs_len];
-        try merkleize(pairs, depth, &right);
-    }
-
-    var left: [32]u8 = undefined;
-    if (chunks.len > take) {
-        try merkleizeProgressiveImpl(allocator, chunks[take..], num_leaves * 4, &left);
-    } else {
-        @memset(&left, 0);
-    }
-
-    hash(&left, &right, out);
+    // navigate to the chunk index within the subtree
+    gindex += chunk_i - subtree_starting_index;
+    return @enumFromInt(gindex);
 }
 
-/// Streamed progressive merkleization over a virtual leaf set.
-/// get_leaf(ctx, i, out) must write a 32-byte leaf for index i in [0, total_leaves).
-pub fn merkleizeByLeafFn(
-    allocator: std.mem.Allocator,
-    total_leaves: usize,
-    get_leaf: *const fn (ctx: ?*anyopaque, index: usize, out: *[32]u8) anyerror!void,
-    ctx: ?*anyopaque,
-    out: *[32]u8,
-) !void {
-    try merkleizeByLeafFnImpl(allocator, 0, total_leaves, 1, get_leaf, ctx, out);
+pub fn subtreeIndex(chunk_i: usize) usize {
+    var left: usize = chunk_i;
+    var subtree_length: usize = base_count;
+    var subtree_i: usize = 0;
+    while (left > 0) {
+        left -|= subtree_length;
+        subtree_length *= scaling_factor;
+        subtree_i += 1;
+    }
+    return subtree_i;
 }
 
-fn merkleizeByLeafFnImpl(
-    allocator: std.mem.Allocator,
-    base: usize,
-    remaining: usize,
-    num_leaves: usize,
-    get_leaf: *const fn (ctx: ?*anyopaque, index: usize, out: *[32]u8) anyerror!void,
-    ctx: ?*anyopaque,
-    out: *[32]u8,
-) !void {
-    if (remaining == 0) {
-        @memset(out, 0);
-        return;
-    }
+pub fn subtreeLength(subtree_i: usize) usize {
+    return std.math.pow(usize, scaling_factor, subtree_i);
+}
 
-    const take = @min(num_leaves, remaining);
+pub fn subtreeDepth(subtree_i: usize) Depth {
+    return @intCast(subtree_i * std.math.log2_int(usize, scaling_factor));
+}
 
-    // Build right branch 'b' by merkleizing the first 'take' leaves at fixed depth.
-    var b: [32]u8 = undefined;
-    if (take == 0) {
-        @memset(&b, 0);
-    } else {
-        const depth = maxChunksToDepth(num_leaves);
-        const even_len = (take + 1) / 2 * 2;
+/// merkleize chunks using the progressive merklization scheme defined by https://eips.ethereum.org/EIPS/eip-7916
+pub fn merkleizeChunks(allocator: std.mem.Allocator, chunks: [][32]u8, out: *[32]u8) !void {
+    const subtree_count = subtreeIndex(chunks.len);
+    const subtree_roots = try allocator.alloc([32]u8, subtree_count);
+    defer allocator.free(subtree_roots);
 
-        var tmp = try allocator.alloc([32]u8, even_len);
-        defer allocator.free(tmp);
-        @memset(tmp, [_]u8{0} ** 32);
+    var c = chunks;
+    var subtree_length: usize = base_count;
+    for (0..subtree_count) |subtree_i| {
+        if (c.len <= subtree_length) {
+            const final_subtree_chunks = try allocator.alloc([32]u8, subtree_length);
+            defer allocator.free(final_subtree_chunks);
 
-        var i: usize = 0;
-        while (i < take) : (i += 1) {
-            try get_leaf(ctx, base + i, &tmp[i]);
+            @memcpy(final_subtree_chunks[0..c.len], c);
+            @memset(final_subtree_chunks[c.len..], [_]u8{0} ** 32);
+            try merkleize(@ptrCast(final_subtree_chunks), subtreeDepth(subtree_i), &subtree_roots[subtree_i]);
+        } else {
+            const next_size = subtree_length * scaling_factor;
+            try merkleize(@ptrCast(c[0..subtree_length]), subtreeDepth(subtree_i), &subtree_roots[subtree_i]);
+            c = c[subtree_length..];
+            subtree_length = next_size;
         }
-        const pairs_len2 = even_len / 2;
-        const pairs2: [][2][32]u8 = @as([*][2][32]u8, @ptrCast(tmp.ptr))[0..pairs_len2];
-        try merkleize(pairs2, depth, &b);
     }
-
-    // Left branch 'a' recurses over the tail with capacity x4.
-    var a: [32]u8 = undefined;
-    if (remaining > take) {
-        try merkleizeByLeafFnImpl(allocator, base + take, remaining - take, num_leaves * 4, get_leaf, ctx, &a);
-    } else {
-        @memset(&a, 0);
+    out.* = [_]u8{0} ** 32;
+    var subtree_i = subtree_count;
+    while (subtree_i > 0) {
+        subtree_i -= 1;
+        hashOne(
+            out,
+            &subtree_roots[subtree_i],
+            out,
+        );
     }
+}
 
-    hashOne(out, &a, &b);
+/// Get `out.len` nodes in a single traversal from a tree that uses the progressive merklization scheme defined by https://eips.ethereum.org/EIPS/eip-7916
+pub fn getNodes(pool: *Node.Pool, root: Node.Id, out: []Node.Id) !void {
+    const subtree_count = subtreeIndex(out.len);
+    var n = root;
+    var l: usize = 0;
+    for (0..subtree_count) |subtree_i| {
+        const subtree_root = try n.getLeft(pool);
+        const subtree_length = @min(subtreeLength(subtree_i), out.len - l);
+        const subtree_depth = subtreeDepth(subtree_i);
+        try subtree_root.getNodesAtDepth(pool, subtree_depth, 0, out[l .. l + subtree_length]);
+        l += subtree_length;
+        n = try n.getRight(pool);
+    }
+    if (!std.mem.eql(u8, &n.getRoot(pool).*, &[_]u8{0} ** 32)) {
+        return error.InvalidTerminatorNode;
+    }
+}
+
+pub fn fillWithContents(pool: *Node.Pool, nodes: []Node.Id, should_ref: bool) !Node.Id {
+    const subtree_count = subtreeIndex(nodes.len);
+    var l: usize = 0;
+    var n: Node.Id = @enumFromInt(0);
+    for (0..subtree_count) |subtree_i| {
+        const subtree_depth = subtreeDepth(subtree_i);
+        const subtree_length = @min(subtreeLength(subtree_i), nodes.len - l);
+        const subtree_root = try Node.fillWithContents(pool, nodes[l .. l + subtree_length], subtree_depth, false);
+        l += subtree_length;
+        n = try pool.createBranch(
+            subtree_root,
+            n,
+            should_ref,
+        );
+    }
+    return n;
 }

@@ -16,8 +16,8 @@ pub fn FixedVectorType(comptime ST: type, comptime _length: comptime_int) type {
         if (!isFixedType(ST)) {
             @compileError("ST must be fixed type");
         }
-        if (_length <= 0) {
-            @compileError("length must be greater than 0");
+        if (_length < 0) {
+            @compileError("length must be greater than or equal to 0");
         }
     }
     return struct {
@@ -187,8 +187,8 @@ pub fn VariableVectorType(comptime ST: type, comptime _length: comptime_int) typ
         if (isFixedType(ST)) {
             @compileError("ST must not be fixed type");
         }
-        if (_length <= 0) {
-            @compileError("length must be greater than 0");
+        if (_length < 0) {
+            @compileError("length must be greater than or equal to 0");
         }
     }
     return struct {
