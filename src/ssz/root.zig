@@ -6,6 +6,7 @@ pub const types = @import("type/root.zig");
 pub const TypeKind = types.TypeKind;
 pub const isBasicType = types.isBasicType;
 pub const isFixedType = types.isFixedType;
+pub const isProgressiveListType = types.isProgressiveListType;
 
 pub const BoolType = types.BoolType;
 pub const UintType = types.UintType;

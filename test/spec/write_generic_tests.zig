@@ -47,10 +47,7 @@ pub fn main() !void {
 
         const test_dir_name = g_test_entry.name;
         // Skip progressive-related directories we don't support yet (but include basic_progressive_list)
-        if (std.mem.eql(u8, test_dir_name, "progressive_bitlist") or
-            std.mem.eql(u8, test_dir_name, "progressive_containers") or
-            std.mem.eql(u8, test_dir_name, "compatible_unions"))
-        {
+        if (std.mem.eql(u8, test_dir_name, "progressive_bitlist")) {
             continue;
         }
 
@@ -74,7 +71,7 @@ pub fn main() !void {
             const test_name = valid_test_entry.name;
             const type_name = getTypeName(test_dir_name, test_name);
             // Skip progressive container variants
-            if (std.mem.eql(u8, type_name, "ProgressiveBitsStruct") or std.mem.eql(u8, type_name, "ProgressiveTestStruct")) {
+            if (std.mem.eql(u8, type_name, "ProgressiveBitsStruct")) {
                 continue;
             }
 
@@ -103,13 +100,9 @@ pub fn main() !void {
             const type_name = getTypeName(test_dir_name, test_name);
 
             // Skip progressive container variants
-            if (std.mem.eql(u8, type_name, "ProgressiveBitsStruct") or std.mem.eql(u8, type_name, "ProgressiveTestStruct")) {
+            if (std.mem.eql(u8, type_name, "ProgressiveBitsStruct")) {
                 continue;
             }
-            // // Skip progressive list invalid tests while feature stabilizes
-            // if (std.mem.eql(u8, test_dir_name, "basic_progressive_list") or std.mem.startsWith(u8, type_name, "proglist_")) {
-            //     continue;
-            // }
             try writeInvalidTest(writer, test_name, test_dir_name, type_name);
         }
     }

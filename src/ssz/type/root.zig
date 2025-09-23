@@ -1,6 +1,7 @@
 pub const TypeKind = @import("type_kind.zig").TypeKind;
 pub const isBasicType = @import("type_kind.zig").isBasicType;
 pub const isFixedType = @import("type_kind.zig").isFixedType;
+pub const isProgressiveListType = @import("type_kind.zig").isProgressiveListType;
 
 pub const BoolType = @import("bool.zig").BoolType;
 pub const UintType = @import("uint.zig").UintType;
@@ -30,6 +31,14 @@ pub const VariableContainerType = @import("container.zig").VariableContainerType
 
 pub const FixedProgressiveListType = @import("progressive_list.zig").FixedProgressiveListType;
 pub const VariableProgressiveListType = @import("progressive_list.zig").VariableProgressiveListType;
+
+pub fn ProgressiveListType(comptime ST: type, comptime limit: comptime_int) type {
+    if (isFixedType(ST)) {
+        return FixedProgressiveListType(ST, limit);
+    } else {
+        return VariableProgressiveListType(ST);
+    }
+}
 
 test {
     _ = @import("bool.zig");

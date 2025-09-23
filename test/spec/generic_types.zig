@@ -162,6 +162,27 @@ pub const BitsStruct = ssz.VariableContainerType(struct {
     E: ssz.BitVectorType(8),
 });
 
+// Progressive container types
+pub const ProgressiveTestStruct = ssz.VariableContainerType(struct {
+    A: ssz.FixedProgressiveListType(ssz.UintType(8), 128),
+    B: ssz.FixedProgressiveListType(ssz.UintType(8), 128),
+    C: ssz.FixedProgressiveListType(ssz.UintType(8), 128),
+    D: ssz.FixedProgressiveListType(ssz.UintType(8), 128),
+});
+
+// pub const ProgressiveBitsStruct = ssz.VariableContainerType(struct {
+//     A: ssz.ByteListType(256),
+//     B: ssz.ByteListType(256),
+//     C: ssz.ByteListType(256),
+//     D: ssz.ByteListType(256),
+//     E: ssz.ByteListType(256),
+//     F: ssz.ByteListType(256),
+//     G: ssz.ByteListType(256),
+//     H: ssz.ByteListType(256),
+//     I: ssz.ByteListType(256),
+//     J: ssz.ByteListType(256),
+// });
+
 // uints
 pub const uint_8 = ssz.UintType(8);
 pub const uint_16 = ssz.UintType(16);
