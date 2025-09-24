@@ -668,7 +668,7 @@ test "ListType - sanity" {
     try Bytes.deserializeFromBytes(allocator, b_buf, &b);
 
     // create a variable list type and instance and round-trip serialize
-    const BytesBytes = VariableProgressiveListType(Bytes);
+    const BytesBytes = VariableProgressiveListType(Bytes, 1024);
     var b2: BytesBytes.Type = BytesBytes.default_value;
     defer b2.deinit(allocator);
     const b_elem: Bytes.Type = Bytes.default_value;

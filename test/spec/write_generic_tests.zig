@@ -71,7 +71,7 @@ pub fn main() !void {
             const test_name = valid_test_entry.name;
             const type_name = getTypeName(test_dir_name, test_name);
             // Skip progressive container variants
-            if (std.mem.eql(u8, type_name, "ProgressiveBitsStruct") or (std.mem.eql(u8, type_name, "ProgressiveTestStruct"))) {
+            if (std.mem.eql(u8, type_name, "ProgressiveBitsStruct")) {
                 continue;
             }
 
