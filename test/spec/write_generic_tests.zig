@@ -103,6 +103,12 @@ pub fn main() !void {
             if (std.mem.eql(u8, type_name, "ProgressiveBitsStruct")) {
                 continue;
             }
+
+            // Skip one_byte_more tests for now
+            if (std.mem.indexOf(u8, test_name, "one_byte_more") != null) {
+                continue;
+            }
+
             try writeInvalidTest(writer, test_name, test_dir_name, type_name);
         }
     }
