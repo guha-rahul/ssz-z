@@ -462,7 +462,6 @@ pub fn VariableContainerType(comptime ST: type) type {
         }
 
         fn readVariableOffsets(data: []const u8, offsets: []u32) !void {
-            std.debug.print("readVariableOffsets: data.len={}, fixed_end={}, var_count={}\n", .{ data.len, fixed_end, var_count });
             var variable_index: usize = 0;
             var fixed_index: usize = 0;
             inline for (fields) |field| {
@@ -470,20 +469,20 @@ pub fn VariableContainerType(comptime ST: type) type {
                     fixed_index += field.type.fixed_size;
                 } else {
                     const offset = std.mem.readInt(u32, data[fixed_index..][0..4], .little);
-                    std.debug.print("  header[{}] raw offset={} (fixed_index={})\n", .{ variable_index, offset, fixed_index });
+                    // std.debug.print("  header[{}] raw offset={} (fixed_index={})\n", .{ variable_index, offset, fixed_index });
                     if (offset > data.len) {
-                        std.debug.print("    -> offsetOutOfRange (>{})\n", .{data.len});
+                        // std.debug.print("    -> offsetOutOfRange (>{})\n", .{data.len});
                         return error.offsetOutOfRange;
                     }
                     if (variable_index == 0) {
                         if (offset != fixed_end) {
-                            std.debug.print("    -> first offset {} != fixed_end {}\n", .{ offset, fixed_end });
+                            // std.debug.print("    -> first offset {} != fixed_end {}\n", .{ offset, fixed_end });
                             return error.offsetOutOfRange;
                         }
                     } else {
-                        std.debug.print("    prev offset={}\n", .{offsets[variable_index - 1]});
+                        // std.debug.print("    prev offset={}\n", .{offsets[variable_index - 1]});
                         if (offset < offsets[variable_index - 1]) {
-                            std.debug.print("    -> offsetNotIncreasing ({} < {})\n", .{ offset, offsets[variable_index - 1] });
+                            // std.debug.print("    -> offsetNotIncreasing ({} < {})\n", .{ offset, offsets[variable_index - 1] });
                             return error.offsetNotIncreasing;
                         }
                     }
@@ -495,7 +494,7 @@ pub fn VariableContainerType(comptime ST: type) type {
             }
             // set 1 more at the end of the last variable field so that each variable field can consume 2 offsets
             offsets[variable_index] = @intCast(data.len);
-            std.debug.print("  final offset[{}] set to {}\n", .{ variable_index, data.len });
+            // std.debug.print("  final offset[{}] set to {}\n", .{ variable_index, data.len });
         }
 
         pub const serialized = struct {
