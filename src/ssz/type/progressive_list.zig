@@ -18,6 +18,7 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
             @compileError("limit must be greater than or equal to 0");
         }
     }
+
     return struct {
         pub const kind = TypeKind.progressive_list;
         pub const Element: type = ST;
@@ -77,8 +78,6 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
         }
 
         pub fn deserializeFromBytes(allocator: std.mem.Allocator, data: []const u8, out: *Type) !void {
-
-            // Check 5: Guardrails
             if (data.len % Element.fixed_size != 0) {
                 return error.InvalidSSZ;
             }
@@ -104,71 +103,18 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
                 );
             }
 
-            // Check 1: Verify decoder math
             if (out.items.len >= 4) {}
-
-            // Check 1: Lock the value after decode
         }
 
         pub fn serializeIntoJson(_: std.mem.Allocator, writer: anytype, in: *const Type) !void {
-            // Element is fixed type here
-
-            // Check 2: Pre-JSON entry guard
-
-            // Check 3: Canary next to value to detect OOB writes
-            const canary: u64 = 0xDEADBEEFCAFEBABE;
-
-            // Check 4: Separate allocators verification
-
-            // Check 5: JSON array reuse detection - track writer state
-
-            if (in.items.len > 0) {
-                for (in.items[0..@min(5, in.items.len)]) |_| {}
-            }
-
-            // Check 6: Single writer invariant - verify no concurrent access
-
-            // Check 7: Capacity/OOB checks
-            if (in.items.len > in.capacity) {
-                return error.CapacityViolation;
-            }
-
             try writer.beginArray();
-
-            // Check canary after beginArray
-            if (canary != 0xDEADBEEFCAFEBABE) {
-                return error.CanaryCorruption;
-            }
-
-            var emitted_count: usize = 0;
             for (in.items) |element| {
-
-                // Check canary before each element serialization
-                if (canary != 0xDEADBEEFCAFEBABE) {
-                    return error.CanaryCorruption;
-                }
-
                 try Element.serializeIntoJson(writer, &element);
-                emitted_count += 1;
-
-                // Check canary after each element serialization
-                if (canary != 0xDEADBEEFCAFEBABE) {
-                    return error.CanaryCorruption;
-                }
             }
-
             try writer.endArray();
-
-            // Final canary check
-            if (canary != 0xDEADBEEFCAFEBABE) {
-                return error.CanaryCorruption;
-            }
-
-            // Check 8: Final localization
         }
 
         pub fn deserializeFromJson(allocator: std.mem.Allocator, source: *std.json.Scanner, out: *Type) !void {
-            // start array token "["
             switch (try source.next()) {
                 .array_begin => {},
                 else => return error.InvalidJson,
@@ -253,8 +199,6 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
                 const right = try node.getRight(pool);
                 const hash = right.getRoot(pool);
 
-                // Fix: Read full 32-byte little-endian integer from root.right
-                // Reason: Length is stored as uint256, not just 8 bytes
                 const len_u256 = std.mem.readInt(u256, hash[0..32], .little);
                 const len = @as(usize, @intCast(@min(len_u256, std.math.maxInt(usize))));
 
@@ -278,12 +222,10 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
                 const nodes = try allocator.alloc(Node.Id, chunk_count);
                 defer allocator.free(nodes);
 
-                // Always use progressive traversal from root.left (contents node)
                 const contents_node = try node.getLeft(pool);
                 try progressive.getNodes(pool, contents_node, nodes);
 
                 if (comptime isBasicType(Element)) {
-                    // tightly packed list
                     for (0..len) |i| {
                         const chunk_index = (i * Element.fixed_size) / 32;
                         const element_index = i % (32 / Element.fixed_size);
@@ -321,16 +263,14 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
                 defer allocator.free(nodes);
                 if (comptime isBasicType(Element)) {
                     const items_per_chunk = 32 / Element.fixed_size;
-                    var next: usize = 0; // index in value.items
+                    var next: usize = 0;
 
                     for (0..chunk_count) |i| {
                         var leaf_buf = [_]u8{0} ** 32;
 
-                        // how many items still remain to be packed into this chunk?
                         const remaining = len - next;
                         const to_write = @min(remaining, items_per_chunk);
 
-                        // serialise exactly to_write elements into the 32‑byte buffer
                         for (0..to_write) |j| {
                             const dst_off = j * Element.fixed_size;
                             const dst_slice = leaf_buf[dst_off .. dst_off + Element.fixed_size];
@@ -412,9 +352,7 @@ pub fn VariableProgressiveListType(comptime ST: type, comptime _limit: comptime_
         }
 
         pub fn serializedSize(value: *const Type) usize {
-            // offsets size
             var size: usize = value.items.len * 4;
-            // element sizes
             for (value.items) |element| {
                 size += Element.serializedSize(&element);
             }
@@ -424,9 +362,7 @@ pub fn VariableProgressiveListType(comptime ST: type, comptime _limit: comptime_
         pub fn serializeIntoBytes(value: *const Type, out: []u8) usize {
             var variable_index = value.items.len * 4;
             for (value.items, 0..) |element, i| {
-                // write offset
                 std.mem.writeInt(u32, out[i * 4 ..][0..4], @intCast(variable_index), .little);
-                // write element data
                 variable_index += Element.serializeIntoBytes(&element, out[variable_index..]);
             }
             return variable_index;
@@ -519,8 +455,6 @@ pub fn VariableProgressiveListType(comptime ST: type, comptime _limit: comptime_
                 const right = try node.getRight(pool);
                 const hash = right.getRoot(pool);
 
-                // Fix: Read full 32-byte little-endian integer from root.right
-                // Reason: Length is stored as uint256, not just 8 bytes
                 const len_u256 = std.mem.readInt(u256, hash[0..32], .little);
                 const len = @as(usize, @intCast(@min(len_u256, std.math.maxInt(usize))));
 
@@ -538,7 +472,6 @@ pub fn VariableProgressiveListType(comptime ST: type, comptime _limit: comptime_
                 const nodes = try allocator.alloc(Node.Id, chunk_count);
                 defer allocator.free(nodes);
 
-                // Always use progressive traversal from root.left (contents node)
                 try progressive.getNodes(pool, try node.getLeft(pool), nodes);
 
                 try out.resize(allocator, len);
@@ -579,62 +512,14 @@ pub fn VariableProgressiveListType(comptime ST: type, comptime _limit: comptime_
         };
 
         pub fn serializeIntoJson(allocator: std.mem.Allocator, writer: anytype, in: *const Type) !void {
-            // Check 2: Pre-JSON entry guard
-
-            // Check 3: Canary next to value to detect OOB writes
-            const canary: u64 = 0xDEADBEEFCAFEBABE;
-
-            // Check 4: Separate allocators verification
-
-            // Check 5: JSON array reuse detection - track writer state
-
-            if (in.items.len > 0) {
-                for (in.items[0..@min(5, in.items.len)]) |_| {}
-            }
-
-            // Check 6: Single writer invariant - verify no concurrent access
-
-            // Check 7: Capacity/OOB checks
-            if (in.items.len > in.capacity) {
-                return error.CapacityViolation;
-            }
-
             try writer.beginArray();
-
-            // Check canary after beginArray
-            if (canary != 0xDEADBEEFCAFEBABE) {
-                return error.CanaryCorruption;
-            }
-
-            var emitted_count: usize = 0;
             for (in.items) |element| {
-
-                // Check canary before each element serialization
-                if (canary != 0xDEADBEEFCAFEBABE) {
-                    return error.CanaryCorruption;
-                }
-
                 try Element.serializeIntoJson(allocator, writer, &element);
-                emitted_count += 1;
-
-                // Check canary after each element serialization
-                if (canary != 0xDEADBEEFCAFEBABE) {
-                    return error.CanaryCorruption;
-                }
             }
-
             try writer.endArray();
-
-            // Final canary check
-            if (canary != 0xDEADBEEFCAFEBABE) {
-                return error.CanaryCorruption;
-            }
-
-            // Check 8: Final localization
         }
 
         pub fn deserializeFromJson(allocator: std.mem.Allocator, source: *std.json.Scanner, out: *Type) !void {
-            // start array token "["
             switch (try source.next()) {
                 .array_begin => {},
                 else => return error.InvalidJson,
@@ -664,7 +549,6 @@ const BoolType = @import("bool.zig").BoolType;
 test "ListType - sanity" {
     const allocator = std.testing.allocator;
 
-    // create a fixed list type and instance and round-trip serialize
     const Bytes = FixedProgressiveListType(UintType(8), 32);
 
     var b: Bytes.Type = Bytes.default_value;
@@ -677,7 +561,6 @@ test "ListType - sanity" {
     _ = Bytes.serializeIntoBytes(&b, b_buf);
     try Bytes.deserializeFromBytes(allocator, b_buf, &b);
 
-    // create a variable list type and instance and round-trip serialize
     const BytesBytes = VariableProgressiveListType(Bytes, 1024);
     var b2: BytesBytes.Type = BytesBytes.default_value;
     defer b2.deinit(allocator);
