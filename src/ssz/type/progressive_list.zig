@@ -84,12 +84,10 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
 
             const len = data.len / Element.fixed_size;
 
-            // If limit is 0, no elements are allowed, so any data (including empty) is invalid
             if (limit == 0) {
                 return error.InvalidSSZ;
             }
 
-            // Check 5: Guardrails
             if (len > limit) {
                 return error.InvalidSSZ;
             }
@@ -102,8 +100,6 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
                     &out.items[i],
                 );
             }
-
-            if (out.items.len >= 4) {}
         }
 
         pub fn serializeIntoJson(_: std.mem.Allocator, writer: anytype, in: *const Type) !void {
