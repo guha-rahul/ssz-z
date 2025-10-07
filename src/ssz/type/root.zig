@@ -32,6 +32,10 @@ pub const VariableContainerType = @import("container.zig").VariableContainerType
 pub const FixedProgressiveListType = @import("progressive_list.zig").FixedProgressiveListType;
 pub const VariableProgressiveListType = @import("progressive_list.zig").VariableProgressiveListType;
 
+pub const ProgressiveBitListType = @import("progressive_bit_list.zig").ProgressiveBitListType;
+pub const ProgressiveBitList = @import("progressive_bit_list.zig").ProgressiveBitList;
+pub const isProgressiveBitListType = @import("progressive_bit_list.zig").isProgressiveBitListType;
+
 pub fn ProgressiveListType(comptime ST: type, comptime limit: comptime_int) type {
     if (isFixedType(ST)) {
         return FixedProgressiveListType(ST, limit);
@@ -50,6 +54,7 @@ test {
     _ = @import("byte_vector.zig");
     _ = @import("list.zig");
     _ = @import("progressive_list.zig");
+    _ = @import("progressive_bit_list.zig");
     _ = @import("container.zig");
 }
 

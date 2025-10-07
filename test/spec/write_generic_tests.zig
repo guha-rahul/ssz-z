@@ -18,7 +18,7 @@ pub fn main() !void {
         \\const types = @import("generic_types.zig");
         \\const test_case = @import("test_case.zig");
         \\
-        \\const generic_tests_dir_name = "general/tests/general/phase0/ssz_generic";
+        \\const generic_tests_dir_name = "general/phase0/ssz_generic";
         \\const allocator = std.testing.allocator;
         \\
         \\
@@ -27,8 +27,6 @@ pub fn main() !void {
     const generic_tests_dir_name = try std.fs.path.join(allocator, &[_][]const u8{
         spec_test_options.spec_test_out_dir,
         spec_test_options.spec_test_version,
-        "general",
-        "tests",
         "general",
         "phase0",
         "ssz_generic",
@@ -46,10 +44,10 @@ pub fn main() !void {
         }
 
         const test_dir_name = g_test_entry.name;
-        // Skip progressive-related directories we don't support yet (but include basic_progressive_list)
-        if (std.mem.eql(u8, test_dir_name, "progressive_bitlist")) {
-            continue;
-        }
+        // // Skip progressive-related directories we don't support yet (but include basic_progressive_list)
+        // if (std.mem.eql(u8, test_dir_name, "progressive_bitlist")) {
+        //     continue;
+        // }
 
         const valid_tests_dir_name = try std.fs.path.join(allocator, &[_][]const u8{
             generic_tests_dir_name,
@@ -70,8 +68,12 @@ pub fn main() !void {
 
             const test_name = valid_test_entry.name;
             const type_name = getTypeName(test_dir_name, test_name);
-            // Skip progressive container variants
-            if (std.mem.eql(u8, type_name, "ProgressiveBitsStruct")) {
+            // Skip unsupported types
+            if (std.mem.startsWith(u8, type_name, "CompatibleUnion") or
+                std.mem.startsWith(u8, type_name, "ProgressiveComplexTestStruct") or
+                std.mem.startsWith(u8, type_name, "ProgressiveVarTestStruct") or
+                std.mem.startsWith(u8, type_name, "ProgressiveSingle"))
+            {
                 continue;
             }
 
@@ -99,15 +101,19 @@ pub fn main() !void {
             const test_name = invalid_test_entry.name;
             const type_name = getTypeName(test_dir_name, test_name);
 
-            // Skip progressive container variants
-            if (std.mem.eql(u8, type_name, "ProgressiveBitsStruct")) {
+            // Skip unsupported types
+            if (std.mem.startsWith(u8, type_name, "CompatibleUnion") or
+                std.mem.startsWith(u8, type_name, "ProgressiveComplexTestStruct") or
+                std.mem.startsWith(u8, type_name, "ProgressiveVarTestStruct") or
+                std.mem.startsWith(u8, type_name, "ProgressiveSingle"))
+            {
                 continue;
             }
 
-            // Skip one_byte_more tests for now
-            if (std.mem.indexOf(u8, test_name, "one_byte_more") != null) {
-                continue;
-            }
+            // // Skip one_byte_more tests for now
+            // if (std.mem.indexOf(u8, test_name, "one_byte_more") != null) {
+            //     continue;
+            // }
 
             try writeInvalidTest(writer, test_name, test_dir_name, type_name);
         }

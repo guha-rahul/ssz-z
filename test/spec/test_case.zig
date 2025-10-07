@@ -16,7 +16,7 @@ pub fn parseYaml(comptime ST: type, allocator: Allocator, y: yaml.Yaml, out: *ST
         const bytes = try hex.hexToBytes(bytes_buf, yaml_bytes);
         out.* = ST.Type{ .data = bytes[0..ST.byte_length].* };
         return;
-    } else if (comptime ssz.isBitListType(ST)) {
+    } else if (comptime ssz.isBitListType(ST) or ssz.isProgressiveBitListType(ST)) {
         const bytes_buf = try allocator.alloc(u8, ((ST.limit + 7) / 8) + 2);
         const yaml_bytes = try y.parse(allocator, []const u8);
         const data = try hex.hexToBytes(bytes_buf, yaml_bytes);
@@ -132,6 +132,12 @@ pub fn validTestCase(comptime ST: type, gpa: Allocator, path: std.fs.Dir, meta_f
     defer arena.deinit();
     const allocator = arena.allocator();
 
+    // DEBUG: Print test information for ProgressiveBitsStruct tests
+    // if (std.mem.indexOf(u8, @typeName(ST), "ProgressiveBitsStruct") != null) {
+    //     std.debug.print("\n--- Starting test for ProgressiveBitsStruct ---\n", .{});
+    //     std.debug.print("Type: {s}\n", .{@typeName(ST)});
+    // }
+
     // read expected root
 
     const meta_file = try path.openFile(meta_file_name, .{});
@@ -192,6 +198,62 @@ pub fn validTestCase(comptime ST: type, gpa: Allocator, path: std.fs.Dir, meta_f
             if (comptime ssz.isFixedType(ST)) ST.fixed_size else ST.serializedSize(value_expected),
         );
         const serialized_actual_size = ST.serializeIntoBytes(value_expected, serialized_actual);
+
+        // DEBUG: Print serialization info if lengths don't match
+        if (serialized_expected.len != serialized_actual_size) {
+            // Only debug ProgressiveBitsStruct tests
+            if (std.mem.indexOf(u8, @typeName(ST), "ProgressiveBitsStruct") != null) {
+                std.debug.print("\n=== SERIALIZATION DEBUG ===\n", .{});
+                std.debug.print("Type: {s}\n", .{@typeName(ST)});
+                std.debug.print("Expected length: {d}\n", .{serialized_expected.len});
+                std.debug.print("Actual length: {d}\n", .{serialized_actual_size});
+                std.debug.print("Difference: {d}\n", .{@as(i32, @intCast(serialized_actual_size)) - @as(i32, @intCast(serialized_expected.len))});
+
+                // Print calculated serialized size
+                if (comptime !ssz.isFixedType(ST)) {
+                    std.debug.print("Calculated serialized size: {d}\n", .{ST.serializedSize(value_expected)});
+                }
+
+                // Print first 120 bytes to see offset structure
+                std.debug.print("\nExpected data (first 120 bytes):\n", .{});
+                const expected_limit = @min(serialized_expected.len, 120);
+                for (serialized_expected[0..expected_limit], 0..) |b, i| {
+                    std.debug.print("{d:3} ", .{b});
+                    if ((i + 1) % 20 == 0) std.debug.print("\n", .{});
+                }
+                std.debug.print("\n", .{});
+
+                std.debug.print("\nActual data (first 120 bytes):\n", .{});
+                const actual_limit = @min(serialized_actual_size, 120);
+                for (serialized_actual[0..actual_limit], 0..) |b, i| {
+                    std.debug.print("{d:3} ", .{b});
+                    if ((i + 1) % 20 == 0) std.debug.print("\n", .{});
+                }
+                std.debug.print("\n", .{});
+
+                // Decode offsets from expected
+                std.debug.print("\nExpected offsets (starting at byte 32):\n", .{});
+                var offset_pos: usize = 32;
+                var field_num: usize = 0;
+                while (offset_pos + 4 <= serialized_expected.len and field_num < 10) : ({offset_pos += 4; field_num += 1;}) {
+                    const offset_bytes = serialized_expected[offset_pos..offset_pos+4];
+                    const offset = std.mem.readInt(u32, offset_bytes[0..4], .little);
+                    std.debug.print("Field {d} offset at byte {d}: {d}\n", .{field_num, offset_pos, offset});
+                }
+
+                std.debug.print("\nActual offsets (starting at byte 32):\n", .{});
+                offset_pos = 32;
+                field_num = 0;
+                while (offset_pos + 4 <= serialized_actual_size and field_num < 10) : ({offset_pos += 4; field_num += 1;}) {
+                    const offset_bytes = serialized_actual[offset_pos..offset_pos+4];
+                    const offset = std.mem.readInt(u32, offset_bytes[0..4], .little);
+                    std.debug.print("Field {d} offset at byte {d}: {d}\n", .{field_num, offset_pos, offset});
+                }
+
+                std.debug.print("========================\n", .{});
+            }
+        }
+
         try std.testing.expectEqual(serialized_expected.len, serialized_actual_size);
         try std.testing.expectEqualSlices(u8, serialized_expected, serialized_actual);
     }

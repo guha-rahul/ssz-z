@@ -32,7 +32,7 @@ pub fn Hasher(comptime ST: type) type {
                     }
                     return try HasherData.initCapacity(allocator, hasher_size, children);
                 },
-                .list, .progressive_list => {
+                .list, .progressive_list, .progressive_bit_list => {
                     // we don't preallocate here since we need the length
                     const hasher_size = 0;
                     if (comptime isBasicType(ST.Element)) {
@@ -61,7 +61,7 @@ pub fn Hasher(comptime ST: type) type {
                 }
             } else {
                 switch (ST.kind) {
-                    .progressive_list => {
+                    .progressive_list, .progressive_bit_list => {
                         try ST.hashTreeRoot(scratch.allocator(), value, out);
                     },
                     .list => {
