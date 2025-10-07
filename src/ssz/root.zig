@@ -34,6 +34,10 @@ pub const VariableVectorType = types.VariableVectorType;
 pub const FixedContainerType = types.FixedContainerType;
 pub const VariableContainerType = types.VariableContainerType;
 
+// Progressive container types
+pub const FixedProgressiveContainerType = types.FixedProgressiveContainerType;
+pub const VariableProgressiveContainerType = types.VariableProgressiveContainerType;
+
 // Progressive list types
 pub const FixedProgressiveListType = types.FixedProgressiveListType;
 pub const VariableProgressiveListType = types.VariableProgressiveListType;

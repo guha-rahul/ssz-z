@@ -185,6 +185,31 @@ pub const ProgressiveBitsStruct = ssz.VariableContainerType(struct {
     L: ssz.ProgressiveBitListType(8192), // BitSeq
 });
 
+pub const ProgressiveSingleFieldContainerTestStruct = ssz.FixedProgressiveContainerType(struct {
+    A: ssz.UintType(8),
+}, &[_]u1{1});
+
+pub const ProgressiveSingleListContainerTestStruct = ssz.VariableProgressiveContainerType(struct {
+    C: ssz.ProgressiveBitListType(8192),
+}, &[_]u1{ 0, 0, 0, 0, 1 });
+
+pub const ProgressiveVarTestStruct = ssz.VariableProgressiveContainerType(struct {
+    A: ssz.UintType(8),
+    B: ssz.FixedListType(ssz.UintType(16), 123),
+    C: ssz.ProgressiveBitListType(8192),
+}, &[_]u1{ 1, 0, 1, 0, 1 });
+
+pub const ProgressiveComplexTestStruct = ssz.VariableProgressiveContainerType(struct {
+    A: ssz.UintType(8),
+    B: ssz.FixedListType(ssz.UintType(16), 123),
+    C: ssz.ProgressiveBitListType(8192),
+    D: ssz.FixedProgressiveListType(ssz.UintType(64), 1048576),
+    E: ssz.FixedProgressiveListType(SmallTestStruct, 1048576),
+    F: ssz.VariableProgressiveListType(ssz.VariableProgressiveListType(VarTestStruct, 1048576), 1048576),
+    G: ssz.FixedListType(ProgressiveSingleFieldContainerTestStruct, 10),
+    H: ssz.VariableProgressiveListType(ProgressiveVarTestStruct, 1048576),
+}, &[_]u1{ 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1 });
+
 // uints
 pub const uint_8 = ssz.UintType(8);
 pub const uint_16 = ssz.UintType(16);

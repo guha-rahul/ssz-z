@@ -69,10 +69,7 @@ pub fn main() !void {
             const test_name = valid_test_entry.name;
             const type_name = getTypeName(test_dir_name, test_name);
             // Skip unsupported types
-            if (std.mem.startsWith(u8, type_name, "CompatibleUnion") or
-                std.mem.startsWith(u8, type_name, "ProgressiveComplexTestStruct") or
-                std.mem.startsWith(u8, type_name, "ProgressiveVarTestStruct") or
-                std.mem.startsWith(u8, type_name, "ProgressiveSingle"))
+            if (std.mem.startsWith(u8, type_name, "CompatibleUnion"))
             {
                 continue;
             }
@@ -102,10 +99,7 @@ pub fn main() !void {
             const type_name = getTypeName(test_dir_name, test_name);
 
             // Skip unsupported types
-            if (std.mem.startsWith(u8, type_name, "CompatibleUnion") or
-                std.mem.startsWith(u8, type_name, "ProgressiveComplexTestStruct") or
-                std.mem.startsWith(u8, type_name, "ProgressiveVarTestStruct") or
-                std.mem.startsWith(u8, type_name, "ProgressiveSingle"))
+            if (std.mem.startsWith(u8, type_name, "CompatibleUnion"))
             {
                 continue;
             }
@@ -139,6 +133,17 @@ fn getTypeName(test_dir_name: []const u8, test_name: []const u8) []const u8 {
     } else if (std.mem.eql(u8, test_dir_name, "containers")) {
         var split_it = std.mem.splitScalar(u8, test_name, '_');
         return split_it.first();
+    } else if (std.mem.eql(u8, test_dir_name, "progressive_containers")) {
+        // Progressive container test names have the pattern: TypeName_variant_number or TypeName_variant_chaos_number
+        // We need to extract just the TypeName, which ends with "TestStruct" or "Struct"
+        // e.g., "ProgressiveSingleFieldContainerTestStruct_max" -> "ProgressiveSingleFieldContainerTestStruct"
+        // e.g., "ProgressiveSingleListContainerTestStruct_nil_9" -> "ProgressiveSingleListContainerTestStruct"
+        if (std.mem.indexOf(u8, test_name, "TestStruct")) |idx| {
+            return test_name[0 .. idx + "TestStruct".len];
+        } else if (std.mem.indexOf(u8, test_name, "Struct")) |idx| {
+            return test_name[0 .. idx + "Struct".len];
+        }
+        return test_name;
     } else {
         var split_it = std.mem.splitScalar(u8, test_name, '_');
         _ = split_it.next();

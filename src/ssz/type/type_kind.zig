@@ -9,6 +9,7 @@ pub const TypeKind = enum {
     progressive_list,
     progressive_bit_list,
     container,
+    progressive_container,
 };
 
 /// Basic types are primitives
@@ -22,7 +23,7 @@ pub fn isFixedType(T: type) bool {
         .uint, .bool => true,
         .list, .progressive_list, .progressive_bit_list => false,
         .vector => isFixedType(T.Element),
-        .container => {
+        .container, .progressive_container => {
             inline for (T.fields) |field| {
                 if (!isFixedType(field.type)) {
                     return false;
