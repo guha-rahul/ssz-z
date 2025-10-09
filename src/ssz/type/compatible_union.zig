@@ -530,10 +530,15 @@ test "CompatibleUnion - basic square and circle" {
         .{ 2, Circle },
     });
 
-    var square_value: Shape.Type = undefined;
-    square_value.selector = 1;
-    square_value.data.option_1.side = 10;
-    square_value.data.option_1.color = 5;
+    // Initialize the union properly with @unionInit
+    var square_data = Square.default_value;
+    square_data.side = 10;
+    square_data.color = 5;
+
+    var square_value: Shape.Type = .{
+        .selector = 1,
+        .data = @unionInit(@TypeOf(Shape.default_value.data), "option_1", square_data),
+    };
 
     // Test serialization
     var buf: [256]u8 = undefined;
@@ -560,9 +565,14 @@ test "CompatibleUnion - hash tree root with selector mix-in" {
         .{ 1, Square },
     });
 
-    var square_value: Shape.Type = undefined;
-    square_value.selector = 1;
-    square_value.data.option_1.side = 10;
+    // Initialize the union properly with @unionInit
+    var square_data = Square.default_value;
+    square_data.side = 10;
+
+    var square_value: Shape.Type = .{
+        .selector = 1,
+        .data = @unionInit(@TypeOf(Shape.default_value.data), "option_1", square_data),
+    };
 
     var root: [32]u8 = undefined;
     try Shape.hashTreeRoot(std.testing.allocator, &square_value, &root);
