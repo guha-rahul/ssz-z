@@ -44,6 +44,9 @@ pub fn Hasher(comptime ST: type) type {
                         return try HasherData.initCapacity(allocator, hasher_size, children);
                     }
                 },
+                .compatible_union => {
+                    return try HasherData.initCapacity(allocator, 0, null);
+                },
                 else => unreachable,
             }
         }
@@ -113,6 +116,10 @@ pub fn Hasher(comptime ST: type) type {
                         } else {
                             try ST.hashTreeRoot(scratch.allocator(), value, out);
                         }
+                    },
+                    .compatible_union => {
+                        // CompatibleUnion has its own hashTreeRoot implementation
+                        try ST.hashTreeRoot(scratch.allocator(), value, out);
                     },
                     else => unreachable,
                 }

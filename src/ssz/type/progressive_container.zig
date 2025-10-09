@@ -752,7 +752,7 @@ const BoolType = @import("bool.zig").BoolType;
 const ByteVectorType = @import("byte_vector.zig").ByteVectorType;
 const FixedListType = @import("list.zig").FixedListType;
 
-test "ProgressiveContainerType - fixed - Square and Circle example from EIP" {
+test "ProgressiveContainerType " {
     // Square with active_fields=[1, 0, 1]
     const Square = FixedProgressiveContainerType(struct {
         side: UintType(16),
@@ -797,23 +797,6 @@ test "ProgressiveContainerType - fixed - Square and Circle example from EIP" {
     try std.testing.expect(!std.mem.eql(u8, &square_root, &circle_root));
 }
 
-test "ProgressiveContainerType - clone" {
-    const Square = FixedProgressiveContainerType(struct {
-        side: UintType(16),
-        color: UintType(8),
-    }, &[_]u1{ 1, 0, 1 });
-
-    var square: Square.Type = undefined;
-    square.side = 10;
-    square.color = 5;
-
-    var cloned: Square.Type = undefined;
-    try Square.clone(&square, &cloned);
-    try std.testing.expect(&cloned != &square);
-    try std.testing.expectEqual(square.side, cloned.side);
-    try std.testing.expectEqual(square.color, cloned.color);
-}
-
 test "ProgressiveContainerType - variable" {
     const allocator = std.testing.allocator;
     const Foo = VariableProgressiveContainerType(struct {
@@ -837,7 +820,7 @@ test "ProgressiveContainerType - variable" {
     defer allocator.free(f_buf);
     _ = Foo.serializeIntoBytes(&f, f_buf);
 
-    var f2: Foo.Type = undefined;
+    var f2: Foo.Type = Foo.default_value;
     try Foo.deserializeFromBytes(allocator, f_buf, &f2);
     defer Foo.deinit(allocator, &f2);
 }

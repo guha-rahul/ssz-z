@@ -10,6 +10,7 @@ pub const TypeKind = enum {
     progressive_bit_list,
     container,
     progressive_container,
+    compatible_union,
 };
 
 /// Basic types are primitives
@@ -21,7 +22,7 @@ pub fn isBasicType(T: type) bool {
 pub fn isFixedType(T: type) bool {
     return switch (T.kind) {
         .uint, .bool => true,
-        .list, .progressive_list, .progressive_bit_list => false,
+        .list, .progressive_list, .progressive_bit_list, .compatible_union => false,
         .vector => isFixedType(T.Element),
         .container, .progressive_container => {
             inline for (T.fields) |field| {
@@ -37,4 +38,9 @@ pub fn isFixedType(T: type) bool {
 // Progressive list types
 pub fn isProgressiveListType(T: type) bool {
     return T.kind == .progressive_list;
+}
+
+// Compatible union types
+pub fn isCompatibleUnionType(T: type) bool {
+    return T.kind == .compatible_union;
 }

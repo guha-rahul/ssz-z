@@ -104,19 +104,9 @@ pub fn merkleizeChunks(allocator: std.mem.Allocator, chunks: [][32]u8, out: *[32
 
 pub fn getNodes(pool: *Node.Pool, root: Node.Id, out: []Node.Id) !void {
     const subtree_count = subtreeIndex(out.len);
-
-    errdefer {
-    }
-
     var n = root;
-    errdefer {
-    }
-
     var l: usize = 0;
     for (0..subtree_count) |subtree_i| {
-        errdefer {
-        }
-
         const subtree_length = @min(subtreeLength(subtree_i), out.len - l);
         const subtree_depth = subtreeDepth(subtree_i);
         const subtree_root = n.getRight(pool) catch |err| {
@@ -138,14 +128,10 @@ pub fn getNodes(pool: *Node.Pool, root: Node.Id, out: []Node.Id) !void {
             }
             out[l] = subtree_root;
         } else {
-            subtree_root.getNodesAtDepth(pool, subtree_depth, 0, out[l .. l + subtree_length]) catch |err| {
-                return err;
-            };
+            try subtree_root.getNodesAtDepth(pool, subtree_depth, 0, out[l .. l + subtree_length]);
         }
         l += subtree_length;
-        n = n.getLeft(pool) catch |err| {
-            return err;
-        };
+        n = try n.getLeft(pool);
     }
 
     if (!std.mem.eql(u8, &n.getRoot(pool).*, &[_]u8{0} ** 32)) {
@@ -155,10 +141,6 @@ pub fn getNodes(pool: *Node.Pool, root: Node.Id, out: []Node.Id) !void {
 
 pub fn fillWithContents(allocator: std.mem.Allocator, pool: *Node.Pool, nodes: []Node.Id, should_ref: bool) !Node.Id {
     const subtree_count = subtreeIndex(nodes.len);
-
-    errdefer {
-    }
-
     var n: Node.Id = @enumFromInt(0);
 
     var subtree_starts = std.ArrayList(usize).init(allocator);
@@ -175,20 +157,8 @@ pub fn fillWithContents(allocator: std.mem.Allocator, pool: *Node.Pool, nodes: [
         const l = subtree_starts.items[subtree_i];
         const subtree_length = @min(subtreeLength(subtree_i), nodes.len - l);
 
-        errdefer {
-        }
-
-        const subtree_root = Node.fillWithContents(pool, nodes[l .. l + subtree_length], subtree_depth, false) catch |err| {
-            return err;
-        };
-
-        n = pool.createBranch(
-            n,
-            subtree_root,
-            should_ref,
-        ) catch |err| {
-            return err;
-        };
+        const subtree_root = try Node.fillWithContents(pool, nodes[l .. l + subtree_length], subtree_depth, false);
+        n = try pool.createBranch(n, subtree_root, should_ref);
     }
 
     return n;

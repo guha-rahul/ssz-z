@@ -4,7 +4,6 @@ const types = ssz.types;
 const TestCase = @import("common.zig").TypeTestCase;
 
 test "ProgressiveListType(u64) vector tests" {
-    std.debug.print("PROBE: progressive test starting\n", .{});
     const a = std.testing.allocator;
     const U64 = types.UintType(64);
     const PList = types.ProgressiveListType(U64, 1024);

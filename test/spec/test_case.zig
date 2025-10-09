@@ -16,6 +16,34 @@ pub fn parseYaml(comptime ST: type, allocator: Allocator, y: yaml.Yaml, out: *ST
         const bytes = try hex.hexToBytes(bytes_buf, yaml_bytes);
         out.* = ST.Type{ .data = bytes[0..ST.byte_length].* };
         return;
+    } else if (comptime ST.kind == .compatible_union) {
+        const map = try y.docs.items[0].asMap();
+
+        // Parse selector field
+        y.docs.items[0] = map.get("selector").?;
+        const selector_str = try y.parse(allocator, []const u8);
+        const selector = try std.fmt.parseInt(u8, selector_str, 10);
+        out.selector = selector;
+
+        // Parse data field based on selector
+        y.docs.items[0] = map.get("data").?;
+        inline for (ST._union_options) |option| {
+            const option_selector = option.@"0";
+            if (selector == option_selector) {
+                const option_type = option.@"1";
+                const field_name = comptime std.fmt.comptimePrint("option_{d}", .{option_selector});
+
+                // Parse into a temporary value with proper initialization
+                var temp_value: option_type.Type = option_type.default_value;
+                try parseYaml(option_type, allocator, y, &temp_value);
+
+                // Set the union with the correct tag by constructing the value
+                out.data = @unionInit(@TypeOf(out.data), field_name, temp_value);
+
+                return;
+            }
+        }
+        return error.InvalidSelector;
     } else if (comptime ssz.isBitListType(ST) or ssz.isProgressiveBitListType(ST)) {
         const bytes_buf = try allocator.alloc(u8, ((ST.limit + 7) / 8) + 2);
         const yaml_bytes = try y.parse(allocator, []const u8);
@@ -209,6 +237,7 @@ pub fn validTestCase(comptime ST: type, gpa: Allocator, path: std.fs.Dir, meta_f
         } else {
             try ST.deserializeFromBytes(allocator, serialized_expected, value_actual);
         }
+
         try std.testing.expectEqualDeep(&value_expected, &value_actual);
     }
 

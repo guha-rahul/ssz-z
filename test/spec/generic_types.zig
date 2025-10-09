@@ -351,3 +351,20 @@ pub const progbitlist_max = ssz.ProgressiveBitListType(8192);
 pub const progbitlist_random = ssz.ProgressiveBitListType(8192);
 pub const progbitlist_lengthy = ssz.ProgressiveBitListType(8192);
 pub const progbitlist_no = ssz.ProgressiveBitListType(8192);
+
+// compatible_union
+pub const CompatibleUnionA = ssz.CompatibleUnionType(.{
+    .{ 1, ProgressiveSingleFieldContainerTestStruct },
+});
+
+pub const CompatibleUnionBC = ssz.CompatibleUnionType(.{
+    .{ 2, ProgressiveSingleListContainerTestStruct },
+    .{ 3, ProgressiveVarTestStruct },
+});
+
+pub const CompatibleUnionABCA = ssz.CompatibleUnionType(.{
+    .{ 1, ProgressiveSingleFieldContainerTestStruct },
+    .{ 2, ProgressiveSingleListContainerTestStruct },
+    .{ 3, ProgressiveVarTestStruct },
+    .{ 4, ProgressiveSingleFieldContainerTestStruct },
+});

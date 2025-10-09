@@ -84,7 +84,8 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
 
             const len = data.len / Element.fixed_size;
 
-            if (limit == 0) {
+            // If limit is 0, only empty lists are allowed
+            if (limit == 0 and len > 0) {
                 return error.InvalidSSZ;
             }
 
@@ -138,8 +139,8 @@ pub fn FixedProgressiveListType(comptime ST: type, comptime _limit: comptime_int
                     return error.InvalidSSZ;
                 };
 
-                // If limit is 0, no elements are allowed, so any data (including empty) is invalid
-                if (limit == 0) {
+                // If limit is 0, only empty lists are allowed
+                if (limit == 0 and len > 0) {
                     return error.InvalidSSZ;
                 }
 
